@@ -1,3 +1,16 @@
+--/Universidad Nacional de La Matanza
+--/Bases de Datos Aplicadas - Comision 02
+
+--/Grupo 7 - Integrantes:
+--Almiron, Luca
+--Figueroa, Santiago
+--Ruarte, Fidel
+--Villalba, Leandro
+
+--/Fecha: xx/xx/2026
+
+--Creacion de BD y Schemas para testing
+
 IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIALtesting')
 BEGIN
 	CREATE DATABASE MUNDIALtesting

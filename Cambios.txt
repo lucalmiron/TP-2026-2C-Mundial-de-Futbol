@@ -1,0 +1,6 @@
+-02/10
+*Agregado campo TarjetasAcum a TECNICO y modificado el SP de Registrar para llenarlo con el valor por defecto.
+-04/10
+*En el StoredProcedure uspReporte_Registrar se agregaron validaciones para verificar que el Arbitro objetivo haya participado del encuentro y que dicho encuentro se haya jugado.
+*Dados los cambios, en el testing de Idioma/HablaIdioma/Reporte no se han testeado los SP de Reporte hasta que haya un acuerdo en cuanto a si es necesario modificar la entidad Partido de manera que sea posible conocer que partidos ya se han jugado y cuales no. No obstante, los tests ya estan escritos.
+*En relacion al punto anterior, por las mismas razones, se han escrito los SP para asignacion de arbitros pero no el testing.

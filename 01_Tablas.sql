@@ -1,29 +1,22 @@
+--/Universidad Nacional de La Matanza
+--/Bases de Datos Aplicadas - Comision 02
+
+--/Grupo 7 - Integrantes:
+--Almiron, Luca
+--Figueroa, Santiago
+--Ruarte, Fidel
+--Villalba, Leandro
+
+--/Fecha: xx/xx/2026
+
+--Creacion de Tablas
+
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
 BEGIN
 	USE MUNDIAL
 END;
 GO
 
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Pais')
-BEGIN
-	CREATE TABLE TABLAS.Pais
-	(
-		IdPais INT PRIMARY KEY IDENTITY(1, 1),
-		Nombre varchar(30),
-		Pbi decimal(4,2)
-	);
-END;
-GO
-
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Seleccion')
-BEGIN
-	CREATE TABLE TABLAS.Seleccion
-	(
-		IdSeleccion INT PRIMARY KEY IDENTITY(1, 1),
-		Confederacion VARCHAR(10)
-	);
-END;
-GO
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Club')
 BEGIN
@@ -34,7 +27,6 @@ BEGIN
 	);
 END;
 GO
-
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Persona')
 BEGIN
@@ -57,6 +49,7 @@ BEGIN
 		IdTecnico INT,
 		Funcion VARCHAR(40),
 		Seleccion INT,
+		TarjetasAcum INT,
 		FOREIGN KEY(Seleccion) REFERENCES TABLAS.Seleccion(IdSeleccion),
 		FOREIGN KEY(IdTecnico) REFERENCES TABLAS.Persona(IdPersona),
 		PRIMARY KEY(IdTecnico)
@@ -92,5 +85,55 @@ BEGIN
 		FOREIGN KEY(Seleccion) REFERENCES TABLAS.Seleccion(IdSeleccion),
 		PRIMARY KEY(IdJugador)
 	);
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Idioma')
+BEGIN
+	CREATE TABLE TABLAS.Idioma
+	(
+		IdIdioma INT PRIMARY KEY IDENTITY(1, 1),
+		Descripcion VARCHAR(20)
+	)
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'HablaIdioma')
+BEGIN
+	CREATE TABLE TABLAS.HablaIdioma
+	(
+		Arbitro INT,
+		Idioma INT,
+		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
+		FOREIGN KEY(Idioma) REFERENCES TABLAS.Idioma(IdIdioma)
+	)
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Reporte')
+BEGIN
+	CREATE TABLE TABLAS.Reporte
+	(
+		IdReporte INT PRIMARY KEY IDENTITY(1, 1),
+		Razon VARCHAR(20),
+		Descripcion VARCHAR(300),
+		Arbitro INT,
+		Partido INT,
+		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
+		FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido)
+	)
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Reporte')
+BEGIN
+	CREATE TABLE TABLAS.Arbitraje
+	(
+		Arbitro INT,
+		Funcion VARCHAR(9),
+		Partido INT,
+		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
+		FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido)
+	)
 END;
 GO

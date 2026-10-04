@@ -9,175 +9,74 @@
 
 --/Fecha: xx/xx/2026
 
---Creacion de Stored Procedures
+--Testing de StoredProcedures asociados a entidades Idioma, HablaIdioma y Reporte
+--HablaIdioma surge de la relacion Arbitro-n---<Habla>---n-Idioma
 
-IF EXISTS(SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIALtesting')
 BEGIN
-	USE MUNDIAL
+	USE MUNDIALtesting
 END;
 GO
 
---Jugador
-IF EXISTS(SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspJugador_ClubUpdate'))
-    DROP PROCEDURE SP.uspJugador_ClubUpdate
+--Tablas auxiliares de testing
+CREATE TABLE TABLAS.Arbitro
+(
+	IdArbitro INT PRIMARY KEY
+);
+
+CREATE TABLE TABLAS.Partido
+(
+	IdPartido INT PRIMARY KEY
+);
 GO
-CREATE PROCEDURE SP.uspJugador_ClubUpdate
-@id INT,
-@club INT
-AS
+
+--Tablas a testear
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Idioma')
 BEGIN
-	DECLARE @errorCount INT
-	DECLARE @errorLine varchar(300)
-
-	SET @errorCount = 0
-	SET @errorLine = 'Error/es:'
-
-	IF(@id IS NULL) OR (@id<= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Jugador.'
-	END
-
-	IF(@club IS NOT NULL) AND (@club <= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Club.'
-	END
-
-	IF(@errorCount = 0)
-	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @id)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: IdJugador.'
-		END
-
-		IF (@club IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Club WHERE IdClub = @club)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Club.'
-		END
-	END
-
-	IF(@errorCount = 0)
-	BEGIN
-		UPDATE TABLAS.Jugador
-		SET Club = @club
-		WHERE IdJugador = @id
-	END
-	ELSE
-		PRINT @errorLine
+	CREATE TABLE TABLAS.Idioma
+	(
+		IdIdioma INT PRIMARY KEY IDENTITY(1, 1),
+		Descripcion VARCHAR(20)
+	)
 END;
 GO
 
---Club
-IF EXISTS(SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspClub_Registrar'))
-    DROP PROCEDURE SP.uspClub_Registrar
-GO
-CREATE PROCEDURE SP.uspClub_Registrar @nombre VARCHAR(20)
-AS
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'HablaIdioma')
 BEGIN
-	DECLARE @errorCount INT
-
-	SET @errorCount = 0
-
-	IF(@nombre IS NULL)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		PRINT '-ERROR- Nombre invalido.'
-	END
-
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Club WHERE Nombre LIKE @nombre)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		PRINT '-ERROR- Nombre duplicado.'
-	END
-
-	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Club(Nombre) VALUES (@nombre)
+	CREATE TABLE TABLAS.HablaIdioma
+	(
+		Arbitro INT,
+		Idioma INT,
+		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
+		FOREIGN KEY(Idioma) REFERENCES TABLAS.Idioma(IdIdioma)
+	)
 END;
 GO
 
-IF EXISTS(SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspClub_Update'))
-    DROP PROCEDURE SP.uspClub_Update
-GO
-CREATE PROCEDURE SP.uspClub_Update @id INT, @nombre VARCHAR(20)
-AS
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Reporte')
 BEGIN
-	DECLARE @errorCount INT
-	DECLARE @errorLine varchar(300)
-
-	SET @errorCount = 0
-	SET @errorLine = 'Error/es:'
-
-	IF(@id IS NULL) OR (@id <= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Club.'
-	END
-
-	IF(@nombre IS NULL)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Nombre.'
-	END
-
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Club WHERE IdClub = @id)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Club.'
-	END
-
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Club WHERE Nombre LIKE @nombre)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
-	END
-
-	IF(@errorCount = 0)
-	BEGIN
-		UPDATE TABLAS.Club
-		SET Nombre = @nombre
-		WHERE IdClub = @id
-	END
-	ELSE
-		PRINT @errorLine
+	CREATE TABLE TABLAS.Reporte
+	(
+		IdReporte INT PRIMARY KEY IDENTITY(1, 1),
+		Razon VARCHAR(20),
+		Descripcion VARCHAR(300),
+		Arbitro INT,
+		Partido INT,
+		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
+		FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido)
+	)
 END;
 GO
 
-IF EXISTS(SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspClub_Bajar'))
-    DROP PROCEDURE SP.uspClub_Bajar
-GO
-CREATE PROCEDURE SP.uspClub_Bajar @id INT
-AS
-BEGIN
-	DECLARE @errorCount INT
-
-	SET @errorCount = 0
-
-	IF(@id IS NULL) OR (@id <= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		PRINT '-ERROR- Valor invalido: ID Club.'
-	END
-
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Club WHERE IdClub = @id)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		PRINT '-ERROR- Valor inexistente: ID Club.'
-	END
-
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE Club LIKE @id)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		PRINT '-ERROR- Existen 1 o mas registros relacionados: Jugador. Elimine dichos registros para continuar.'
-	END
-
-	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Club WHERE IdClub = @id
-END;
+--tablas aux
+CREATE TABLE TABLAS.Publicidad
+(
+	Idioma INT,
+	FOREIGN KEY(Idioma) REFERENCES TABLAS.Idioma(IdIdioma)
+);
 GO
 
+--SPs a testear
 --Idioma
 IF EXISTS(SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspIdioma_Registrar'))
     DROP PROCEDURE SP.uspIdioma_Registrar
@@ -291,7 +190,7 @@ BEGIN
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Club WHERE IdClub = @id
+		DELETE FROM TABLAS.Idioma WHERE IdIdioma = @id
 END;
 GO
 
@@ -460,20 +359,6 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Descripcion.'
 	END
 
-	--chequeo de participacion del arbitro en dicho partido
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- El arbitro no participo de ese partido.'
-	END
-
-	--chequeo estado del partido (si ya se jugo o no)
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Partido WHERE Partido = @partido AND PeriodoFin IS NULL)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- El partido aun no se ha jugado.'
-	END
-
 	IF(@errorCount = 0)
 		INSERT INTO TABLAS.Reporte(Razon, Descripcion, Arbitro, Partido) VALUES (@razon, @descripcion, @arbitro, @partido)
 	ELSE
@@ -583,4 +468,222 @@ BEGIN
 	ELSE
 		PRINT @errorLine
 END;
+GO
+
+--Llenado de tablas aux
+INSERT INTO TABLAS.Arbitro VALUES (1), (2), (3);
+INSERT INTO TABLAS.Partido VALUES (1), (2), (3);
+INSERT INTO TABLAS.Publicidad VALUES (1), (2);
+GO
+
+SELECT * FROM TABLAS.Arbitro;
+SELECT * FROM TABLAS.Partido;
+GO
+--Llenado de tablas y testeo de registro exitoso
+EXECUTE SP.uspIdioma_Registrar @descripcion = 'Polaco';
+EXECUTE SP.uspIdioma_Registrar @descripcion = 'Chino';
+
+EXECUTE SP.uspHablaIdioma_Registrar @arbitro = 1, @idioma = 2;
+EXECUTE SP.uspHablaIdioma_Registrar @arbitro = 2, @idioma = 2;
+
+EXECUTE SP.uspReporte_Registrar 
+@razon = 'Informe PostPartido', 
+@descripcion = 'Salio lesionado en el 2do tiempo.',
+@arbitro = 2, @partido = 1;
+EXECUTE SP.uspReporte_Registrar 
+@razon = 'Sancion', 
+@descripcion = 'Intencionalmente golpeo a un jugador.',
+@arbitro = 2, @partido = 2;
+EXECUTE SP.uspReporte_Registrar 
+@razon = 'Informe PostPartido', 
+@descripcion = 'Intencionalmente golpeo a un jugador.',
+@arbitro = 2, @partido = 1;
+GO
+
+SELECT * FROM TABLAS.Idioma;
+SELECT * FROM TABLAS.HablaIdioma;
+SELECT * FROM TABLAS.Reporte;
+GO
+
+--//Testing Idioma
+--/Registro
+--Fallido(Valores invalidos)
+EXECUTE SP.uspIdioma_Registrar @descripcion = NULL;
+
+SELECT * FROM TABLAS.Idioma;
+GO
+--Fallido(Valores dup)
+EXECUTE SP.uspIdioma_Registrar @descripcion = 'Polaco';
+
+SELECT * FROM TABLAS.Idioma;
+GO
+--/Update
+--Exitoso
+EXECUTE SP.uspIdioma_Update @id = 2, @descripcion = 'Chino Mandarin';
+
+SELECT * FROM TABLAS.Idioma;
+GO
+--Fallido(Valores invalidos)
+EXECUTE SP.uspIdioma_Update @id = 0, @descripcion = NULL;
+
+SELECT * FROM TABLAS.Idioma;
+GO
+--Fallido(Valores inexistentes)
+EXECUTE SP.uspIdioma_Update @id = 40, @descripcion = 'Polaco-Ruso';
+
+SELECT * FROM TABLAS.Idioma;
+GO
+--Fallido(Valores dup)
+EXECUTE SP.uspIdioma_Update @id = 2, @descripcion = 'Polaco';
+
+SELECT * FROM TABLAS.Idioma;
+GO
+--/Baja
+--Exitoso
+EXECUTE SP.uspIdioma_Bajar @id = 1;
+
+SELECT * FROM TABLAS.Idioma;
+GO
+--Fallido(Valores invalidos)
+EXECUTE SP.uspIdioma_Bajar @id = 0;
+
+SELECT * FROM TABLAS.Idioma;
+GO
+--Fallido(Valores inexistentes)
+EXECUTE SP.uspIdioma_Bajar @id = 45;
+
+SELECT * FROM TABLAS.Idioma;
+GO
+--Fallido(Registros referenciados)
+EXECUTE SP.uspIdioma_Bajar @id = 2;
+
+SELECT * FROM TABLAS.Idioma;
+GO
+---------------------------------------------------------------------
+--//Testing HablaIdioma
+--/Registro
+--Fallida(Valores invalidos)
+EXECUTE SP.uspHablaIdioma_Registrar @arbitro = 0, @idioma = NULL;
+
+SELECT * FROM TABLAS.HablaIdioma;
+GO
+--Fallida(Valores inexistentes)
+EXECUTE SP.uspHablaIdioma_Registrar @arbitro = 45, @idioma = 78;
+
+SELECT * FROM TABLAS.HablaIdioma;
+GO
+--Fallida(Valores dup)
+EXECUTE SP.uspHablaIdioma_Registrar @arbitro = 1, @idioma = 2;
+
+SELECT * FROM TABLAS.HablaIdioma;
+GO
+--/Baja
+--Exitosa
+EXECUTE SP.uspHablaIdioma_Bajar @arbitro = 1, @idioma = 2;
+
+SELECT * FROM TABLAS.HablaIdioma;
+GO
+--Fallida(Valores invalidos)
+EXECUTE SP.uspHablaIdioma_Bajar @arbitro = NULL, @idioma = 0;
+
+SELECT * FROM TABLAS.HablaIdioma;
+GO
+--Fallida(Valores inexistentes)
+EXECUTE SP.uspHablaIdioma_Bajar @arbitro = 1, @idioma = 2;
+
+SELECT * FROM TABLAS.HablaIdioma;
+GO
+---------------------------------------------------------------------
+--//Testing Reporte
+--/Registro
+--Fallida(Valores invalidos)
+EXECUTE SP.uspReporte_Registrar 
+@razon = 'Broma', 
+@descripcion = NULL,
+@arbitro = NULL, 
+@partido = -1;
+
+SELECT * FROM TABLAS.Reporte;
+GO
+--Fallida(Valores inexistentes)
+EXECUTE SP.uspReporte_Registrar 
+@razon = 'Sancion', 
+@descripcion = 'Se peleo con otro arbitro.',
+@arbitro = 45, 
+@partido = 123;
+
+SELECT * FROM TABLAS.Reporte;
+GO
+--Fallida(Valores dup)
+EXECUTE SP.uspReporte_Registrar 
+@razon = 'Informe PostPartido', 
+@descripcion = 'Salio lesionado en el 2do tiempo.',
+@arbitro = 2, 
+@partido = 1;
+
+SELECT * FROM TABLAS.Reporte;
+GO
+--/Update
+--Exitoso
+EXECUTE SP.uspReporte_Update
+@id = 1,
+@descripcion = 'Faltas mal cobradas';
+
+SELECT * FROM TABLAS.Reporte;
+GO
+--Fallido(Valores invalidos)
+EXECUTE SP.uspReporte_Update
+@id = 1,
+@razon = 'Ataque';
+
+SELECT * FROM TABLAS.Reporte;
+GO
+--Fallido(Valores inexistentes)
+EXECUTE SP.uspReporte_Update
+@id = 145;
+
+SELECT * FROM TABLAS.Reporte;
+GO
+--Fallido(Valores dup)
+EXECUTE SP.uspReporte_Update
+@id = 1,
+@razon = 'Sancion', 
+@descripcion = 'Intencionalmente golpeo a un jugador.';
+
+SELECT * FROM TABLAS.Reporte;
+GO
+--/Baja
+--Exitosa
+EXECUTE SP.uspReporte_Baja @id = 1;
+
+SELECT * FROM TABLAS.Reporte;
+GO
+--Fallida(Valores invalidos)
+EXECUTE SP.uspReporte_Baja @id = -1;
+
+SELECT * FROM TABLAS.Reporte;
+GO
+--Fallida(Valores inexistentes)
+EXECUTE SP.uspReporte_Baja @id = 456;
+
+SELECT * FROM TABLAS.Reporte;
+GO
+
+--Limpieza
+DROP TABLE TABLAS.Arbitro;
+DROP TABLE TABLAS.Partido;
+DROP TABLE TABLAS.Reporte;
+DROP TABLE TABLAS.Publicidad;
+DROP TABLE TABLAS.HablaIdioma;
+DROP TABLE TABLAS.Idioma;
+GO
+
+DROP PROCEDURE SP.uspIdioma_Registrar;
+DROP PROCEDURE SP.uspIdioma_Update;
+DROP PROCEDURE SP.uspIdioma_Bajar;
+DROP PROCEDURE SP.uspHablaIdioma_Registrar;
+DROP PROCEDURE SP.uspHablaIdioma_Bajar;
+DROP PROCEDURE SP.uspReporte_Registrar;
+DROP PROCEDURE SP.uspReporte_Update;
+DROP PROCEDURE SP.uspReporte_Baja;
 GO

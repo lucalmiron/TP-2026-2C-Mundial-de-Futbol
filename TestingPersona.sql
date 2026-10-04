@@ -1,3 +1,22 @@
+--/Universidad Nacional de La Matanza
+--/Bases de Datos Aplicadas - Comision 02
+
+--/Grupo 7 - Integrantes:
+--Almiron, Luca
+--Figueroa, Santiago
+--Ruarte, Fidel
+--Villalba, Leandro
+
+--/Fecha: xx/xx/2026
+
+--Testing de StoredProcedures asociados a entidades Persona(Persona, Jugador, Arbitro, Tecnico)
+
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIALtesting')
+BEGIN
+	USE MUNDIALtesting
+END;
+GO
+
 --tablas aux de testing
 CREATE TABLE TABLAS.Club
 (
@@ -94,6 +113,7 @@ CREATE TABLE TABLAS.Tecnico
 	IdTecnico INT,
 	Funcion VARCHAR(40),
 	Seleccion INT,
+	TarjetasAcum INT,
 	FOREIGN KEY(Seleccion) REFERENCES TABLAS.Seleccion(IdSeleccion),
 	FOREIGN KEY(IdTecnico) REFERENCES TABLAS.Persona(IdPersona),
 	PRIMARY KEY(IdTecnico)
@@ -380,6 +400,58 @@ BEGIN
 			DECLARE @Num INT           = ERROR_NUMBER();
 			PRINT CONCAT('ERROR (', @Num, '): ', @Msg);
 		END CATCH
+	END
+	ELSE
+		PRINT @errorLine
+END;
+GO
+
+IF EXISTS(SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspJugador_ClubUpdate'))
+    DROP PROCEDURE SP.uspJugador_ClubUpdate
+GO
+CREATE PROCEDURE SP.uspJugador_ClubUpdate
+@id INT,
+@club INT
+AS
+BEGIN
+	DECLARE @errorCount INT
+	DECLARE @errorLine varchar(300)
+
+	SET @errorCount = 0
+	SET @errorLine = 'Error/es:'
+
+	IF(@id IS NULL) OR (@id<= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Jugador.'
+	END
+
+	IF(@club IS NOT NULL) AND (@club <= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Club.'
+	END
+
+	IF(@errorCount = 0)
+	BEGIN
+		IF NOT EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @id)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: IdJugador.'
+		END
+
+		IF (@club IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Club WHERE IdClub = @club)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Club.'
+		END
+	END
+
+	IF(@errorCount = 0)
+	BEGIN
+		UPDATE TABLAS.Jugador
+		SET Club = @club
+		WHERE IdJugador = @id
 	END
 	ELSE
 		PRINT @errorLine
@@ -822,8 +894,8 @@ BEGIN
 			OUTPUT INSERTED.IdPersona INTO @id(ID)
 			VALUES (@nombre, @fnac, @pais, 'Tecnico')
 
-			INSERT INTO TABLAS.Tecnico(IdTecnico, Funcion, Seleccion)
-			VALUES((SELECT ID FROM @id), @funcion, @seleccion)
+			INSERT INTO TABLAS.Tecnico(IdTecnico, Funcion, Seleccion, TarjetasAcum)
+			VALUES((SELECT ID FROM @id), @funcion, @seleccion, 0)
 
 			COMMIT TRANSACTION;
 		END TRY
@@ -840,7 +912,6 @@ BEGIN
 		PRINT @errorLine
 END;
 GO
-
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspTecnico_Update'))
     DROP PROCEDURE SPTRANS.uspTecnico_Update
 GO
@@ -1277,22 +1348,22 @@ SELECT * FROM TABLAS.Jugador
 --/UpdateClub
 --Exitoso
 EXECUTE SP.uspJugador_ClubUpdate
-@idJugador = 7,
-@clubJugador = 2;
+@id = 7,
+@club = 2;
 
 SELECT * FROM TABLAS.Persona WHERE Rol = 'Jugador'
 SELECT * FROM TABLAS.Jugador
 --Fallido(Valores invalidos)
 EXECUTE SP.uspJugador_ClubUpdate
-@idJugador = 7,
-@clubJugador = -2;
+@id = 7,
+@club = -2;
 
 SELECT * FROM TABLAS.Persona WHERE Rol = 'Jugador'
 SELECT * FROM TABLAS.Jugador
 --Fallido(Valores inexistentes)
 EXECUTE SP.uspJugador_ClubUpdate
-@idJugador = 43,
-@clubJugador = 22;
+@id = 43,
+@club = 22;
 
 SELECT * FROM TABLAS.Persona WHERE Rol = 'Jugador'
 SELECT * FROM TABLAS.Jugador
