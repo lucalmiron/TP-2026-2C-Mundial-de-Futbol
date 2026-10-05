@@ -26,6 +26,7 @@ BEGIN
 		Funcion VARCHAR(40),
 		Seleccion INT,
 		TarjetasAcum INT,
+		Estado VARCHAR(10),
 		FOREIGN KEY(Seleccion) REFERENCES TABLAS.Seleccion(IdSeleccion),
 		FOREIGN KEY(IdTecnico) REFERENCES TABLAS.Persona(IdPersona),
 		PRIMARY KEY(IdTecnico)
