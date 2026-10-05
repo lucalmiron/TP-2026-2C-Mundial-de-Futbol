@@ -715,9 +715,11 @@ BEGIN
 			INSERT INTO TABLAS.Persona(Nombre, Fnac, Pais, Rol)
 			OUTPUT INSERTED.IdPersona INTO @id(ID)
 			VALUES (@nombre, @fnac, @pais, 'Tecnico')
-
-			INSERT INTO TABLAS.Tecnico(IdTecnico, Funcion, Seleccion, TarjetasAcum)
-			VALUES((SELECT ID FROM @id), @funcion, @seleccion, 0)
+			
+			INSERT INTO TABLAS.Tecnico(IdTecnico, Funcion, Seleccion, TarjetasAcum, Estado)
+			VALUES((SELECT ID FROM @id), @funcion, @seleccion, 0, 'Activo')
+			
+			COMMIT TRANSACTION;
 
 			COMMIT TRANSACTION;
 		END TRY
