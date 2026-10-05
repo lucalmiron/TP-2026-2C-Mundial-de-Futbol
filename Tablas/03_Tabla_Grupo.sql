@@ -1,0 +1,8 @@
+USE db_mundial;
+go
+
+IF OBJECT_ID('dbo.Grupo','U') is NULL
+	create TABLE Grupo(
+		ID_GRUPO INT IDENTITY(1,1) CONSTRAINT PK_Grupo PRIMARY KEY,
+		NOMBRE VARCHAR(10) NOT NULL
+	);
