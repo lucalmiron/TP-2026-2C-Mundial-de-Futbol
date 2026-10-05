@@ -1,0 +1,8 @@
+CAMBIOS DER
+
+-26-09
+*Se paso la relacion JUGADOR-AMONESTACION a PERSONA-AMONESTACION
+-02-10
+*Se partio la relacion PERSONA-AMONESTACION a: JUGADOR-AMONESTACION y TECNICO-AMONESTACION. En tecnico se agrego el atributo (Tarjetas Acumuladas)
+-04-10
+*Se agrego el atributo faltante Estado a la entidad TECNICO para permitir el mismo funcionamiento de JUGADOR en cuanto a suspensiones.
