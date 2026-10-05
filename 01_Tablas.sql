@@ -105,7 +105,8 @@ BEGIN
 		Arbitro INT,
 		Idioma INT,
 		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
-		FOREIGN KEY(Idioma) REFERENCES TABLAS.Idioma(IdIdioma)
+		FOREIGN KEY(Idioma) REFERENCES TABLAS.Idioma(IdIdioma),
+		PRIMARY KEY(Arbitro, Idioma)
 	)
 END;
 GO
@@ -133,7 +134,8 @@ BEGIN
 		Funcion VARCHAR(9),
 		Partido INT,
 		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
-		FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido)
+		FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido),
+		PRIMARY KEY(Arbitro, Partido)
 	)
 END;
 GO
