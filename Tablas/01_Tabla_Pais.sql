@@ -1,17 +1,28 @@
-USE db_mundial;
-go
----------------------------------------------------------------
-		--NOTAS A TENER EN CUENTA
---LO IDEAL SERIA MANTENER TODOS LOS ATRIBUTOS EN MAYUS
---ENTIDADES PRIMERA EN MAYUS 
---LAS FK TIENEN EL FORMATO 'FK_TABLAHIJA_TABLAMADRE'
---CUALQUIER RECOMENDACION AL GRUPO DE WSP
---SEAMOS ORDEANDOS PORFAVOR
+--/Universidad Nacional de La Matanza
+--/Bases de Datos Aplicadas - Comision 02
 
+--/Grupo 7 - Integrantes:
+--Almiron, Luca
+--Figueroa, Santiago
+--Ruarte, Fidel
+--Villalba, Leandro
 
-IF OBJECT_ID('dbo.Pais','U') iS NULL
-	CREATE TABLE Pais(
-		ID_PAIS INT IDENTITY(1,1) CONSTRAINT PK_Pais PRIMARY KEY,
+--/Fecha: xx/xx/2026
+
+--Creacion de Tablas
+
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
+BEGIN
+	USE MUNDIAL
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Pais')
+BEGIN
+	CREATE TABLE TABLAS.Pais(
+		ID_PAIS INT IDENTITY(1,1) PK_Pais PRIMARY KEY,
 		NOMBRE VARCHAR(50) NOT NULL,
 		PBI BIGINT
 	);
+END;
+GO

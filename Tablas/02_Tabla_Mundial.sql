@@ -1,10 +1,27 @@
-USE db_mundial;
-go
+--/Universidad Nacional de La Matanza
+--/Bases de Datos Aplicadas - Comision 02
 
-IF OBJECT_ID('dbo.Mundial','U') is NULL
-	CREATE TABLE Mundial(
-		ID_MUNDIAL INT IDENTITY(1,1) CONSTRAINT PK_Mundial PRIMARY KEY,
-		ID_PAIS INT NOT NULL CONSTRAINT FK_Mundial_Pais REFERENCES Pais(ID_PAIS),
+--/Grupo 7 - Integrantes:
+--Almiron, Luca
+--Figueroa, Santiago
+--Ruarte, Fidel
+--Villalba, Leandro
+
+--/Fecha: xx/xx/2026
+
+--Creacion de Tablas
+
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
+BEGIN
+	USE MUNDIAL
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Mundial')
+BEGIN
+	CREATE TABLE TABLAS.Mundial(
+		ID_MUNDIAL INT IDENTITY(1,1) PK_Mundial PRIMARY KEY,
+		ID_PAIS INT NOT NULL FK_Mundial_Pais REFERENCES Pais(ID_PAIS),
 		ACTIVIDAD_FECHA_INICIO DATE,
 		ACTIVIDAD_FECHA_FIN DATE,
 		TAMANIO_SELECCION_MINIMO INT NOT NULL,
@@ -14,3 +31,5 @@ IF OBJECT_ID('dbo.Mundial','U') is NULL
 		SUSPENSION_TARJETAS_MAXIMAS INT NOT NULL,
 		SUSPENSION_TIEMPO INT NOT NULL
 	);
+END;
+GO
