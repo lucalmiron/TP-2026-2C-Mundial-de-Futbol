@@ -17,18 +17,18 @@ BEGIN
 END;
 GO
 
-
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Reporte')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'arbitros' AND TABLE_NAME = 'Reporte')
 BEGIN
-	CREATE TABLE TABLAS.Reporte
+	CREATE TABLE arbitros.Reporte
 	(
-		IdReporte INT PRIMARY KEY IDENTITY(1, 1),
-		Razon VARCHAR(20),
-		Descripcion VARCHAR(300),
-		Arbitro INT,
-		Partido INT,
-		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
-		FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido)
-	)
+		IdReporte INT IDENTITY(1, 1),
+		Razon VARCHAR(20) NOT NULL,
+		Descripcion VARCHAR(300) NULL,
+		Arbitro INT NOT NULL,
+		Partido INT NOT NULL,
+		CONSTRAINT PK_Reporte PRIMARY KEY (IdReporte),
+		CONSTRAINT FK_Reporte_Arbitro FOREIGN KEY (Arbitro) REFERENCES arbitros.Arbitro(IdArbitro),
+		CONSTRAINT FK_Reporte_Partido FOREIGN KEY (Partido) REFERENCES partidos.Partido(IdPartido)
+	);
 END;
 GO

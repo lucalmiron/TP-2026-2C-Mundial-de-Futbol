@@ -17,17 +17,16 @@ BEGIN
 END;
 GO
 
-
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Arbitraje')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'arbitros' AND TABLE_NAME = 'Arbitraje')
 BEGIN
-	CREATE TABLE TABLAS.Arbitraje
+	CREATE TABLE arbitros.Arbitraje
 	(
-		Arbitro INT,
-		Funcion VARCHAR(20),
-		Partido INT,
-		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
-		FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido),
-		PRIMARY KEY(Arbitro, Partido)
-	)
+		Arbitro INT NOT NULL,
+		Funcion VARCHAR(20) NOT NULL,
+		Partido INT NOT NULL,
+		CONSTRAINT PK_Arbitraje PRIMARY KEY (Arbitro, Partido),
+		CONSTRAINT FK_Arbitraje_Arbitro FOREIGN KEY (Arbitro) REFERENCES arbitros.Arbitro(IdArbitro),
+		CONSTRAINT FK_Arbitraje_Partido FOREIGN KEY (Partido) REFERENCES partidos.Partido(IdPartido)
+	);
 END;
 GO

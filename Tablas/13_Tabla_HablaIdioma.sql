@@ -17,16 +17,15 @@ BEGIN
 END;
 GO
 
-
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'HablaIdioma')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'arbitros' AND TABLE_NAME = 'HablaIdioma')
 BEGIN
-	CREATE TABLE TABLAS.HablaIdioma
+	CREATE TABLE arbitros.HablaIdioma
 	(
-		Arbitro INT,
-		Idioma INT,
-		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
-		FOREIGN KEY(Idioma) REFERENCES TABLAS.Idioma(IdIdioma),
-		PRIMARY KEY(Arbitro, Idioma)
-	)
+		Arbitro INT NOT NULL,
+		Idioma INT NOT NULL,
+		CONSTRAINT PK_HablaIdioma PRIMARY KEY (Arbitro, Idioma),
+		CONSTRAINT FK_HablaIdioma_Arbitro FOREIGN KEY (Arbitro) REFERENCES arbitros.Arbitro(IdArbitro),
+		CONSTRAINT FK_HablaIdioma_Idioma FOREIGN KEY (Idioma) REFERENCES arbitros.Idioma(IdIdioma)
+	);
 END;
 GO

@@ -17,15 +17,19 @@ BEGIN
 END;
 GO
 
-CREATE TABLE TABLAS.Amonestacion
-(
-	IdAmonestacion INT,
-	Amonestado INT,
-	Arbitro INT,
-	Tarjeta VARCHAR(8),
-	Motivo VARCHAR(300),
-	FOREIGN KEY(IdAmonestacion) REFERENCES TABLAS.Evento,
-	FOREIGN KEY(Amonestado) REFERENCES TABLAS.Persona,
-	FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro,
-	PRIMARY KEY(IdAmonestacion)
-);
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'partidos' AND TABLE_NAME = 'Amonestacion')
+BEGIN
+	CREATE TABLE partidos.Amonestacion
+	(
+		IdAmonestacion INT,
+		Amonestado INT NOT NULL,
+		Arbitro INT NOT NULL,
+		Tarjeta VARCHAR(8) NOT NULL,
+		Motivo VARCHAR(300) NOT NULL,
+		CONSTRAINT PK_Amonestacion PRIMARY KEY (IdAmonestacion),
+		CONSTRAINT FK_Amonestacion_Evento FOREIGN KEY (IdAmonestacion) REFERENCES partidos.Evento(IdEvento),
+		CONSTRAINT FK_Amonestacion_Persona FOREIGN KEY (Amonestado) REFERENCES equipos.Persona(IdPersona),
+		CONSTRAINT FK_Amonestacion_Arbitro FOREIGN KEY (Arbitro) REFERENCES arbitros.Arbitro(IdArbitro)
+	);
+END;
+GO

@@ -6,24 +6,27 @@
 -- Villalba, Leandro
 -- 08/10/2026
 -- Objetivo: Creacion sede.
+
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
 BEGIN
 	USE MUNDIAL
 END;
 GO
 
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Sede')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'sedes' AND TABLE_NAME = 'Sede')
 BEGIN
-	CREATE TABLE TABLAS.Sede
+	CREATE TABLE sedes.Sede
 	(
-		IdSede INT PRIMARY KEY,
-		Nombre varchar(30),
-		Ciudad varchar(30),
-		Capacidad int,
-		IdPais INT FOREIGN KEY REFERENCES TABLAS.Pais(IdPais)
+		IdSede INT,
+		Nombre VARCHAR(30) NOT NULL,
+		Ciudad VARCHAR(30) NOT NULL,
+		Capacidad INT NOT NULL,
+		IdPais INT NOT NULL,
 		-- falta IdHuso, poner cuando exista la tabla HusoHorario
+		CONSTRAINT PK_Sede PRIMARY KEY (IdSede),
+		CONSTRAINT CK_Sede_Capacidad CHECK (Capacidad > 0),
+		CONSTRAINT UQ_Sede_Nombre_Ciudad UNIQUE (Nombre, Ciudad),
+		CONSTRAINT FK_Sede_Pais FOREIGN KEY (IdPais) REFERENCES equipos.Pais(IdPais)
 	);
 END;
 GO
-
-

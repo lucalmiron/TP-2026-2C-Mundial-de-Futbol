@@ -17,13 +17,18 @@ BEGIN
 END;
 GO
 
-CREATE TABLE TABLAS.Evento
-(
-	IdEvento INT PRIMARY KEY IDENTITY(1, 1),
-	Minuto INT NULL,
-	Tipo VARCHAR(12),
-	Partido INT,
-	Periodo INT,
-	FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido),
-	FOREIGN KEY(Periodo) REFERENCES TABLAS.Periodo(IdPeriodo)
-);
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'partidos' AND TABLE_NAME = 'Evento')
+BEGIN
+	CREATE TABLE partidos.Evento
+	(
+		IdEvento INT IDENTITY(1, 1),
+		Minuto INT NULL,
+		Tipo VARCHAR(12) NOT NULL,
+		Partido INT NOT NULL,
+		Periodo INT NOT NULL,
+		CONSTRAINT PK_Evento PRIMARY KEY (IdEvento),
+		CONSTRAINT FK_Evento_Partido FOREIGN KEY (Partido) REFERENCES partidos.Partido(IdPartido),
+		CONSTRAINT FK_Evento_Periodo FOREIGN KEY (Periodo) REFERENCES partidos.Periodo(IdPeriodo)
+	);
+END;
+GO
