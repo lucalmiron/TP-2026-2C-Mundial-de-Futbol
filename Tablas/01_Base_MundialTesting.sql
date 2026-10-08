@@ -9,18 +9,18 @@
 
 --/Fecha: 08/10/2026
 
---Creacion de Base de Datos, Tablas y Schemas
+--Creacion de BD y Schemas para testing
 
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIALtesting')
 BEGIN
-	CREATE DATABASE MUNDIAL
+	CREATE DATABASE MUNDIALtesting
 	COLLATE Latin1_General_100_CI_AS_SC
 END;
 GO
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIALtesting')
 BEGIN
-	USE MUNDIAL
+	USE MUNDIALtesting
 END;
 GO
 
