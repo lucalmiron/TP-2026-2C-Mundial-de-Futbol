@@ -6,3 +6,7 @@ CAMBIOS DER
 *Se partio la relacion PERSONA-AMONESTACION a: JUGADOR-AMONESTACION y TECNICO-AMONESTACION. En tecnico se agrego el atributo (Tarjetas Acumuladas)
 -04-10
 *Se agrego el atributo faltante Estado a la entidad TECNICO para permitir el mismo funcionamiento de JUGADOR en cuanto a suspensiones.
+-08-10
+*La relación de partido-periodo se hizo opcional del lado de periodo.
+*La entidad PERIODO tiene dos nuevos atributos , inicio y fin.
+*La relación  MUNDIAL-FASE-PARTIDO fue cambiada a , MUNDIAL-PARTIDO-FASE
