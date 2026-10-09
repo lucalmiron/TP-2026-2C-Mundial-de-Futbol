@@ -34,14 +34,14 @@ BEGIN
 		PRINT '-ERROR- Descripcion invalido.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Motivo WHERE Descripcion = @descripcion)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.Motivo WHERE Descripcion = @descripcion)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Descripcion duplicado.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Motivo(Descripcion) VALUES (@descripcion)
+		INSERT INTO publicidad.Motivo(Descripcion) VALUES (@descripcion)
 END;
 GO
 
@@ -69,13 +69,13 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Descripcion.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Motivo WHERE IdMotivo = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Motivo WHERE IdMotivo = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Motivo.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Motivo WHERE Descripcion = @descripcion AND IdMotivo <> @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.Motivo WHERE Descripcion = @descripcion AND IdMotivo <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Descripcion.'
@@ -83,7 +83,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.Motivo
+		UPDATE publicidad.Motivo
 		SET Descripcion = @descripcion
 		WHERE IdMotivo = @id
 	END
@@ -108,12 +108,13 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Motivo.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Motivo WHERE IdMotivo = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Motivo WHERE IdMotivo = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Motivo.'
 	END
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Sustitucion WHERE Motivo = @id)
+	-- Tabla Sustitucion aun no creada. Descomentar cuando exista.
+	-- IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM partidos.Sustitucion WHERE Motivo = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Existen 1 o mas registros relacionados: Sustitucion. Elimine dichos registros para continuar.'
@@ -121,6 +122,6 @@ BEGIN
 	
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Motivo WHERE IdMotivo = @id
+		DELETE FROM publicidad.Motivo WHERE IdMotivo = @id
 END;
 GO

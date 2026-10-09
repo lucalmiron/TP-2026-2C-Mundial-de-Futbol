@@ -42,20 +42,20 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Pais.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Pais WHERE IdPais = @idPais)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Pais.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Anunciante WHERE Nombre = @nombre)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.Anunciante WHERE Nombre = @nombre)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Anunciante(Nombre, IdPais) VALUES (@nombre, @idPais)
+		INSERT INTO publicidad.Anunciante(Nombre, IdPais) VALUES (@nombre, @idPais)
 	ELSE
 		PRINT @errorLine
 END;
@@ -91,19 +91,19 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Pais.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Anunciante WHERE IdAnunciante = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Anunciante WHERE IdAnunciante = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Anunciante.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Pais WHERE IdPais = @idPais)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Pais.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Anunciante WHERE Nombre = @nombre AND IdAnunciante <> @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.Anunciante WHERE Nombre = @nombre AND IdAnunciante <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
@@ -111,7 +111,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.Anunciante
+		UPDATE publicidad.Anunciante
 		SET Nombre = @nombre, IdPais = @idPais
 		WHERE IdAnunciante = @id
 	END
@@ -136,19 +136,19 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Anunciante.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Anunciante WHERE IdAnunciante = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Anunciante WHERE IdAnunciante = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Anunciante.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.AnuncianteCampania WHERE IdAnunciante = @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.AnuncianteCampania WHERE IdAnunciante = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Existen 1 o mas registros relacionados: AnuncianteCampania. Elimine dichos registros para continuar.'
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Anunciante WHERE IdAnunciante = @id
+		DELETE FROM publicidad.Anunciante WHERE IdAnunciante = @id
 END;
 GO

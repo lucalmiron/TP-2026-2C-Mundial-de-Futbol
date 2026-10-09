@@ -48,26 +48,26 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Idioma.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Campania WHERE IdCampania = @idCampania)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Campania WHERE IdCampania = @idCampania)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Campania.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @idIdioma)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idIdioma)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Idioma.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Publicidad WHERE Nombre = @nombre)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE Nombre = @nombre)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Publicidad(Nombre, IdCampania, IdIdioma) VALUES (@nombre, @idCampania, @idIdioma)
+		INSERT INTO publicidad.Publicidad(Nombre, IdCampania, IdIdioma) VALUES (@nombre, @idCampania, @idIdioma)
 	ELSE
 		PRINT @errorLine
 END;
@@ -109,25 +109,25 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Idioma.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Publicidad WHERE IdPublicidad = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdPublicidad = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Publicidad.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Campania WHERE IdCampania = @idCampania)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Campania WHERE IdCampania = @idCampania)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Campania.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @idIdioma)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idIdioma)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Idioma.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Publicidad WHERE Nombre = @nombre AND IdPublicidad <> @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE Nombre = @nombre AND IdPublicidad <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
@@ -135,7 +135,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.Publicidad
+		UPDATE publicidad.Publicidad
 		SET Nombre = @nombre, IdCampania = @idCampania, IdIdioma = @idIdioma
 		WHERE IdPublicidad = @id
 	END
@@ -160,25 +160,25 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Publicidad.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Publicidad WHERE IdPublicidad = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdPublicidad = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Publicidad.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.HistorialPublicidad WHERE IdPublicidad = @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPublicidad = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Existen 1 o mas registros relacionados: HistorialPublicidad. Elimine dichos registros para continuar.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.PublicidadPais WHERE IdPublicidad = @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.PublicidadPais WHERE IdPublicidad = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Existen 1 o mas registros relacionados: PublicidadPais. Elimine dichos registros para continuar.'
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Publicidad WHERE IdPublicidad = @id
+		DELETE FROM publicidad.Publicidad WHERE IdPublicidad = @id
 END;
 GO

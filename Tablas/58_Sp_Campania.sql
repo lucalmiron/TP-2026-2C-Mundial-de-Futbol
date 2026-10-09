@@ -42,14 +42,14 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Descripcion.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Campania WHERE Nombre = @nombre)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.Campania WHERE Nombre = @nombre)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Campania(Nombre, Descripcion) VALUES (@nombre, @descripcion)
+		INSERT INTO publicidad.Campania(Nombre, Descripcion) VALUES (@nombre, @descripcion)
 	ELSE
 		PRINT @errorLine
 END;
@@ -85,13 +85,13 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Descripcion.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Campania WHERE IdCampania = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Campania WHERE IdCampania = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Campania.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Campania WHERE Nombre = @nombre AND IdCampania <> @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.Campania WHERE Nombre = @nombre AND IdCampania <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
@@ -99,7 +99,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.Campania
+		UPDATE publicidad.Campania
 		SET Nombre = @nombre, Descripcion = @descripcion
 		WHERE IdCampania = @id
 	END
@@ -124,25 +124,25 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Campania.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Campania WHERE IdCampania = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Campania WHERE IdCampania = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Campania.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Publicidad WHERE IdCampania = @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdCampania = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Existen 1 o mas registros relacionados: Publicidad. Elimine dichos registros para continuar.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.AnuncianteCampania WHERE IdCampania = @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.AnuncianteCampania WHERE IdCampania = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Existen 1 o mas registros relacionados: AnuncianteCampania. Elimine dichos registros para continuar.'
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Campania WHERE IdCampania = @id
+		DELETE FROM publicidad.Campania WHERE IdCampania = @id
 END;
 GO

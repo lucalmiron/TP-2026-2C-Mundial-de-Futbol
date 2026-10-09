@@ -17,15 +17,15 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'AnuncianteCampania')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'publicidad' AND TABLE_NAME = 'AnuncianteCampania')
 BEGIN
-	CREATE TABLE TABLAS.AnuncianteCampania
+	CREATE TABLE publicidad.AnuncianteCampania
 	(
 		IdAnunciante INT NOT NULL,
 		IdCampania INT NOT NULL,
 		PRIMARY KEY(IdAnunciante, IdCampania),
-		FOREIGN KEY(IdAnunciante) REFERENCES TABLAS.Anunciante(IdAnunciante),
-		FOREIGN KEY(IdCampania) REFERENCES TABLAS.Campania(IdCampania)
+		FOREIGN KEY(IdAnunciante) REFERENCES publicidad.Anunciante(IdAnunciante),
+		FOREIGN KEY(IdCampania) REFERENCES publicidad.Campania(IdCampania)
 	)
 END;
 GO

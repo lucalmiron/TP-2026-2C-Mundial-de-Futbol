@@ -17,18 +17,18 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'HistorialPublicidad')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'publicidad' AND TABLE_NAME = 'HistorialPublicidad')
 BEGIN
-	CREATE TABLE TABLAS.HistorialPublicidad
+	CREATE TABLE publicidad.HistorialPublicidad
 	(
 		IdHistorial INT PRIMARY KEY IDENTITY(1, 1),
 		IdPublicidad INT NOT NULL,
 		IdPartido INT NOT NULL,
 		IdEP INT NOT NULL,
 		CostoFinal DECIMAL(10,2) NOT NULL,
-		FOREIGN KEY(IdPublicidad) REFERENCES TABLAS.Publicidad(IdPublicidad),
-		FOREIGN KEY(IdPartido) REFERENCES TABLAS.Partido(IdPartido),
-		FOREIGN KEY(IdEP) REFERENCES TABLAS.EspacioPublicitario(IdEP)
+		FOREIGN KEY(IdPublicidad) REFERENCES publicidad.Publicidad(IdPublicidad),
+		FOREIGN KEY(IdPartido) REFERENCES partidos.Partido(IdPartido),
+		FOREIGN KEY(IdEP) REFERENCES publicidad.EspacioPublicitario(IdEP)
 	)
 END;
 GO

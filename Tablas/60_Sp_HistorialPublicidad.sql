@@ -54,32 +54,32 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Costo Final.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Publicidad WHERE IdPublicidad = @idPublicidad)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdPublicidad = @idPublicidad)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Publicidad.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @idPartido)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @idPartido)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Partido.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.EspacioPublicitario WHERE IdEP = @idEP)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.EspacioPublicitario WHERE IdEP = @idEP)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID EP.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.HistorialPublicidad WHERE IdPublicidad = @idPublicidad AND IdPartido = @idPartido AND IdEP = @idEP)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPublicidad = @idPublicidad AND IdPartido = @idPartido AND IdEP = @idEP)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Publicidad en Partido y Espacio Publicitario.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.HistorialPublicidad(IdPublicidad, IdPartido, IdEP, CostoFinal) VALUES (@idPublicidad, @idPartido, @idEP, @costoFinal)
+		INSERT INTO publicidad.HistorialPublicidad(IdPublicidad, IdPartido, IdEP, CostoFinal) VALUES (@idPublicidad, @idPartido, @idEP, @costoFinal)
 	ELSE
 		PRINT @errorLine
 END;
@@ -127,31 +127,31 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Costo Final.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.HistorialPublicidad WHERE IdHistorial = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdHistorial = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Historial.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Publicidad WHERE IdPublicidad = @idPublicidad)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdPublicidad = @idPublicidad)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Publicidad.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @idPartido)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @idPartido)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Partido.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.EspacioPublicitario WHERE IdEP = @idEP)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.EspacioPublicitario WHERE IdEP = @idEP)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID EP.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.HistorialPublicidad WHERE IdPublicidad = @idPublicidad AND IdPartido = @idPartido AND IdEP = @idEP AND IdHistorial <> @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPublicidad = @idPublicidad AND IdPartido = @idPartido AND IdEP = @idEP AND IdHistorial <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Publicidad en Partido y Espacio Publicitario.'
@@ -159,7 +159,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.HistorialPublicidad
+		UPDATE publicidad.HistorialPublicidad
 		SET IdPublicidad = @idPublicidad, IdPartido = @idPartido, IdEP = @idEP, CostoFinal = @costoFinal
 		WHERE IdHistorial = @id
 	END
@@ -184,13 +184,13 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Historial.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.HistorialPublicidad WHERE IdHistorial = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdHistorial = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Historial.'
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.HistorialPublicidad WHERE IdHistorial = @id
+		DELETE FROM publicidad.HistorialPublicidad WHERE IdHistorial = @id
 END;
 GO
