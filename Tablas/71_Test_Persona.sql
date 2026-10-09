@@ -1400,6 +1400,20 @@ EXECUTE SPTRANS.uspJugador_Update
 
 SELECT * FROM TABLAS.Persona WHERE Rol = 'Jugador'
 SELECT * FROM TABLAS.Jugador
+--Fallido(Nombre duplicado, ya existe Neymar)
+EXECUTE SPTRANS.uspJugador_Update 
+@id = 5,
+@nombre = 'Neymar'
+
+SELECT * FROM TABLAS.Persona WHERE Rol = 'Jugador'
+SELECT * FROM TABLAS.Jugador
+--Fallido(Numero duplicado, el 5 ya lo tiene Neymar)
+EXECUTE SPTRANS.uspJugador_Update 
+@id = 5,
+@numero = 5
+
+SELECT * FROM TABLAS.Persona WHERE Rol = 'Jugador'
+SELECT * FROM TABLAS.Jugador
 --Fallido(Valores invalidos)
 EXECUTE SPTRANS.uspJugador_Update 
 @id = 0,
