@@ -18,41 +18,41 @@ GO
 -- Esperado: inserta 1 fila
 EXEC SP.uspMotivo_Registrar 'Tactico'
 GO
-SELECT * FROM TABLAS.Motivo
+SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: PRINT nulo, 0 filas nuevas
 EXEC SP.uspMotivo_Registrar NULL
 GO
-SELECT * FROM TABLAS.Motivo
+SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: PRINT duplicado, 0 filas nuevas
 EXEC SP.uspMotivo_Registrar 'Tactico'
 GO
-SELECT * FROM TABLAS.Motivo
+SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: update a Lesion
 EXEC SP.uspMotivo_Update 1, 'Lesion'
 GO
-SELECT * FROM TABLAS.Motivo
+SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: PRINT inexistente Id (99)
 EXEC SP.uspMotivo_Update 99, 'Lesion'
 GO
-SELECT * FROM TABLAS.Motivo
+SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: borra Id 1
 EXEC SP.uspMotivo_Bajar 1
 GO
-SELECT * FROM TABLAS.Motivo
+SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: PRINT inexistente (99), 0 borradas
 EXEC SP.uspMotivo_Bajar 99
 GO
-SELECT * FROM TABLAS.Motivo
+SELECT * FROM publicidad.Motivo
 GO

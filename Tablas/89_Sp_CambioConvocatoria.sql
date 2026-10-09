@@ -31,6 +31,7 @@ BEGIN
 	DECLARE @errorCount INT
 	DECLARE @errorLine VARCHAR(300)
 	DECLARE @vActivos INT
+	DECLARE @vIdMundial INT
 	DECLARE @vMin INT
 	DECLARE @vMax INT
 
@@ -75,25 +76,25 @@ BEGIN
 
 	IF (@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @seleccion)
+		IF NOT EXISTS (SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Seleccion.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @egreso AND Seleccion = @seleccion AND Estado = 'Activo')
+		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @egreso AND Seleccion = @seleccion AND Estado = 'Activo')
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- El egreso no es un convocado activo de la seleccion.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @ingreso AND Seleccion = @seleccion)
+		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @ingreso AND Seleccion = @seleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- El ingreso no pertenece a la seleccion.'
 		END
 
-		IF EXISTS (SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @ingreso AND Seleccion = @seleccion AND Estado = 'Activo')
+		IF EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @ingreso AND Seleccion = @seleccion AND Estado = 'Activo')
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- El ingreso ya es un convocado activo.'
@@ -102,8 +103,11 @@ BEGIN
 
 	IF (@errorCount = 0)
 	BEGIN
-		SELECT @vMin = TAMANIO_SELECCION_MINIMO, @vMax = TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial
-		SELECT @vActivos = COUNT(*) FROM TABLAS.Jugador WHERE Seleccion = @seleccion AND Estado = 'Activo'
+		SELECT @vIdMundial = IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion
+
+		SELECT @vMin = TAMANIO_SELECCION_MINIMO, @vMax = TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial WHERE IdMundial = @vIdMundial
+
+		SELECT @vActivos = COUNT(*) FROM equipos.Jugador WHERE Seleccion = @seleccion AND Estado = 'Activo'
 
 		IF (@vActivos < @vMin) OR (@vActivos > @vMax)
 		BEGIN
@@ -116,15 +120,15 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			UPDATE TABLAS.Jugador
+			UPDATE equipos.Jugador
 			SET Estado = 'Inactivo'
 			WHERE IdJugador = @egreso
 
-			UPDATE TABLAS.Jugador
+			UPDATE equipos.Jugador
 			SET Estado = 'Activo'
 			WHERE IdJugador = @ingreso
 
-			INSERT INTO TABLAS.CambioConvocatoria (Seleccion, Egreso, Ingreso, Fecha, Motivo)
+			INSERT INTO equipos.CambioConvocatoria (Seleccion, Egreso, Ingreso, Fecha, Motivo)
 			VALUES (@seleccion, @egreso, @ingreso, @fecha, @motivo)
 
 			COMMIT TRANSACTION
@@ -151,38 +155,40 @@ CREATE PROCEDURE SPTRANS.uspCambioConvocatoria_Bajar
 AS
 BEGIN
 	DECLARE @errorCount INT
+	DECLARE @errorLine VARCHAR(300)
 	DECLARE @vEgreso INT
 	DECLARE @vIngreso INT
 
 	SET @errorCount = 0
+	SET @errorLine = 'Error/es:'
 
 	IF (@id IS NULL) OR (@id <= 0)
 	BEGIN
 		SET @errorCount = @errorCount + 1
-		PRINT '-ERROR- Valor invalido: ID Cambio.'
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Cambio.'
 	END
 
-	IF (@errorCount = 0) AND NOT EXISTS (SELECT 1 FROM TABLAS.CambioConvocatoria WHERE IdCambio = @id)
+	IF (@errorCount = 0) AND NOT EXISTS (SELECT 1 FROM equipos.CambioConvocatoria WHERE IdCambio = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
-		PRINT '-ERROR- Registro inexistente.'
+		SET @errorLine = @errorLine + CHAR(13) + '- Registro inexistente.'
 	END
 
 	IF (@errorCount = 0)
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			SELECT @vEgreso = Egreso, @vIngreso = Ingreso FROM TABLAS.CambioConvocatoria WHERE IdCambio = @id
+			SELECT @vEgreso = Egreso, @vIngreso = Ingreso FROM equipos.CambioConvocatoria WHERE IdCambio = @id
 
-			UPDATE TABLAS.Jugador
+			UPDATE equipos.Jugador
 			SET Estado = 'Activo'
 			WHERE IdJugador = @vEgreso
 
-			UPDATE TABLAS.Jugador
+			UPDATE equipos.Jugador
 			SET Estado = 'Inactivo'
 			WHERE IdJugador = @vIngreso
 
-			DELETE FROM TABLAS.CambioConvocatoria
+			DELETE FROM equipos.CambioConvocatoria
 			WHERE IdCambio = @id
 
 			COMMIT TRANSACTION
@@ -196,5 +202,7 @@ BEGIN
 			PRINT CONCAT('ERROR (', @Num, '): ', @Msg)
 		END CATCH
 	END
+	ELSE
+		PRINT @errorLine
 END
 GO

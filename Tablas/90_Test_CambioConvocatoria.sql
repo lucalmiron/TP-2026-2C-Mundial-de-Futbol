@@ -18,45 +18,47 @@ GO
 -- Esperado: registra el cambio, egreso Inactivo e ingreso Activo
 EXEC SPTRANS.uspCambioConvocatoria_Registrar 1, 1, 2, '2026-06-01', 'Lesion muscular'
 GO
-SELECT * FROM TABLAS.CambioConvocatoria
+SELECT * FROM equipos.CambioConvocatoria
 GO
-SELECT IdJugador, Estado FROM TABLAS.Jugador WHERE IdJugador IN (1, 2)
+SELECT IdSeleccion, IdMundial FROM equipos.Seleccion WHERE IdSeleccion = 1
+GO
+SELECT IdJugador, Estado FROM equipos.Jugador WHERE IdJugador IN (1, 2)
 GO
 
 -- Esperado: PRINT egreso e ingreso iguales, 0 filas nuevas
 EXEC SPTRANS.uspCambioConvocatoria_Registrar 1, 1, 1, '2026-06-01', 'Lesion muscular'
 GO
-SELECT * FROM TABLAS.CambioConvocatoria
+SELECT * FROM equipos.CambioConvocatoria
 GO
 
 -- Esperado: PRINT motivo nulo, 0 filas nuevas
 EXEC SPTRANS.uspCambioConvocatoria_Registrar 1, 1, 2, '2026-06-01', NULL
 GO
-SELECT * FROM TABLAS.CambioConvocatoria
+SELECT * FROM equipos.CambioConvocatoria
 GO
 
 -- Esperado: PRINT egreso no activo (ya salio), 0 filas nuevas
 EXEC SPTRANS.uspCambioConvocatoria_Registrar 1, 1, 2, '2026-06-02', 'Recaida'
 GO
-SELECT * FROM TABLAS.CambioConvocatoria
+SELECT * FROM equipos.CambioConvocatoria
 GO
 
 -- Esperado: PRINT inexistente Seleccion (99), 0 filas nuevas
 EXEC SPTRANS.uspCambioConvocatoria_Registrar 99, 1, 2, '2026-06-01', 'Lesion muscular'
 GO
-SELECT * FROM TABLAS.CambioConvocatoria
+SELECT * FROM equipos.CambioConvocatoria
 GO
 
 -- Esperado: revierte estados y borra Id 1
 EXEC SPTRANS.uspCambioConvocatoria_Bajar 1
 GO
-SELECT * FROM TABLAS.CambioConvocatoria
+SELECT * FROM equipos.CambioConvocatoria
 GO
-SELECT IdJugador, Estado FROM TABLAS.Jugador WHERE IdJugador IN (1, 2)
+SELECT IdJugador, Estado FROM equipos.Jugador WHERE IdJugador IN (1, 2)
 GO
 
 -- Esperado: PRINT inexistente (99), 0 borradas
 EXEC SPTRANS.uspCambioConvocatoria_Bajar 99
 GO
-SELECT * FROM TABLAS.CambioConvocatoria
+SELECT * FROM equipos.CambioConvocatoria
 GO

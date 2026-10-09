@@ -17,9 +17,9 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'CambioConvocatoria')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'equipos' AND TABLE_NAME = 'CambioConvocatoria')
 BEGIN
-	CREATE TABLE TABLAS.CambioConvocatoria
+	CREATE TABLE equipos.CambioConvocatoria
 	(
 		IdCambio INT PRIMARY KEY IDENTITY(1, 1),
 		Seleccion INT NOT NULL,
@@ -27,10 +27,16 @@ BEGIN
 		Ingreso INT NOT NULL,
 		Fecha DATE NOT NULL,
 		Motivo VARCHAR(200) NOT NULL,
-		CONSTRAINT FK_CambioConvocatoria_Seleccion FOREIGN KEY (Seleccion) REFERENCES TABLAS.Seleccion(IdSeleccion),
-		CONSTRAINT FK_CambioConvocatoria_Egreso FOREIGN KEY (Egreso) REFERENCES TABLAS.Jugador(IdJugador),
-		CONSTRAINT FK_CambioConvocatoria_Ingreso FOREIGN KEY (Ingreso) REFERENCES TABLAS.Jugador(IdJugador),
+		CONSTRAINT FK_CambioConvocatoria_Seleccion FOREIGN KEY (Seleccion) REFERENCES equipos.Seleccion(IdSeleccion),
+		CONSTRAINT FK_CambioConvocatoria_Egreso FOREIGN KEY (Egreso) REFERENCES equipos.Jugador(IdJugador),
+		CONSTRAINT FK_CambioConvocatoria_Ingreso FOREIGN KEY (Ingreso) REFERENCES equipos.Jugador(IdJugador),
 		CONSTRAINT CK_CambioConvocatoria_Ingreso_Egreso CHECK (Ingreso <> Egreso)
 	)
 END
+GO
+
+-- Migracion: la tabla vivia en TABLAS.*, se retira el esquema viejo una vez creado el vigente
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'CambioConvocatoria')
+AND EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'equipos' AND TABLE_NAME = 'CambioConvocatoria')
+	DROP TABLE TABLAS.CambioConvocatoria
 GO
