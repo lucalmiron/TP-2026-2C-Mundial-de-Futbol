@@ -103,7 +103,7 @@ BEGIN
 			SELECT IdPais
 			FROM equipos.Seleccion
 			WHERE IdSeleccion 
-			IN (SELECT Eq1, Eq2 FROM partidos.Partido WHERE IdPartido = @partido)
+			IN (SELECT Eq1 FROM partidos.Partido WHERE IdPartido = @partido UNION SELECT Eq2 FROM partidos.Partido WHERE IdPartido = @partido)
 		) AS P
 		WHERE P.IdPais = (SELECT Pais FROM equipos.Persona WHERE IdPersona = @arbitro)
 	)
@@ -123,11 +123,16 @@ BEGIN
 			SELECT IdPais
 			FROM equipos.Seleccion
 			WHERE IdSeleccion 
-			IN (SELECT P.Eq1, P.Eq2
+			IN (SELECT P.Eq1
 				FROM partidos.Partido P
 				INNER JOIN partidos.Fase F ON P.IdFase = F.IdFase
 				WHERE F.Descripcion <> 'Grupos'
-				  AND CAST(P.Fecha AS DATETIME) + P.HoraUTC >= GETDATE())
+				  AND CAST(P.Fecha AS DATETIME) + CAST(P.HoraUTC AS DATETIME) >= GETDATE()
+				UNION SELECT P.Eq2
+				FROM partidos.Partido P
+				INNER JOIN partidos.Fase F ON P.IdFase = F.IdFase
+				WHERE F.Descripcion <> 'Grupos'
+				  AND CAST(P.Fecha AS DATETIME) + CAST(P.HoraUTC AS DATETIME) >= GETDATE())
 		) AS P
 		WHERE P.IdPais = (SELECT Pais FROM equipos.Persona WHERE IdPersona = @arbitro)
 	)

@@ -17,6 +17,19 @@ BEGIN
 END;
 GO
 
+--Limpieza previa para re-ejecucion en base sucia (orden inverso de dependencias)
+DROP TABLE IF EXISTS TABLAS.Amonestacion
+DROP TABLE IF EXISTS TABLAS.Arbitraje
+DROP TABLE IF EXISTS TABLAS.Evento
+DROP TABLE IF EXISTS TABLAS.Jugador
+DROP TABLE IF EXISTS TABLAS.Tecnico
+DROP TABLE IF EXISTS TABLAS.Arbitro
+DROP TABLE IF EXISTS TABLAS.Partido
+DROP TABLE IF EXISTS TABLAS.Periodo
+DROP TABLE IF EXISTS TABLAS.Persona
+DROP TABLE IF EXISTS TABLAS.Mundial
+GO
+
 --tablas auxiliares de testing
 CREATE TABLE TABLAS.Mundial
 (
@@ -86,7 +99,7 @@ GO
 --Llenado de tablas auxiliares de testing
 INSERT INTO TABLAS.Mundial(IdMundial, MaxTarjetas) VALUES (1, 6);
 
-INSERT INTO TABLAS.Partido(IdPartido, EquipoA, EquipoB, Mundial) VALUES (1, 1, 2, 1);
+INSERT INTO TABLAS.Partido(IdPartido, EquipoA, EquipoB, Mundial) VALUES (1, 1, 2, 1), (2, 3, 4, 1), (3, 5, 6, 1);
 
 INSERT INTO TABLAS.Persona(IdPersona, Rol)
 VALUES
@@ -958,13 +971,13 @@ DROP PROCEDURE SPTRANS.uspAmonestacion_UpdateMotivo;
 DROP PROCEDURE SPTRANS.uspAmonestacion_Bajar;
 GO
 
-DROP TABLE TABLAS.Evento;
 DROP TABLE TABLAS.Amonestacion;
 DROP TABLE TABLAS.Arbitraje;
-DROP TABLE TABLAS.Partido;
-DROP TABLE TABLAS.Mundial;
+DROP TABLE TABLAS.Evento;
 DROP TABLE TABLAS.Jugador;
 DROP TABLE TABLAS.Tecnico;
 DROP TABLE TABLAS.Arbitro;
+DROP TABLE TABLAS.Partido;
 DROP TABLE TABLAS.Persona;
+DROP TABLE TABLAS.Mundial;
 GO

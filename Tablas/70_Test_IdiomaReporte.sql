@@ -19,19 +19,25 @@ END;
 GO
 
 --Tablas auxiliares de testing
-CREATE TABLE arbitros.Arbitro
-(
-	IdArbitro INT PRIMARY KEY
-);
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'arbitros' AND TABLE_NAME = 'Arbitro')
+BEGIN
+	CREATE TABLE arbitros.Arbitro
+	(
+		IdArbitro INT PRIMARY KEY
+	)
+END
 
-CREATE TABLE partidos.Partido
-(
-	IdPartido INT PRIMARY KEY
-);
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'partidos' AND TABLE_NAME = 'Partido')
+BEGIN
+	CREATE TABLE partidos.Partido
+	(
+		IdPartido INT PRIMARY KEY
+	)
+END
 GO
 
 --Tablas a testear
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Idioma')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'arbitros' AND TABLE_NAME = 'Idioma')
 BEGIN
 	CREATE TABLE arbitros.Idioma
 	(
@@ -41,7 +47,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'HablaIdioma')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'arbitros' AND TABLE_NAME = 'HablaIdioma')
 BEGIN
 	CREATE TABLE arbitros.HablaIdioma
 	(
@@ -53,7 +59,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Reporte')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'arbitros' AND TABLE_NAME = 'Reporte')
 BEGIN
 	CREATE TABLE arbitros.Reporte
 	(
@@ -69,11 +75,14 @@ END;
 GO
 
 --tablas aux
-CREATE TABLE publicidad.Publicidad
-(
-	Idioma INT,
-	FOREIGN KEY(Idioma) REFERENCES arbitros.Idioma(IdIdioma)
-);
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'publicidad' AND TABLE_NAME = 'Publicidad')
+BEGIN
+	CREATE TABLE publicidad.Publicidad
+	(
+		Idioma INT,
+		FOREIGN KEY(Idioma) REFERENCES arbitros.Idioma(IdIdioma)
+	)
+END
 GO
 
 --SPs a testear
@@ -460,6 +469,7 @@ END;
 GO
 
 --Llenado de tablas aux
+INSERT INTO arbitros.Idioma(Descripcion) VALUES ('Aux1'),('Aux2')
 INSERT INTO arbitros.Arbitro VALUES (1), (2), (3);
 INSERT INTO partidos.Partido VALUES (1), (2), (3);
 INSERT INTO publicidad.Publicidad VALUES (1), (2);

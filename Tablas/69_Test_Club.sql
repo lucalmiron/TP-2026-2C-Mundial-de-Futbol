@@ -17,6 +17,10 @@ BEGIN
 END;
 GO
 
+DROP TABLE IF EXISTS equipos.Jugador
+DROP TABLE IF EXISTS equipos.Club
+GO
+
 --tablas a testear
 CREATE TABLE equipos.Club
 (

@@ -86,7 +86,7 @@ BEGIN
 
 	--chequeo estado del partido (si ya se jugo o no)
 	--Un partido se considera disputado cuando su Fecha + HoraUTC ya paso.
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido AND CAST(Fecha AS DATETIME) + HoraUTC >= GETDATE())
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido AND CAST(Fecha AS DATETIME) + CAST(HoraUTC AS DATETIME) >= GETDATE())
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- El partido aun no se ha jugado.'
