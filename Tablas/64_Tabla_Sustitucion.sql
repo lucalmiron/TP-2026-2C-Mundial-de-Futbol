@@ -9,12 +9,12 @@
 
 --/Fecha: 08/10/2026
 
---Creacion de Tabla Sustitucion
+--Objetivo: Crear Tabla Sustitucion
 
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
 BEGIN
 	USE MUNDIAL
-END;
+END
 GO
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Sustitucion')
@@ -32,5 +32,5 @@ BEGIN
 		CONSTRAINT FK_Sustitucion_Motivo FOREIGN KEY (Motivo) REFERENCES TABLAS.Motivo(IdMotivo),
 		CONSTRAINT CK_Sustitucion_Ingreso_Egreso CHECK (Ingreso <> Egreso)
 	)
-END;
+END
 GO

@@ -9,12 +9,12 @@
 
 --/Fecha: 08/10/2026
 
---Creacion de Tabla Gol
+--Objetivo: Crear Tabla Gol
 
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
 BEGIN
 	USE MUNDIAL
-END;
+END
 GO
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Gol')
@@ -32,5 +32,5 @@ BEGIN
 		CONSTRAINT CK_Gol_Tipo CHECK (Tipo IN ('Jugada','Penal','Tiro libre','Corner','En contra')),
 		CONSTRAINT CK_Gol_Autor_Asistencia CHECK (Autor <> Asistencia)
 	)
-END;
+END
 GO
