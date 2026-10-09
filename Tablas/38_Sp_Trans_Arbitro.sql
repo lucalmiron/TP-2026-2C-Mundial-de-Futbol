@@ -17,16 +17,15 @@ BEGIN
 END;
 GO
 
---Tecnico
-IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspTecnico_Registrar'))
-    DROP PROCEDURE SPTRANS.uspTecnico_Registrar
+--Arbitro
+IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspArbitro_Registrar'))
+    DROP PROCEDURE SPTRANS.uspArbitro_Registrar
 GO
-CREATE PROCEDURE SPTRANS.uspTecnico_Registrar 
+CREATE PROCEDURE SPTRANS.uspArbitro_Registrar 
 @nombre VARCHAR(30),
 @fnac DATE,
 @pais INT,
-@funcion VARCHAR(40),
-@seleccion INT
+@categoria VARCHAR(13)
 AS
 BEGIN
 	DECLARE @errorCount INT
@@ -55,36 +54,21 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Pais.'
 	END
 
-	IF(@funcion IS NULL)
+	IF(@categoria IS NULL) OR (@categoria NOT IN ('FIFA', 'Confederacion'))
 	BEGIN
 		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Funcion.'
-	END
-
-	IF(@seleccion IS NULL) OR (@seleccion <= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Seleccion.'
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Categoria.'
 	END
 
 	--chequeo existencia
-	IF(@errorCount = 0)
+	IF (@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Pais WHERE IdPais = @pais)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Pais.'
-		END
-
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @seleccion)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Seleccion.'
-		END
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Pais.'
 	END
 
 	--chequeo dup
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Persona WHERE Nombre = @nombre)
+	IF (@errorCount = 0) AND EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
@@ -94,13 +78,13 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			INSERT INTO TABLAS.Persona(Nombre, Fnac, Pais, Rol)
+			INSERT INTO equipos.Persona(Nombre, Fnac, Pais, Rol)
 			OUTPUT INSERTED.IdPersona INTO @id(ID)
-			VALUES (@nombre, @fnac, @pais, 'Tecnico')
-			
-			INSERT INTO TABLAS.Tecnico(IdTecnico, Funcion, Seleccion, TarjetasAcum, Estado)
-			VALUES((SELECT ID FROM @id), @funcion, @seleccion, 0, 'Activo')
-			
+			VALUES (@nombre, @fnac, @pais, 'Arbitro')
+
+			INSERT INTO arbitros.Arbitro(IdArbitro, Categoria)
+			VALUES((SELECT ID FROM @id), @categoria)
+
 			COMMIT TRANSACTION;
 		END TRY
 		BEGIN CATCH
@@ -117,16 +101,15 @@ BEGIN
 END;
 GO
 
-IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspTecnico_Update'))
-    DROP PROCEDURE SPTRANS.uspTecnico_Update
+IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspArbitro_Update'))
+    DROP PROCEDURE SPTRANS.uspArbitro_Update
 GO
-CREATE PROCEDURE SPTRANS.uspTecnico_Update 
+CREATE PROCEDURE SPTRANS.uspArbitro_Update 
 @id INT,
 @nombre VARCHAR(30) = NULL,
 @fnac DATE = NULL,
 @pais INT = NULL,
-@funcion VARCHAR(40) = NULL,
-@seleccion INT = NULL
+@categoria VARCHAR(13) = NULL
 AS
 BEGIN
 	DECLARE @errorCount INT
@@ -139,7 +122,7 @@ BEGIN
 	IF(@id IS NULL) OR (@id <= 0)
 	BEGIN
 		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Tecnico.'
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Arbitro.'
 	END
 
 	IF(@fnac IS NOT NULL) AND ( @fnac > CONVERT(DATE, GETDATE()) )
@@ -154,36 +137,30 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Pais.'
 	END
 
-	IF(@seleccion IS NOT NULL) AND (@seleccion <= 0)
+	IF(@categoria IS NOT NULL) AND (@categoria NOT IN ('FIFA', 'Confederacion'))
 	BEGIN
 		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Seleccion.'
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Categoria.'
 	END
 
 	--chequeo existencia
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Tecnico WHERE IdTecnico = @id)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Tecnico.'
+			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: IdArbitro.'
 		END
 
-		IF (@pais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Pais WHERE IdPais = @pais)
+		IF (@pais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Pais.'
 		END
-
-		IF (@seleccion IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @seleccion)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Seleccion.'
-		END
 	END
 
 	--chequeo dup
-	IF(@errorCount = 0) AND (@nombre IS NOT NULL) AND EXISTS(SELECT 1 FROM TABLAS.Persona WHERE Nombre = @nombre AND IdPersona <> @id)
+	IF (@errorCount = 0) AND (@nombre IS NOT NULL) AND EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre AND IdPersona <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
@@ -193,18 +170,17 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			UPDATE TABLAS.Persona
+			UPDATE equipos.Persona
 			SET
 			Nombre = COALESCE(@nombre, Nombre),
 			Fnac = COALESCE(@fnac, Fnac),
 			Pais = COALESCE(@pais, Pais)
 			WHERE IdPersona = @id
 
-			UPDATE TABLAS.Tecnico
+			UPDATE arbitros.Arbitro
 			SET
-			Funcion = COALESCE(@funcion, Funcion),
-			Seleccion = COALESCE(@seleccion, Seleccion)
-			WHERE IdTecnico = @id
+			Categoria = COALESCE(@categoria, Categoria)
+			WHERE IdArbitro = @id
 
 			COMMIT TRANSACTION;
 		END TRY
@@ -222,46 +198,66 @@ BEGIN
 END;
 GO
 
-IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspTecnico_Bajar'))
-    DROP PROCEDURE SPTRANS.uspTecnico_Bajar
+IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspArbitro_Bajar'))
+    DROP PROCEDURE SPTRANS.uspArbitro_Bajar
 GO
-CREATE PROCEDURE SPTRANS.uspTecnico_Bajar
+CREATE PROCEDURE SPTRANS.uspArbitro_Bajar
 @id INT
 AS
 BEGIN
 	DECLARE @errorCount INT
+	DECLARE @errorLine varchar(300)
 
 	SET @errorCount = 0
+	SET @errorLine = 'Error/es:'
 
 	--Chequeo validez
 	IF(@id IS NULL) OR (@id <= 0)
 	BEGIN
 		SET @errorCount = @errorCount + 1
-		PRINT 'ERROR: ID Tecnico invalido.'
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: IdArbitro.'
 	END
 
 	--Chequeo existencia
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Tecnico WHERE IdTecnico = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
-		PRINT 'ERROR: ID Tecnico inexistente.'
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: IdArbitro.'
 	END
 
 	--Chequeo relaciones
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Amonestacion WHERE Amonestado = @id)
+	IF(@errorCount = 0)
 	BEGIN
-		SET @errorCount = @errorCount + 1
-		PRINT 'ERROR: Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.'
+		IF EXISTS(SELECT 1 FROM arbitros.Reporte WHERE Arbitro = @id)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Reporte. Elimine dichos registros para continuar.'
+		END
+
+		IF EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @id)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Arbitraje. Elimine dichos registros para continuar.'
+		END
+
+		IF EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE Arbitro = @id)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.'
+		END
 	END
 
 	IF(@errorCount = 0)
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			DELETE FROM TABLAS.Tecnico
-			WHERE IdTecnico = @id
+			DELETE FROM arbitros.HablaIdioma
+			WHERE Arbitro = @id
 
-			DELETE FROM TABLAS.Persona
+			DELETE FROM arbitros.Arbitro
+			WHERE IdArbitro = @id
+
+			DELETE FROM equipos.Persona
 			WHERE IdPersona = @id
 
 			COMMIT TRANSACTION;
@@ -275,5 +271,7 @@ BEGIN
 			PRINT CONCAT('ERROR (', @Num, '): ', @Msg);
 		END CATCH
 	END
+	ELSE
+		PRINT @errorLine
 END;
 GO

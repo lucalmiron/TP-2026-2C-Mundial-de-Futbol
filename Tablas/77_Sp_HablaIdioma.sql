@@ -44,27 +44,27 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Arbitro WHERE IdArbitro = @arbitro)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Arbitro.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @idioma)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idioma)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Idioma.'
 		END
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Idioma.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.HablaIdioma VALUES (@arbitro, @idioma)
+		INSERT INTO arbitros.HablaIdioma VALUES (@arbitro, @idioma)
 	ELSE
 		PRINT @errorLine
 END;
@@ -96,27 +96,27 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Arbitro WHERE IdArbitro = @arbitro)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Arbitro.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @idioma)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idioma)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Idioma.'
 		END
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Registro inexistente.'
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma
+		DELETE FROM arbitros.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma
 	ELSE
 		PRINT @errorLine
 END;

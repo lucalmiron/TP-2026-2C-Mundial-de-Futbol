@@ -86,25 +86,25 @@ BEGIN
 	--chequeo existencia
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Periodo WHERE IdPeriodo = @periodo)
+		IF NOT EXISTS(SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Periodo.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Persona WHERE IdPersona = @amonestado)
+		IF NOT EXISTS(SELECT 1 FROM equipos.Persona WHERE IdPersona = @amonestado)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Amonestado.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Arbitro WHERE IdArbitro = @arbitro)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Arbitro.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @partido)
+		IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Partido.'
@@ -118,15 +118,15 @@ BEGIN
 		(
 			(@minuto IS NULL) 
 			AND 
-			((SELECT Descripcion FROM TABLAS.Periodo WHERE IdPeriodo = @periodo) <> 'Penales')
+			((SELECT Descripcion FROM partidos.Periodo WHERE IdPeriodo = @periodo) <> 'Penales')
 		)
 		OR
 		(
 			(@minuto IS NOT NULL)
 			AND
-			(@minuto < (SELECT Inicio FROM TABLAS.Periodo WHERE IdPeriodo = @periodo))
+			(@minuto < (SELECT Inicio FROM partidos.Periodo WHERE IdPeriodo = @periodo))
 			OR
-			(@minuto > (SELECT Fin FROM TABLAS.Periodo WHERE IdPeriodo = @periodo))
+			(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @periodo))
 		)
 	)
 	BEGIN
@@ -136,7 +136,7 @@ BEGIN
 
 	--validez del amonestado
 	IF(@errorCount = 0)
-		SET @vRol = (SELECT Rol FROM TABLAS.Persona WHERE IdPersona = @amonestado)
+		SET @vRol = (SELECT Rol FROM equipos.Persona WHERE IdPersona = @amonestado)
 
 	IF(@errorCount = 0) AND (@vRol = 'Arbitro')
 	BEGIN
@@ -147,7 +147,7 @@ BEGIN
 	--chequeo participacion
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido AND Funcion = 'Principal')
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido AND Funcion = 'Principal')
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- El arbitro no participo del encuentro o su funcion no le permite sancionar.'
@@ -156,12 +156,12 @@ BEGIN
 		IF(@vRol = 'Tecnico') AND 
 		NOT EXISTS
 		(
-			SELECT 1 FROM TABLAS.Tecnico 
+			SELECT 1 FROM equipos.Tecnico 
 			WHERE IdTecnico = @amonestado AND 
 			Seleccion IN
-			((SELECT Eq1 FROM TABLAS.Partido WHERE IdPartido = @partido)
+			((SELECT Eq1 FROM partidos.Partido WHERE IdPartido = @partido)
 			UNION
-			(SELECT Eq2 FROM TABLAS.Partido WHERE IdPartido = @partido))
+			(SELECT Eq2 FROM partidos.Partido WHERE IdPartido = @partido))
 		)
 		BEGIN
 			SET @errorCount = @errorCount + 1
@@ -171,12 +171,12 @@ BEGIN
 		IF(@vRol = 'Jugador') AND
 		NOT EXISTS
 		(
-			SELECT 1 FROM TABLAS.Jugador 
+			SELECT 1 FROM equipos.Jugador 
 			WHERE IdJugador = @amonestado AND
 			Seleccion IN
-			((SELECT Eq1 FROM TABLAS.Partido WHERE IdPartido = @partido)
+			((SELECT Eq1 FROM partidos.Partido WHERE IdPartido = @partido)
 			UNION
-			(SELECT Eq2 FROM TABLAS.Partido WHERE IdPartido = @partido))
+			(SELECT Eq2 FROM partidos.Partido WHERE IdPartido = @partido))
 		)
 		BEGIN
 			SET @errorCount = @errorCount + 1
@@ -187,7 +187,7 @@ BEGIN
 	IF(@errorCount = 0)
 	BEGIN
 		--Solo se trabaja con el Mundial 2026, por eso se toma el limite sin filtrar por IdMundial.
-		SET @vLimSuspension = (SELECT SUSPENSION_TARJETAS_MAXIMAS FROM TABLAS.Mundial)
+		SET @vLimSuspension = (SELECT TOP 1 SUSPENSION_TARJETAS_MAXIMAS FROM sedes.Mundial)
 		SET @vAutoRoja = 0
 
 		BEGIN TRANSACTION
@@ -197,43 +197,44 @@ BEGIN
 			EXISTS(
 			SELECT 1
 			FROM 
-			TABLAS.Amonestacion AS A
+			partidos.Amonestacion AS A
 			LEFT JOIN
-			(SELECT IdEvento FROM TABLAS.Evento WHERE Partido = @partido AND Tipo = 'Amonestacion') AS E
+			(SELECT IdEvento FROM partidos.Evento WHERE Partido = @partido AND Tipo = 'Amonestacion') AS E
 			ON A.IdAmonestacion = E.IdEvento
 			WHERE A.Amonestado = @amonestado AND A.Tarjeta = 'Roja')
 				THROW 50000, '- Esta persona ya fue expulsada.', 1
 
-			INSERT INTO TABLAS.Evento (Minuto, Periodo, Partido)
-			VALUES (@minuto, @periodo, @partido)
+			--El Tipo es el discriminante entre los tipos de evento, y IdAmonestacion comparte la PK con IdEvento.
+			INSERT INTO partidos.Evento (Minuto, Tipo, Periodo, Partido)
+			VALUES (@minuto, 'Amonestacion', @periodo, @partido)
 
-			INSERT INTO TABLAS.Amonestacion(Amonestado, Arbitro, Tarjeta, Motivo)
-			VALUES (@amonestado, @arbitro, @tarjeta, @motivo)
+			INSERT INTO partidos.Amonestacion(IdAmonestacion, Amonestado, Arbitro, Tarjeta, Motivo)
+			VALUES (SCOPE_IDENTITY(), @amonestado, @arbitro, @tarjeta, @motivo)
 
 			IF(
 			(
 				SELECT COUNT(IdAmonestacion)
-				FROM TABLAS.Amonestacion
+				FROM partidos.Amonestacion
 				WHERE 
 				Amonestado = @amonestado
 				AND
 				Tarjeta = 'Amarilla'
 				AND
-				IdAmonestacion IN (SELECT IdEvento FROM TABLAS.Evento WHERE Partido = @partido)
+				IdAmonestacion IN (SELECT IdEvento FROM partidos.Evento WHERE Partido = @partido)
 			) = 2)
 			BEGIN
-				INSERT INTO TABLAS.Evento (Minuto, Periodo, Partido)
-				VALUES (@minuto, @periodo, @partido)
+				INSERT INTO partidos.Evento (Minuto, Tipo, Periodo, Partido)
+				VALUES (@minuto, 'Amonestacion', @periodo, @partido)
 
-				INSERT INTO TABLAS.Amonestacion(Amonestado, Arbitro, Tarjeta, Motivo)
-				VALUES (@amonestado, @arbitro, 'Roja', 'Otorgada por recibir 2 tarjetas amarillas previamente.')
+				INSERT INTO partidos.Amonestacion(IdAmonestacion, Amonestado, Arbitro, Tarjeta, Motivo)
+				VALUES (SCOPE_IDENTITY(), @amonestado, @arbitro, 'Roja', 'Otorgada por recibir 2 tarjetas amarillas previamente.')
 
 				SET @vAutoRoja = 1
 			END
 
 			IF(@vRol = 'Jugador')
 			BEGIN
-				SET @vTarjetasAcum = (SELECT TarjetasAcum FROM TABLAS.Jugador WHERE IdJugador = @amonestado)
+				SET @vTarjetasAcum = (SELECT TarjetasAcum FROM equipos.Jugador WHERE IdJugador = @amonestado)
 
 				IF
 				(@vTarjetasAcum = @vLimSuspension)
@@ -242,18 +243,18 @@ BEGIN
 				OR
 				(@vAutoRoja = 1)
 				BEGIN
-					UPDATE TABLAS.Jugador
+					UPDATE equipos.Jugador
 					SET
 					Estado = 'Suspendido',
 					TarjetasAcum = 0
 					WHERE IdJugador = @amonestado
 				END
 				ELSE
-					UPDATE TABLAS.Jugador SET TarjetasAcum = TarjetasAcum + 1
+					UPDATE equipos.Jugador SET TarjetasAcum = TarjetasAcum + 1 WHERE IdJugador = @amonestado
 			END
 			ELSE
 			BEGIN
-				SET @vTarjetasAcum = (SELECT TarjetasAcum FROM TABLAS.Tecnico WHERE IdTecnico = @amonestado)
+				SET @vTarjetasAcum = (SELECT TarjetasAcum FROM equipos.Tecnico WHERE IdTecnico = @amonestado)
 
 				IF
 				(@vTarjetasAcum = @vLimSuspension)
@@ -262,14 +263,14 @@ BEGIN
 				OR
 				(@vAutoRoja = 1)
 				BEGIN
-					UPDATE TABLAS.Tecnico
+					UPDATE equipos.Tecnico
 					SET
 					Estado = 'Suspendido',
 					TarjetasAcum = 0
 					WHERE IdTecnico = @amonestado
 				END
 				ELSE
-					UPDATE TABLAS.Tecnico SET TarjetasAcum = TarjetasAcum + 1
+					UPDATE equipos.Tecnico SET TarjetasAcum = TarjetasAcum + 1 WHERE IdTecnico = @amonestado
 			END
 
 			COMMIT TRANSACTION;
@@ -326,13 +327,13 @@ BEGIN
 	--chequeo existencia
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Amonestacion WHERE IdAmonestacion = @id)
+		IF NOT EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE IdAmonestacion = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Registro inexistente.'
 		END
 
-		IF(@periodo IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Periodo WHERE IdPeriodo = @periodo)
+		IF(@periodo IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Periodo.'
@@ -342,21 +343,21 @@ BEGIN
 	--validez del minuto en relacion al periodo(cambiando solo el minuto)
 	IF(@errorCount = 0) AND (@periodo IS NULL)
 	BEGIN
-		SET @vCheck = (SELECT Periodo FROM TABLAS.Evento WHERE IdEvento = @id)
+		SET @vCheck = (SELECT Periodo FROM partidos.Evento WHERE IdEvento = @id)
 
 		IF
 		( 
 			(@minuto IS NULL) 
 			AND 
-			((SELECT Descripcion FROM TABLAS.Periodo WHERE IdPeriodo = @vCheck) <> 'Penales')
+			((SELECT Descripcion FROM partidos.Periodo WHERE IdPeriodo = @vCheck) <> 'Penales')
 		)
 		OR
 		(
 			(@minuto IS NOT NULL)
 			AND
-			(@minuto < (SELECT Inicio FROM TABLAS.Periodo WHERE IdPeriodo = @vCheck))
+			(@minuto < (SELECT Inicio FROM partidos.Periodo WHERE IdPeriodo = @vCheck))
 			OR
-			(@minuto > (SELECT Fin FROM TABLAS.Periodo WHERE IdPeriodo = @vCheck))
+			(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @vCheck))
 		)
 		BEGIN
 			SET @errorCount = @errorCount + 1
@@ -371,15 +372,15 @@ BEGIN
 		(
 			(@minuto IS NULL) 
 			AND 
-			((SELECT Descripcion FROM TABLAS.Periodo WHERE IdPeriodo = @periodo) <> 'Penales')
+			((SELECT Descripcion FROM partidos.Periodo WHERE IdPeriodo = @periodo) <> 'Penales')
 		)
 		OR
 		(
 			(@minuto IS NOT NULL)
 			AND
-			(@minuto < (SELECT Inicio FROM TABLAS.Periodo WHERE IdPeriodo = @periodo))
+			(@minuto < (SELECT Inicio FROM partidos.Periodo WHERE IdPeriodo = @periodo))
 			OR
-			(@minuto > (SELECT Fin FROM TABLAS.Periodo WHERE IdPeriodo = @periodo))
+			(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @periodo))
 		)
 		BEGIN
 			SET @errorCount = @errorCount + 1
@@ -392,7 +393,7 @@ BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
 
-			UPDATE TABLAS.Evento
+			UPDATE partidos.Evento
 			SET
 			Minuto = @minuto,
 			Periodo = COALESCE(@periodo, Periodo)
@@ -442,7 +443,7 @@ BEGIN
 	END
 
 	--chequeo existencia
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Amonestacion WHERE IdAmonestacion = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE IdAmonestacion = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Registro inexistente.'
@@ -453,7 +454,7 @@ BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
 
-			UPDATE TABLAS.Amonestacion
+			UPDATE partidos.Amonestacion
 			SET Motivo = @motivo
 			WHERE IdAmonestacion = @id
 
@@ -492,7 +493,7 @@ BEGIN
 	END
 
 	--chequeo existencia
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Amonestacion WHERE IdAmonestacion = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE IdAmonestacion = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Registro inexistente.'
@@ -502,23 +503,23 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			DECLARE @vAmonestado INT = (SELECT Amonestado FROM TABLAS.Amonestacion WHERE IdAmonestacion = @id)
+			DECLARE @vAmonestado INT = (SELECT Amonestado FROM partidos.Amonestacion WHERE IdAmonestacion = @id)
 
 			--Al eliminar la amonestacion se restaura el estado del amonestado.
-			IF EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @vAmonestado)
-				UPDATE TABLAS.Jugador
+			IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @vAmonestado)
+				UPDATE equipos.Jugador
 				SET Estado = 'Activo'
 				WHERE IdJugador = @vAmonestado
 
-			ELSE IF EXISTS(SELECT 1 FROM TABLAS.Tecnico WHERE IdTecnico = @vAmonestado)
-				UPDATE TABLAS.Tecnico
+			ELSE IF EXISTS(SELECT 1 FROM equipos.Tecnico WHERE IdTecnico = @vAmonestado)
+				UPDATE equipos.Tecnico
 				SET Estado = 'Activo'
 				WHERE IdTecnico = @vAmonestado
 
-			DELETE FROM TABLAS.Amonestacion
+			DELETE FROM partidos.Amonestacion
 			WHERE IdAmonestacion = @id
 
-			DELETE FROM TABLAS.Evento
+			DELETE FROM partidos.Evento
 			WHERE IdEvento = @id
 
 			COMMIT TRANSACTION;

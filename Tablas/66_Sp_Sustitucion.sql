@@ -84,31 +84,31 @@ BEGIN
 
 	IF (@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @partido)
+		IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Partido.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Periodo WHERE IdPeriodo = @periodo)
+		IF NOT EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Periodo.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @ingreso)
+		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @ingreso)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Ingreso.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @egreso)
+		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @egreso)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Egreso.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Motivo WHERE IdMotivo = @motivo)
+		IF NOT EXISTS (SELECT 1 FROM publicidad.Motivo WHERE IdMotivo = @motivo)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Motivo.'
@@ -117,28 +117,28 @@ BEGIN
 
 	IF (@errorCount = 0)
 	BEGIN
-		SET @vSeleccion = (SELECT Seleccion FROM TABLAS.Jugador WHERE IdJugador = @egreso)
+		SET @vSeleccion = (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @egreso)
 
-		IF (SELECT Seleccion FROM TABLAS.Jugador WHERE IdJugador = @ingreso) <> @vSeleccion
+		IF (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @ingreso) <> @vSeleccion
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Ingreso y egreso deben ser de la misma seleccion.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @partido AND (Eq1 = @vSeleccion OR Eq2 = @vSeleccion))
+		IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido AND (Eq1 = @vSeleccion OR Eq2 = @vSeleccion))
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- La seleccion no juega este partido.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Alineacion WHERE IdPartido = @partido AND IdJugador = @egreso AND Rol = 'Titular')
-		AND NOT EXISTS (SELECT 1 FROM TABLAS.Sustitucion S INNER JOIN TABLAS.Evento E ON S.IdSustitucion = E.IdEvento WHERE E.Partido = @partido AND S.Ingreso = @egreso)
+		IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @partido AND IdJugador = @egreso AND Rol = 'Titular')
+		AND NOT EXISTS (SELECT 1 FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento WHERE E.Partido = @partido AND S.Egreso = @egreso)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- El egreso no estaba en cancha.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Alineacion WHERE IdPartido = @partido AND IdJugador = @ingreso AND Rol = 'Suplente')
+		IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @partido AND IdJugador = @ingreso AND Rol = 'Suplente')
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- El ingreso no estaba en el banco.'
@@ -147,11 +147,12 @@ BEGIN
 
 	IF (@errorCount = 0)
 	BEGIN
-		SELECT @vMaxCambios = CAMBIOS_CANTIDAD, @vMaxVentanas = CAMBIOS_VENTANAS FROM sedes.Mundial
+		--Solo se trabaja con el Mundial 2026, por eso se toma el limite sin filtrar por IdMundial.
+		SELECT TOP 1 @vMaxCambios = CAMBIOS_CANTIDAD, @vMaxVentanas = CAMBIOS_VENTANAS FROM sedes.Mundial
 
-		SELECT @vCambios = COUNT(*) FROM TABLAS.Sustitucion S INNER JOIN TABLAS.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN TABLAS.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion
+		SELECT @vCambios = COUNT(*) FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion
 
-		SELECT @vVentanas = COUNT(DISTINCT E.Minuto) FROM TABLAS.Sustitucion S INNER JOIN TABLAS.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN TABLAS.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion
+		SELECT @vVentanas = COUNT(DISTINCT E.Minuto) FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion
 
 		IF (@vCambios + 1) > @vMaxCambios
 		BEGIN
@@ -159,7 +160,7 @@ BEGIN
 			SET @errorLine = @errorLine + CHAR(13) + '- Tope de cambios del reglamento excedido.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Sustitucion S INNER JOIN TABLAS.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN TABLAS.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion AND E.Minuto = @minuto)
+		IF NOT EXISTS (SELECT 1 FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion AND E.Minuto = @minuto)
 		AND (@vVentanas + 1) > @vMaxVentanas
 		BEGIN
 			SET @errorCount = @errorCount + 1
@@ -173,12 +174,12 @@ BEGIN
 
 		BEGIN TRANSACTION
 		BEGIN TRY
-			INSERT INTO TABLAS.Evento (Minuto, Tipo, Partido, Periodo)
+			INSERT INTO partidos.Evento (Minuto, Tipo, Partido, Periodo)
 			VALUES (@minuto, 'Sustitucion', @partido, @periodo)
 
 			SET @idEvento = SCOPE_IDENTITY()
 
-			INSERT INTO TABLAS.Sustitucion (IdSustitucion, Ingreso, Egreso, Motivo)
+			INSERT INTO partidos.Sustitucion (IdSustitucion, Ingreso, Egreso, Motivo)
 			VALUES (@idEvento, @ingreso, @egreso, @motivo)
 
 			COMMIT TRANSACTION
@@ -214,7 +215,7 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Sustitucion.'
 	END
 
-	IF (@errorCount = 0) AND NOT EXISTS (SELECT 1 FROM TABLAS.Sustitucion WHERE IdSustitucion = @id)
+	IF (@errorCount = 0) AND NOT EXISTS (SELECT 1 FROM partidos.Sustitucion WHERE IdSustitucion = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Registro inexistente.'
@@ -224,10 +225,10 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			DELETE FROM TABLAS.Sustitucion
+			DELETE FROM partidos.Sustitucion
 			WHERE IdSustitucion = @id
 
-			DELETE FROM TABLAS.Evento
+			DELETE FROM partidos.Evento
 			WHERE IdEvento = @id
 
 			COMMIT TRANSACTION

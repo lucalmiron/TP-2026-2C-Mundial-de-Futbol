@@ -34,14 +34,14 @@ BEGIN
 		PRINT '-ERROR- Nombre invalido.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Club WHERE Nombre = @nombre)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM equipos.Club WHERE Nombre = @nombre)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Nombre duplicado.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Club(Nombre) VALUES (@nombre)
+		INSERT INTO equipos.Club(Nombre) VALUES (@nombre)
 END;
 GO
 
@@ -69,13 +69,13 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Nombre.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Club WHERE IdClub = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Club.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Club WHERE Nombre = @nombre AND IdClub <> @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM equipos.Club WHERE Nombre = @nombre AND IdClub <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
@@ -83,7 +83,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.Club
+		UPDATE equipos.Club
 		SET Nombre = @nombre
 		WHERE IdClub = @id
 	END
@@ -108,19 +108,19 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Club.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Club WHERE IdClub = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Club.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE Club = @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM equipos.Jugador WHERE Club = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Existen 1 o mas registros relacionados: Jugador. Elimine dichos registros para continuar.'
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Club WHERE IdClub = @id
+		DELETE FROM equipos.Club WHERE IdClub = @id
 END;
 GO

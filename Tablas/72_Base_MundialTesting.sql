@@ -41,3 +41,33 @@ BEGIN
 	EXECUTE('CREATE SCHEMA SP')
 END;
 GO
+
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name = 'equipos')
+BEGIN
+	EXECUTE('CREATE SCHEMA equipos')
+END;
+GO
+
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name = 'sedes')
+BEGIN
+	EXECUTE('CREATE SCHEMA sedes')
+END;
+GO
+
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name = 'partidos')
+BEGIN
+	EXECUTE('CREATE SCHEMA partidos')
+END;
+GO
+
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name = 'arbitros')
+BEGIN
+	EXECUTE('CREATE SCHEMA arbitros')
+END;
+GO
+
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name = 'publicidad')
+BEGIN
+	EXECUTE('CREATE SCHEMA publicidad')
+END;
+GO

@@ -167,42 +167,6 @@ BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Seleccion. Elimine dichos registros para continuar.'
 		END
-
-		IF EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdPais = @idPais)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Mundial. Elimine dichos registros para continuar.'
-		END
-
-		IF EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE IdPais = @idPais)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: HusoHorario. Elimine dichos registros para continuar.'
-		END
-
-		IF EXISTS(SELECT 1 FROM sedes.Sede WHERE IdPais = @idPais)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Sede. Elimine dichos registros para continuar.'
-		END
-
-		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE Pais = @idPais)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Persona. Elimine dichos registros para continuar.'
-		END
-
-		IF EXISTS(SELECT 1 FROM publicidad.Anunciante WHERE IdPais = @idPais)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Anunciante. Elimine dichos registros para continuar.'
-		END
-
-		IF EXISTS(SELECT 1 FROM publicidad.PublicidadPais WHERE IdPais = @idPais)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: PublicidadPais. Elimine dichos registros para continuar.'
-		END
 	END
 
 	IF(@errorCount = 0)

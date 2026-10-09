@@ -73,25 +73,25 @@ BEGIN
 
 	IF (@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @partido)
+		IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Partido.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Periodo WHERE IdPeriodo = @periodo)
+		IF NOT EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Periodo.'
 		END
 
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @autor)
+		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @autor)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Autor.'
 		END
 
-		IF (@asistencia IS NOT NULL) AND NOT EXISTS (SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @asistencia)
+		IF (@asistencia IS NOT NULL) AND NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @asistencia)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Asistencia.'
@@ -112,13 +112,13 @@ BEGIN
 
 	IF (@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS (SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @autor AND Seleccion IN (SELECT Eq1 FROM TABLAS.Partido WHERE IdPartido = @partido UNION SELECT Eq2 FROM TABLAS.Partido WHERE IdPartido = @partido))
+		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @autor AND Seleccion IN (SELECT Eq1 FROM partidos.Partido WHERE IdPartido = @partido UNION SELECT Eq2 FROM partidos.Partido WHERE IdPartido = @partido))
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- El autor no participo del encuentro.'
 		END
 
-		IF (@asistencia IS NOT NULL) AND NOT EXISTS (SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @asistencia AND Seleccion IN (SELECT Eq1 FROM TABLAS.Partido WHERE IdPartido = @partido UNION SELECT Eq2 FROM TABLAS.Partido WHERE IdPartido = @partido))
+		IF (@asistencia IS NOT NULL) AND NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @asistencia AND Seleccion IN (SELECT Eq1 FROM partidos.Partido WHERE IdPartido = @partido UNION SELECT Eq2 FROM partidos.Partido WHERE IdPartido = @partido))
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- La asistencia no participo del encuentro.'
@@ -131,12 +131,12 @@ BEGIN
 
 		BEGIN TRANSACTION
 		BEGIN TRY
-			INSERT INTO TABLAS.Evento (Minuto, Tipo, Partido, Periodo)
+			INSERT INTO partidos.Evento (Minuto, Tipo, Partido, Periodo)
 			VALUES (@minuto, 'Gol', @partido, @periodo)
 
 			SET @idEvento = SCOPE_IDENTITY()
 
-			INSERT INTO TABLAS.Gol (IdGol, Autor, Asistencia, Tipo)
+			INSERT INTO partidos.Gol (IdGol, Autor, Asistencia, Tipo)
 			VALUES (@idEvento, @autor, @asistencia, @tipo)
 
 			COMMIT TRANSACTION
@@ -172,7 +172,7 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Gol.'
 	END
 
-	IF (@errorCount = 0) AND NOT EXISTS (SELECT 1 FROM TABLAS.Gol WHERE IdGol = @id)
+	IF (@errorCount = 0) AND NOT EXISTS (SELECT 1 FROM partidos.Gol WHERE IdGol = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Registro inexistente.'
@@ -182,10 +182,10 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			DELETE FROM TABLAS.Gol
+			DELETE FROM partidos.Gol
 			WHERE IdGol = @id
 
-			DELETE FROM TABLAS.Evento
+			DELETE FROM partidos.Evento
 			WHERE IdEvento = @id
 
 			COMMIT TRANSACTION

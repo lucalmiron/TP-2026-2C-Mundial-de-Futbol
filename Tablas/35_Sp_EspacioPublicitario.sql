@@ -14,10 +14,10 @@ END;
 GO
 
 -- alta de espacio publicitario
-if exists (select name from sys.objects where object_id = object_id('SP.Espacio_Registrar'))
-    drop procedure SP.Espacio_Registrar
+if exists (select name from sys.objects where object_id = object_id('SP.EspacioPublicitario_Registrar'))
+    drop procedure SP.EspacioPublicitario_Registrar
 go
-create procedure SP.Espacio_Registrar
+create procedure SP.EspacioPublicitario_Registrar
     @tipo  varchar(30),
     @costo decimal(10,2)
 as
@@ -44,7 +44,7 @@ begin
     -- chequeo dup
     if (@errorCount = 0)
     begin
-        if exists(select 1 from TABLAS.EspacioPublicitario where Tipo = @tipo)
+        if exists(select 1 from publicidad.EspacioPublicitario where Tipo = @tipo)
         begin
             set @errorCount = @errorCount + 1
             set @errorLine = @errorLine + char(13) + '- Valor duplicado: Tipo de espacio.'
@@ -54,7 +54,7 @@ begin
     if (@errorCount = 0)
     begin
         begin try
-            insert into TABLAS.EspacioPublicitario (Tipo, Costo)
+            insert into publicidad.EspacioPublicitario (Tipo, Costo)
             values (@tipo, @costo)
         end try
         begin catch
@@ -67,10 +67,10 @@ end;
 GO
 
 -- modificacion de espacio publicitario
-if exists (select name from sys.objects where object_id = object_id('SP.Espacio_Update'))
-    drop procedure SP.Espacio_Update
+if exists (select name from sys.objects where object_id = object_id('SP.EspacioPublicitario_Update'))
+    drop procedure SP.EspacioPublicitario_Update
 go
-create procedure SP.Espacio_Update
+create procedure SP.EspacioPublicitario_Update
     @idEP  int,
     @tipo  varchar(30) = null,
     @costo decimal(10,2) = null
@@ -102,7 +102,7 @@ begin
     end
 
     -- chequeo existencia
-    if (@errorCount = 0) and not exists(select 1 from TABLAS.EspacioPublicitario where IdEP = @idEP)
+    if (@errorCount = 0) and not exists(select 1 from publicidad.EspacioPublicitario where IdEP = @idEP)
     begin
         set @errorCount = @errorCount + 1
         set @errorLine = @errorLine + char(13) + '- Valor inexistente: IdEP.'
@@ -111,7 +111,7 @@ begin
     -- chequeo dup (solo si me pasaron tipo)
     if (@errorCount = 0) and (@tipo is not null)
     begin
-        if exists(select 1 from TABLAS.EspacioPublicitario
+        if exists(select 1 from publicidad.EspacioPublicitario
                   where Tipo = @tipo and IdEP <> @idEP)
         begin
             set @errorCount = @errorCount + 1
@@ -122,7 +122,7 @@ begin
     if (@errorCount = 0)
     begin
         begin try
-            update TABLAS.EspacioPublicitario
+            update publicidad.EspacioPublicitario
             set Tipo  = coalesce(@tipo, Tipo),
                 Costo = coalesce(@costo, Costo)
             where IdEP = @idEP
@@ -138,7 +138,7 @@ GO
 
 -- baja de espacio publicitario
 if exists (select name from sys.objects where object_id = object_id('SP.Espacio_Bajar'))
-    drop procedure SP.Espacio_Bajar
+    drop procedure SP.EspacioPublicitario_Bajar
 go
 create procedure SP.EspacioPublicitario_Bajar
     @idEP int
@@ -158,7 +158,7 @@ begin
     end
 
     -- chequeo existencia
-    if (@errorCount = 0) and not exists(select 1 from TABLAS.EspacioPublicitario where IdEP = @idEP)
+    if (@errorCount = 0) and not exists(select 1 from publicidad.EspacioPublicitario where IdEP = @idEP)
     begin
         set @errorCount = @errorCount + 1
         set @errorLine = @errorLine + char(13) + '- Valor inexistente: IdEP.'
@@ -168,9 +168,9 @@ begin
     /*
     if (@errorCount = 0)
     begin
-        -- Si TABLAS.HistorialPublicidad todavia no existe, comentar este bloque.
+        -- Si publicidad.HistorialPublicidad todavia no existe, comentar este bloque.
         -- Ajustar 'IdEP' al nombre real de la columna en HistorialPublicidad.
-        if exists(select 1 from TABLAS.HistorialPublicidad where IdEP = @idEP)
+        if exists(select 1 from publicidad.HistorialPublicidad where IdEP = @idEP)
         begin
             set @errorCount = @errorCount + 1
             set @errorLine = @errorLine + char(13) + '- Existen 1 o mas registros relacionados: Historial Publicidad. Elimine dichos registros para continuar.'
@@ -180,7 +180,7 @@ begin
     if (@errorCount = 0)
     begin
         begin try
-            delete from TABLAS.EspacioPublicitario
+            delete from publicidad.EspacioPublicitario
             where IdEP = @idEP
         end try
         begin catch

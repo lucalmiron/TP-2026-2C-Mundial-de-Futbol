@@ -55,13 +55,13 @@ BEGIN
 	--chequeo existencia
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Arbitro WHERE IdArbitro = @arbitro)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Arbitro.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @partido)
+		IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Partido.'
@@ -69,7 +69,7 @@ BEGIN
 	END
 
 	--chequeo dup
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Arbitro. Se encuentra ya asignado a alguna funcion de ese partido.'
@@ -79,13 +79,13 @@ BEGIN
 	IF(@errorCount = 0)
 	AND
 	(
-		((@funcion = 'Principal') AND ((SELECT COUNT(Arbitro) FROM TABLAS.Arbitraje WHERE Partido = @partido AND Funcion = 'Principal') >= 1))
+		((@funcion = 'Principal') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = 'Principal') >= 1))
 		OR
-		((@funcion = 'Asistente') AND ((SELECT COUNT(Arbitro) FROM TABLAS.Arbitraje WHERE Partido = @partido AND Funcion = 'Asistente') >= 2))
+		((@funcion = 'Asistente') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = 'Asistente') >= 2))
 		OR
-		((@funcion = 'VAR') AND ((SELECT COUNT(Arbitro) FROM TABLAS.Arbitraje WHERE Partido = @partido AND Funcion = 'VAR') >= 1))
+		((@funcion = 'VAR') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = 'VAR') >= 1))
 		OR
-		((@funcion = '4to') AND ((SELECT COUNT(Arbitro) FROM TABLAS.Arbitraje WHERE Partido = @partido AND Funcion = '4to') >= 1))
+		((@funcion = '4to') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = '4to') >= 1))
 	)
 	BEGIN
 		SET @errorCount = @errorCount + 1
@@ -101,11 +101,11 @@ BEGIN
 		FROM
 		(
 			SELECT IdPais
-			FROM TABLAS.Seleccion
+			FROM equipos.Seleccion
 			WHERE IdSeleccion 
-			IN (SELECT Eq1, Eq2 FROM TABLAS.Partido WHERE IdPartido = @partido)
+			IN (SELECT Eq1, Eq2 FROM partidos.Partido WHERE IdPartido = @partido)
 		) AS P
-		WHERE Pais = (SELECT Pais FROM TABLAS.Persona WHERE IdPersona = @arbitro)
+		WHERE P.IdPais = (SELECT Pais FROM equipos.Persona WHERE IdPersona = @arbitro)
 	)
 	BEGIN
 		SET @errorCount = @errorCount + 1
@@ -121,15 +121,15 @@ BEGIN
 		FROM
 		(
 			SELECT IdPais
-			FROM TABLAS.Seleccion
+			FROM equipos.Seleccion
 			WHERE IdSeleccion 
 			IN (SELECT P.Eq1, P.Eq2
-				FROM TABLAS.Partido P
-				INNER JOIN TABLAS.Fase F ON P.IdFase = F.IdFase
+				FROM partidos.Partido P
+				INNER JOIN partidos.Fase F ON P.IdFase = F.IdFase
 				WHERE F.Descripcion <> 'Grupos'
 				  AND CAST(P.Fecha AS DATETIME) + P.HoraUTC >= GETDATE())
 		) AS P
-		WHERE Pais = (SELECT Pais FROM TABLAS.Persona WHERE IdPersona = @arbitro)
+		WHERE P.IdPais = (SELECT Pais FROM equipos.Persona WHERE IdPersona = @arbitro)
 	)
 		PRINT '-ADVERTENCIA- Este arbitro pertenece a un pais cuya seleccion puede cruzarse con los involucrados en este partido.'
 
@@ -137,7 +137,7 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			INSERT INTO TABLAS.Arbitraje
+			INSERT INTO arbitros.Arbitraje
 			VALUES (@arbitro, @funcion, @partido)
 
 			COMMIT TRANSACTION;
@@ -191,14 +191,14 @@ BEGIN
 	END
 
 	--chequeo existencia
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Registro inexistente.'
 	END
 
 	--chequeo dup
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido AND Funcion = @funcion)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido AND Funcion = @funcion)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Arbitro. Se encuentra ya asignado a esa funcion.'
@@ -208,13 +208,13 @@ BEGIN
 	IF(@errorCount = 0)
 	AND
 	(
-		((@funcion = 'Principal') AND ((SELECT COUNT(Arbitro) FROM TABLAS.Arbitraje WHERE Partido = @partido AND Funcion = 'Principal' AND Arbitro <> @arbitro) >= 1))
+		((@funcion = 'Principal') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = 'Principal' AND Arbitro <> @arbitro) >= 1))
 		OR
-		((@funcion = 'Asistente') AND ((SELECT COUNT(Arbitro) FROM TABLAS.Arbitraje WHERE Partido = @partido AND Funcion = 'Asistente' AND Arbitro <> @arbitro) >= 2))
+		((@funcion = 'Asistente') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = 'Asistente' AND Arbitro <> @arbitro) >= 2))
 		OR
-		((@funcion = 'VAR') AND ((SELECT COUNT(Arbitro) FROM TABLAS.Arbitraje WHERE Partido = @partido AND Funcion = 'VAR' AND Arbitro <> @arbitro) >= 1))
+		((@funcion = 'VAR') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = 'VAR' AND Arbitro <> @arbitro) >= 1))
 		OR
-		((@funcion = '4to') AND ((SELECT COUNT(Arbitro) FROM TABLAS.Arbitraje WHERE Partido = @partido AND Funcion = '4to' AND Arbitro <> @arbitro) >= 1))
+		((@funcion = '4to') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = '4to' AND Arbitro <> @arbitro) >= 1))
 	)
 	BEGIN
 		SET @errorCount = @errorCount + 1
@@ -225,7 +225,7 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			UPDATE TABLAS.Arbitraje
+			UPDATE arbitros.Arbitraje
 			SET Funcion = @funcion
 			WHERE Arbitro = @arbitro AND Partido = @partido
 
@@ -273,7 +273,7 @@ BEGIN
 	END
 
 	--chequeo existencia
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Registro inexistente.'
@@ -283,7 +283,7 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			DELETE FROM TABLAS.Arbitraje
+			DELETE FROM arbitros.Arbitraje
 			WHERE Arbitro = @arbitro AND Partido = @partido
 
 			COMMIT TRANSACTION;

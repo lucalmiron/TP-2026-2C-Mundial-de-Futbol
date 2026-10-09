@@ -18,7 +18,7 @@ END;
 GO
 
 --tablas a testear
-CREATE TABLE TABLAS.Club
+CREATE TABLE equipos.Club
 (
 	IdClub INT PRIMARY KEY IDENTITY(1, 1),
 	Nombre VARCHAR(20)
@@ -26,11 +26,11 @@ CREATE TABLE TABLAS.Club
 GO
 
 --tablas aux de testing
-CREATE TABLE TABLAS.Jugador
+CREATE TABLE equipos.Jugador
 (
 	IdJugador INT PRIMARY KEY,
 	Club INT NULL,
-	FOREIGN KEY(Club) REFERENCES TABLAS.Club(IdClub)
+	FOREIGN KEY(Club) REFERENCES equipos.Club(IdClub)
 );
 GO
 
@@ -51,14 +51,14 @@ BEGIN
 		PRINT '-ERROR- Nombre invalido.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Club WHERE Nombre = @nombre)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM equipos.Club WHERE Nombre = @nombre)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Nombre duplicado.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Club(Nombre) VALUES (@nombre)
+		INSERT INTO equipos.Club(Nombre) VALUES (@nombre)
 END;
 GO
 
@@ -86,13 +86,13 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Nombre.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Club WHERE IdClub = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Club.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Club WHERE Nombre = @nombre AND IdClub <> @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM equipos.Club WHERE Nombre = @nombre AND IdClub <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
@@ -100,7 +100,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.Club
+		UPDATE equipos.Club
 		SET Nombre = @nombre
 		WHERE IdClub = @id
 	END
@@ -125,20 +125,20 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Club.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Club WHERE IdClub = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Club.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE Club = @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM equipos.Jugador WHERE Club = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Existen 1 o mas registros relacionados: Jugador. Elimine dichos registros para continuar.'
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Club WHERE IdClub = @id
+		DELETE FROM equipos.Club WHERE IdClub = @id
 END;
 GO
 
@@ -146,12 +146,12 @@ GO
 EXECUTE SP.uspClub_Registrar @nombre = 'Real Madrid';
 EXECUTE SP.uspClub_Registrar @nombre = 'Barcelona FC';
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --llenado de tablas auxiliares
-INSERT INTO TABLAS.Jugador VALUES (1, 2);
+INSERT INTO equipos.Jugador VALUES (1, 2);
 
-SELECT * FROM TABLAS.Jugador;
+SELECT * FROM equipos.Jugador;
 GO
 
 ----Testeo
@@ -159,54 +159,54 @@ GO
 --Fallido (Valores invalidos)
 EXECUTE SP.uspClub_Registrar @nombre = NULL;
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --Fallido (Valores dup)
 EXECUTE SP.uspClub_Registrar @nombre = 'Real Madrid';
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --/Update
 --Exitoso
 EXECUTE SP.uspClub_Update @id = 1, @nombre = 'Realisimo Madrid';
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --Fallido(Valores invalidos)
 EXECUTE SP.uspClub_Update @id = 0, @nombre = NULL;
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --Fallido(Valores inexistentes)
 EXECUTE SP.uspClub_Update @id = 40, @nombre = 'Realisimo Madrid';
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --Fallido(Valores dup)
 EXECUTE SP.uspClub_Update @id = 1, @nombre = 'Barcelona FC';
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --/Baja
 --Exitoso
 EXECUTE SP.uspClub_Bajar @id = 1;
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --Fallido(Valores invalidos)
 EXECUTE SP.uspClub_Bajar @id = 0;
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --Fallido(Valores inexistentes)
 EXECUTE SP.uspClub_Bajar @id = 40;
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 --Fallido(Registros referenciados)
 EXECUTE SP.uspClub_Bajar @id = 2;
 
-SELECT * FROM TABLAS.Club;
+SELECT * FROM equipos.Club;
 GO
 
 --limpieza
@@ -215,6 +215,6 @@ DROP PROCEDURE SP.uspClub_Update;
 DROP PROCEDURE SP.uspClub_Bajar;
 GO
 
-DROP TABLE TABLAS.Jugador;
-DROP TABLE TABLAS.Club;
+DROP TABLE equipos.Jugador;
+DROP TABLE equipos.Club;
 GO

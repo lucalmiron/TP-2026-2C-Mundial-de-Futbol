@@ -18,37 +18,37 @@ GO
 -- Esperado: inserta sustitucion, 1 fila en Evento y Sustitucion
 EXEC SPTRANS.uspSustitucion_Registrar @minuto = 60, @partido = 1, @periodo = 1, @ingreso = 2, @egreso = 1, @motivo = 1
 GO
-SELECT * FROM TABLAS.Evento WHERE Tipo = 'Sustitucion'
+SELECT * FROM partidos.Evento WHERE Tipo = 'Sustitucion'
 GO
-SELECT * FROM TABLAS.Sustitucion
+SELECT * FROM partidos.Sustitucion
 GO
 
 -- Esperado: PRINT ingreso igual a egreso, 0 filas nuevas
 EXEC SPTRANS.uspSustitucion_Registrar @minuto = 65, @partido = 1, @periodo = 1, @ingreso = 2, @egreso = 2, @motivo = 1
 GO
-SELECT * FROM TABLAS.Sustitucion
+SELECT * FROM partidos.Sustitucion
 GO
 
 -- Esperado: PRINT inexistente Motivo (99), 0 filas nuevas
 EXEC SPTRANS.uspSustitucion_Registrar @minuto = 70, @partido = 1, @periodo = 1, @ingreso = 2, @egreso = 1, @motivo = 99
 GO
-SELECT * FROM TABLAS.Sustitucion
+SELECT * FROM partidos.Sustitucion
 GO
 
 -- Esperado: PRINT inexistente Partido (99), 0 filas nuevas
 EXEC SPTRANS.uspSustitucion_Registrar @minuto = 70, @partido = 99, @periodo = 1, @ingreso = 2, @egreso = 1, @motivo = 1
 GO
-SELECT * FROM TABLAS.Sustitucion
+SELECT * FROM partidos.Sustitucion
 GO
 
 -- Esperado: borra Id 1 de Sustitucion y Evento
 EXEC SPTRANS.uspSustitucion_Bajar @id = 1
 GO
-SELECT * FROM TABLAS.Sustitucion
+SELECT * FROM partidos.Sustitucion
 GO
 
 -- Esperado: PRINT inexistente (99), 0 borradas
 EXEC SPTRANS.uspSustitucion_Bajar @id = 99
 GO
-SELECT * FROM TABLAS.Sustitucion
+SELECT * FROM partidos.Sustitucion
 GO

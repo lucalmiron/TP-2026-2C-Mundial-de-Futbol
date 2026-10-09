@@ -61,19 +61,19 @@ BEGIN
 	--Chequeo existencia
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Pais WHERE IdPais = @idPais)
+		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Pais.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Mundial WHERE IdMundial = @idMundial)
+		IF NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @idMundial)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Mundial.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Grupo WHERE IdGrupo = @idGrupo)
+		IF NOT EXISTS(SELECT 1 FROM equipos.Grupo WHERE IdGrupo = @idGrupo)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Grupo.'
@@ -81,14 +81,14 @@ BEGIN
 	END
 
 	--Chequeo dup
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdPais = @idPais AND IdMundial = @idMundial)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdPais = @idPais AND IdMundial = @idMundial)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Seleccion (pais y mundial).'
 	END
 
 	--Chequeo cupo (maximo 4 selecciones por grupo en cada mundial)
-	IF(@errorCount = 0) AND (SELECT COUNT(*) FROM TABLAS.Seleccion WHERE IdMundial = @idMundial AND IdGrupo = @idGrupo) >= 4
+	IF(@errorCount = 0) AND (SELECT COUNT(*) FROM equipos.Seleccion WHERE IdMundial = @idMundial AND IdGrupo = @idGrupo) >= 4
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Cupo excedido: el grupo ya tiene 4 selecciones en el mundial.'
@@ -97,7 +97,7 @@ BEGIN
 	IF(@errorCount = 0)
 	BEGIN
 		BEGIN TRY
-			INSERT INTO TABLAS.Seleccion(IdPais, IdMundial, IdGrupo, CONFEDERACION)
+			INSERT INTO equipos.Seleccion(IdPais, IdMundial, IdGrupo, CONFEDERACION)
 			VALUES(@idPais, @idMundial, @idGrupo, LTRIM(RTRIM(@confederacion)))
 		END TRY
 		BEGIN CATCH
@@ -160,25 +160,25 @@ BEGIN
 	--Chequeo existencia
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @idSeleccion)
+		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @idSeleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Seleccion.'
 		END
 
-		IF(@idPais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Pais WHERE IdPais = @idPais)
+		IF(@idPais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Pais.'
 		END
 
-		IF(@idMundial IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Mundial WHERE IdMundial = @idMundial)
+		IF(@idMundial IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @idMundial)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Mundial.'
 		END
 
-		IF(@idGrupo IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Grupo WHERE IdGrupo = @idGrupo)
+		IF(@idGrupo IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Grupo WHERE IdGrupo = @idGrupo)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Grupo.'
@@ -187,7 +187,7 @@ BEGIN
 
 	--Chequeo dup
 	IF(@errorCount = 0) AND (@idPais IS NOT NULL) AND (@idMundial IS NOT NULL)
-	   AND EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdPais = @idPais AND IdMundial = @idMundial AND IdSeleccion <> @idSeleccion)
+	   AND EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdPais = @idPais AND IdMundial = @idMundial AND IdSeleccion <> @idSeleccion)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Seleccion (pais y mundial).'
@@ -196,9 +196,9 @@ BEGIN
 	--Chequeo cupo (maximo 4 selecciones por grupo en cada mundial, sin contar la propia)
 	IF(@errorCount = 0) AND (@idGrupo IS NOT NULL)
 	BEGIN
-		DECLARE @vMundial INT = COALESCE(@idMundial, (SELECT IdMundial FROM TABLAS.Seleccion WHERE IdSeleccion = @idSeleccion))
+		DECLARE @vMundial INT = COALESCE(@idMundial, (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @idSeleccion))
 
-		IF (SELECT COUNT(*) FROM TABLAS.Seleccion WHERE IdMundial = @vMundial AND IdGrupo = @idGrupo AND IdSeleccion <> @idSeleccion) >= 4
+		IF (SELECT COUNT(*) FROM equipos.Seleccion WHERE IdMundial = @vMundial AND IdGrupo = @idGrupo AND IdSeleccion <> @idSeleccion) >= 4
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Cupo excedido: el grupo ya tiene 4 selecciones en el mundial.'
@@ -208,7 +208,7 @@ BEGIN
 	IF(@errorCount = 0)
 	BEGIN
 		BEGIN TRY
-			UPDATE TABLAS.Seleccion
+			UPDATE equipos.Seleccion
 			SET IdPais = COALESCE(@idPais, IdPais),
 				IdMundial = COALESCE(@idMundial, IdMundial),
 				IdGrupo = COALESCE(@idGrupo, IdGrupo),
@@ -245,7 +245,7 @@ BEGIN
 	END
 
 	--Chequeo existencia
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @idSeleccion)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @idSeleccion)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 	SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Seleccion.'
@@ -254,25 +254,25 @@ BEGIN
 	--Chequeo relaciones
 	IF(@errorCount = 0)
 	BEGIN
-		IF EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE Seleccion = @idSeleccion)
+		IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE Seleccion = @idSeleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Jugador. Elimine dichos registros para continuar.'
 		END
 
-		IF EXISTS(SELECT 1 FROM TABLAS.Tecnico WHERE Seleccion = @idSeleccion)
+		IF EXISTS(SELECT 1 FROM equipos.Tecnico WHERE Seleccion = @idSeleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Tecnico. Elimine dichos registros para continuar.'
 		END
 
-		IF EXISTS(SELECT 1 FROM TABLAS.Partido WHERE Eq1 = @idSeleccion OR Eq2 = @idSeleccion)
+		IF EXISTS(SELECT 1 FROM partidos.Partido WHERE Eq1 = @idSeleccion OR Eq2 = @idSeleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Partido. Elimine dichos registros para continuar.'
 		END
 
-		IF EXISTS(SELECT 1 FROM TABLAS.Alineacion WHERE IdSeleccion = @idSeleccion)
+		IF EXISTS(SELECT 1 FROM partidos.Alineacion WHERE IdSeleccion = @idSeleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Alineacion. Elimine dichos registros para continuar.'
@@ -282,7 +282,7 @@ BEGIN
 	IF(@errorCount = 0)
 	BEGIN
 		BEGIN TRY
-			DELETE FROM TABLAS.Seleccion WHERE IdSeleccion = @idSeleccion
+			DELETE FROM equipos.Seleccion WHERE IdSeleccion = @idSeleccion
 		END TRY
 		BEGIN CATCH
 			PRINT CONCAT('ERROR (', ERROR_NUMBER(), '): ', ERROR_MESSAGE())

@@ -44,7 +44,7 @@ begin
     -- chequeo dup
     if (@errorCount = 0)
     begin
-        if exists(select 1 from TABLAS.CostoFranja where TipoFranja = @tipoFranja)
+        if exists(select 1 from publicidad.CostoFranja where TipoFranja = @tipoFranja)
         begin
             set @errorCount = @errorCount + 1
             set @errorLine = @errorLine + char(13) + '- Valor duplicado: Tipo de franja.'
@@ -54,7 +54,7 @@ begin
     if (@errorCount = 0)
     begin
         begin try
-            insert into TABLAS.CostoFranja (TipoFranja, Costo)
+            insert into publicidad.CostoFranja (TipoFranja, Costo)
             values (@tipoFranja, @costo)
         end try
         begin catch
@@ -102,7 +102,7 @@ begin
     end
 
     -- chequeo existencia
-    if (@errorCount = 0) and not exists(select 1 from TABLAS.CostoFranja where IdCF = @idCF)
+    if (@errorCount = 0) and not exists(select 1 from publicidad.CostoFranja where IdCF = @idCF)
     begin
         set @errorCount = @errorCount + 1
         set @errorLine = @errorLine + char(13) + '- Valor inexistente: IdCF.'
@@ -111,7 +111,7 @@ begin
     -- chequeo dup (solo si me pasaron tipoFranja)
     if (@errorCount = 0) and (@tipoFranja is not null)
     begin
-        if exists(select 1 from TABLAS.CostoFranja
+        if exists(select 1 from publicidad.CostoFranja
                   where TipoFranja = @tipoFranja and IdCF <> @idCF)
         begin
             set @errorCount = @errorCount + 1
@@ -122,7 +122,7 @@ begin
     if (@errorCount = 0)
     begin
         begin try
-            update TABLAS.CostoFranja
+            update publicidad.CostoFranja
             set TipoFranja = coalesce(@tipoFranja, TipoFranja),
                 Costo      = coalesce(@costo, Costo)
             where IdCF = @idCF
@@ -158,7 +158,7 @@ begin
     end
 
     -- chequeo existencia
-    if (@errorCount = 0) and not exists(select 1 from TABLAS.CostoFranja where IdCF = @idCF)
+    if (@errorCount = 0) and not exists(select 1 from publicidad.CostoFranja where IdCF = @idCF)
     begin
         set @errorCount = @errorCount + 1
         set @errorLine = @errorLine + char(13) + '- Valor inexistente: IdCF.'
@@ -169,7 +169,7 @@ begin
     if (@errorCount = 0)
     begin
         begin try
-            delete from TABLAS.CostoFranja
+            delete from publicidad.CostoFranja
             where IdCF = @idCF
         end try
         begin catch

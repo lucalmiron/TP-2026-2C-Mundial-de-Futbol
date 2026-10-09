@@ -13,12 +13,6 @@ BEGIN
 END;
 GO
 
-/*IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='TABLAS' AND TABLE_NAME='Partido')
-BEGIN CREATE TABLE TABLAS.Partido(IdPartido INT PRIMARY KEY, IdFase INT); END;
-GO
-
-DROP TABLE TABLAS.Partido*/
-
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspFase_Registrar'))
   DROP PROCEDURE SP.uspFase_Registrar
 GO
@@ -38,12 +32,12 @@ BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: '+ISNULL(@Descripcion,'NULL')+'.'
 	END
-	IF(@errorCount=0 AND EXISTS(SELECT 1 FROM TABLAS.Fase WHERE Descripcion=@Descripcion))
+	IF(@errorCount=0 AND EXISTS(SELECT 1 FROM partidos.Fase WHERE Descripcion=@Descripcion))
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Fase repetida'
 	END
-	IF(@errorCount=0) INSERT INTO TABLAS.Fase(Descripcion) VALUES(@Descripcion)
+	IF(@errorCount=0) INSERT INTO partidos.Fase(Descripcion) VALUES(@Descripcion)
 	ELSE PRINT @errorLine
 END
 GO
@@ -73,17 +67,17 @@ BEGIN
 		SET @errorCount=@errorCount+1; 
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor invalido: '+ISNULL(@Descripcion,'NULL')+'.'
 	END
-	IF(@errorCount=0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Fase WHERE IdFase=@Id))
+	IF(@errorCount=0 AND NOT EXISTS(SELECT 1 FROM partidos.Fase WHERE IdFase=@Id))
 	BEGIN 
 		SET @errorCount=@errorCount+1; 
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Id ('+ISNULL(CAST(@Id AS VARCHAR(10)),'NULL')+').'
 	END
-	IF(@errorCount=0 AND EXISTS(SELECT 1 FROM TABLAS.Fase WHERE Descripcion=@Descripcion AND IdFase<>@Id))
+	IF(@errorCount=0 AND EXISTS(SELECT 1 FROM partidos.Fase WHERE Descripcion=@Descripcion AND IdFase<>@Id))
 	BEGIN 
 		SET @errorCount=@errorCount+1; 
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor duplicado: Fase.' 
 	END
-	IF(@errorCount=0) UPDATE TABLAS.Fase SET Descripcion=@Descripcion WHERE IdFase=@Id;
+	IF(@errorCount=0) UPDATE partidos.Fase SET Descripcion=@Descripcion WHERE IdFase=@Id;
 	ELSE PRINT @errorLine;
 END;
 GO
@@ -102,17 +96,17 @@ BEGIN
 		SET @errorCount=@errorCount+1 
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor invalido: Id ('+ISNULL(CAST(@Id AS VARCHAR(10)),'NULL')+').' 
 	END
-	IF(@errorCount=0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Fase WHERE IdFase=@Id))
+	IF(@errorCount=0 AND NOT EXISTS(SELECT 1 FROM partidos.Fase WHERE IdFase=@Id))
 	BEGIN 
 		SET @errorCount=@errorCount+1 
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Id ('+ISNULL(CAST(@Id AS VARCHAR(10)),'NULL')+').' 
 	END
-	IF(@errorCount=0 AND EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdFase=@Id))
+	IF(@errorCount=0 AND EXISTS(SELECT 1 FROM partidos.Partido WHERE IdFase=@Id))
 	BEGIN 
 		SET @errorCount=@errorCount+1 
 		SET @errorLine=@errorLine+CHAR(13)+'- Existen partidos con esta fase.' 
 	END
-	IF(@errorCount=0) DELETE FROM TABLAS.Fase WHERE IdFase=@Id;
+	IF(@errorCount=0) DELETE FROM partidos.Fase WHERE IdFase=@Id;
 	ELSE PRINT @errorLine;
 END
 GO

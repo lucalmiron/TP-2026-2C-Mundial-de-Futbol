@@ -113,13 +113,11 @@ BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Motivo.'
 	END
-	-- Tabla Sustitucion aun no creada. Descomentar cuando exista.
-	-- IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM partidos.Sustitucion WHERE Motivo = @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM partidos.Sustitucion WHERE Motivo = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Existen 1 o mas registros relacionados: Sustitucion. Elimine dichos registros para continuar.'
 	END
-	
 
 	IF(@errorCount = 0)
 		DELETE FROM publicidad.Motivo WHERE IdMotivo = @id

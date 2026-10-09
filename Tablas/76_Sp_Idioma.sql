@@ -34,14 +34,14 @@ BEGIN
 		PRINT '-ERROR- Descripcion invalida.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE Descripcion = @descripcion)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM arbitros.Idioma WHERE Descripcion = @descripcion)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Descripcion duplicada.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Idioma(Descripcion) VALUES (@descripcion)
+		INSERT INTO arbitros.Idioma(Descripcion) VALUES (@descripcion)
 END;
 GO
 
@@ -69,13 +69,13 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Descripcion.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Idioma.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE Descripcion = @descripcion AND IdIdioma <> @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM arbitros.Idioma WHERE Descripcion = @descripcion AND IdIdioma <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Descripcion.'
@@ -83,7 +83,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.Idioma
+		UPDATE arbitros.Idioma
 		SET Descripcion = @descripcion
 		WHERE IdIdioma = @id
 	END
@@ -108,7 +108,7 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Idioma.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Idioma.'
@@ -116,24 +116,20 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		IF EXISTS(SELECT 1 FROM TABLAS.HablaIdioma WHERE Idioma = @id)
+		IF EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Idioma = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			PRINT '-ERROR- Existen 1 o mas registros relacionados: HablaIdioma. Elimine dichos registros para continuar.'
 		END
 
-		/*
-		--La tabla Publicidad todavia no fue creada.
-		--Descomentar cuando exista el script de creacion correspondiente.
-		IF EXISTS(SELECT 1 FROM TABLAS.Publicidad WHERE Idioma = @id)
+		IF EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdIdioma = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			PRINT '-ERROR- Existen 1 o mas registros relacionados: Publicidad. Elimine dichos registros para continuar.'
 		END
-		*/
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Idioma WHERE IdIdioma = @id
+		DELETE FROM arbitros.Idioma WHERE IdIdioma = @id
 END;
 GO

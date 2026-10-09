@@ -55,44 +55,44 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR (13) + '-Valor Invalido: Rol'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @IdPartido))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @IdPartido))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Partido'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @IdJugador))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @IdJugador))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Jugador'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @IdSeleccion))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @IdSeleccion))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Seleccion'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @IdJugador AND Seleccion = @IdSeleccion))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @IdJugador AND Seleccion = @IdSeleccion))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- El jugador no esta convocado a esa seleccion'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @IdPartido AND (Eq1 = @IdSeleccion OR Eq2 = @IdSeleccion)))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @IdPartido AND (Eq1 = @IdSeleccion OR Eq2 = @IdSeleccion)))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- La seleccion no juega este partido'
 	END
 
-	IF (@errorCount = 0 AND EXISTS (SELECT 1 FROM TABLAS.Alineacion WHERE IdJugador = @IdJugador AND IdPartido = @IdPartido))
+	IF (@errorCount = 0 AND EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdJugador = @IdJugador AND IdPartido = @IdPartido))
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR (13) + '- Jugador ya cargado'
 	END
 
 	IF (@errorCount = 0)
-	INSERT INTO TABLAS.Alineacion (IdPartido, IdJugador, IdSeleccion, Rol, PosicionCancha, Esquema) 
+	INSERT INTO partidos.Alineacion (IdPartido, IdJugador, IdSeleccion, Rol, PosicionCancha, Esquema) 
 	VALUES (@IdPartido, @IdJugador, @IdSeleccion, @Rol, @PosicionCancha, @Esquema)
 
 	ELSE PRINT @errorLine
@@ -125,20 +125,20 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR (13) + '-Valor Invalido: IdJugador'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS (SELECT 1 FROM TABLAS.Alineacion WHERE IdJugador = @IdJugador AND IdPartido = @IdPartido))
+	IF (@errorCount = 0 AND NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdJugador = @IdJugador AND IdPartido = @IdPartido))
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR (13) + '-No existe alineacion a eliminar'
 	END
 
-	IF (@errorCount = 0 AND OBJECT_ID('TABLAS.Evento') IS NOT NULL AND EXISTS(SELECT 1 FROM TABLAS.Evento WHERE IdPartido = @IdPartido))
+	IF (@errorCount = 0 AND EXISTS(SELECT 1 FROM partidos.Evento WHERE Partido = @IdPartido))
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR (13) + '-Tabla siendo utilizada en Evento, no se puede eliminar'
 	END
 
 	IF (@errorCount = 0)
-		DELETE FROM TABLAS.Alineacion WHERE IdJugador = @IdJugador AND IdPartido = @IdPartido
+		DELETE FROM partidos.Alineacion WHERE IdJugador = @IdJugador AND IdPartido = @IdPartido
 
 	ELSE PRINT @errorLine
 

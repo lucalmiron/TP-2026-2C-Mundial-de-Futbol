@@ -19,12 +19,12 @@ END;
 GO
 
 --Tablas auxiliares de testing
-CREATE TABLE TABLAS.Arbitro
+CREATE TABLE arbitros.Arbitro
 (
 	IdArbitro INT PRIMARY KEY
 );
 
-CREATE TABLE TABLAS.Partido
+CREATE TABLE partidos.Partido
 (
 	IdPartido INT PRIMARY KEY
 );
@@ -33,7 +33,7 @@ GO
 --Tablas a testear
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Idioma')
 BEGIN
-	CREATE TABLE TABLAS.Idioma
+	CREATE TABLE arbitros.Idioma
 	(
 		IdIdioma INT PRIMARY KEY IDENTITY(1, 1),
 		Descripcion VARCHAR(20)
@@ -43,36 +43,36 @@ GO
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'HablaIdioma')
 BEGIN
-	CREATE TABLE TABLAS.HablaIdioma
+	CREATE TABLE arbitros.HablaIdioma
 	(
 		Arbitro INT,
 		Idioma INT,
-		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
-		FOREIGN KEY(Idioma) REFERENCES TABLAS.Idioma(IdIdioma)
+		FOREIGN KEY(Arbitro) REFERENCES arbitros.Arbitro(IdArbitro),
+		FOREIGN KEY(Idioma) REFERENCES arbitros.Idioma(IdIdioma)
 	)
 END;
 GO
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'TABLAS' AND TABLE_NAME = 'Reporte')
 BEGIN
-	CREATE TABLE TABLAS.Reporte
+	CREATE TABLE arbitros.Reporte
 	(
 		IdReporte INT PRIMARY KEY IDENTITY(1, 1),
 		Razon VARCHAR(20),
 		Descripcion VARCHAR(300),
 		Arbitro INT,
 		Partido INT,
-		FOREIGN KEY(Arbitro) REFERENCES TABLAS.Arbitro(IdArbitro),
-		FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido)
+		FOREIGN KEY(Arbitro) REFERENCES arbitros.Arbitro(IdArbitro),
+		FOREIGN KEY(Partido) REFERENCES partidos.Partido(IdPartido)
 	)
 END;
 GO
 
 --tablas aux
-CREATE TABLE TABLAS.Publicidad
+CREATE TABLE publicidad.Publicidad
 (
 	Idioma INT,
-	FOREIGN KEY(Idioma) REFERENCES TABLAS.Idioma(IdIdioma)
+	FOREIGN KEY(Idioma) REFERENCES arbitros.Idioma(IdIdioma)
 );
 GO
 
@@ -94,14 +94,14 @@ BEGIN
 		PRINT '-ERROR- Descripcion invalida.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE Descripcion = @descripcion)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM arbitros.Idioma WHERE Descripcion = @descripcion)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Descripcion duplicada.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Idioma(Descripcion) VALUES (@descripcion)
+		INSERT INTO arbitros.Idioma(Descripcion) VALUES (@descripcion)
 END;
 GO
 
@@ -129,13 +129,13 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Descripcion.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Idioma.'
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE Descripcion = @descripcion AND IdIdioma <> @id)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM arbitros.Idioma WHERE Descripcion = @descripcion AND IdIdioma <> @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Descripcion.'
@@ -143,7 +143,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.Idioma
+		UPDATE arbitros.Idioma
 		SET Descripcion = @descripcion
 		WHERE IdIdioma = @id
 	END
@@ -168,7 +168,7 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Idioma.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Idioma.'
@@ -176,13 +176,13 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		IF EXISTS(SELECT 1 FROM TABLAS.HablaIdioma WHERE Idioma = @id)
+		IF EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Idioma = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			PRINT '-ERROR- Existen 1 o mas registros relacionados: HablaIdioma. Elimine dichos registros para continuar.'
 		END
 
-		IF EXISTS(SELECT 1 FROM TABLAS.Publicidad WHERE Idioma = @id)
+		IF EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE Idioma = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			PRINT '-ERROR- Existen 1 o mas registros relacionados: Publicidad. Elimine dichos registros para continuar.'
@@ -190,7 +190,7 @@ BEGIN
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Idioma WHERE IdIdioma = @id
+		DELETE FROM arbitros.Idioma WHERE IdIdioma = @id
 END;
 GO
 
@@ -221,27 +221,27 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Arbitro WHERE IdArbitro = @arbitro)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Arbitro.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @idioma)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idioma)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Idioma.'
 		END
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Idioma.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.HablaIdioma VALUES (@arbitro, @idioma)
+		INSERT INTO arbitros.HablaIdioma VALUES (@arbitro, @idioma)
 	ELSE
 		PRINT @errorLine
 END;
@@ -273,27 +273,27 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Arbitro WHERE IdArbitro = @arbitro)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Arbitro.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Idioma WHERE IdIdioma = @idioma)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idioma)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Idioma.'
 		END
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Registro inexistente.'
 	END
 
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma
+		DELETE FROM arbitros.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma
 	ELSE
 		PRINT @errorLine
 END;
@@ -340,27 +340,27 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Arbitro WHERE IdArbitro = @arbitro)
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Arbitro.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @partido)
+		IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Partido.'
 		END
 	END
 
-	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM TABLAS.Reporte WHERE Arbitro = @arbitro AND Partido = @partido AND Descripcion = @descripcion)
+	IF(@errorCount = 0) AND EXISTS(SELECT 1 FROM arbitros.Reporte WHERE Arbitro = @arbitro AND Partido = @partido AND Descripcion = @descripcion)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Descripcion.'
 	END
 
 	IF(@errorCount = 0)
-		INSERT INTO TABLAS.Reporte(Razon, Descripcion, Arbitro, Partido) VALUES (@razon, @descripcion, @arbitro, @partido)
+		INSERT INTO arbitros.Reporte(Razon, Descripcion, Arbitro, Partido) VALUES (@razon, @descripcion, @arbitro, @partido)
 	ELSE
 		PRINT @errorLine
 END;
@@ -393,7 +393,7 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Razon.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Reporte WHERE IdReporte = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Reporte WHERE IdReporte = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: ID Reporte.'
@@ -406,9 +406,9 @@ BEGIN
 	(
 		SELECT 1
 		FROM 
-		TABLAS.Reporte AS R
+		arbitros.Reporte AS R
 		INNER JOIN
-		(SELECT Arbitro, Partido FROM TABLAS.Reporte WHERE IdReporte = @id) AS AP
+		(SELECT Arbitro, Partido FROM arbitros.Reporte WHERE IdReporte = @id) AS AP
 		ON R.Arbitro = AP.Arbitro AND R.Partido = AP.Partido
 		WHERE R.Descripcion = @descripcion AND R.IdReporte <> @id
 	)
@@ -419,7 +419,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		UPDATE TABLAS.Reporte
+		UPDATE arbitros.Reporte
 		SET
 		Razon = COALESCE(@razon, Razon),
 		Descripcion = COALESCE(@descripcion, Descripcion)
@@ -447,7 +447,7 @@ BEGIN
 		PRINT '-ERROR- Valor invalido: ID Reporte.'
 	END
 
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Reporte WHERE IdReporte = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM arbitros.Reporte WHERE IdReporte = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		PRINT '-ERROR- Valor inexistente: ID Reporte.'
@@ -455,18 +455,18 @@ BEGIN
 
 	--No existen tablas que dependan de Reporte, no se requieren validaciones de relacion.
 	IF(@errorCount = 0)
-		DELETE FROM TABLAS.Reporte WHERE IdReporte = @id
+		DELETE FROM arbitros.Reporte WHERE IdReporte = @id
 END;
 GO
 
 --Llenado de tablas aux
-INSERT INTO TABLAS.Arbitro VALUES (1), (2), (3);
-INSERT INTO TABLAS.Partido VALUES (1), (2), (3);
-INSERT INTO TABLAS.Publicidad VALUES (1), (2);
+INSERT INTO arbitros.Arbitro VALUES (1), (2), (3);
+INSERT INTO partidos.Partido VALUES (1), (2), (3);
+INSERT INTO publicidad.Publicidad VALUES (1), (2);
 GO
 
-SELECT * FROM TABLAS.Arbitro;
-SELECT * FROM TABLAS.Partido;
+SELECT * FROM arbitros.Arbitro;
+SELECT * FROM partidos.Partido;
 GO
 --Llenado de tablas y testeo de registro exitoso
 EXECUTE SP.uspIdioma_Registrar @descripcion = 'Polaco';
@@ -489,9 +489,9 @@ EXECUTE SP.uspReporte_Registrar
 @arbitro = 2, @partido = 1;
 GO
 
-SELECT * FROM TABLAS.Idioma;
-SELECT * FROM TABLAS.HablaIdioma;
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Idioma;
+SELECT * FROM arbitros.HablaIdioma;
+SELECT * FROM arbitros.Reporte;
 GO
 
 --//Testing Idioma
@@ -499,54 +499,54 @@ GO
 --Fallido(Valores invalidos)
 EXECUTE SP.uspIdioma_Registrar @descripcion = NULL;
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 --Fallido(Valores dup)
 EXECUTE SP.uspIdioma_Registrar @descripcion = 'Polaco';
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 --/Update
 --Exitoso
 EXECUTE SP.uspIdioma_Update @id = 2, @descripcion = 'Chino Mandarin';
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 --Fallido(Valores invalidos)
 EXECUTE SP.uspIdioma_Update @id = 0, @descripcion = NULL;
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 --Fallido(Valores inexistentes)
 EXECUTE SP.uspIdioma_Update @id = 40, @descripcion = 'Polaco-Ruso';
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 --Fallido(Valores dup)
 EXECUTE SP.uspIdioma_Update @id = 2, @descripcion = 'Polaco';
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 --/Baja
 --Exitoso
 EXECUTE SP.uspIdioma_Bajar @id = 1;
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 --Fallido(Valores invalidos)
 EXECUTE SP.uspIdioma_Bajar @id = 0;
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 --Fallido(Valores inexistentes)
 EXECUTE SP.uspIdioma_Bajar @id = 45;
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 --Fallido(Registros referenciados)
 EXECUTE SP.uspIdioma_Bajar @id = 2;
 
-SELECT * FROM TABLAS.Idioma;
+SELECT * FROM arbitros.Idioma;
 GO
 ---------------------------------------------------------------------
 --//Testing HablaIdioma
@@ -554,33 +554,33 @@ GO
 --Fallida(Valores invalidos)
 EXECUTE SP.uspHablaIdioma_Registrar @arbitro = 0, @idioma = NULL;
 
-SELECT * FROM TABLAS.HablaIdioma;
+SELECT * FROM arbitros.HablaIdioma;
 GO
 --Fallida(Valores inexistentes)
 EXECUTE SP.uspHablaIdioma_Registrar @arbitro = 45, @idioma = 78;
 
-SELECT * FROM TABLAS.HablaIdioma;
+SELECT * FROM arbitros.HablaIdioma;
 GO
 --Fallida(Valores dup)
 EXECUTE SP.uspHablaIdioma_Registrar @arbitro = 1, @idioma = 2;
 
-SELECT * FROM TABLAS.HablaIdioma;
+SELECT * FROM arbitros.HablaIdioma;
 GO
 --/Baja
 --Exitosa
 EXECUTE SP.uspHablaIdioma_Bajar @arbitro = 1, @idioma = 2;
 
-SELECT * FROM TABLAS.HablaIdioma;
+SELECT * FROM arbitros.HablaIdioma;
 GO
 --Fallida(Valores invalidos)
 EXECUTE SP.uspHablaIdioma_Bajar @arbitro = NULL, @idioma = 0;
 
-SELECT * FROM TABLAS.HablaIdioma;
+SELECT * FROM arbitros.HablaIdioma;
 GO
 --Fallida(Valores inexistentes)
 EXECUTE SP.uspHablaIdioma_Bajar @arbitro = 1, @idioma = 2;
 
-SELECT * FROM TABLAS.HablaIdioma;
+SELECT * FROM arbitros.HablaIdioma;
 GO
 ---------------------------------------------------------------------
 --//Testing Reporte
@@ -592,7 +592,7 @@ EXECUTE SP.uspReporte_Registrar
 @arbitro = NULL, 
 @partido = -1;
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 --Fallida(Valores inexistentes)
 EXECUTE SP.uspReporte_Registrar 
@@ -601,7 +601,7 @@ EXECUTE SP.uspReporte_Registrar
 @arbitro = 45, 
 @partido = 123;
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 --Fallida(Valores dup)
 EXECUTE SP.uspReporte_Registrar 
@@ -610,7 +610,7 @@ EXECUTE SP.uspReporte_Registrar
 @arbitro = 2, 
 @partido = 1;
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 --/Update
 --Exitoso
@@ -618,20 +618,20 @@ EXECUTE SP.uspReporte_Update
 @id = 1,
 @descripcion = 'Faltas mal cobradas';
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 --Fallido(Valores invalidos)
 EXECUTE SP.uspReporte_Update
 @id = 1,
 @razon = 'Ataque';
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 --Fallido(Valores inexistentes)
 EXECUTE SP.uspReporte_Update
 @id = 145;
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 --Fallido(Valores dup)
 EXECUTE SP.uspReporte_Update
@@ -639,32 +639,32 @@ EXECUTE SP.uspReporte_Update
 @razon = 'Sancion', 
 @descripcion = 'Intencionalmente golpeo a un jugador.';
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 --/Baja
 --Exitosa
 EXECUTE SP.uspReporte_Baja @id = 1;
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 --Fallida(Valores invalidos)
 EXECUTE SP.uspReporte_Baja @id = -1;
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 --Fallida(Valores inexistentes)
 EXECUTE SP.uspReporte_Baja @id = 456;
 
-SELECT * FROM TABLAS.Reporte;
+SELECT * FROM arbitros.Reporte;
 GO
 
 --Limpieza (primero las tablas hijas, despues las padres, por las claves foraneas)
-DROP TABLE TABLAS.Reporte;
-DROP TABLE TABLAS.Publicidad;
-DROP TABLE TABLAS.HablaIdioma;
-DROP TABLE TABLAS.Arbitro;
-DROP TABLE TABLAS.Partido;
-DROP TABLE TABLAS.Idioma;
+DROP TABLE arbitros.Reporte;
+DROP TABLE publicidad.Publicidad;
+DROP TABLE arbitros.HablaIdioma;
+DROP TABLE arbitros.Arbitro;
+DROP TABLE partidos.Partido;
+DROP TABLE arbitros.Idioma;
 GO
 
 DROP PROCEDURE SP.uspIdioma_Registrar;

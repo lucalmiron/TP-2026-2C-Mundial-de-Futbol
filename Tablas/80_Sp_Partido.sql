@@ -74,32 +74,32 @@ BEGIN
 		SET @errorLine=@errorLine+CHAR(13)+'- La asistencia no puede ser negativa' 
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Fase WHERE IdFase = @IdFase))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM partidos.Fase WHERE IdFase = @IdFase))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Fase'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @Eq1))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @Eq1))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Eq1'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @Eq2))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @Eq2))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Eq2'
 	END
 
-	IF (@errorCount = 0 AND EXISTS(SELECT 1 FROM TABLAS.Partido WHERE Eq1 = @Eq1 AND Eq2 = @Eq2 AND Fecha = @Fecha AND IdFase = @IdFase))
+	IF (@errorCount = 0 AND EXISTS(SELECT 1 FROM partidos.Partido WHERE Eq1 = @Eq1 AND Eq2 = @Eq2 AND Fecha = @Fecha AND IdFase = @IdFase))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Partido duplicado'
 	END
 
 	IF (@errorCount = 0)
-		INSERT INTO TABLAS.Partido(IdFase, IdSede, Eq1, Eq2, Fecha, HoraUTC, HoraLocal, GolesEq1, GolesEq2, Asistencia)
+		INSERT INTO partidos.Partido(IdFase, IdSede, Eq1, Eq2, Fecha, HoraUTC, HoraLocal, GolesEq1, GolesEq2, Asistencia)
 		VALUES(@IdFase, @IdSede, @Eq1, @Eq2, @Fecha, @HoraUTC, @HoraLocal, @GolesEq1, @GolesEq2, @Asistencia)
 	ELSE
 		PRINT @errorLine
@@ -165,20 +165,20 @@ BEGIN
 		SET @errorLine=@errorLine+CHAR(13)+'- La asistencia no puede ser negativa'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @Id))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @Id))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Partido'
 	END
 
-	IF (@errorCount = 0 AND @IdFase IS NOT NULL AND NOT EXISTS(SELECT 1 FROM TABLAS.Fase WHERE IdFase = @IdFase))
+	IF (@errorCount = 0 AND @IdFase IS NOT NULL AND NOT EXISTS(SELECT 1 FROM partidos.Fase WHERE IdFase = @IdFase))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Fase'
 	END
 
 	IF (@errorCount = 0)
-		UPDATE TABLAS.Partido
+		UPDATE partidos.Partido
 		SET IdFase = COALESCE(@IdFase, IdFase),
 			IdSede = COALESCE(@IdSede, IdSede),
 			Eq1 = COALESCE(@Eq1, Eq1),
@@ -214,26 +214,26 @@ BEGIN
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor invalido: Id'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM TABLAS.Partido WHERE IdPartido = @Id))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @Id))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Partido'
 	END
 
-	IF (@errorCount = 0 AND OBJECT_ID('TABLAS.JuegaEn') IS NOT NULL AND EXISTS(SELECT 1 FROM TABLAS.JuegaEn WHERE IdPartido = @Id))
+	IF (@errorCount = 0 AND EXISTS(SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @Id))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Existen alineaciones para este partido'
 	END
 
-	IF (@errorCount = 0 AND OBJECT_ID('TABLAS.Evento') IS NOT NULL AND EXISTS(SELECT 1 FROM TABLAS.Evento WHERE IdPartido = @Id))
+	IF (@errorCount = 0 AND EXISTS(SELECT 1 FROM partidos.Evento WHERE Partido = @Id))
 	BEGIN
 		SET @errorCount=@errorCount+1
 		SET @errorLine=@errorLine+CHAR(13)+'- Existen eventos para este partido'
 	END
 
 	IF (@errorCount = 0)
-		DELETE FROM TABLAS.Partido WHERE IdPartido = @Id
+		DELETE FROM partidos.Partido WHERE IdPartido = @Id
 	ELSE
 		PRINT @errorLine
 END

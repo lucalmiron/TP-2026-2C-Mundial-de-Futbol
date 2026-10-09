@@ -85,19 +85,19 @@ BEGIN
 	--chequeo existencia
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Pais WHERE IdPais = @pais)
+		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Pais.'
 		END
 
-		IF (@club IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Club WHERE IdClub = @club)
+		IF (@club IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @club)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Club.'
 		END
 
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @seleccion)
+		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Seleccion.'
@@ -107,8 +107,8 @@ BEGIN
 	--chequeo cupo
 	IF(@errorCount = 0)
 	BEGIN
-		SET @cantJugadores = (SELECT COUNT(IdJugador) FROM TABLAS.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo')
-		IF( (@cantJugadores + 1) > (SELECT TAMANIO_SELECCION_MAXIMO FROM TABLAS.Mundial) )
+		SET @cantJugadores = (SELECT COUNT(IdJugador) FROM equipos.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo')
+		IF( (@cantJugadores + 1) > (SELECT TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Cupo maximo de jugadores excedido.'
@@ -118,13 +118,14 @@ BEGIN
 	--chequeo dup
 	IF(@errorCount = 0)
 	BEGIN
-		IF EXISTS(SELECT 1 FROM TABLAS.Persona WHERE Nombre = @nombre)
+		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
 		END
 		
-		IF EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE Numero = @numero)
+		--El dorsal es unico por seleccion (UQ_Jugador_Dorsal), no globalmente.
+		IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE Numero = @numero AND Seleccion = @seleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Numero.'
@@ -135,11 +136,11 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			INSERT INTO TABLAS.Persona(Nombre, Fnac, Pais, Rol)
+			INSERT INTO equipos.Persona(Nombre, Fnac, Pais, Rol)
 			OUTPUT INSERTED.IdPersona INTO @id(ID)
 			VALUES (@nombre, @fnac, @pais, 'Jugador')
 
-			INSERT INTO TABLAS.Jugador(IdJugador, Estado, Posicion, Numero, TarjetasAcum, Club, Seleccion)
+			INSERT INTO equipos.Jugador(IdJugador, Estado, Posicion, Numero, TarjetasAcum, Club, Seleccion)
 			VALUES((SELECT ID FROM @id), 'Activo', @posicion, @numero, 0, @club, @seleccion)
 
 			COMMIT TRANSACTION;
@@ -211,19 +212,19 @@ BEGIN
 	--chequeo existencia
 	IF(@errorCount = 0)
 	BEGIN
-		IF NOT EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @id)
+		IF NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: IdJugador.'
 		END
 
-		IF (@pais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Pais WHERE IdPais = @pais)
+		IF (@pais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Pais.'
 		END
 
-		IF (@seleccion IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM TABLAS.Seleccion WHERE IdSeleccion = @seleccion)
+		IF (@seleccion IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Seleccion.'
@@ -233,13 +234,13 @@ BEGIN
 	--chequeo dup
 	IF(@errorCount = 0)
 	BEGIN
-		IF EXISTS(SELECT 1 FROM TABLAS.Persona WHERE Nombre = @nombre AND IdPersona <> @id)
+		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre AND IdPersona <> @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Nombre.'
 		END
 
-		IF (@numero IS NOT NULL) AND EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE Numero = @numero AND IdJugador <> @id)
+		IF (@numero IS NOT NULL) AND EXISTS(SELECT 1 FROM equipos.Jugador WHERE Numero = @numero AND IdJugador <> @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Valor duplicado: Numero.'
@@ -250,14 +251,14 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			UPDATE TABLAS.Persona
+			UPDATE equipos.Persona
 			SET
 			Nombre = COALESCE(@nombre, Nombre),
 			Fnac = COALESCE(@fnac, Fnac),
 			Pais = COALESCE(@pais, Pais)
 			WHERE IdPersona = @id
 
-			UPDATE TABLAS.Jugador
+			UPDATE equipos.Jugador
 			SET
 			Posicion = COALESCE(@posicion, Posicion),
 			Numero = COALESCE(@numero, Numero),
@@ -303,7 +304,7 @@ BEGIN
 	END
 
 	--Chequeo existencia
-	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM TABLAS.Jugador WHERE IdJugador = @id)
+	IF(@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: IdJugador.'
@@ -312,7 +313,7 @@ BEGIN
 	--Chequeo relaciones
 	IF(@errorCount = 0)
 	BEGIN
-		IF EXISTS(SELECT 1 FROM TABLAS.Amonestacion WHERE Amonestado = @id)
+		IF EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE Amonestado = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.'
@@ -322,19 +323,19 @@ BEGIN
 		--Las tablas Gol, Sustitucion y Cambio_Convocatoria todavia no fueron creadas.
 		--Descomentar cuando existan los scripts de creacion correspondientes.
 
-		IF EXISTS(SELECT 1 FROM TABLAS.Gol WHERE Autor = @id OR Asistencia = @id)
+		IF EXISTS(SELECT 1 FROM partidos.Gol WHERE Autor = @id OR Asistencia = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Gol. Elimine dichos registros para continuar.'
 		END
 
-		IF EXISTS(SELECT 1 FROM TABLAS.Sustitucion WHERE Ingreso = @id OR Egreso = @id)
+		IF EXISTS(SELECT 1 FROM partidos.Sustitucion WHERE Ingreso = @id OR Egreso = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Sustitucion. Elimine dichos registros para continuar.'
 		END
 
-		IF EXISTS(SELECT 1 FROM TABLAS.Cambio_Convocatoria WHERE Ingreso = @id OR Egreso = @id)
+		IF EXISTS(SELECT 1 FROM partidos.Cambio_Convocatoria WHERE Ingreso = @id OR Egreso = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Cambio en Convocatoria. Elimine dichos registros para continuar.'
@@ -345,10 +346,10 @@ BEGIN
 	--chequeo cupo
 	IF(@errorCount = 0)
 	BEGIN
-		SET @seleccion = (SELECT Seleccion FROM TABLAS.Jugador WHERE IdJugador = @id)
-		SET @cantJugadores = (SELECT COUNT(IdJugador) FROM TABLAS.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo')
+		SET @seleccion = (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id)
+		SET @cantJugadores = (SELECT COUNT(IdJugador) FROM equipos.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo')
 
-		IF( (@cantJugadores - 1) < (SELECT TAMANIO_SELECCION_MINIMO FROM TABLAS.Mundial) )
+		IF( (@cantJugadores - 1) < (SELECT TAMANIO_SELECCION_MINIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Cupo minimo de jugadores no respetado.'
@@ -359,10 +360,10 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			DELETE FROM TABLAS.Jugador
+			DELETE FROM equipos.Jugador
 			WHERE IdJugador = @id
 
-			DELETE FROM TABLAS.Persona
+			DELETE FROM equipos.Persona
 			WHERE IdPersona = @id
 
 			COMMIT TRANSACTION;
