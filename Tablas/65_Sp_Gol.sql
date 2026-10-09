@@ -128,6 +128,9 @@ BEGIN
 	IF (@errorCount = 0)
 	BEGIN
 		DECLARE @idEvento INT
+		DECLARE @vEq1 INT
+		DECLARE @vEq2 INT
+		DECLARE @vSelAutor INT
 
 		BEGIN TRANSACTION
 		BEGIN TRY
@@ -138,6 +141,27 @@ BEGIN
 
 			INSERT INTO partidos.Gol (IdGol, Autor, Asistencia, Tipo)
 			VALUES (@idEvento, @autor, @asistencia, @tipo)
+
+			-- El marcador de partidos.Partido es derivado de Gol: cada gol suma 1
+			-- Si el tipo es 'En contra' suma al rival del autor, sino al equipo del autor
+			SELECT @vEq1 = Eq1, @vEq2 = Eq2 FROM partidos.Partido WHERE IdPartido = @partido
+
+			SELECT @vSelAutor = Seleccion FROM equipos.Jugador WHERE IdJugador = @autor
+
+			IF (@tipo = 'En contra')
+			BEGIN
+				IF (@vSelAutor = @vEq1)
+					UPDATE partidos.Partido SET GolesEq2 = GolesEq2 + 1 WHERE IdPartido = @partido
+				ELSE
+					UPDATE partidos.Partido SET GolesEq1 = GolesEq1 + 1 WHERE IdPartido = @partido
+			END
+			ELSE
+			BEGIN
+				IF (@vSelAutor = @vEq1)
+					UPDATE partidos.Partido SET GolesEq1 = GolesEq1 + 1 WHERE IdPartido = @partido
+				ELSE
+					UPDATE partidos.Partido SET GolesEq2 = GolesEq2 + 1 WHERE IdPartido = @partido
+			END
 
 			COMMIT TRANSACTION
 		END TRY
@@ -152,7 +176,7 @@ BEGIN
 	END
 	ELSE
 		PRINT @errorLine
-END;
+END
 GO
 
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspGol_Bajar'))
@@ -163,25 +187,60 @@ CREATE PROCEDURE SPTRANS.uspGol_Bajar
 AS
 BEGIN
 	DECLARE @errorCount INT
+	DECLARE @errorLine VARCHAR(300)
+	DECLARE @vPartido INT
+	DECLARE @vTipo VARCHAR(20)
+	DECLARE @vAutor INT
+	DECLARE @vEq1 INT
+	DECLARE @vEq2 INT
+	DECLARE @vSelAutor INT
 
 	SET @errorCount = 0
+	SET @errorLine = 'Error/es:'
 
 	IF (@id IS NULL) OR (@id <= 0)
 	BEGIN
 		SET @errorCount = @errorCount + 1
-		PRINT '-ERROR- Valor invalido: ID Gol.'
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Gol.'
 	END
 
 	IF (@errorCount = 0) AND NOT EXISTS (SELECT 1 FROM partidos.Gol WHERE IdGol = @id)
 	BEGIN
 		SET @errorCount = @errorCount + 1
-		PRINT '-ERROR- Registro inexistente.'
+		SET @errorLine = @errorLine + CHAR(13) + '- Registro inexistente.'
 	END
 
 	IF (@errorCount = 0)
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
+			SELECT @vTipo = Tipo, @vAutor = Autor FROM partidos.Gol WHERE IdGol = @id
+
+			SELECT @vPartido = Partido FROM partidos.Evento WHERE IdEvento = @id
+
+			-- Revierte el marcador derivado del mismo lado que sumo el alta, con piso en 0
+			IF (@vPartido IS NOT NULL) AND (@vTipo IS NOT NULL) AND (@vAutor IS NOT NULL)
+			BEGIN
+				SELECT @vEq1 = Eq1, @vEq2 = Eq2 FROM partidos.Partido WHERE IdPartido = @vPartido
+
+				SELECT @vSelAutor = Seleccion FROM equipos.Jugador WHERE IdJugador = @vAutor
+
+				IF (@vTipo = 'En contra')
+				BEGIN
+					IF (@vSelAutor = @vEq1)
+						UPDATE partidos.Partido SET GolesEq2 = CASE WHEN GolesEq2 > 0 THEN GolesEq2 - 1 ELSE 0 END WHERE IdPartido = @vPartido
+					ELSE
+						UPDATE partidos.Partido SET GolesEq1 = CASE WHEN GolesEq1 > 0 THEN GolesEq1 - 1 ELSE 0 END WHERE IdPartido = @vPartido
+				END
+				ELSE
+				BEGIN
+					IF (@vSelAutor = @vEq1)
+						UPDATE partidos.Partido SET GolesEq1 = CASE WHEN GolesEq1 > 0 THEN GolesEq1 - 1 ELSE 0 END WHERE IdPartido = @vPartido
+					ELSE
+						UPDATE partidos.Partido SET GolesEq2 = CASE WHEN GolesEq2 > 0 THEN GolesEq2 - 1 ELSE 0 END WHERE IdPartido = @vPartido
+				END
+			END
+
 			DELETE FROM partidos.Gol
 			WHERE IdGol = @id
 
@@ -199,5 +258,7 @@ BEGIN
 			PRINT CONCAT('ERROR (', @Num, '): ', @Msg)
 		END CATCH
 	END
+	ELSE
+		PRINT @errorLine
 END
 GO

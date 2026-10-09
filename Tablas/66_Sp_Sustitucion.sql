@@ -32,6 +32,7 @@ BEGIN
 	DECLARE @errorCount INT
 	DECLARE @errorLine VARCHAR(300)
 	DECLARE @vSeleccion INT
+	DECLARE @vIdMundial INT
 	DECLARE @vCambios INT
 	DECLARE @vVentanas INT
 	DECLARE @vMaxCambios INT
@@ -147,8 +148,9 @@ BEGIN
 
 	IF (@errorCount = 0)
 	BEGIN
-		--Solo se trabaja con el Mundial 2026, por eso se toma el limite sin filtrar por IdMundial.
-		SELECT TOP 1 @vMaxCambios = CAMBIOS_CANTIDAD, @vMaxVentanas = CAMBIOS_VENTANAS FROM sedes.Mundial
+		SELECT @vIdMundial = IdMundial FROM partidos.Partido WHERE IdPartido = @partido
+
+		SELECT @vMaxCambios = CAMBIOS_CANTIDAD, @vMaxVentanas = CAMBIOS_VENTANAS FROM sedes.Mundial WHERE IdMundial = @vIdMundial
 
 		SELECT @vCambios = COUNT(*) FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion
 
