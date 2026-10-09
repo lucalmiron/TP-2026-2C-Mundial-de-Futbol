@@ -159,7 +159,7 @@ CREATE TABLE TABLAS.Evento
 (
 	IdEvento INT PRIMARY KEY IDENTITY(1, 1),
 	Minuto INT,
-	Tipo VARCHAR(12),
+	Tipo VARCHAR(12) NOT NULL,
 	Partido INT,
 	Periodo INT,
 	FOREIGN KEY(Partido) REFERENCES TABLAS.Partido(IdPartido),
@@ -367,8 +367,8 @@ BEGIN
 			WHERE A.Amonestado = @amonestado AND A.Tarjeta = 'Roja')
 				THROW 50000, '- Esta persona ya fue expulsada.', 1
 
-			INSERT INTO TABLAS.Evento (Minuto, Periodo, Partido)
-			VALUES (@minuto, @periodo, @partido)
+			INSERT INTO TABLAS.Evento (Minuto, Tipo, Periodo, Partido)
+			VALUES (@minuto, 'Amonestacion', @periodo, @partido)
 
 			INSERT INTO TABLAS.Amonestacion(Amonestado, Arbitro, Tarjeta, Motivo)
 			VALUES (@amonestado, @arbitro, @tarjeta, @motivo)
@@ -385,8 +385,8 @@ BEGIN
 				IdAmonestacion IN (SELECT IdEvento FROM TABLAS.Evento WHERE Partido = @partido)
 			) = 2)
 			BEGIN
-				INSERT INTO TABLAS.Evento (Minuto, Periodo, Partido)
-				VALUES (@minuto, @periodo, @partido)
+				INSERT INTO TABLAS.Evento (Minuto, Tipo, Periodo, Partido)
+				VALUES (@minuto, 'Amonestacion', @periodo, @partido)
 
 				INSERT INTO TABLAS.Amonestacion(Amonestado, Arbitro, Tarjeta, Motivo)
 				VALUES (@amonestado, @arbitro, 'Roja', 'Otorgada por recibir 2 tarjetas amarillas previamente.')
@@ -412,7 +412,7 @@ BEGIN
 					WHERE IdJugador = @amonestado
 				END
 				ELSE
-					UPDATE TABLAS.Jugador SET TarjetasAcum = TarjetasAcum + 1
+					UPDATE TABLAS.Jugador SET TarjetasAcum = TarjetasAcum + 1 WHERE IdJugador = @amonestado
 			END
 			ELSE
 			BEGIN
@@ -432,7 +432,7 @@ BEGIN
 					WHERE IdTecnico = @amonestado
 				END
 				ELSE
-					UPDATE TABLAS.Tecnico SET TarjetasAcum = TarjetasAcum + 1
+					UPDATE TABLAS.Tecnico SET TarjetasAcum = TarjetasAcum + 1 WHERE IdTecnico = @amonestado
 			END
 
 			COMMIT TRANSACTION;

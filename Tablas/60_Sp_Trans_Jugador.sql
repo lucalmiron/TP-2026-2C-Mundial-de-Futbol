@@ -319,10 +319,6 @@ BEGIN
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.'
 		END
 
-		/*
-		--Las tablas Gol, Sustitucion y Cambio_Convocatoria todavia no fueron creadas.
-		--Descomentar cuando existan los scripts de creacion correspondientes.
-
 		IF EXISTS(SELECT 1 FROM partidos.Gol WHERE Autor = @id OR Asistencia = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
@@ -335,12 +331,11 @@ BEGIN
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Sustitucion. Elimine dichos registros para continuar.'
 		END
 
-		IF EXISTS(SELECT 1 FROM partidos.Cambio_Convocatoria WHERE Ingreso = @id OR Egreso = @id)
+		IF EXISTS(SELECT 1 FROM equipos.CambioConvocatoria WHERE Ingreso = @id OR Egreso = @id)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Cambio en Convocatoria. Elimine dichos registros para continuar.'
 		END
-		*/
 	END
 
 	--chequeo cupo

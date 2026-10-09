@@ -137,7 +137,7 @@ end;
 GO
 
 -- baja de espacio publicitario
-if exists (select name from sys.objects where object_id = object_id('SP.Espacio_Bajar'))
+if exists (select name from sys.objects where object_id = object_id('SP.EspacioPublicitario_Bajar'))
     drop procedure SP.EspacioPublicitario_Bajar
 go
 create procedure SP.EspacioPublicitario_Bajar
@@ -165,18 +165,14 @@ begin
     end
 
     -- chequeo relaciones (si hay registros hijos, no se puede dar de baja)
-    /*
     if (@errorCount = 0)
     begin
-        -- Si publicidad.HistorialPublicidad todavia no existe, comentar este bloque.
-        -- Ajustar 'IdEP' al nombre real de la columna en HistorialPublicidad.
         if exists(select 1 from publicidad.HistorialPublicidad where IdEP = @idEP)
         begin
             set @errorCount = @errorCount + 1
             set @errorLine = @errorLine + char(13) + '- Existen 1 o mas registros relacionados: Historial Publicidad. Elimine dichos registros para continuar.'
         end
     end
-    */
     if (@errorCount = 0)
     begin
         begin try

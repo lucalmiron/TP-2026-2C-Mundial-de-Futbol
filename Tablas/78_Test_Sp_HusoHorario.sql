@@ -91,5 +91,5 @@ SELECT * FROM sedes.HusoHorario;
 GO
 
 --/Limpieza de lo que genera el test
-DELETE FROM sedes.HusoHorario;
+DELETE FROM sedes.HusoHorario WHERE Nombre IN ('UTC-3','UTC+1');
 GO

@@ -90,5 +90,5 @@ SELECT * FROM publicidad.CostoFranja;
 GO
 
 --/Limpieza de lo que genera el test
-DELETE FROM publicidad.CostoFranja;
+DELETE FROM publicidad.CostoFranja WHERE TipoFranja IN ('Prime Time','Pre Prime Time','Off Prime Time');
 GO

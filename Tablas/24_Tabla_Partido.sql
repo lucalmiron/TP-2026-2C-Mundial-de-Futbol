@@ -13,6 +13,13 @@ BEGIN
 END
 GO
 
+-- Si la tabla ya existe se libera el CHECK que referencia a la funcion: mientras
+-- ese CHECK este puesto, SQL Server no permite alterar la funcion. Al final del
+-- script el CHECK se vuelve a agregar (ver CK_Partido_MismoMundial mas abajo).
+IF EXISTS (SELECT 1 FROM sys.check_constraints WHERE name = 'CK_Partido_MismoMundial')
+	ALTER TABLE partidos.Partido DROP CONSTRAINT CK_Partido_MismoMundial
+GO
+
 -- Funcion de apoyo al CHECK de mismo Mundial via equipos.Seleccion
 -- Se usa CREATE OR ALTER (y no DROP + CREATE) porque el CHECK la referencia:
 -- dropearla dejaria de ser re-ejecutable una vez creado el CHECK

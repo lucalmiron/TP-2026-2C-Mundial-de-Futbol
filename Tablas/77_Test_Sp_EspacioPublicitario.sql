@@ -93,5 +93,5 @@ SELECT * FROM publicidad.EspacioPublicitario;
 GO
 
 --/Limpieza de lo que genera el test
-DELETE FROM publicidad.EspacioPublicitario;
+DELETE FROM publicidad.EspacioPublicitario WHERE Tipo IN ('Panel Perimetral','Cubo LED','Tunnel de Acceso','Pantalla Principal');
 GO

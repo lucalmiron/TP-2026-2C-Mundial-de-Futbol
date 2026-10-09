@@ -114,5 +114,5 @@ SELECT * FROM sedes.Sede;
 GO
 
 --/Limpieza de lo que genera el test
-DELETE FROM sedes.Sede;
+DELETE FROM sedes.Sede WHERE Nombre = 'Sede Test';
 GO
