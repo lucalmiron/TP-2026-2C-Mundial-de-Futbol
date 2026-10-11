@@ -36,6 +36,8 @@ BEGIN
 	DECLARE @vLimSuspension INT
 	DECLARE @vTarjetasAcum INT
 	DECLARE @vAutoRoja INT
+	DECLARE @vSusp INT
+	DECLARE @ID TABLE(ID INT)
 
 	SET @errorCount = 0
 	SET @errorLine = 'Error/es:'
@@ -124,9 +126,11 @@ BEGIN
 		(
 			(@minuto IS NOT NULL)
 			AND
-			(@minuto < (SELECT Inicio FROM partidos.Periodo WHERE IdPeriodo = @periodo))
-			OR
-			(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @periodo))
+			(
+				(@minuto < (SELECT Inicio FROM partidos.Periodo WHERE IdPeriodo = @periodo))
+				OR
+				(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @periodo))
+			)
 		)
 	)
 	BEGIN
@@ -156,7 +160,7 @@ BEGIN
 		IF(@vRol = 'Tecnico') AND 
 		NOT EXISTS
 		(
-			SELECT 1 FROM equipos.Tecnico 
+			SELECT 1 FROM equipos.Tecnico  
 			WHERE IdTecnico = @amonestado AND 
 			Seleccion IN
 			((SELECT Eq1 FROM partidos.Partido WHERE IdPartido = @partido)
@@ -171,7 +175,7 @@ BEGIN
 		IF(@vRol = 'Jugador') AND
 		NOT EXISTS
 		(
-			SELECT 1 FROM equipos.Jugador 
+			SELECT 1 FROM equipos.Jugador  
 			WHERE IdJugador = @amonestado AND
 			Seleccion IN
 			((SELECT Eq1 FROM partidos.Partido WHERE IdPartido = @partido)
@@ -186,9 +190,9 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		--Solo se trabaja con el Mundial 2026, por eso se toma el limite sin filtrar por IdMundial.
-		SET @vLimSuspension = (SELECT TOP 1 SUSPENSION_TARJETAS_MAXIMAS FROM sedes.Mundial)
+		SET @vLimSuspension = (SELECT SUSPENSION_TARJETAS_MAXIMAS FROM sedes.Mundial WHERE IdMundial = (SELECT Mundial FROM partidos.Partido WHERE IdPartido = @partido))
 		SET @vAutoRoja = 0
+		SET @vSusp = 0
 
 		BEGIN TRANSACTION
 		BEGIN TRY
@@ -202,15 +206,27 @@ BEGIN
 			(SELECT IdEvento FROM partidos.Evento WHERE Partido = @partido AND Tipo = 'Amonestacion') AS E
 			ON A.IdAmonestacion = E.IdEvento
 			WHERE A.Amonestado = @amonestado AND A.Tarjeta = 'Roja')
-				THROW 50000, '- Esta persona ya fue expulsada.', 1
+				THROW 50000, 'Esta persona ya fue expulsada.', 1
 
-			--El Tipo es el discriminante entre los tipos de evento, y IdAmonestacion comparte la PK con IdEvento.
-			INSERT INTO partidos.Evento (Minuto, Tipo, Periodo, Partido)
-			VALUES (@minuto, 'Amonestacion', @periodo, @partido)
+			INSERT INTO partidos.Evento (Minuto, Periodo, Partido, Tipo)
+			OUTPUT INSERTED.IdEvento into @ID
+			VALUES (@minuto, @periodo, @partido, 'Amonestacion')
 
 			INSERT INTO partidos.Amonestacion(IdAmonestacion, Amonestado, Arbitro, Tarjeta, Motivo)
-			VALUES (SCOPE_IDENTITY(), @amonestado, @arbitro, @tarjeta, @motivo)
+			VALUES ((SELECT ID FROM @ID), @amonestado, @arbitro, @tarjeta, @motivo)
 
+			IF(@tarjeta = 'Amarilla')
+			BEGIN
+				IF(@vRol = 'Jugador')
+					SET @vTarjetasAcum = (SELECT TarjetasAcum FROM equipos.Jugador  WHERE IdJugador = @amonestado)
+				ELSE
+					SET @vTarjetasAcum = (SELECT TarjetasAcum FROM equipos.Tecnico  WHERE IdTecnico = @amonestado)
+
+				IF( (@vTarjetasAcum + 1) = @vLimSuspension )
+					SET @vSusp = 1
+			END
+
+			--chequeo si merece roja automatica(tiene 2 amarillas)
 			IF(
 			(
 				SELECT COUNT(IdAmonestacion)
@@ -223,54 +239,50 @@ BEGIN
 				IdAmonestacion IN (SELECT IdEvento FROM partidos.Evento WHERE Partido = @partido)
 			) = 2)
 			BEGIN
-				INSERT INTO partidos.Evento (Minuto, Tipo, Periodo, Partido)
-				VALUES (@minuto, 'Amonestacion', @periodo, @partido)
+				INSERT INTO partidos.Evento (Minuto, Periodo, Partido, Tipo)
+				OUTPUT INSERTED.IdEvento into @ID
+				VALUES (@minuto, @periodo, @partido, 'Amonestacion')
 
 				INSERT INTO partidos.Amonestacion(IdAmonestacion, Amonestado, Arbitro, Tarjeta, Motivo)
-				VALUES (SCOPE_IDENTITY(), @amonestado, @arbitro, 'Roja', 'Otorgada por recibir 2 tarjetas amarillas previamente.')
+				VALUES ((SELECT TOP 1 ID FROM @ID ORDER BY ID DESC), @amonestado, @arbitro, 'Roja', 'Otorgada por recibir 2 tarjetas amarillas previamente.')
 
 				SET @vAutoRoja = 1
 			END
 
+			--chequeo si merece suspension
 			IF(@vRol = 'Jugador')
 			BEGIN
-				SET @vTarjetasAcum = (SELECT TarjetasAcum FROM equipos.Jugador WHERE IdJugador = @amonestado)
-
 				IF
-				(@vTarjetasAcum = @vLimSuspension)
+				(@vSusp = 1)
 				OR
 				(@tarjeta = 'Roja')
 				OR
 				(@vAutoRoja = 1)
 				BEGIN
-					UPDATE equipos.Jugador
+					UPDATE equipos.Jugador 
 					SET
-					Estado = 'Suspendido',
-					TarjetasAcum = 0
+					Estado = 'Suspendido', TarjetasAcum = 0
 					WHERE IdJugador = @amonestado
 				END
 				ELSE
-					UPDATE equipos.Jugador SET TarjetasAcum = TarjetasAcum + 1 WHERE IdJugador = @amonestado
+					UPDATE equipos.Jugador  SET TarjetasAcum = TarjetasAcum + 1 WHERE IdJugador = @amonestado
 			END
 			ELSE
 			BEGIN
-				SET @vTarjetasAcum = (SELECT TarjetasAcum FROM equipos.Tecnico WHERE IdTecnico = @amonestado)
-
 				IF
-				(@vTarjetasAcum = @vLimSuspension)
+				(@vSusp = 1)
 				OR
 				(@tarjeta = 'Roja')
 				OR
 				(@vAutoRoja = 1)
 				BEGIN
-					UPDATE equipos.Tecnico
+					UPDATE equipos.Tecnico 
 					SET
-					Estado = 'Suspendido',
-					TarjetasAcum = 0
+					Estado = 'Suspendido', TarjetasAcum = 0
 					WHERE IdTecnico = @amonestado
 				END
 				ELSE
-					UPDATE equipos.Tecnico SET TarjetasAcum = TarjetasAcum + 1 WHERE IdTecnico = @amonestado
+					UPDATE equipos.Tecnico  SET TarjetasAcum = TarjetasAcum + 1 WHERE IdTecnico = @amonestado
 			END
 
 			COMMIT TRANSACTION;
@@ -355,13 +367,15 @@ BEGIN
 		(
 			(@minuto IS NOT NULL)
 			AND
-			(@minuto < (SELECT Inicio FROM partidos.Periodo WHERE IdPeriodo = @vCheck))
-			OR
-			(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @vCheck))
+			(
+				(@minuto < (SELECT Inicio FROM partidos.Periodo WHERE IdPeriodo = @vCheck))
+				OR
+				(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @vCheck))
+			)
 		)
 		BEGIN
 			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- El minuto esta fuera del rango del periodo indicado.'
+			SET @errorLine = @errorLine + CHAR(13) + '- El minuto esta fuera del rango del periodo actual.'
 		END
 	END
 
@@ -372,15 +386,17 @@ BEGIN
 		(
 			(@minuto IS NULL) 
 			AND 
-			((SELECT Descripcion FROM partidos.Periodo WHERE IdPeriodo = @periodo) <> 'Penales')
+			( (SELECT Descripcion FROM partidos.Periodo WHERE IdPeriodo = @periodo) <> 'Penales' )
 		)
 		OR
 		(
 			(@minuto IS NOT NULL)
 			AND
-			(@minuto < (SELECT Inicio FROM partidos.Periodo WHERE IdPeriodo = @periodo))
-			OR
-			(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @periodo))
+			(
+				(@minuto < (SELECT Inicio FROM partidos.Periodo WHERE IdPeriodo = @periodo))
+				OR
+				(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @periodo))
+			)
 		)
 		BEGIN
 			SET @errorCount = @errorCount + 1
@@ -503,18 +519,6 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			DECLARE @vAmonestado INT = (SELECT Amonestado FROM partidos.Amonestacion WHERE IdAmonestacion = @id)
-
-			--Al eliminar la amonestacion se restaura el estado del amonestado.
-			IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @vAmonestado)
-				UPDATE equipos.Jugador
-				SET Estado = 'Activo'
-				WHERE IdJugador = @vAmonestado
-
-			ELSE IF EXISTS(SELECT 1 FROM equipos.Tecnico WHERE IdTecnico = @vAmonestado)
-				UPDATE equipos.Tecnico
-				SET Estado = 'Activo'
-				WHERE IdTecnico = @vAmonestado
 
 			DELETE FROM partidos.Amonestacion
 			WHERE IdAmonestacion = @id
