@@ -1,4 +1,4 @@
---/Universidad Nacional de La Matanza
+﻿--/Universidad Nacional de La Matanza
 --/Bases de Datos Aplicadas - Comision 02
 
 --/Grupo 7 - Integrantes:
@@ -23,9 +23,13 @@ BEGIN
 	(
 		IdPeriodo INT,
 		Descripcion VARCHAR(12) NOT NULL,
-		Inicio INT NOT NULL,
-		Fin INT NOT NULL,
-		CONSTRAINT PK_Periodo PRIMARY KEY (IdPeriodo),
+		Inicio INT NULL,
+		Fin INT NULL,
+		EsPenales BIT NOT NULL CONSTRAINT DF_Periodo_EsPenales DEFAULT 0,
+        CONSTRAINT CK_Periodo_Limites CHECK (
+            (EsPenales = 1 AND Inicio IS NULL AND Fin IS NULL) OR
+            (EsPenales = 0 AND Inicio IS NOT NULL AND Fin IS NOT NULL AND Inicio >= 0 AND Fin >= Inicio)),
+        CONSTRAINT PK_Periodo PRIMARY KEY (IdPeriodo),
 		CONSTRAINT UQ_Periodo_Descripcion UNIQUE (Descripcion)
 	);
 END;

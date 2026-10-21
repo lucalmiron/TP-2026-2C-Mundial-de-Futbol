@@ -1,264 +1,138 @@
---/Universidad Nacional de La Matanza
---/Bases de Datos Aplicadas - Comision 02
-
---/Grupo 7 - Integrantes:
---Almiron, Luca
---Figueroa, Santiago
---Ruarte, Fidel
---Villalba, Leandro
-
---/Fecha: 08/10/2026
-
---Objetivo: Gestionar Tabla Gol
-
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
+-- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
+-- Fecha: 21/10/2026. Revision auxiliar de penales y publicidad por sede.
+USE MUNDIAL;
 GO
-
-IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspGol_Registrar'))
-    DROP PROCEDURE SPTRANS.uspGol_Registrar
-GO
-CREATE PROCEDURE SPTRANS.uspGol_Registrar
-@minuto INT,
-@partido INT,
-@periodo INT,
-@autor INT,
-@asistencia INT = NULL,
-@tipo VARCHAR(20)
+-- Objetivo: separar goles de juego y conversiones de tanda en una transaccion.
+-- Se conserva la firma original y se agrega un OUTPUT opcional para las pruebas/clientes.
+CREATE OR ALTER PROCEDURE SPTRANS.uspGol_Registrar
+ @minuto INT, @partido INT, @periodo INT, @autor INT,
+ @asistencia INT = NULL, @tipo VARCHAR(20), @idGol INT = NULL OUTPUT
 AS
 BEGIN
-	DECLARE @errorCount INT
-	DECLARE @errorLine VARCHAR(300)
-
-	SET @errorCount = 0
-	SET @errorLine = 'Error/es:'
-
-	IF (@minuto IS NOT NULL) AND (@minuto < 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Minuto.'
-	END
-
-	IF (@partido IS NULL) OR (@partido <= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Partido.'
-	END
-
-	IF (@periodo IS NULL) OR (@periodo <= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Periodo.'
-	END
-
-	IF (@autor IS NULL) OR (@autor <= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Autor.'
-	END
-
-	IF (@asistencia IS NOT NULL) AND (@asistencia <= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Asistencia.'
-	END
-
-	IF (@tipo IS NULL) OR (@tipo NOT IN ('Jugada', 'Penal', 'Tiro libre', 'Corner', 'En contra'))
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Tipo.'
-	END
-
-	IF (@errorCount = 0)
-	BEGIN
-		IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Partido.'
-		END
-
-		IF NOT EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Periodo.'
-		END
-
-		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @autor)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Autor.'
-		END
-
-		IF (@asistencia IS NOT NULL) AND NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @asistencia)
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Asistencia.'
-		END
-	END
-
-	IF (@errorCount = 0) AND (@asistencia IS NOT NULL) AND (@autor = @asistencia)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Autor y asistencia no pueden ser el mismo jugador.'
-	END
-
-	IF (@errorCount = 0) AND (@tipo = 'En contra') AND (@asistencia IS NOT NULL)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- El gol en contra no lleva asistencia.'
-	END
-
-	IF (@errorCount = 0)
-	BEGIN
-		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @autor AND Seleccion IN (SELECT Eq1 FROM partidos.Partido WHERE IdPartido = @partido UNION SELECT Eq2 FROM partidos.Partido WHERE IdPartido = @partido))
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- El autor no participo del encuentro.'
-		END
-
-		IF (@asistencia IS NOT NULL) AND NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @asistencia AND Seleccion IN (SELECT Eq1 FROM partidos.Partido WHERE IdPartido = @partido UNION SELECT Eq2 FROM partidos.Partido WHERE IdPartido = @partido))
-		BEGIN
-			SET @errorCount = @errorCount + 1
-			SET @errorLine = @errorLine + CHAR(13) + '- La asistencia no participo del encuentro.'
-		END
-	END
-
-	IF (@errorCount = 0)
-	BEGIN
-		DECLARE @idEvento INT
-		DECLARE @vEq1 INT
-		DECLARE @vEq2 INT
-		DECLARE @vSelAutor INT
-
-		BEGIN TRANSACTION
-		BEGIN TRY
-			INSERT INTO partidos.Evento (Minuto, Tipo, Partido, Periodo)
-			VALUES (@minuto, 'Gol', @partido, @periodo)
-
-			SET @idEvento = SCOPE_IDENTITY()
-
-			INSERT INTO partidos.Gol (IdGol, Autor, Asistencia, Tipo)
-			VALUES (@idEvento, @autor, @asistencia, @tipo)
-
-			-- El marcador de partidos.Partido es derivado de Gol: cada gol suma 1
-			-- Si el tipo es 'En contra' suma al rival del autor, sino al equipo del autor
-			SELECT @vEq1 = Eq1, @vEq2 = Eq2 FROM partidos.Partido WHERE IdPartido = @partido
-
-			SELECT @vSelAutor = Seleccion FROM equipos.Jugador WHERE IdJugador = @autor
-
-			IF (@tipo = 'En contra')
-			BEGIN
-				IF (@vSelAutor = @vEq1)
-					UPDATE partidos.Partido SET GolesEq2 = GolesEq2 + 1 WHERE IdPartido = @partido
-				ELSE
-					UPDATE partidos.Partido SET GolesEq1 = GolesEq1 + 1 WHERE IdPartido = @partido
-			END
-			ELSE
-			BEGIN
-				IF (@vSelAutor = @vEq1)
-					UPDATE partidos.Partido SET GolesEq1 = GolesEq1 + 1 WHERE IdPartido = @partido
-				ELSE
-					UPDATE partidos.Partido SET GolesEq2 = GolesEq2 + 1 WHERE IdPartido = @partido
-			END
-
-			COMMIT TRANSACTION
-		END TRY
-		BEGIN CATCH
-			IF @@TRANCOUNT > 0
-				ROLLBACK TRANSACTION
-
-			DECLARE @Msg NVARCHAR(500) = ERROR_MESSAGE()
-			DECLARE @Num INT = ERROR_NUMBER()
-			PRINT CONCAT('ERROR (', @Num, '): ', @Msg)
-		END CATCH
-	END
-	ELSE
-		PRINT @errorLine
-END
+ SET NOCOUNT ON;
+ SET XACT_ABORT ON;
+ DECLARE @errores NVARCHAR(2048)=N'', @penales BIT, @eq1 INT, @eq2 INT, @seleccion INT;
+ SELECT @penales=EsPenales FROM partidos.Periodo WHERE IdPeriodo=@periodo;
+ IF @penales IS NULL SET @errores+=N'Periodo inexistente. ';
+ IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@partido) SET @errores+=N'Partido inexistente. ';
+ IF @tipo IS NULL OR @tipo NOT IN ('Jugada','Penal','Tiro libre','Corner','En contra') SET @errores+=N'Tipo de gol invalido. ';
+ IF @minuto<0 SET @errores+=N'Minuto invalido. ';
+ IF @penales=1 AND (@minuto IS NOT NULL OR @tipo<>'Penal' OR @asistencia IS NOT NULL)
+   SET @errores+=N'La tanda requiere tipo Penal, minuto NULL y sin asistencia. ';
+ IF @penales=0 AND @minuto IS NOT NULL AND EXISTS(SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@periodo AND (@minuto<Inicio OR @minuto>Fin))
+   SET @errores+=N'Minuto fuera del periodo. ';
+ IF @autor=@asistencia SET @errores+=N'Autor y asistente deben ser diferentes. ';
+ IF @tipo='En contra' AND @asistencia IS NOT NULL SET @errores+=N'Un gol en contra no lleva asistencia. ';
+ SELECT @seleccion=Seleccion FROM equipos.Jugador WHERE IdJugador=@autor;
+ SELECT @eq1=Eq1,@eq2=Eq2 FROM partidos.Partido WHERE IdPartido=@partido;
+ IF @seleccion IS NULL OR @seleccion NOT IN (@eq1,@eq2) SET @errores+=N'El autor no pertenece a un equipo del partido. ';
+ IF @asistencia IS NOT NULL AND NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador=@asistencia AND Seleccion=@seleccion)
+   SET @errores+=N'El asistente debe pertenecer al equipo del autor. ';
+ IF LEN(@errores)>0 THROW 51000,@errores,1;
+ BEGIN TRY
+  BEGIN TRANSACTION;
+  -- Serializa goles y bajas del mismo partido para no perder incrementos.
+  SELECT @eq1=Eq1,@eq2=Eq2 FROM partidos.Partido WITH(UPDLOCK,HOLDLOCK) WHERE IdPartido=@partido;
+  IF @penales=1 AND EXISTS(SELECT 1 FROM partidos.Partido p JOIN partidos.Fase f ON f.IdFase=p.IdFase WHERE p.IdPartido=@partido AND f.Descripcion='Grupos')
+    THROW 51000,'La fase de grupos no admite definicion por penales.',1;
+  IF @penales=1 AND EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@partido AND GolesEq1<>GolesEq2)
+    THROW 51000,'Solo se puede iniciar una tanda con marcador empatado.',1;
+  IF @penales=0 AND EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@partido AND PenalesEq1 IS NOT NULL)
+    THROW 51000,'Anular la tanda antes de corregir goles del partido.',1;
+  INSERT partidos.Evento(Minuto,Tipo,Partido,Periodo) VALUES(@minuto,'Gol',@partido,@periodo);
+  SET @idGol=CONVERT(INT,SCOPE_IDENTITY());
+  INSERT partidos.Gol(IdGol,Autor,Asistencia,Tipo) VALUES(@idGol,@autor,@asistencia,@tipo);
+  IF @penales=1
+   UPDATE partidos.Partido SET
+    PenalesEq1=COALESCE(PenalesEq1,0)+CASE WHEN @seleccion=@eq1 THEN 1 ELSE 0 END,
+    PenalesEq2=COALESCE(PenalesEq2,0)+CASE WHEN @seleccion=@eq2 THEN 1 ELSE 0 END WHERE IdPartido=@partido;
+  ELSE
+   UPDATE partidos.Partido SET
+    GolesEq1=GolesEq1+CASE WHEN (@seleccion=@eq1 AND @tipo<>'En contra') OR (@seleccion=@eq2 AND @tipo='En contra') THEN 1 ELSE 0 END,
+    GolesEq2=GolesEq2+CASE WHEN (@seleccion=@eq2 AND @tipo<>'En contra') OR (@seleccion=@eq1 AND @tipo='En contra') THEN 1 ELSE 0 END WHERE IdPartido=@partido;
+  COMMIT;
+ END TRY
+ BEGIN CATCH
+  IF @@TRANCOUNT>0 ROLLBACK;
+  THROW;
+ END CATCH;
+END;
 GO
-
-IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspGol_Bajar'))
-    DROP PROCEDURE SPTRANS.uspGol_Bajar
-GO
-CREATE PROCEDURE SPTRANS.uspGol_Bajar
-@id INT
-AS
+CREATE OR ALTER PROCEDURE SPTRANS.uspGol_Bajar @id INT AS
 BEGIN
-	DECLARE @errorCount INT
-	DECLARE @errorLine VARCHAR(300)
-	DECLARE @vPartido INT
-	DECLARE @vTipo VARCHAR(20)
-	DECLARE @vAutor INT
-	DECLARE @vEq1 INT
-	DECLARE @vEq2 INT
-	DECLARE @vSelAutor INT
-
-	SET @errorCount = 0
-	SET @errorLine = 'Error/es:'
-
-	IF (@id IS NULL) OR (@id <= 0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: ID Gol.'
-	END
-
-	IF (@errorCount = 0) AND NOT EXISTS (SELECT 1 FROM partidos.Gol WHERE IdGol = @id)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR(13) + '- Registro inexistente.'
-	END
-
-	IF (@errorCount = 0)
-	BEGIN
-		BEGIN TRANSACTION
-		BEGIN TRY
-			SELECT @vTipo = Tipo, @vAutor = Autor FROM partidos.Gol WHERE IdGol = @id
-
-			SELECT @vPartido = Partido FROM partidos.Evento WHERE IdEvento = @id
-
-			-- Revierte el marcador derivado del mismo lado que sumo el alta, con piso en 0
-			IF (@vPartido IS NOT NULL) AND (@vTipo IS NOT NULL) AND (@vAutor IS NOT NULL)
-			BEGIN
-				SELECT @vEq1 = Eq1, @vEq2 = Eq2 FROM partidos.Partido WHERE IdPartido = @vPartido
-
-				SELECT @vSelAutor = Seleccion FROM equipos.Jugador WHERE IdJugador = @vAutor
-
-				IF (@vTipo = 'En contra')
-				BEGIN
-					IF (@vSelAutor = @vEq1)
-						UPDATE partidos.Partido SET GolesEq2 = CASE WHEN GolesEq2 > 0 THEN GolesEq2 - 1 ELSE 0 END WHERE IdPartido = @vPartido
-					ELSE
-						UPDATE partidos.Partido SET GolesEq1 = CASE WHEN GolesEq1 > 0 THEN GolesEq1 - 1 ELSE 0 END WHERE IdPartido = @vPartido
-				END
-				ELSE
-				BEGIN
-					IF (@vSelAutor = @vEq1)
-						UPDATE partidos.Partido SET GolesEq1 = CASE WHEN GolesEq1 > 0 THEN GolesEq1 - 1 ELSE 0 END WHERE IdPartido = @vPartido
-					ELSE
-						UPDATE partidos.Partido SET GolesEq2 = CASE WHEN GolesEq2 > 0 THEN GolesEq2 - 1 ELSE 0 END WHERE IdPartido = @vPartido
-				END
-			END
-
-			DELETE FROM partidos.Gol
-			WHERE IdGol = @id
-
-			DELETE FROM partidos.Evento
-			WHERE IdEvento = @id
-
-			COMMIT TRANSACTION
-		END TRY
-		BEGIN CATCH
-			IF @@TRANCOUNT > 0
-				ROLLBACK TRANSACTION
-
-			DECLARE @Msg NVARCHAR(500) = ERROR_MESSAGE()
-			DECLARE @Num INT = ERROR_NUMBER()
-			PRINT CONCAT('ERROR (', @Num, '): ', @Msg)
-		END CATCH
-	END
-	ELSE
-		PRINT @errorLine
-END
+ SET NOCOUNT ON;
+ SET XACT_ABORT ON;
+ DECLARE @partido INT,@penales BIT,@tipo VARCHAR(20),@sel INT,@eq1 INT,@eq2 INT;
+ SELECT @partido=Partido FROM partidos.Evento WHERE IdEvento=@id;
+ IF @partido IS NULL OR NOT EXISTS(SELECT 1 FROM partidos.Gol WHERE IdGol=@id)
+  THROW 51000,'Gol inexistente.',1;
+ BEGIN TRY
+  BEGIN TRANSACTION;
+  SELECT @eq1=Eq1,@eq2=Eq2 FROM partidos.Partido WITH(UPDLOCK,HOLDLOCK) WHERE IdPartido=@partido;
+  IF NOT EXISTS(SELECT 1 FROM partidos.Gol WHERE IdGol=@id) THROW 51000,'El gol ya fue eliminado.',1;
+  SELECT @penales=r.EsPenales,@tipo=g.Tipo,@sel=j.Seleccion
+  FROM partidos.Gol g JOIN partidos.Evento e ON e.IdEvento=g.IdGol
+  JOIN partidos.Periodo r ON r.IdPeriodo=e.Periodo JOIN equipos.Jugador j ON j.IdJugador=g.Autor WHERE g.IdGol=@id;
+  IF @penales=0 AND EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@partido AND PenalesEq1 IS NOT NULL)
+    THROW 51000,'Anular la tanda antes de corregir goles del partido.',1;
+  IF @penales=1
+   UPDATE partidos.Partido SET
+    PenalesEq1=PenalesEq1-CASE WHEN @sel=@eq1 THEN 1 ELSE 0 END,
+    PenalesEq2=PenalesEq2-CASE WHEN @sel=@eq2 THEN 1 ELSE 0 END WHERE IdPartido=@partido;
+  ELSE
+   UPDATE partidos.Partido SET
+    GolesEq1=GolesEq1-CASE WHEN (@sel=@eq1 AND @tipo<>'En contra') OR (@sel=@eq2 AND @tipo='En contra') THEN 1 ELSE 0 END,
+    GolesEq2=GolesEq2-CASE WHEN (@sel=@eq2 AND @tipo<>'En contra') OR (@sel=@eq1 AND @tipo='En contra') THEN 1 ELSE 0 END WHERE IdPartido=@partido;
+  DELETE partidos.Gol WHERE IdGol=@id;
+  DELETE partidos.Evento WHERE IdEvento=@id;
+  COMMIT;
+ END TRY
+ BEGIN CATCH
+  IF @@TRANCOUNT>0 ROLLBACK;
+  THROW;
+ END CATCH;
+END;
+GO
+-- Iniciar permite representar una tanda 0-0; anular la deja NULL-NULL.
+-- No representa cierre de partido ni verifica todas las reglas de tiros de una tanda.
+CREATE OR ALTER PROCEDURE SP.uspPartido_Tanda @IdPartido INT,@Iniciar BIT AS
+BEGIN
+ SET NOCOUNT ON;
+ SET XACT_ABORT ON;
+ IF @Iniciar IS NULL THROW 51000,'Iniciar es obligatorio.',1;
+ IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@IdPartido) THROW 51000,'Partido inexistente.',1;
+ BEGIN TRY
+  BEGIN TRANSACTION;
+  DECLARE @g1 INT,@g2 INT;
+  SELECT @g1=GolesEq1,@g2=GolesEq2 FROM partidos.Partido WITH(UPDLOCK,HOLDLOCK) WHERE IdPartido=@IdPartido;
+  IF @Iniciar=1 AND EXISTS(SELECT 1 FROM partidos.Partido p JOIN partidos.Fase f ON f.IdFase=p.IdFase WHERE p.IdPartido=@IdPartido AND f.Descripcion='Grupos')
+    THROW 51000,'La fase de grupos no admite definicion por penales.',1;
+  IF @Iniciar=1 AND @g1<>@g2 THROW 51000,'La tanda requiere empate.',1;
+  IF @Iniciar=0 AND EXISTS(SELECT 1 FROM partidos.Evento e JOIN partidos.Gol g ON g.IdGol=e.IdEvento
+      JOIN partidos.Periodo r ON r.IdPeriodo=e.Periodo WHERE e.Partido=@IdPartido AND r.EsPenales=1)
+    THROW 51000,'Eliminar primero las conversiones de la tanda.',1;
+  UPDATE partidos.Partido SET
+    PenalesEq1=CASE WHEN @Iniciar=1 THEN COALESCE(PenalesEq1,0) ELSE NULL END,
+    PenalesEq2=CASE WHEN @Iniciar=1 THEN COALESCE(PenalesEq2,0) ELSE NULL END WHERE IdPartido=@IdPartido;
+  COMMIT;
+ END TRY
+ BEGIN CATCH
+  IF @@TRANCOUNT>0 ROLLBACK;
+  THROW;
+ END CATCH;
+END;
+GO
+CREATE OR ALTER VIEW partidos.vResultadoPartido AS
+ SELECT IdPartido,GolesEq1,GolesEq2,PenalesEq1,PenalesEq2,
+ CONCAT(GolesEq1,CASE WHEN PenalesEq1 IS NOT NULL THEN CONCAT('(',PenalesEq1,')') ELSE '' END,
+ ' - ',GolesEq2,CASE WHEN PenalesEq2 IS NOT NULL THEN CONCAT('(',PenalesEq2,')') ELSE '' END) AS Resultado
+ FROM partidos.Partido;
+GO
+-- Fuente para reportes de goleadores: excluye tandas y goles en contra.
+CREATE OR ALTER VIEW partidos.vGolesComputables AS
+ SELECT g.IdGol,g.Autor,g.Asistencia,g.Tipo,e.Partido,e.Minuto,e.Periodo
+ FROM partidos.Gol g JOIN partidos.Evento e ON e.IdEvento=g.IdGol
+ JOIN partidos.Periodo r ON r.IdPeriodo=e.Periodo
+ WHERE r.EsPenales=0 AND g.Tipo<>'En contra';
 GO

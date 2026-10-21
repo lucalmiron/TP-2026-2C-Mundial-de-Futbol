@@ -1,4 +1,4 @@
---/Universidad Nacional de La Matanza
+﻿--/Universidad Nacional de La Matanza
 --/Bases de Datos Aplicadas - Comision 02
 
 --/Grupo 7 - Integrantes:
@@ -58,7 +58,9 @@ BEGIN
 					WHERE IdPeriodo = @periodo AND (@minuto < Inicio OR @minuto > Fin))
 		SET @errores += N'El minuto esta fuera del rango del periodo indicado. ';
 
-	IF LEN(@errores) > 0
+	IF @minuto IS NOT NULL AND EXISTS(SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@periodo AND EsPenales=1)
+        SET @errores += N'La tanda de penales no utiliza minuto; enviar NULL. ';
+    IF LEN(@errores) > 0
 		THROW 50000, @errores, 1;
 
 	BEGIN TRY
@@ -122,7 +124,11 @@ BEGIN
 					WHERE IdPeriodo = @periodo AND (@minuto < Inicio OR @minuto > Fin))
 		SET @errores += N'El minuto esta fuera del rango del periodo indicado. ';
 
-	IF LEN(@errores) > 0
+	IF @minuto IS NOT NULL AND EXISTS(SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@periodo AND EsPenales=1)
+        SET @errores += N'La tanda de penales no utiliza minuto; enviar NULL. ';
+    IF EXISTS(SELECT 1 FROM partidos.Gol WHERE IdGol=@idEvento)
+        SET @errores += N'Para corregir un gol, usar su baja y registrar el evento correcto. ';
+    IF LEN(@errores) > 0
 		THROW 50000, @errores, 1;
 
 	BEGIN TRY
@@ -164,7 +170,9 @@ BEGIN
 	IF @idEvento IS NOT NULL AND EXISTS (SELECT 1 FROM partidos.Amonestacion WHERE IdAmonestacion = @idEvento)
 		SET @errores += N'No se puede eliminar el evento: tiene una amonestacion asociada. ';
 
-	IF LEN(@errores) > 0
+	IF EXISTS(SELECT 1 FROM partidos.Gol WHERE IdGol=@idEvento)
+        SET @errores += N'Utilizar SPTRANS.uspGol_Bajar para mantener el marcador. ';
+    IF LEN(@errores) > 0
 		THROW 50000, @errores, 1;
 
 	BEGIN TRY

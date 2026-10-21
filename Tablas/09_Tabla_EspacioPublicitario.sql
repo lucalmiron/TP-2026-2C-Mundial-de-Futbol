@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza
+﻿-- Universidad Nacional de La Matanza
 -- Bases de datos aplicada 
 -- Almiron, Luca
 -- Figueroa, Santiago
@@ -18,9 +18,13 @@ BEGIN
 	CREATE TABLE publicidad.EspacioPublicitario
 	(
 		IdEP INT IDENTITY(1,1),
-		Tipo VARCHAR(30) NOT NULL,
+		IdSede INT NOT NULL,
+        Numero TINYINT NOT NULL,
+        Tipo VARCHAR(30) NOT NULL,
 		Costo DECIMAL(10,2) NOT NULL,
-		CONSTRAINT PK_EspacioPublicitario PRIMARY KEY (IdEP),
+		CONSTRAINT CK_EspacioPublicitario_Numero CHECK (Numero BETWEEN 1 AND 4),
+        CONSTRAINT UQ_EspacioPublicitario_SedeNumero UNIQUE (IdSede, Numero),
+        CONSTRAINT PK_EspacioPublicitario PRIMARY KEY (IdEP),
 		CONSTRAINT CK_EspacioPublicitario_Costo CHECK (Costo >= 0)
 	);
 END;

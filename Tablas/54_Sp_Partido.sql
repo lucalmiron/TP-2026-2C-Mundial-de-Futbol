@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza
+﻿-- Universidad Nacional de La Matanza
 -- Bases de datos aplicada
 -- Almiron, Luca
 -- Figueroa, Santiago
@@ -122,7 +122,7 @@ BEGIN
 		INSERT INTO partidos.Partido(IdFase, IdSede, IdMundial, Eq1, Eq2, Fecha, HoraUTC, HoraLocal, GolesEq1, GolesEq2, Asistencia)
 		VALUES(@IdFase, @IdSede, @IdMundial, @Eq1, @Eq2, @Fecha, @HoraUTC, @HoraLocal, 0, 0, @Asistencia)
 	ELSE
-		PRINT @errorLine
+		THROW 51000, @errorLine, 1;
 END
 GO
 
@@ -133,7 +133,7 @@ IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspParti
 GO
 
 -- Nota: el marcador oficial (GolesEq1/GolesEq2) lo mueve Gol via
--- SPTRANS.uspGol_Registrar y SPTRANS.uspGol_Bajar. Estos parametros solo permiten correcciones manuales
+-- SPTRANS.uspGol_Registrar y SPTRANS.uspGol_Bajar. Los parametros de goles se conservan por compatibilidad, pero se rechazan
 CREATE PROCEDURE SP.uspPartido_Update
 @Id INT,
 @IdFase INT = NULL,
@@ -236,7 +236,10 @@ BEGIN
 		END
 	END
 
-	IF (@errorCount = 0)
+	IF @GolesEq1 IS NOT NULL OR @GolesEq2 IS NOT NULL
+        THROW 51000, 'El marcador se modifica mediante alta y baja de goles, no manualmente.', 1;
+
+    IF (@errorCount = 0)
 		UPDATE partidos.Partido
 		SET IdFase = COALESCE(@IdFase, IdFase),
 			IdSede = COALESCE(@IdSede, IdSede),
@@ -251,7 +254,7 @@ BEGIN
 			Asistencia = COALESCE(@Asistencia, Asistencia)
 		WHERE IdPartido = @Id
 	ELSE
-		PRINT @errorLine
+		THROW 51000, @errorLine, 1;
 END
 GO
 
@@ -295,6 +298,6 @@ BEGIN
 	IF (@errorCount = 0)
 		DELETE FROM partidos.Partido WHERE IdPartido = @Id
 	ELSE
-		PRINT @errorLine
+		THROW 51000, @errorLine, 1;
 END
 GO

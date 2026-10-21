@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza
+﻿-- Universidad Nacional de La Matanza
 -- Bases de datos aplicada
 -- Almiron, Luca
 -- Figueroa, Santiago
@@ -50,7 +50,12 @@ BEGIN
 		HoraLocal TIME NOT NULL,
 		GolesEq1 INT NOT NULL CONSTRAINT DF_Partido_GolesEq1 DEFAULT 0 CONSTRAINT CK_Partido_GolesEq1 CHECK (GolesEq1 >= 0),
 		GolesEq2 INT NOT NULL CONSTRAINT DF_Partido_GolesEq2 DEFAULT 0 CONSTRAINT CK_Partido_GolesEq2 CHECK (GolesEq2 >= 0),
-		Asistencia INT CONSTRAINT CK_Partido_Asistencia CHECK (Asistencia >= 0),
+		PenalesEq1 INT NULL,
+        PenalesEq2 INT NULL,
+        CONSTRAINT CK_Partido_Penales CHECK (
+          (PenalesEq1 IS NULL AND PenalesEq2 IS NULL) OR
+          (PenalesEq1 IS NOT NULL AND PenalesEq2 IS NOT NULL AND PenalesEq1 >= 0 AND PenalesEq2 >= 0)),
+        Asistencia INT CONSTRAINT CK_Partido_Asistencia CHECK (Asistencia >= 0),
 		CONSTRAINT PK_Partido PRIMARY KEY (IdPartido),
 		CONSTRAINT FK_Partido_Fase FOREIGN KEY (IdFase) REFERENCES partidos.Fase(IdFase),
 		CONSTRAINT FK_Partido_Sede FOREIGN KEY (IdSede) REFERENCES sedes.Sede(IdSede),

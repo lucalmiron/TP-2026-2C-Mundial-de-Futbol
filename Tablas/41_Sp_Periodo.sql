@@ -1,4 +1,4 @@
---/Universidad Nacional de La Matanza
+﻿--/Universidad Nacional de La Matanza
 --/Bases de Datos Aplicadas - Comision 02
 
 --/Grupo 7 - Integrantes:
@@ -26,7 +26,8 @@ CREATE OR ALTER PROCEDURE partidos.Periodo_Alta
 	@idPeriodo INT,
 	@descripcion VARCHAR(50),
 	@inicio INT,
-	@fin INT
+	@fin INT,
+    @esPenales BIT = 0
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -48,24 +49,27 @@ BEGIN
 	IF @descripcion IS NOT NULL AND EXISTS (SELECT 1 FROM partidos.Periodo WHERE Descripcion = @descripcion)
 		SET @errores += N'Ya existe un periodo con la descripcion indicada. ';
 
-	IF @inicio IS NULL
+	IF @esPenales = 0 AND @inicio IS NULL
 		SET @errores += N'El inicio es obligatorio. ';
 	IF @inicio IS NOT NULL AND @inicio < 0
 		SET @errores += N'El inicio no puede ser negativo. ';
 
-	IF @fin IS NULL
+	IF @esPenales = 0 AND @fin IS NULL
 		SET @errores += N'El fin es obligatorio. ';
 	IF @fin IS NOT NULL AND @inicio IS NOT NULL AND @fin < @inicio
 		SET @errores += N'El fin no puede ser menor al inicio. ';
 
-	IF LEN(@errores) > 0
+	IF @esPenales IS NULL SET @errores += N'EsPenales es obligatorio. ';
+    IF @esPenales = 1 AND (@inicio IS NOT NULL OR @fin IS NOT NULL)
+        SET @errores += N'Penales requiere Inicio y Fin NULL. ';
+    IF LEN(@errores) > 0
 		THROW 50000, @errores, 1;
 
 	BEGIN TRY
 		BEGIN TRANSACTION;
 
-		INSERT INTO partidos.Periodo (IdPeriodo, Descripcion, Inicio, Fin)
-		VALUES (@idPeriodo, @descripcion, @inicio, @fin);
+		INSERT INTO partidos.Periodo (IdPeriodo, Descripcion, Inicio, Fin, EsPenales)
+		VALUES (@idPeriodo, @descripcion, @inicio, @fin, @esPenales);
 
 		COMMIT TRANSACTION;
 	END TRY
@@ -84,7 +88,8 @@ CREATE OR ALTER PROCEDURE partidos.Periodo_Modificacion
 	@idPeriodo INT,
 	@descripcion VARCHAR(50),
 	@inicio INT,
-	@fin INT
+	@fin INT,
+    @esPenales BIT = 0
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -104,17 +109,24 @@ BEGIN
 	IF @descripcion IS NOT NULL AND EXISTS (SELECT 1 FROM partidos.Periodo WHERE Descripcion = @descripcion AND IdPeriodo <> @idPeriodo)
 		SET @errores += N'Otro periodo ya tiene esa descripcion. ';
 
-	IF @inicio IS NULL
+	IF @esPenales = 0 AND @inicio IS NULL
 		SET @errores += N'El inicio es obligatorio. ';
 	IF @inicio IS NOT NULL AND @inicio < 0
 		SET @errores += N'El inicio no puede ser negativo. ';
 
-	IF @fin IS NULL
+	IF @esPenales = 0 AND @fin IS NULL
 		SET @errores += N'El fin es obligatorio. ';
 	IF @fin IS NOT NULL AND @inicio IS NOT NULL AND @fin < @inicio
 		SET @errores += N'El fin no puede ser menor al inicio. ';
 
-	IF LEN(@errores) > 0
+	IF EXISTS (SELECT 1 FROM partidos.Evento WHERE Periodo=@idPeriodo)
+       AND EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@idPeriodo
+         AND (EsPenales<>@esPenales OR ISNULL(Inicio,-1)<>ISNULL(@inicio,-1) OR ISNULL(Fin,-1)<>ISNULL(@fin,-1)))
+        SET @errores += N'No se pueden cambiar los limites o tipo de un periodo con eventos. ';
+    IF @esPenales IS NULL SET @errores += N'EsPenales es obligatorio. ';
+    IF @esPenales = 1 AND (@inicio IS NOT NULL OR @fin IS NOT NULL)
+        SET @errores += N'Penales requiere Inicio y Fin NULL. ';
+    IF LEN(@errores) > 0
 		THROW 50000, @errores, 1;
 
 	BEGIN TRY
@@ -123,7 +135,8 @@ BEGIN
 		UPDATE partidos.Periodo
 		SET Descripcion = @descripcion,
 			Inicio = @inicio,
-			Fin = @fin
+			Fin = @fin,
+            EsPenales = @esPenales
 		WHERE IdPeriodo = @idPeriodo;
 
 		COMMIT TRANSACTION;

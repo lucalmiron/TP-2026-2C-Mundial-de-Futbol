@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza
+﻿-- Universidad Nacional de La Matanza
 -- Bases de datos aplicada 
 -- Almiron, Luca
 -- Figueroa, Santiago
@@ -18,9 +18,11 @@ BEGIN
 	CREATE TABLE publicidad.CostoFranja
 	(
 		IdCF INT IDENTITY(1,1),
-		TipoFranja VARCHAR(30) NOT NULL,
+		IdSede INT NOT NULL,
+        TipoFranja VARCHAR(30) NOT NULL,
 		Costo DECIMAL(10,2) NOT NULL,
-		CONSTRAINT PK_CostoFranja PRIMARY KEY (IdCF),
+		CONSTRAINT UQ_CostoFranja_SedeTipo UNIQUE (IdSede, TipoFranja),
+        CONSTRAINT PK_CostoFranja PRIMARY KEY (IdCF),
 		CONSTRAINT CK_CostoFranja_Costo CHECK (Costo >= 0)
 	);
 END;

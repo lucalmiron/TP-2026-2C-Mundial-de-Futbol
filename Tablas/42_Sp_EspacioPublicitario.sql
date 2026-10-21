@@ -1,189 +1,44 @@
--- Universidad Nacional de La Matanza
--- Bases de datos aplicada
--- Almiron, Luca
--- Figueroa, Santiago
--- Ruarte, Fidel
--- Villalba, Leandro
--- 08/10/2026
--- Objetivo: SP espacio publicitario
-
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'mundial')
+﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
+-- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
+-- Fecha: 21/10/2026. Revision auxiliar de penales y publicidad por sede.
+USE MUNDIAL;
+GO
+-- Objetivo: ABM de EspacioPublicitario por sede; la identidad de sede no se mueve en Update.
+CREATE OR ALTER PROCEDURE SP.EspacioPublicitario_Registrar
+ @tipo VARCHAR(30),@costo DECIMAL(10,2),@idSede INT, @numero TINYINT
+AS
 BEGIN
-	USE mundial
+ SET NOCOUNT ON;
+ DECLARE @errores NVARCHAR(2048)=N'';
+ IF @tipo IS NULL OR LTRIM(RTRIM(@tipo))='' SET @errores+=N'Descripcion obligatoria. ';
+ IF @costo IS NULL OR @costo<0 SET @errores+=N'Costo debe ser no negativo. ';
+ IF NOT EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede=@idSede) SET @errores+=N'Sede inexistente. ';
+ IF @numero IS NULL OR @numero NOT BETWEEN 1 AND 4 SET @errores+=N'Numero debe estar entre 1 y 4. ';
+ IF EXISTS(SELECT 1 FROM publicidad.EspacioPublicitario WHERE IdSede=@idSede AND Numero=@numero) SET @errores+=N'Registro duplicado en la sede. ';
+ IF LEN(@errores)>0 THROW 51000,@errores,1;
+ INSERT publicidad.EspacioPublicitario(IdSede,Tipo,Costo,Numero) VALUES(@idSede,LTRIM(RTRIM(@tipo)),@costo,@numero);
 END;
 GO
-
--- alta de espacio publicitario
-if exists (select name from sys.objects where object_id = object_id('SP.EspacioPublicitario_Registrar'))
-    drop procedure SP.EspacioPublicitario_Registrar
-go
-create procedure SP.EspacioPublicitario_Registrar
-    @tipo  varchar(30),
-    @costo decimal(10,2)
-as
-begin
-    declare @errorCount int
-    declare @errorLine varchar(800)
-
-    set @errorCount = 0
-    set @errorLine = 'Error/es:'
-
-    -- chequeo validez
-    if (@tipo is null) or (ltrim(rtrim(@tipo)) = '')
-    begin
-        set @errorCount = @errorCount + 1
-        set @errorLine = @errorLine + char(13) + '- Valor invalido: Tipo.'
-    end
-
-    if (@costo is null) or (@costo <= 0)
-    begin
-        set @errorCount = @errorCount + 1
-        set @errorLine = @errorLine + char(13) + '- Valor invalido: Costo.'
-    end
-
-    -- chequeo dup
-    if (@errorCount = 0)
-    begin
-        if exists(select 1 from publicidad.EspacioPublicitario where Tipo = @tipo)
-        begin
-            set @errorCount = @errorCount + 1
-            set @errorLine = @errorLine + char(13) + '- Valor duplicado: Tipo de espacio.'
-        end
-    end
-
-    if (@errorCount = 0)
-    begin
-        begin try
-            insert into publicidad.EspacioPublicitario (Tipo, Costo)
-            values (@tipo, @costo)
-        end try
-        begin catch
-            print concat('ERROR (', error_number(), '): ', error_message())
-        end catch
-    end
-    else
-        print @errorLine
-end;
+CREATE OR ALTER PROCEDURE SP.EspacioPublicitario_Update
+ @idEP INT,@tipo VARCHAR(30)=NULL,@costo DECIMAL(10,2)=NULL
+AS
+BEGIN
+ SET NOCOUNT ON;
+ DECLARE @errores NVARCHAR(2048)=N'';
+ IF NOT EXISTS(SELECT 1 FROM publicidad.EspacioPublicitario WHERE IdEP=@idEP) SET @errores+=N'Registro inexistente. ';
+ IF @tipo IS NOT NULL AND LTRIM(RTRIM(@tipo))='' SET @errores+=N'Descripcion vacia. ';
+ IF @costo<0 SET @errores+=N'Costo negativo. ';
+ IF LEN(@errores)>0 THROW 51000,@errores,1;
+ UPDATE publicidad.EspacioPublicitario SET Tipo=COALESCE(LTRIM(RTRIM(@tipo)),Tipo),Costo=COALESCE(@costo,Costo) WHERE IdEP=@idEP;
+END;
 GO
-
--- modificacion de espacio publicitario
-if exists (select name from sys.objects where object_id = object_id('SP.EspacioPublicitario_Update'))
-    drop procedure SP.EspacioPublicitario_Update
-go
-create procedure SP.EspacioPublicitario_Update
-    @idEP  int,
-    @tipo  varchar(30) = null,
-    @costo decimal(10,2) = null
-as
-begin
-    declare @errorCount int
-    declare @errorLine varchar(800)
-
-    set @errorCount = 0
-    set @errorLine = 'Error/es:'
-
-    -- chequeo validez (solo lo que vino con valor)
-    if (@idEP is null) or (@idEP <= 0)
-    begin
-        set @errorCount = @errorCount + 1
-        set @errorLine = @errorLine + char(13) + '- Valor invalido: IdEP.'
-    end
-
-    if (@tipo is not null) and (ltrim(rtrim(@tipo)) = '')
-    begin
-        set @errorCount = @errorCount + 1
-        set @errorLine = @errorLine + char(13) + '- Valor invalido: Tipo.'
-    end
-
-    if (@costo is not null) and (@costo <= 0)
-    begin
-        set @errorCount = @errorCount + 1
-        set @errorLine = @errorLine + char(13) + '- Valor invalido: Costo.'
-    end
-
-    -- chequeo existencia
-    if (@errorCount = 0) and not exists(select 1 from publicidad.EspacioPublicitario where IdEP = @idEP)
-    begin
-        set @errorCount = @errorCount + 1
-        set @errorLine = @errorLine + char(13) + '- Valor inexistente: IdEP.'
-    end
-
-    -- chequeo dup (solo si me pasaron tipo)
-    if (@errorCount = 0) and (@tipo is not null)
-    begin
-        if exists(select 1 from publicidad.EspacioPublicitario
-                  where Tipo = @tipo and IdEP <> @idEP)
-        begin
-            set @errorCount = @errorCount + 1
-            set @errorLine = @errorLine + char(13) + '- Valor duplicado: Tipo de espacio.'
-        end
-    end
-
-    if (@errorCount = 0)
-    begin
-        begin try
-            update publicidad.EspacioPublicitario
-            set Tipo  = coalesce(@tipo, Tipo),
-                Costo = coalesce(@costo, Costo)
-            where IdEP = @idEP
-        end try
-        begin catch
-            print concat('ERROR (', error_number(), '): ', error_message())
-        end catch
-    end
-    else
-        print @errorLine
-end;
-GO
-
--- baja de espacio publicitario
-if exists (select name from sys.objects where object_id = object_id('SP.EspacioPublicitario_Bajar'))
-    drop procedure SP.EspacioPublicitario_Bajar
-go
-create procedure SP.EspacioPublicitario_Bajar
-    @idEP int
-as
-begin
-    declare @errorCount int
-    declare @errorLine varchar(800)
-
-    set @errorCount = 0
-    set @errorLine = 'Error/es:'
-
-    -- chequeo validez
-    if (@idEP is null) or (@idEP <= 0)
-    begin
-        set @errorCount = @errorCount + 1
-        set @errorLine = @errorLine + char(13) + '- Valor invalido: IdEP.'
-    end
-
-    -- chequeo existencia
-    if (@errorCount = 0) and not exists(select 1 from publicidad.EspacioPublicitario where IdEP = @idEP)
-    begin
-        set @errorCount = @errorCount + 1
-        set @errorLine = @errorLine + char(13) + '- Valor inexistente: IdEP.'
-    end
-
-    -- chequeo relaciones (si hay registros hijos, no se puede dar de baja)
-    if (@errorCount = 0)
-    begin
-        if exists(select 1 from publicidad.HistorialPublicidad where IdEP = @idEP)
-        begin
-            set @errorCount = @errorCount + 1
-            set @errorLine = @errorLine + char(13) + '- Existen 1 o mas registros relacionados: Historial Publicidad. Elimine dichos registros para continuar.'
-        end
-    end
-    if (@errorCount = 0)
-    begin
-        begin try
-            delete from publicidad.EspacioPublicitario
-            where IdEP = @idEP
-        end try
-        begin catch
-            print concat('ERROR (', error_number(), '): ', error_message())
-        end catch
-    end
-    else
-        print @errorLine
-end;
+CREATE OR ALTER PROCEDURE SP.EspacioPublicitario_Bajar @idEP INT AS
+BEGIN
+ SET NOCOUNT ON;
+ DECLARE @errores NVARCHAR(2048)=N'';
+ IF NOT EXISTS(SELECT 1 FROM publicidad.EspacioPublicitario WHERE IdEP=@idEP) SET @errores+=N'Registro inexistente. ';
+ IF EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdEP=@idEP) SET @errores+=N'Existen asignaciones publicitarias relacionadas. ';
+ IF LEN(@errores)>0 THROW 51000,@errores,1;
+ DELETE publicidad.EspacioPublicitario WHERE IdEP=@idEP;
+END;
 GO

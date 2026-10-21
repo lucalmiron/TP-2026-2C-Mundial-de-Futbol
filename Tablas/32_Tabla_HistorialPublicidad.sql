@@ -1,4 +1,4 @@
---/Universidad Nacional de La Matanza
+﻿--/Universidad Nacional de La Matanza
 --/Bases de Datos Aplicadas - Comision 02
 
 --/Grupo 7 - Integrantes:
@@ -25,8 +25,12 @@ BEGIN
 		IdPublicidad INT NOT NULL,
 		IdPartido INT NOT NULL,
 		IdEP INT NOT NULL,
+        IdCF INT NOT NULL,
 		CostoFinal DECIMAL(10,2) NOT NULL,
-		FOREIGN KEY(IdPublicidad) REFERENCES publicidad.Publicidad(IdPublicidad),
+		CONSTRAINT UQ_HistorialPublicidad_PartidoEspacio UNIQUE (IdPartido, IdEP),
+        CONSTRAINT CK_HistorialPublicidad_Costo CHECK (CostoFinal >= 0),
+        FOREIGN KEY(IdCF) REFERENCES publicidad.CostoFranja(IdCF),
+        FOREIGN KEY(IdPublicidad) REFERENCES publicidad.Publicidad(IdPublicidad),
 		FOREIGN KEY(IdPartido) REFERENCES partidos.Partido(IdPartido),
 		FOREIGN KEY(IdEP) REFERENCES publicidad.EspacioPublicitario(IdEP)
 	)

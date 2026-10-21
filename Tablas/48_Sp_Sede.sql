@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza
+﻿-- Universidad Nacional de La Matanza
 -- Bases de datos aplicada 
 -- Almiron, Luca
 -- Figueroa, Santiago
@@ -93,11 +93,11 @@ begin
             values (@nombre, @ciudad, @capacidad, @pais, @huso)
         end try
         begin catch
-            print concat('ERROR (', error_number(), '): ', error_message())
+            THROW;
         end catch
     end
     else
-        print @errorLine
+        THROW 51000, @errorLine, 1;
 end;
 go
 
@@ -190,11 +190,11 @@ begin
             where IdSede = @idSede
         end try
         begin catch
-            print concat('ERROR (', error_number(), '): ', error_message())
+            THROW;
         end catch
     end
     else
-        print @errorLine
+        THROW 51000, @errorLine, 1;
 end;
 go
 
@@ -236,6 +236,16 @@ begin
         end
     end
 
+    if exists(select 1 from publicidad.EspacioPublicitario where IdSede=@idSede)
+    begin
+      set @errorCount += 1;
+      set @errorLine += ' Existen espacios publicitarios relacionados.';
+    end
+    if exists(select 1 from publicidad.CostoFranja where IdSede=@idSede)
+    begin
+      set @errorCount += 1;
+      set @errorLine += ' Existen tarifas de franja relacionadas.';
+    end
     if (@errorCount = 0)
     begin
         begin try
@@ -243,10 +253,10 @@ begin
             where IdSede = @idSede
         end try
         begin catch
-            print concat('ERROR (', error_number(), '): ', error_message())
+            THROW;
         end catch
     end
     else
-        print @errorLine
+        THROW 51000, @errorLine, 1;
 end;
 go
