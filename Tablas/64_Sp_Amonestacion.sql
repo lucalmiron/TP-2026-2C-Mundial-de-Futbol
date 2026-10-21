@@ -190,7 +190,7 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		SET @vLimSuspension = (SELECT SUSPENSION_TARJETAS_MAXIMAS FROM sedes.Mundial WHERE IdMundial = (SELECT Mundial FROM partidos.Partido WHERE IdPartido = @partido))
+		SET @vLimSuspension = (SELECT SUSPENSION_TARJETAS_MAXIMAS FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM partidos.Partido WHERE IdPartido = @partido))
 		SET @vAutoRoja = 0
 		SET @vSusp = 0
 

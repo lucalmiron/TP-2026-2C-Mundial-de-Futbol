@@ -272,10 +272,18 @@ BEGIN
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Partido. Elimine dichos registros para continuar.'
 		END
 
-		IF EXISTS(SELECT 1 FROM partidos.Alineacion WHERE IdSeleccion = @idSeleccion)
+		IF EXISTS(SELECT 1 FROM partidos.Alineacion A
+				INNER JOIN equipos.Jugador J ON J.IdJugador = A.IdJugador
+				WHERE J.Seleccion = @idSeleccion)
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: Alineacion. Elimine dichos registros para continuar.'
+		END
+
+		IF EXISTS(SELECT 1 FROM equipos.CambioConvocatoria WHERE Seleccion = @idSeleccion)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Existen 1 o mas registros relacionados: CambioConvocatoria. Elimine dichos registros para continuar.'
 		END
 	END
 

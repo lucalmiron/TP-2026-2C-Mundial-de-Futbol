@@ -18,7 +18,7 @@ IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID ('SP.uspAlin
 GO
 
 CREATE PROCEDURE SP.uspAlineacion_Registrar 
-@IdPartido INT, @IdJugador INT, @IdSeleccion INT,
+@IdPartido INT, @IdJugador INT,
 @Rol VARCHAR (10), @PosicionCancha VARCHAR(20) = NULL, @Esquema VARCHAR (10) = NULL
 AS
 BEGIN 
@@ -35,12 +35,6 @@ BEGIN
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR (13) + '-Valor Invalido: IdJugador'
-	END
-
-	IF (@IdSeleccion IS NULL OR @IdSeleccion <=0)
-	BEGIN
-		SET @errorCount = @errorCount + 1
-		SET @errorLine = @errorLine + CHAR (13) + '-Valor Invalido: IdSeleccion'
 	END
 
 	IF (@Rol IS NULL)
@@ -67,22 +61,12 @@ BEGIN
 		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Jugador'
 	END
 
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @IdSeleccion))
+	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM partidos.Partido P
+			INNER JOIN equipos.Jugador J ON J.IdJugador = @IdJugador
+			WHERE P.IdPartido = @IdPartido AND (P.Eq1 = J.Seleccion OR P.Eq2 = J.Seleccion)))
 	BEGIN
 		SET @errorCount=@errorCount+1
-		SET @errorLine=@errorLine+CHAR(13)+'- Valor inexistente: Seleccion'
-	END
-
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @IdJugador AND Seleccion = @IdSeleccion))
-	BEGIN
-		SET @errorCount=@errorCount+1
-		SET @errorLine=@errorLine+CHAR(13)+'- El jugador no esta convocado a esa seleccion'
-	END
-
-	IF (@errorCount = 0 AND NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @IdPartido AND (Eq1 = @IdSeleccion OR Eq2 = @IdSeleccion)))
-	BEGIN
-		SET @errorCount=@errorCount+1
-		SET @errorLine=@errorLine+CHAR(13)+'- La seleccion no juega este partido'
+		SET @errorLine=@errorLine+CHAR(13)+'- La seleccion del jugador no juega este partido'
 	END
 
 	IF (@errorCount = 0 AND EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdJugador = @IdJugador AND IdPartido = @IdPartido))
@@ -92,8 +76,8 @@ BEGIN
 	END
 
 	IF (@errorCount = 0)
-	INSERT INTO partidos.Alineacion (IdPartido, IdJugador, IdSeleccion, Rol, PosicionCancha, Esquema) 
-	VALUES (@IdPartido, @IdJugador, @IdSeleccion, @Rol, @PosicionCancha, @Esquema)
+	INSERT INTO partidos.Alineacion (IdPartido, IdJugador, Rol, PosicionCancha, Esquema) 
+	VALUES (@IdPartido, @IdJugador, @Rol, @PosicionCancha, @Esquema)
 
 	ELSE PRINT @errorLine
 

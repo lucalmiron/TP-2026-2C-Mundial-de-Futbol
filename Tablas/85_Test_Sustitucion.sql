@@ -212,18 +212,18 @@ DECLARE @s4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos
 DECLARE @s5 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S5');
 DECLARE @s6 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S6');
 
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t1, @IdSeleccion = @xSel, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t2, @IdSeleccion = @xSel, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t3, @IdSeleccion = @xSel, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t4, @IdSeleccion = @xSel, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t5, @IdSeleccion = @xSel, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t6, @IdSeleccion = @xSel, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s1, @IdSeleccion = @xSel, @Rol = 'Suplente';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s2, @IdSeleccion = @xSel, @Rol = 'Suplente';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s3, @IdSeleccion = @xSel, @Rol = 'Suplente';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s4, @IdSeleccion = @xSel, @Rol = 'Suplente';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s5, @IdSeleccion = @xSel, @Rol = 'Suplente';
-EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s6, @IdSeleccion = @xSel, @Rol = 'Suplente';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t1, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t2, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t3, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t4, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t5, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @t6, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s1, @Rol = 'Suplente';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s2, @Rol = 'Suplente';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s3, @Rol = 'Suplente';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s4, @Rol = 'Suplente';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s5, @Rol = 'Suplente';
+EXEC SP.uspAlineacion_Registrar @IdPartido = @xPart, @IdJugador = @s6, @Rol = 'Suplente';
 GO
 
 -- Esperado: 12 filas de alineacion (6 titulares y 6 suplentes).
