@@ -4,67 +4,104 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 08/10/2026
+-- 21/10/2026
 -- Objetivo: Testear Registro, Update y Baja de Publicidad
 
 --Los objetos de negocio viven en MUNDIAL, el test se ejecuta contra ellos.
---Requiere Campania 1 e Idioma 1.
+--El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
 BEGIN
 	USE MUNDIAL
 END
 GO
 
+--/Datos de prueba
+
+-- Esperado: se crea el idioma y la campania.
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma T82')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma T82';
+GO
+IF NOT EXISTS (SELECT 1 FROM publicidad.Campania WHERE Nombre = 'Campania T82')
+	EXEC SP.uspCampania_Registrar @nombre = 'Campania T82', @descripcion = 'Campania de prueba del test 82';
+GO
+
+--/ALTA
+
+DECLARE @bCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania T82');
+DECLARE @bIdio INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma T82');
+
 -- Esperado: inserta 1 fila
-EXEC SP.uspPublicidad_Registrar 'Spot 30s', 1, 1
+IF NOT EXISTS (SELECT 1 FROM publicidad.Publicidad WHERE Nombre = 'Spot Test 82')
+	EXEC SP.uspPublicidad_Registrar 'Spot Test 82', @bCamp, @bIdio
 GO
 SELECT * FROM publicidad.Publicidad
 GO
 
--- Esperado: PRINT nulo, 0 filas nuevas
+-- Esperado: nombre nulo, 0 filas nuevas
 EXEC SP.uspPublicidad_Registrar NULL, 1, 1
 GO
 SELECT * FROM publicidad.Publicidad
 GO
 
--- Esperado: PRINT duplicado, 0 filas nuevas
-EXEC SP.uspPublicidad_Registrar 'Spot 30s', 1, 1
+-- Esperado: duplicada, 0 filas nuevas
+EXEC SP.uspPublicidad_Registrar 'Spot Test 82', 1, 1
 GO
 SELECT * FROM publicidad.Publicidad
 GO
 
--- Esperado: PRINT inexistente Campania (99), 0 filas nuevas
-EXEC SP.uspPublicidad_Registrar 'Spot 60s', 99, 1
+-- Esperado: campania inexistente (99), 0 filas nuevas
+EXEC SP.uspPublicidad_Registrar 'Spot Test 82b', 99, 1
 GO
 SELECT * FROM publicidad.Publicidad
 GO
 
--- Esperado: PRINT inexistente Idioma (99), 0 filas nuevas
-EXEC SP.uspPublicidad_Registrar 'Spot 60s', 1, 99
+-- Esperado: idioma inexistente (99), 0 filas nuevas
+EXEC SP.uspPublicidad_Registrar 'Spot Test 82b', 1, 99
 GO
 SELECT * FROM publicidad.Publicidad
 GO
 
--- Esperado: update 1
-EXEC SP.uspPublicidad_Update 1, 'Spot 60s', 1, 1
+--/UPDATE
+
+DECLARE @bPub INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Spot Test 82');
+
+-- Esperado: cambia el nombre, SELECT muestra el nuevo
+EXEC SP.uspPublicidad_Update @bPub, 'Spot Test 82b', 1, 1
 GO
 SELECT * FROM publicidad.Publicidad
 GO
 
--- Esperado: PRINT inexistente Id (99)
-EXEC SP.uspPublicidad_Update 99, 'Spot 60s', 1, 1
+-- Esperado: id inexistente (99)
+EXEC SP.uspPublicidad_Update 99, 'Spot Test 82b', 1, 1
 GO
 SELECT * FROM publicidad.Publicidad
 GO
 
--- Esperado: borra Id 1
-EXEC SP.uspPublicidad_Bajar 1
+--/BAJA
+
+-- Esperado: borra la publicidad
+DECLARE @bPub INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Spot Test 82b');
+EXEC SP.uspPublicidad_Bajar @bPub
 GO
 SELECT * FROM publicidad.Publicidad
 GO
 
--- Esperado: PRINT inexistente (99), 0 borradas
+-- Esperado: id inexistente (99), 0 borradas
 EXEC SP.uspPublicidad_Bajar 99
 GO
 SELECT * FROM publicidad.Publicidad
+GO
+
+--/Limpieza de lo que genera el test
+
+DECLARE @bCampB INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania T82');
+IF @bCampB IS NOT NULL
+	EXEC SP.uspCampania_Bajar @id = @bCampB;
+
+DECLARE @bIdioB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma T82');
+IF @bIdioB IS NOT NULL
+	EXEC SP.uspIdioma_Bajar @id = @bIdioB;
+
+-- Esperado: no queda nada del test.
+SELECT * FROM publicidad.Publicidad;
 GO

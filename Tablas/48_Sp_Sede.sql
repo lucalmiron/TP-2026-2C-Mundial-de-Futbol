@@ -1,4 +1,4 @@
-﻿-- Universidad Nacional de La Matanza
+-- Universidad Nacional de La Matanza
 -- Bases de datos aplicada 
 -- Almiron, Luca
 -- Figueroa, Santiago

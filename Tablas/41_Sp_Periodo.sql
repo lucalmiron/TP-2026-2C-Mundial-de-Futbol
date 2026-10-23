@@ -1,4 +1,4 @@
-﻿--/Universidad Nacional de La Matanza
+--/Universidad Nacional de La Matanza
 --/Bases de Datos Aplicadas - Comision 02
 
 --/Grupo 7 - Integrantes:

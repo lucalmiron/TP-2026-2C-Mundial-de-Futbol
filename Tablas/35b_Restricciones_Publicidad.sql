@@ -1,4 +1,4 @@
-﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
+-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 21/10/2026. Revision auxiliar de penales y publicidad por sede.
 USE MUNDIAL;

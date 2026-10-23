@@ -131,13 +131,21 @@ IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Gol Test A3')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Gol Test A3', @fnac = '2003-01-03', @pais = @gJugPais3, @posicion = 'DEL', @numero = 11, @seleccion = @gJugSel3;
 GO
 
+-- Esperado: se registra A4 (companero de A1 en CONF G1) para que el gol valido tenga asistencia del MISMO equipo.
+DECLARE @gJugPais4 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1');
+DECLARE @gJugSel4  INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF G1');
+
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Gol Test A4')
+	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Gol Test A4', @fnac = '2003-01-04', @pais = @gJugPais4, @posicion = 'MED', @numero = 8, @seleccion = @gJugSel4;
+GO
+
 --/ALTA
 
 -- Esperado: gol de jugada con asistencia, 1 fila en Evento y Gol, GolesEq1 = 1 (autor de CONF G1)
 DECLARE @gP1 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @gA1 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
-DECLARE @gA2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A2');
-EXEC SPTRANS.uspGol_Registrar @minuto = 23, @partido = @gP1, @periodo = 901, @autor = @gA1, @asistencia = @gA2, @tipo = 'Jugada'
+DECLARE @gA4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A4');
+EXEC SPTRANS.uspGol_Registrar @minuto = 23, @partido = @gP1, @periodo = 901, @autor = @gA1, @asistencia = @gA4, @tipo = 'Jugada'
 GO
 SELECT * FROM partidos.Evento WHERE Tipo = 'Gol'
 GO
@@ -149,7 +157,12 @@ GO
 -- Esperado: autor y asistencia iguales, 0 filas nuevas, marcador sin cambios
 DECLARE @gP2 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @gA1b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
+BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 30, @partido = @gP2, @periodo = 901, @autor = @gA1b, @asistencia = @gA1b, @tipo = 'Jugada'
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 SELECT * FROM partidos.Gol
 GO
@@ -158,7 +171,12 @@ GO
 DECLARE @gP3 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @gA1c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 DECLARE @gA2b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A2');
+BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 40, @partido = @gP3, @periodo = 901, @autor = @gA1c, @asistencia = @gA2b, @tipo = 'En contra'
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 SELECT * FROM partidos.Gol
 GO
@@ -167,7 +185,12 @@ GO
 DECLARE @gP4 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @gA1d INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 DECLARE @gA3  INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A3');
+BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 42, @partido = @gP4, @periodo = 901, @autor = @gA3, @asistencia = NULL, @tipo = 'Jugada'
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 SELECT * FROM partidos.Gol
 GO
@@ -176,7 +199,12 @@ GO
 DECLARE @gP5 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @gA1e INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 DECLARE @gA3b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A3');
+BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 43, @partido = @gP5, @periodo = 901, @autor = @gA1e, @asistencia = @gA3b, @tipo = 'Jugada'
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 SELECT * FROM partidos.Gol
 GO
@@ -184,7 +212,12 @@ GO
 -- Esperado: inexistente Autor (999999), 0 filas nuevas, marcador sin cambios
 DECLARE @gP6 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @gA2c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A2');
+BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 45, @partido = @gP6, @periodo = 901, @autor = 999999, @asistencia = @gA2c, @tipo = 'Penal'
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 SELECT * FROM partidos.Gol
 GO
@@ -192,7 +225,12 @@ GO
 -- Esperado: inexistente Asistencia (999999), 0 filas nuevas, marcador sin cambios
 DECLARE @gP7 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @gA1f INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
+BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 45, @partido = @gP7, @periodo = 901, @autor = @gA1f, @asistencia = 999999, @tipo = 'Penal'
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 SELECT * FROM partidos.Gol
 GO
@@ -200,7 +238,12 @@ GO
 -- Esperado: tipo invalido (Chilena es tecnica, no situacion), 0 filas nuevas, marcador sin cambios
 DECLARE @gP8 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @gA1g INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
+BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 50, @partido = @gP8, @periodo = 901, @autor = @gA1g, @asistencia = NULL, @tipo = 'Chilena'
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 SELECT * FROM partidos.Gol
 GO
@@ -208,7 +251,12 @@ GO
 -- Esperado: periodo inexistente (999999), 0 filas nuevas, marcador sin cambios
 DECLARE @gP9 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @gA1h INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
+BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 55, @partido = @gP9, @periodo = 999999, @autor = @gA1h, @asistencia = NULL, @tipo = 'Penal'
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 SELECT * FROM partidos.Gol
 GO
@@ -248,7 +296,12 @@ SELECT IdPartido, Eq1, Eq2, GolesEq1, GolesEq2 FROM partidos.Partido
 GO
 
 -- Esperado: inexistente (999999), 0 borradas, marcador sin cambios
+BEGIN TRY
 EXEC SPTRANS.uspGol_Bajar @id = 999999
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 SELECT * FROM partidos.Gol
 GO

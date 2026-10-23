@@ -342,9 +342,10 @@ BEGIN
 	IF(@errorCount = 0)
 	BEGIN
 		SET @seleccion = (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id)
-		SET @cantJugadores = (SELECT COUNT(IdJugador) FROM equipos.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo')
+		--Se cuentan SOLO los jugadores activos que quedarian, es decir, sin contar al que se elimina.
+		SET @cantJugadores = (SELECT COUNT(IdJugador) FROM equipos.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo' AND IdJugador <> @id)
 
-		IF( (@cantJugadores - 1) < (SELECT TAMANIO_SELECCION_MINIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
+		IF( @cantJugadores < (SELECT TAMANIO_SELECCION_MINIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
 		BEGIN
 			SET @errorCount = @errorCount + 1
 			SET @errorLine = @errorLine + CHAR(13) + '- Cupo minimo de jugadores no respetado.'
@@ -355,11 +356,11 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION
 		BEGIN TRY
-			DELETE FROM equipos.Jugador
+			-- 4.2 Opcion (a): baja logica en vez de DELETE físico.
+			-- El jugador pasa a Estado='Inactivo' (puede ser reingresado como ingreso de cambio de convocatoria).
+			UPDATE equipos.Jugador
+			SET Estado = 'Inactivo'
 			WHERE IdJugador = @id
-
-			DELETE FROM equipos.Persona
-			WHERE IdPersona = @id
 
 			COMMIT TRANSACTION;
 		END TRY

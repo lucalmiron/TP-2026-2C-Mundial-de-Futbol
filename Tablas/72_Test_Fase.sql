@@ -4,69 +4,82 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 08/10/2026
+-- 21/10/2026
 -- Objetivo: Testear Registro, Update y Baja de Fase
 
 --Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
---Requiere que no haya filas en partidos.Partido que referencien la fase 1.
+--El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
 BEGIN
 	USE MUNDIAL
 END;
 GO
 
---DROP TABLE partidos.Fase
+--/ALTA
 
--- Esperado: inserta Grupos, 1 fila
-EXEC SP.uspFase_Registrar 'Grupos';
+-- Esperado: registra la fase Grupos, 1 fila
+IF NOT EXISTS (SELECT 1 FROM partidos.Fase WHERE Descripcion = 'Grupos')
+	EXEC SP.uspFase_Registrar 'Grupos';
 GO
 SELECT * FROM partidos.Fase;
 GO
 
--- Esperado: PRINT invalido Amistoso, 0 filas nuevas
+-- Esperado: descripcion invalida (solo las del catalogo), 0 filas nuevas
 EXEC SP.uspFase_Registrar 'Amistoso';
 GO
 SELECT * FROM partidos.Fase;
 GO
 
--- Esperado: PRINT nula, 0 filas nuevas
+-- Esperado: descripcion nula, 0 filas nuevas
 EXEC SP.uspFase_Registrar NULL;
 GO
 SELECT * FROM partidos.Fase;
 GO
 
--- Esperado: PRINT duplicado, 0 filas nuevas
+-- Esperado: fase duplicada, 0 filas nuevas
 EXEC SP.uspFase_Registrar 'Grupos';
 GO
 SELECT * FROM partidos.Fase;
 GO
 
--- Esperado: update 1 a Final, SELECT muestra Final
-EXEC SP.uspFase_Update 1, 'Final';
+--/UPDATE
+
+DECLARE @x1 INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Grupos');
+
+-- Esperado: cambia a Final, SELECT muestra Final
+EXEC SP.uspFase_Update @x1, 'Final';
 GO
 SELECT * FROM partidos.Fase;
 GO
 
--- Esperado: PRINT invalido Id (0)
+-- Esperado: id invalido (0), 0 filas modificadas
 EXEC SP.uspFase_Update 0, 'Grupos';
 GO
 SELECT * FROM partidos.Fase;
 GO
 
--- Esperado: PRINT inexistente Id (99)
+-- Esperado: id inexistente (99), 0 filas modificadas
 EXEC SP.uspFase_Update 99, 'Grupos';
 GO
 SELECT * FROM partidos.Fase;
 GO
 
--- Esperado: borra Id 1, SELECT sin esa fila
-EXEC SP.uspFase_Bajar 1;
+--/BAJA
+
+DECLARE @x2 INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Final');
+
+-- Esperado: borra la fase, SELECT sin esa fila
+EXEC SP.uspFase_Bajar @x2;
 GO
 SELECT * FROM partidos.Fase;
 GO
 
--- Esperado: PRINT inexistente Id (99), 0 borradas
+-- Esperado: id inexistente (99), 0 borradas
 EXEC SP.uspFase_Bajar 99;
 GO
+SELECT * FROM partidos.Fase;
+GO
+
+-- Esperado: no queda ninguna fase del test.
 SELECT * FROM partidos.Fase;
 GO

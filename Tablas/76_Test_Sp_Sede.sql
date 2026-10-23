@@ -37,23 +37,48 @@ GO
 --/ALTA
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Nombre.'
+BEGIN TRY
 EXEC SP.uspSede_Registrar @nombre = '', @ciudad = 'Ciudad Test', @capacidad = 50000, @pais = 1, @huso = 1;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Ciudad.'
+BEGIN TRY
 EXEC SP.uspSede_Registrar @nombre = 'Sede Test', @ciudad = NULL, @capacidad = 50000, @pais = 1, @huso = 1;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Capacidad.'
+BEGIN TRY
 EXEC SP.uspSede_Registrar @nombre = 'Sede Test', @ciudad = 'Ciudad Test', @capacidad = 0, @pais = 1, @huso = 1;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: Pais.'
+BEGIN TRY
 EXEC SP.uspSede_Registrar @nombre = 'Sede Test', @ciudad = 'Ciudad Test', @capacidad = 50000, @pais = 999, @huso = 1;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: Huso horario.'
+BEGIN TRY
 EXEC SP.uspSede_Registrar @nombre = 'Sede Test', @ciudad = 'Ciudad Test', @capacidad = 50000, @pais = 1, @huso = 99;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: no imprime nada, se inserta 1 fila (Sede Test / Ciudad Test).
@@ -65,7 +90,12 @@ SELECT * FROM sedes.Sede;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor duplicado: Sede (nombre y ciudad).'
+BEGIN TRY
 EXEC SP.uspSede_Registrar @nombre = 'Sede Test', @ciudad = 'Ciudad Test', @capacidad = 50000, @pais = 1, @huso = 1;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 --/UPDATE
@@ -81,28 +111,53 @@ SELECT * FROM sedes.Sede;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: IdSede.'
+BEGIN TRY
 EXEC SP.uspSede_Update @idSede = 999999, @capacidad = 60000;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Capacidad.'
 DECLARE @idSede2 INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test');
+BEGIN TRY
 EXEC SP.uspSede_Update @idSede = @idSede2, @capacidad = -1;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: Pais.'
 DECLARE @idSede3 INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test');
+BEGIN TRY
 EXEC SP.uspSede_Update @idSede = @idSede3, @pais = 999;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: Huso horario.'
 DECLARE @idSede4 INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test');
+BEGIN TRY
 EXEC SP.uspSede_Update @idSede = @idSede4, @huso = 999999;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 --/BAJA
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: IdSede.'
+BEGIN TRY
 EXEC SP.uspSede_Bajar @idSede = 999999;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: se borra la fila, la tabla queda vacia.

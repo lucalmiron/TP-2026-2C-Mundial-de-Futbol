@@ -20,15 +20,30 @@ GO
 --/ALTA
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Tipo.'
+BEGIN TRY
 EXEC SP.EspacioPublicitario_Registrar @tipo = '', @costo = 5000;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Costo.'
+BEGIN TRY
 EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = 0;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Costo.'
+BEGIN TRY
 EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = -100;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: no imprime nada, se insertan 4 filas (los 4 tipos de espacio del torneo).
@@ -49,7 +64,12 @@ SELECT * FROM publicidad.EspacioPublicitario;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor duplicado: Tipo de espacio.'
+BEGIN TRY
 EXEC SP.EspacioPublicitario_Registrar @tipo = 'Cubo LED', @costo = 7000;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 --/UPDATE
@@ -65,23 +85,43 @@ SELECT * FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED';
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: IdEP.'
+BEGIN TRY
 EXEC SP.EspacioPublicitario_Update @idEP = 999999, @costo = 7500;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Costo.'
 DECLARE @idCubo2 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED');
+BEGIN TRY
 EXEC SP.EspacioPublicitario_Update @idEP = @idCubo2, @costo = -1;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor duplicado: Tipo de espacio.'
 DECLARE @idCubo3 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED');
+BEGIN TRY
 EXEC SP.EspacioPublicitario_Update @idEP = @idCubo3, @tipo = 'Panel Perimetral';
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 --/BAJA
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: IdEP.'
+BEGIN TRY
 EXEC SP.EspacioPublicitario_Bajar @idEP = 999999;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: se borra la fila, quedan 3 filas.
@@ -196,7 +236,12 @@ GO
 
 -- Esperado: imprime 'Error/es: - Existen 1 o mas registros relacionados: Historial Publicidad. Elimine dichos registros para continuar.'
 DECLARE @epEspacio2 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Panel Perimetral');
+BEGIN TRY
 EXEC SP.EspacioPublicitario_Bajar @idEP = @epEspacio2;
+END TRY
+BEGIN CATCH
+PRINT 'Esperado: ' + ERROR_MESSAGE()
+END CATCH
 GO
 
 -- Esperado: la fila sigue existiendo.

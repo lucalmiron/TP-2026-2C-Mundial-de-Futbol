@@ -7,56 +7,109 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 09/10/2026
+--/Fecha: 21/10/2026
 
 --Objetivo: Testear Registro y Baja de AnuncianteCampania (sin Update, PK inmutable)
 
 --Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
---Requiere Anunciante 1 y Campania 1 existentes.
+--El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
 BEGIN
 	USE MUNDIAL
 END
 GO
 
--- Esperado: inserta (1, 1), 1 fila
-EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 1, @idCampania = 1
+--/Datos de prueba
+
+-- Esperado: se crea el pais.
+IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 90')
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 90', @pbi = 87;
+GO
+
+DECLARE @cPais INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 90');
+
+-- Esperado: se crea el anunciante.
+IF NOT EXISTS (SELECT 1 FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90')
+	EXEC SP.uspAnunciante_Registrar @nombre = 'Anun Test 90', @idPais = @cPais;
+GO
+
+-- Esperado: se crea la campania.
+IF NOT EXISTS (SELECT 1 FROM publicidad.Campania WHERE Nombre = 'Campania 90')
+	EXEC SP.uspCampania_Registrar @nombre = 'Campania 90', @descripcion = 'Campania de prueba del test 90';
+GO
+
+--/ALTA
+
+DECLARE @cAnun INT = (SELECT MIN(IdAnunciante) FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90');
+DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
+
+-- Esperado: inserta (anunciante, campania), 1 fila
+EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = @cAnun, @idCampania = @cCamp
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
 
--- Esperado: PRINT duplicado, 0 filas nuevas
-EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 1, @idCampania = 1
+-- Esperado: duplicado, 0 filas nuevas
+DECLARE @cAnun INT = (SELECT MIN(IdAnunciante) FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90');
+DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
+EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = @cAnun, @idCampania = @cCamp
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
 
--- Esperado: PRINT inexistente Anunciante (99), 0 filas nuevas
-EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 99, @idCampania = 1
+-- Esperado: anunciante inexistente (99), 0 filas nuevas
+DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
+EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 99, @idCampania = @cCamp
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
 
--- Esperado: PRINT inexistente Campania (99), 0 filas nuevas
-EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 1, @idCampania = 99
+-- Esperado: campania inexistente (99), 0 filas nuevas
+DECLARE @cAnun INT = (SELECT MIN(IdAnunciante) FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90');
+EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = @cAnun, @idCampania = 99
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
 
--- Esperado: PRINT invalido Id (0), 0 filas nuevas
-EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 0, @idCampania = 1
+-- Esperado: id invalido (0), 0 filas nuevas
+DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
+EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 0, @idCampania = @cCamp
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
 
--- Esperado: borra (1, 1), SELECT vacio
-EXEC SP.uspAnuncianteCampania_Bajar @idAnunciante = 1, @idCampania = 1
+--/BAJA
+
+-- Esperado: borra (anunciante, campania), SELECT sin esa fila
+DECLARE @cAnun INT = (SELECT MIN(IdAnunciante) FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90');
+DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
+EXEC SP.uspAnuncianteCampania_Bajar @idAnunciante = @cAnun, @idCampania = @cCamp
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
 
--- Esperado: PRINT inexistente (1, 1), 0 borradas
-EXEC SP.uspAnuncianteCampania_Bajar @idAnunciante = 1, @idCampania = 1
+-- Esperado: inexistente, 0 borradas
+DECLARE @cAnun INT = (SELECT MIN(IdAnunciante) FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90');
+DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
+EXEC SP.uspAnuncianteCampania_Bajar @idAnunciante = @cAnun, @idCampania = @cCamp
 GO
 SELECT * FROM publicidad.AnuncianteCampania
+GO
+
+--/Limpieza de lo que genera el test
+
+DECLARE @cCampB INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
+IF @cCampB IS NOT NULL
+	EXEC SP.uspCampania_Bajar @id = @cCampB;
+
+DECLARE @cAnunB INT = (SELECT MIN(IdAnunciante) FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90');
+IF @cAnunB IS NOT NULL
+	EXEC SP.uspAnunciante_Bajar @id = @cAnunB;
+
+DECLARE @cPaisB INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 90');
+IF @cPaisB IS NOT NULL
+	EXEC SP.uspPais_Bajar @idPais = @cPaisB;
+
+-- Esperado: no queda nada del test.
+SELECT * FROM publicidad.AnuncianteCampania;
 GO
