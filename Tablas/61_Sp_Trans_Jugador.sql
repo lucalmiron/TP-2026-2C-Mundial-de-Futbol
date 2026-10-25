@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures que involucran transacciones
 
@@ -28,7 +28,8 @@ CREATE PROCEDURE SPTRANS.uspJugador_Registrar
 @posicion VARCHAR(20),
 @numero INT,
 @club INT = NULL,
-@seleccion INT
+@seleccion INT,
+@estado VARCHAR(10) = 'Activo'
 AS
 BEGIN
 	DECLARE @cantJugadores INT;
@@ -68,9 +69,12 @@ BEGIN
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
 			THROW 50000, '- Valor inexistente: Seleccion.', 1;
 
-		--chequeo cupo
+		IF @estado IS NULL OR @estado NOT IN ('Activo', 'Inactivo')
+			THROW 50000, '- Estado inicial invalido: use Activo o Inactivo.', 1;
+
+		-- Los reemplazantes inactivos no ocupan un lugar en la convocatoria.
 		SET @cantJugadores = (SELECT COUNT(IdJugador) FROM equipos.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo');
-		IF( (@cantJugadores + 1) > (SELECT TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
+		IF @estado = 'Activo' AND ( (@cantJugadores + 1) > (SELECT TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
 			THROW 50000, '- Cupo maximo de jugadores excedido.', 1;
 
 		--chequeo dup
@@ -89,7 +93,7 @@ BEGIN
 			SELECT TOP 1 @idPersona = ID FROM @nuevo;
 
 			INSERT INTO equipos.Jugador(IdJugador, Estado, Posicion, Numero, TarjetasAcum, Club, Seleccion)
-			VALUES(@idPersona, 'Activo', @posicion, @numero, 0, @club, @seleccion);
+			VALUES(@idPersona, @estado, @posicion, @numero, 0, @club, @seleccion);
 
 		COMMIT TRANSACTION;
 	END TRY
@@ -150,8 +154,30 @@ BEGIN
 		--El dorsal es unico por seleccion: se controla contra la seleccion que quedara.
 		SET @selDestino = COALESCE(@seleccion, (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id));
 
-		IF (@numero IS NOT NULL) AND EXISTS(SELECT 1 FROM equipos.Jugador WHERE Numero = @numero AND Seleccion = @selDestino AND IdJugador <> @id)
+		IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE Numero = COALESCE(@numero, (SELECT Numero FROM equipos.Jugador WHERE IdJugador = @id)) AND Seleccion = @selDestino AND IdJugador <> @id)
 			THROW 50000, '- Valor duplicado: Numero.', 1;
+
+
+		IF @selDestino <> (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id)
+		BEGIN
+			IF EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdJugador = @id)
+			OR EXISTS (SELECT 1 FROM partidos.Gol WHERE Autor = @id OR Asistencia = @id)
+			OR EXISTS (SELECT 1 FROM partidos.Amonestacion WHERE Amonestado = @id)
+			OR EXISTS (SELECT 1 FROM partidos.Sustitucion WHERE Ingreso = @id OR Egreso = @id)
+			OR EXISTS (SELECT 1 FROM equipos.CambioConvocatoria WHERE Ingreso = @id OR Egreso = @id)
+				THROW 50000, '- No se puede cambiar la seleccion de un jugador con historial.', 1;
+
+			IF EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @id AND Estado <> 'Inactivo')
+			BEGIN
+				IF (SELECT COUNT(*) FROM equipos.Jugador WHERE Seleccion = @selDestino AND Estado <> 'Inactivo') >=
+				   (SELECT M.TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial M JOIN equipos.Seleccion S ON S.IdMundial = M.IdMundial WHERE S.IdSeleccion = @selDestino)
+					THROW 50000, '- Cupo maximo de jugadores excedido en la seleccion destino.', 1;
+
+				IF (SELECT COUNT(*) FROM equipos.Jugador WHERE Seleccion = (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id) AND Estado <> 'Inactivo' AND IdJugador <> @id) <
+				   (SELECT M.TAMANIO_SELECCION_MINIMO FROM sedes.Mundial M JOIN equipos.Seleccion S ON S.IdMundial = M.IdMundial JOIN equipos.Jugador J ON J.Seleccion = S.IdSeleccion WHERE J.IdJugador = @id)
+					THROW 50000, '- Cupo minimo de jugadores no respetado en la seleccion origen.', 1;
+			END
+		END
 
 		BEGIN TRANSACTION;
 			UPDATE equipos.Persona

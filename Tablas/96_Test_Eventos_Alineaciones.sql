@@ -1,6 +1,13 @@
--- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
--- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 25/10/2026.
+--/Universidad Nacional de La Matanza
+--/Bases de Datos Aplicadas - Comision 02
+
+--/Grupo 7 - Integrantes:
+--Almiron, Luca
+--Figueroa, Santiago
+--Ruarte, Fidel
+--Villalba, Leandro
+
+--/Fecha: 08/10/2026
 -- Objetivo: comprobar alineaciones, expulsiones, sustituciones y goles.
 -- Ejecutar en una base vacia MUNDIAL_Grupo2_Test*, con las tablas y SP reales instalados.
 -- Los datos son exclusivos de esta base de prueba. No ejecutar en MUNDIAL.

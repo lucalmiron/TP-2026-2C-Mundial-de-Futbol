@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures que involucran transacciones
 
@@ -76,29 +76,20 @@ BEGIN
 		)
 			THROW 50000, '- No se puede asignar este arbitro, el pais al que pertenece disputa este partido.', 1;
 
-		--chequeo nacionalidad(por peligro de cruze a futuro -> solo se advierte)
-		IF EXISTS
-		(
-			SELECT 1
-			FROM
-			(
-				SELECT IdPais
-				FROM equipos.Seleccion
-				WHERE IdSeleccion 
-				IN (SELECT P.Eq1
-					FROM partidos.Partido P
-					INNER JOIN partidos.Fase F ON P.IdFase = F.IdFase
-					WHERE F.Descripcion <> 'Grupos'
-					  AND CAST(P.Fecha AS DATETIME) + CAST(P.HoraUTC AS DATETIME) >= GETDATE()
-					UNION SELECT P.Eq2
-					FROM partidos.Partido P
-					INNER JOIN partidos.Fase F ON P.IdFase = F.IdFase
-					WHERE F.Descripcion <> 'Grupos'
-					  AND CAST(P.Fecha AS DATETIME) + CAST(P.HoraUTC AS DATETIME) >= GETDATE())
-			) AS P
-			WHERE P.IdPais = (SELECT Pais FROM equipos.Persona WHERE IdPersona = @arbitro)
+		-- Aviso preventivo: el fixture no guarda las llaves de eliminacion.
+		IF EXISTS (
+			SELECT 1 FROM partidos.Partido Actual
+			JOIN partidos.Fase FA ON FA.IdFase = Actual.IdFase
+			JOIN partidos.Partido Otro ON Otro.IdMundial = Actual.IdMundial AND Otro.IdPartido <> Actual.IdPartido
+			JOIN partidos.Fase FO ON FO.IdFase = Otro.IdFase
+			JOIN equipos.Seleccion S ON S.IdSeleccion IN (Otro.Eq1, Otro.Eq2)
+			JOIN equipos.Persona A ON A.Pais = S.IdPais AND A.IdPersona = @arbitro
+			WHERE Actual.IdPartido = @partido
+			AND FA.Descripcion IN ('Dieciseisavos', 'Octavos', 'Cuartos', 'Semifinal')
+			AND FO.Descripcion IN ('Dieciseisavos', 'Octavos', 'Cuartos', 'Semifinal', 'Final')
+			AND (Otro.Fecha > Actual.Fecha OR (Otro.Fecha = Actual.Fecha AND Otro.HoraUTC >= Actual.HoraUTC))
 		)
-			PRINT '-ADVERTENCIA- Este arbitro pertenece a un pais cuya seleccion puede cruzarse con los involucrados en este partido.';
+			PRINT '-ADVERTENCIA- La seleccion del pais del arbitro tiene otro partido eliminatorio programado en este mundial. Revisar posibles cruces.';
 
 		BEGIN TRANSACTION
 			INSERT INTO arbitros.Arbitraje
@@ -153,6 +144,26 @@ BEGIN
 			((@funcion = '4to') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = '4to' AND Arbitro <> @arbitro) >= 1))
 		)
 			THROW 50000, '- Cupo excedido para esa funcion.', 1;
+
+		IF EXISTS (SELECT 1 FROM partidos.Partido P
+			JOIN equipos.Seleccion S ON S.IdSeleccion IN (P.Eq1, P.Eq2)
+			JOIN equipos.Persona A ON A.Pais = S.IdPais AND A.IdPersona = @arbitro
+			WHERE P.IdPartido = @partido)
+			THROW 50000, '- No se puede asignar este arbitro, el pais al que pertenece disputa este partido.', 1;
+		-- Aviso preventivo: el fixture no guarda las llaves de eliminacion.
+		IF EXISTS (
+			SELECT 1 FROM partidos.Partido Actual
+			JOIN partidos.Fase FA ON FA.IdFase = Actual.IdFase
+			JOIN partidos.Partido Otro ON Otro.IdMundial = Actual.IdMundial AND Otro.IdPartido <> Actual.IdPartido
+			JOIN partidos.Fase FO ON FO.IdFase = Otro.IdFase
+			JOIN equipos.Seleccion S ON S.IdSeleccion IN (Otro.Eq1, Otro.Eq2)
+			JOIN equipos.Persona A ON A.Pais = S.IdPais AND A.IdPersona = @arbitro
+			WHERE Actual.IdPartido = @partido
+			AND FA.Descripcion IN ('Dieciseisavos', 'Octavos', 'Cuartos', 'Semifinal')
+			AND FO.Descripcion IN ('Dieciseisavos', 'Octavos', 'Cuartos', 'Semifinal', 'Final')
+			AND (Otro.Fecha > Actual.Fecha OR (Otro.Fecha = Actual.Fecha AND Otro.HoraUTC >= Actual.HoraUTC))
+		)
+			PRINT '-ADVERTENCIA- La seleccion del pais del arbitro tiene otro partido eliminatorio programado en este mundial. Revisar posibles cruces.';
 
 		BEGIN TRANSACTION
 			UPDATE arbitros.Arbitraje

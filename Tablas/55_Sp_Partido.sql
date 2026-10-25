@@ -4,13 +4,58 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 08/10/2026
+-- 25/10/26
 -- Objetivo: Gestionar Tabla Partido
 
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
 BEGIN
 	USE MUNDIAL
 END
+GO
+
+-- Fecha del partido se interpreta en UTC. El sufijo del huso puede ser una etiqueta.
+CREATE OR ALTER FUNCTION sedes.fnFechaHoraLocal(@fecha DATE, @hora TIME, @huso VARCHAR(50))
+RETURNS DATETIMEOFFSET
+AS
+BEGIN
+	DECLARE @utc DATETIME2 = DATEADD(DAY, DATEDIFF(DAY, '19000101', @fecha), CAST(@hora AS DATETIME2));
+	DECLARE @nombre VARCHAR(50) = LTRIM(RTRIM(@huso));
+	IF @utc IS NULL OR @nombre IS NULL RETURN NULL;
+	IF EXISTS (SELECT 1 FROM sys.time_zone_info WHERE name = @nombre)
+		RETURN (@utc AT TIME ZONE 'UTC') AT TIME ZONE @nombre;
+
+	-- Desplazamientos fijos: UTC-3, UTC+05:30, UTC-3 (Prueba).
+	SET @nombre = LEFT(@nombre, CHARINDEX(' ', @nombre + ' ') - 1);
+	IF @nombre = 'UTC' RETURN TODATETIMEOFFSET(@utc, 0);
+	IF LEFT(@nombre, 3) <> 'UTC' OR SUBSTRING(@nombre, 4, 1) NOT IN ('+', '-') RETURN NULL;
+	DECLARE @valor VARCHAR(50) = SUBSTRING(@nombre, 5, 46);
+	DECLARE @separador INT = CHARINDEX(':', @valor), @horas INT, @minutos INT = 0;
+	IF @separador = 0
+	BEGIN
+		IF @valor = '' OR @valor LIKE '%[^0-9]%' RETURN NULL;
+		SET @horas = TRY_CONVERT(INT, @valor);
+	END
+	ELSE
+	BEGIN
+		IF @separador = 1 OR LEN(@valor) - @separador <> 2 RETURN NULL;
+		IF LEFT(@valor, @separador - 1) LIKE '%[^0-9]%' OR SUBSTRING(@valor, @separador + 1, 2) LIKE '%[^0-9]%' RETURN NULL;
+		SET @horas = TRY_CONVERT(INT, LEFT(@valor, @separador - 1));
+		SET @minutos = TRY_CONVERT(INT, SUBSTRING(@valor, @separador + 1, 2));
+	END
+	IF @horas IS NULL OR @horas > 14 OR @minutos > 59 OR (@horas = 14 AND @minutos <> 0) RETURN NULL;
+	DECLARE @offset INT = (@horas * 60 + @minutos) * CASE WHEN SUBSTRING(@nombre, 4, 1) = '-' THEN -1 ELSE 1 END;
+	RETURN SWITCHOFFSET(TODATETIMEOFFSET(@utc, 0), @offset);
+END;
+GO
+
+CREATE OR ALTER VIEW partidos.vHorarioPartido
+AS
+	SELECT P.IdPartido, P.Fecha AS FechaUTC, P.HoraUTC,
+		CAST(sedes.fnFechaHoraLocal(P.Fecha, P.HoraUTC, H.Nombre) AS DATE) AS FechaLocal,
+		CAST(sedes.fnFechaHoraLocal(P.Fecha, P.HoraUTC, H.Nombre) AS TIME) AS HoraLocal
+	FROM partidos.Partido P
+	JOIN sedes.Sede S ON S.IdSede = P.IdSede
+	JOIN sedes.HusoHorario H ON H.IdHuso = S.IdHuso;
 GO
 
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID ('SP.uspPartido_Registrar'))
@@ -53,6 +98,12 @@ BEGIN
 		IF NOT EXISTS(SELECT 1 FROM partidos.Fase WHERE IdFase = @IdFase)
 			THROW 50000, '- Valor inexistente: Fase', 1;
 
+		IF NOT EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede = @IdSede)
+			THROW 50000, '- Valor inexistente: Sede', 1;
+
+		IF @Asistencia > (SELECT Capacidad FROM sedes.Sede WHERE IdSede = @IdSede)
+			THROW 50000, '- La asistencia supera la capacidad de la sede', 1;
+
 		IF NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @IdMundial)
 			THROW 50000, '- Valor inexistente: Mundial', 1;
 
@@ -70,6 +121,14 @@ BEGIN
 
 		IF EXISTS(SELECT 1 FROM partidos.Partido WHERE Eq1 = @Eq1 AND Eq2 = @Eq2 AND Fecha = @Fecha AND IdFase = @IdFase)
 			THROW 50000, '- Partido duplicado', 1;
+
+		DECLARE @local DATETIMEOFFSET;
+		SELECT @local = sedes.fnFechaHoraLocal(@Fecha, @HoraUTC, H.Nombre)
+		FROM sedes.Sede S JOIN sedes.HusoHorario H ON H.IdHuso = S.IdHuso WHERE S.IdSede = @IdSede;
+		IF @local IS NULL
+			THROW 50000, '- Huso horario no reconocido. Use UTC, UTC con desplazamiento o un nombre de sys.time_zone_info.', 1;
+		IF @HoraLocal <> CAST(@local AS TIME)
+			THROW 50000, '- La hora local no coincide con la hora UTC y el huso de la sede.', 1;
 
 		INSERT INTO partidos.Partido(IdFase, IdSede, IdMundial, Eq1, Eq2, Fecha, HoraUTC, HoraLocal, GolesEq1, GolesEq2, Asistencia)
 		VALUES(@IdFase, @IdSede, @IdMundial, @Eq1, @Eq2, @Fecha, @HoraUTC, @HoraLocal, 0, 0, @Asistencia)
@@ -147,8 +206,40 @@ BEGIN
 		ELSE IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @vEq2 AND IdMundial = @vMundial)
 			THROW 50000, '- Eq2 no pertenece al Mundial', 1;
 
+		DECLARE @vSede INT, @vAsistencia INT;
+		SELECT @vSede = COALESCE(@IdSede, IdSede), @vAsistencia = COALESCE(@Asistencia, Asistencia)
+		FROM partidos.Partido WHERE IdPartido = @Id;
+
+		IF NOT EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede = @vSede)
+			THROW 50000, '- Valor inexistente: Sede', 1;
+
+		IF @vAsistencia > (SELECT Capacidad FROM sedes.Sede WHERE IdSede = @vSede)
+			THROW 50000, '- La asistencia supera la capacidad de la sede', 1;
+
+		IF EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @Id
+			AND (Eq1 <> @vEq1 OR Eq2 <> @vEq2 OR IdMundial <> @vMundial))
+		BEGIN
+			IF EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @Id)
+			OR EXISTS (SELECT 1 FROM partidos.Evento WHERE Partido = @Id)
+			OR EXISTS (SELECT 1 FROM arbitros.Arbitraje WHERE Partido = @Id)
+				THROW 50000, '- No se pueden cambiar equipos o mundial con alineaciones, eventos o arbitrajes registrados', 1;
+		END
+
 		IF @GolesEq1 IS NOT NULL OR @GolesEq2 IS NOT NULL
 			THROW 51000, 'El marcador se modifica mediante alta y baja de goles, no manualmente.', 1;
+
+		IF @Fecha IS NOT NULL OR @HoraUTC IS NOT NULL OR @HoraLocal IS NOT NULL OR @IdSede IS NOT NULL
+		BEGIN
+			DECLARE @local DATETIMEOFFSET;
+			SELECT @local = sedes.fnFechaHoraLocal(COALESCE(@Fecha, P.Fecha), COALESCE(@HoraUTC, P.HoraUTC), H.Nombre)
+			FROM partidos.Partido P JOIN sedes.Sede S ON S.IdSede = @vSede
+			JOIN sedes.HusoHorario H ON H.IdHuso = S.IdHuso WHERE P.IdPartido = @Id;
+			IF @local IS NULL
+				THROW 50000, '- Huso horario no reconocido. Use UTC, UTC con desplazamiento o un nombre de sys.time_zone_info.', 1;
+			IF @HoraLocal IS NOT NULL AND @HoraLocal <> CAST(@local AS TIME)
+				THROW 50000, '- La hora local no coincide con la hora UTC y el huso de la sede.', 1;
+			SET @HoraLocal = CAST(@local AS TIME);
+		END
 
 		UPDATE partidos.Partido
 		SET IdFase = COALESCE(@IdFase, IdFase),
