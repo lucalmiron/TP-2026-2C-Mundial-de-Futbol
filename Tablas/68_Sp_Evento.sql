@@ -126,6 +126,10 @@ BEGIN
 
 	IF @minuto IS NOT NULL AND EXISTS(SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@periodo AND EsPenales=1)
         SET @errores += N'La tanda de penales no utiliza minuto; enviar NULL. ';
+    IF EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE IdAmonestacion=@idEvento)
+        SET @errores += N'La amonestacion debe modificarse mediante su procedimiento especifico. ';
+    IF EXISTS(SELECT 1 FROM partidos.Sustitucion WHERE IdSustitucion=@idEvento)
+        SET @errores += N'Para corregir una sustitucion, usar su baja y registrar el cambio correcto. ';
     IF EXISTS(SELECT 1 FROM partidos.Gol WHERE IdGol=@idEvento)
         SET @errores += N'Para corregir un gol, usar su baja y registrar el evento correcto. ';
     IF LEN(@errores) > 0
@@ -170,6 +174,8 @@ BEGIN
 	IF @idEvento IS NOT NULL AND EXISTS (SELECT 1 FROM partidos.Amonestacion WHERE IdAmonestacion = @idEvento)
 		SET @errores += N'No se puede eliminar el evento: tiene una amonestacion asociada. ';
 
+    IF EXISTS(SELECT 1 FROM partidos.Sustitucion WHERE IdSustitucion=@idEvento)
+        SET @errores += N'Utilizar SPTRANS.uspSustitucion_Bajar para eliminar el cambio completo. ';
 	IF EXISTS(SELECT 1 FROM partidos.Gol WHERE IdGol=@idEvento)
         SET @errores += N'Utilizar SPTRANS.uspGol_Bajar para mantener el marcador. ';
     IF LEN(@errores) > 0

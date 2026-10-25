@@ -138,7 +138,7 @@ BEGIN
 			SELECT 1
 			FROM 
 			partidos.Amonestacion AS A
-			LEFT JOIN
+			INNER JOIN
 			(SELECT IdEvento FROM partidos.Evento WHERE Partido = @partido AND Tipo = 'Amonestacion') AS E
 			ON A.IdAmonestacion = E.IdEvento
 			WHERE A.Amonestado = @amonestado AND A.Tarjeta = 'Roja')

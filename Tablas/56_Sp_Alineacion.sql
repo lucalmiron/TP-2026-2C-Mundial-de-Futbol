@@ -13,6 +13,29 @@ BEGIN
 END;
 GO
 
+-- Consulta si el jugador sigue en cancha en el minuto indicado.
+-- En un mismo minuto se consideran los cambios y expulsiones ya registrados.
+CREATE OR ALTER FUNCTION partidos.fnJugadorEnCancha(@partido INT, @jugador INT, @minuto INT)
+RETURNS BIT
+AS
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido=@partido AND IdJugador=@jugador)
+        RETURN 0;
+    IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido=@partido AND IdJugador=@jugador AND Rol='Titular')
+       AND NOT EXISTS (SELECT 1 FROM partidos.Sustitucion S JOIN partidos.Evento E ON E.IdEvento=S.IdSustitucion
+                       WHERE E.Partido=@partido AND S.Ingreso=@jugador AND E.Minuto<=@minuto)
+        RETURN 0;
+    IF EXISTS (SELECT 1 FROM partidos.Sustitucion S JOIN partidos.Evento E ON E.IdEvento=S.IdSustitucion
+               WHERE E.Partido=@partido AND S.Egreso=@jugador AND E.Minuto<=@minuto)
+        RETURN 0;
+    IF EXISTS (SELECT 1 FROM partidos.Amonestacion A JOIN partidos.Evento E ON E.IdEvento=A.IdAmonestacion
+               WHERE E.Partido=@partido AND A.Amonestado=@jugador AND A.Tarjeta='Roja'
+                 AND (E.Minuto<=@minuto OR (E.Minuto IS NULL AND @minuto=2147483647)))
+        RETURN 0;
+    RETURN 1;
+END;
+GO
+
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID ('SP.uspAlineacion_Registrar'))
 	DROP PROCEDURE SP.uspAlineacion_Registrar
 GO
@@ -48,6 +71,21 @@ BEGIN
 
 		IF EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdJugador = @IdJugador AND IdPartido = @IdPartido)
 			THROW 50000, '- Jugador ya cargado', 1;
+
+		IF EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador=@IdJugador AND Estado<>'Activo')
+			THROW 50000, '- El jugador no esta habilitado para integrar la alineacion.', 1;
+
+		IF @Rol='Titular' AND (SELECT COUNT(*) FROM partidos.Alineacion A
+			JOIN equipos.Jugador J ON J.IdJugador=A.IdJugador
+			WHERE A.IdPartido=@IdPartido AND A.Rol='Titular'
+			AND J.Seleccion=(SELECT Seleccion FROM equipos.Jugador WHERE IdJugador=@IdJugador)) >= 11
+			THROW 50000, '- La seleccion ya tiene once titulares.', 1;
+
+		IF @Esquema IS NOT NULL AND EXISTS (SELECT 1 FROM partidos.Alineacion A
+			JOIN equipos.Jugador J ON J.IdJugador=A.IdJugador
+			WHERE A.IdPartido=@IdPartido AND A.Esquema<>@Esquema
+			AND J.Seleccion=(SELECT Seleccion FROM equipos.Jugador WHERE IdJugador=@IdJugador))
+			THROW 50000, '- El esquema debe coincidir con el de la seleccion en el partido.', 1;
 
 		INSERT INTO partidos.Alineacion (IdPartido, IdJugador, Rol, PosicionCancha, Esquema) 
 		VALUES (@IdPartido, @IdJugador, @Rol, @PosicionCancha, @Esquema) 

@@ -81,12 +81,23 @@ BEGIN
 		IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido AND (Eq1 = @vSeleccion OR Eq2 = @vSeleccion))
 			THROW 50000, '- La seleccion no juega este partido.', 1;
 
-		IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @partido AND IdJugador = @egreso AND Rol = 'Titular')
-		AND NOT EXISTS (SELECT 1 FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento WHERE E.Partido = @partido AND S.Egreso = @egreso)
+		IF partidos.fnJugadorEnCancha(@partido,@egreso,@minuto)=0
 			THROW 50000, '- El egreso no estaba en cancha.', 1;
 
 		IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @partido AND IdJugador = @ingreso AND Rol = 'Suplente')
 			THROW 50000, '- El ingreso no estaba en el banco.', 1;
+
+		IF EXISTS (SELECT 1 FROM partidos.Sustitucion S JOIN partidos.Evento E ON E.IdEvento=S.IdSustitucion
+			WHERE E.Partido=@partido AND (S.Ingreso=@ingreso OR S.Egreso=@ingreso OR S.Egreso=@egreso))
+			THROW 50000, '- El ingreso ya participo o el egreso ya fue reemplazado.', 1;
+
+		IF EXISTS (SELECT 1 FROM partidos.Amonestacion A JOIN partidos.Evento E ON E.IdEvento=A.IdAmonestacion
+			WHERE E.Partido=@partido AND A.Amonestado=@ingreso AND A.Tarjeta='Roja' AND E.Minuto<=@minuto)
+			THROW 50000, '- No puede ingresar un jugador expulsado.', 1;
+
+		-- Los cambios se cargan antes de los eventos posteriores del partido.
+		IF EXISTS (SELECT 1 FROM partidos.Evento WHERE Partido=@partido AND Minuto>@minuto)
+			THROW 50000, '- Registrar los cambios en orden de minuto, antes de los eventos posteriores.', 1;
 
 		SELECT @vIdMundial = IdMundial FROM partidos.Partido WHERE IdPartido = @partido
 
@@ -118,8 +129,8 @@ BEGIN
 	END TRY
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0
-			ROLLBACK TRANSACTION
-		THROW
+			ROLLBACK TRANSACTION;
+		THROW;
 	END CATCH
 END
 GO
@@ -149,8 +160,8 @@ BEGIN
 	END TRY
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0
-			ROLLBACK TRANSACTION
-		THROW
+			ROLLBACK TRANSACTION;
+		THROW;
 	END CATCH
 END
 GO
