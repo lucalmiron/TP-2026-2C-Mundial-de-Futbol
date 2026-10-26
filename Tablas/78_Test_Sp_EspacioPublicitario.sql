@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 26/10/26
 
 --Test de los SP de Espacio Publicitario (se ejecutan los SP reales de MUNDIAL)
 

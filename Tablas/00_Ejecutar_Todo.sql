@@ -2,7 +2,10 @@
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 26/10/26.
 -- Objetivo: instalar la base, tablas y procedimientos de la entrega 5.
--- Las pruebas se ejecutan por separado con Ejecutar_Pruebas_Aisladas.sql.
+-- Orden: 01-02 bases y esquemas; 03-36 tablas y restricciones; 37-69 SP.
+-- Al terminar, ejecutar 70_Ejecutar_Pruebas.sql para las pruebas antiguas.
+-- Las pruebas antiguas se ejecutan con 70_Ejecutar_Pruebas.sql en una instancia de pruebas.
+-- Para las nuevas, preparar una base con 71_Preparar_Pruebas.sql y ejecutar un test manualmente.
 -- La importacion de la entrega 6 no forma parte de esta instalacion.
 -- Ejecutar con sqlcmd desde la carpeta Tablas.
 -- En SSMS, activar modo SQLCMD y cambiar ScriptPath por la ruta de Tablas.

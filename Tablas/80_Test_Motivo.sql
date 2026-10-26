@@ -4,7 +4,7 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 08/10/2026
+-- 26/10/26
 -- Objetivo: Testear Registro, Update y Baja de Motivo
 
 --Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
