@@ -1,9 +1,9 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 25/10/2026.
+-- Fecha: 25/10/26.
 -- Objetivo: ejecutar las pruebas existentes de la entrega 5.
 -- Ejecutar despues de 00_Ejecutar_Todo.sql en una instancia de pruebas.
--- Algunos scripts modifican MUNDIAL y otros MUNDIALtesting.
+-- Los scripts incluidos modifican MUNDIAL: usar una instancia exclusiva de pruebas.
 -- Se continua ante errores porque hay rechazos esperados sin TRY/CATCH.
 -- Revisar cada resultado: llegar al final no significa que todas las pruebas pasaron.
 -- Ejecutar con sqlcmd desde la carpeta Tablas.
@@ -13,11 +13,11 @@
 
 :ON ERROR IGNORE
 
-:r $(ScriptPath)\70_Test_Club.sql
+-- 70_Test_Club.sql: ejecutar por separado en una base vacia MUNDIAL_Final_Test*.
 GO
-:r $(ScriptPath)\71_Test_IdiomaReporte.sql
+-- 71_Test_IdiomaReporte.sql: ejecutar por separado en una base vacia MUNDIAL_Final_Test*.
 GO
-:r $(ScriptPath)\72_Test_Persona.sql
+-- 72_Test_Persona.sql: ejecutar por separado en una base vacia MUNDIAL_Final_Test*.
 GO
 :r $(ScriptPath)\73_Test_Fase.sql
 GO
@@ -25,7 +25,7 @@ GO
 GO
 :r $(ScriptPath)\75_Test_Alineacion.sql
 GO
-:r $(ScriptPath)\76_Test_Sp_Amonestacion.sql
+-- 76_Test_Sp_Amonestacion.sql: ejecutar por separado en una base vacia MUNDIAL_Final_Test*.
 GO
 :r $(ScriptPath)\77_Test_Sp_Sede.sql
 GO
@@ -67,3 +67,10 @@ GO
 GO
 
 PRINT 'Ejecucion de pruebas finalizada. Revisar resultados y errores esperados.';
+
+-- Pruebas independientes: 70, 71, 72, 76 y 96_Test_Publicidad_Automatica,
+-- 96_Test_Periodo y 96_Test_Evento requieren cada una una base vacia MUNDIAL_Final_Test*.
+-- Instalar las tablas y SP reales (03 a 69) apuntando a esa base antes de ejecutarlas.
+-- No contienen copias de los SP. Su preparacion se detiene si la base contiene datos.
+-- 96_Test_Validaciones comprueba entradas invalidas sobre esos mismos SP.
+-- Los restantes 96_Test_* conservan el nombre de base de prueba indicado en su encabezado.

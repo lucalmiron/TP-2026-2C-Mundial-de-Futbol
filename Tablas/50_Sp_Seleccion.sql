@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures
 
@@ -27,37 +27,40 @@ CREATE PROCEDURE SP.uspSeleccion_Registrar
 @confederacion VARCHAR(45)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@idPais IS NULL) OR (@idPais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		IF(@idMundial IS NULL) OR (@idMundial <= 0)
-			THROW 50000, '- Valor invalido: Mundial.', 1;
+			SET @errores += '- Valor invalido: Mundial.' + N' ';
 
 		IF(@idGrupo IS NULL) OR (@idGrupo <= 0)
-			THROW 50000, '- Valor invalido: Grupo.', 1;
+			SET @errores += '- Valor invalido: Grupo.' + N' ';
 
 		IF(@confederacion IS NULL) OR (LTRIM(RTRIM(@confederacion)) = '')
-			THROW 50000, '- Valor invalido: Confederacion.', 1;
+			SET @errores += '- Valor invalido: Confederacion.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @idMundial)
-			THROW 50000, '- Valor inexistente: Mundial.', 1;
+			SET @errores += '- Valor inexistente: Mundial.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Grupo WHERE IdGrupo = @idGrupo)
-			THROW 50000, '- Valor inexistente: Grupo.', 1;
+			SET @errores += '- Valor inexistente: Grupo.' + N' ';
 
 		--Chequeo dup
 		IF EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdPais = @idPais AND IdMundial = @idMundial)
-			THROW 50000, '- Valor duplicado: Seleccion (pais y mundial).', 1;
+			SET @errores += '- Valor duplicado: Seleccion (pais y mundial).' + N' ';
 
 		--Chequeo cupo (maximo 4 selecciones por grupo en cada mundial)
 		IF (SELECT COUNT(*) FROM equipos.Seleccion WHERE IdMundial = @idMundial AND IdGrupo = @idGrupo) >= 4
-			THROW 50000, '- Cupo excedido: el grupo ya tiene 4 selecciones en el mundial.', 1;
+			SET @errores += '- Cupo excedido: el grupo ya tiene 4 selecciones en el mundial.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO equipos.Seleccion(IdPais, IdMundial, IdGrupo, CONFEDERACION)
 		VALUES(@idPais, @idMundial, @idGrupo, LTRIM(RTRIM(@confederacion)))
@@ -79,42 +82,43 @@ CREATE PROCEDURE SP.uspSeleccion_Update
 @confederacion VARCHAR(45) = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @vMundial INT
 
 	BEGIN TRY
 		--Chequeo validez
 		IF(@idSeleccion IS NULL) OR (@idSeleccion <= 0)
-			THROW 50000, '- Valor invalido: ID Seleccion.', 1;
+			SET @errores += '- Valor invalido: ID Seleccion.' + N' ';
 
 		IF(@idPais IS NOT NULL) AND (@idPais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		IF(@idMundial IS NOT NULL) AND (@idMundial <= 0)
-			THROW 50000, '- Valor invalido: Mundial.', 1;
+			SET @errores += '- Valor invalido: Mundial.' + N' ';
 
 		IF(@idGrupo IS NOT NULL) AND (@idGrupo <= 0)
-			THROW 50000, '- Valor invalido: Grupo.', 1;
+			SET @errores += '- Valor invalido: Grupo.' + N' ';
 
 		IF(@confederacion IS NOT NULL) AND (LTRIM(RTRIM(@confederacion)) = '')
-			THROW 50000, '- Valor invalido: Confederacion.', 1;
+			SET @errores += '- Valor invalido: Confederacion.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @idSeleccion)
-			THROW 50000, '- Valor inexistente: ID Seleccion.', 1;
+			SET @errores += '- Valor inexistente: ID Seleccion.' + N' ';
 
 		IF(@idPais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		IF(@idMundial IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @idMundial)
-			THROW 50000, '- Valor inexistente: Mundial.', 1;
+			SET @errores += '- Valor inexistente: Mundial.' + N' ';
 
 		IF(@idGrupo IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Grupo WHERE IdGrupo = @idGrupo)
-			THROW 50000, '- Valor inexistente: Grupo.', 1;
+			SET @errores += '- Valor inexistente: Grupo.' + N' ';
 
 		--Chequeo dup
 		IF(@idPais IS NOT NULL) AND (@idMundial IS NOT NULL)
 		   AND EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdPais = @idPais AND IdMundial = @idMundial AND IdSeleccion <> @idSeleccion)
-			THROW 50000, '- Valor duplicado: Seleccion (pais y mundial).', 1;
+			SET @errores += '- Valor duplicado: Seleccion (pais y mundial).' + N' ';
 
 		--Chequeo cupo (maximo 4 selecciones por grupo en cada mundial, sin contar la propia)
 		IF(@idGrupo IS NOT NULL)
@@ -122,8 +126,10 @@ BEGIN
 			SET @vMundial = COALESCE(@idMundial, (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @idSeleccion))
 
 			IF (SELECT COUNT(*) FROM equipos.Seleccion WHERE IdMundial = @vMundial AND IdGrupo = @idGrupo AND IdSeleccion <> @idSeleccion) >= 4
-				THROW 50000, '- Cupo excedido: el grupo ya tiene 4 selecciones en el mundial.', 1;
+				SET @errores += '- Cupo excedido: el grupo ya tiene 4 selecciones en el mundial.' + N' ';
 		END
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE equipos.Seleccion
 		SET IdPais = COALESCE(@idPais, IdPais),
@@ -145,32 +151,35 @@ CREATE PROCEDURE SP.uspSeleccion_Bajar
 @idSeleccion INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@idSeleccion IS NULL) OR (@idSeleccion <= 0)
-			THROW 50000, '- Valor invalido: ID Seleccion.', 1;
+			SET @errores += '- Valor invalido: ID Seleccion.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @idSeleccion)
-			THROW 50000, '- Valor inexistente: ID Seleccion.', 1;
+			SET @errores += '- Valor inexistente: ID Seleccion.' + N' ';
 
 		--Chequeo relaciones
 		IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE Seleccion = @idSeleccion)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Jugador. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Jugador. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM equipos.Tecnico WHERE Seleccion = @idSeleccion)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Tecnico. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Tecnico. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM partidos.Partido WHERE Eq1 = @idSeleccion OR Eq2 = @idSeleccion)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Partido. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Partido. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM partidos.Alineacion A
 				INNER JOIN equipos.Jugador J ON J.IdJugador = A.IdJugador
 				WHERE J.Seleccion = @idSeleccion)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Alineacion. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Alineacion. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM equipos.CambioConvocatoria WHERE Seleccion = @idSeleccion)
-			THROW 50000, '- Existen 1 o mas registros relacionados: CambioConvocatoria. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: CambioConvocatoria. Elimine dichos registros para continuar.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM equipos.Seleccion WHERE IdSeleccion = @idSeleccion
 	END TRY

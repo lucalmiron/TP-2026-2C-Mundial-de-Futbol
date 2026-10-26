@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures que involucran transacciones
 
@@ -29,38 +29,41 @@ CREATE PROCEDURE SPTRANS.uspTecnico_Registrar
 @seleccion INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @idPersona INT;
 	DECLARE @nuevo TABLE(ID INT);
 
 	BEGIN TRY
 		--Chequeo validez
 		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@fnac IS NULL) OR ( @fnac > CONVERT(DATE, GETDATE()) )
-			THROW 50000, '- Valor invalido: Fecha de Nacimiento.', 1;
+			SET @errores += '- Valor invalido: Fecha de Nacimiento.' + N' ';
 
 		IF(@pais IS NULL) OR (@pais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		IF(@funcion IS NULL)
-			THROW 50000, '- Valor invalido: Funcion.', 1;
+			SET @errores += '- Valor invalido: Funcion.' + N' ';
 
 		IF(@seleccion IS NULL) OR (@seleccion <= 0)
-			THROW 50000, '- Valor invalido: Seleccion.', 1;
+			SET @errores += '- Valor invalido: Seleccion.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
-			THROW 50000, '- Valor inexistente: Seleccion.', 1;
+			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
 		--chequeo dup
 		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 
 		BEGIN TRANSACTION;
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			INSERT INTO equipos.Persona(Nombre, Fnac, Pais, Rol)
 			OUTPUT INSERTED.IdPersona INTO @nuevo(ID)
 			VALUES (@nombre, @fnac, @pais, 'Tecnico');
@@ -92,35 +95,38 @@ CREATE PROCEDURE SPTRANS.uspTecnico_Update
 @seleccion INT = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Tecnico.', 1;
+			SET @errores += '- Valor invalido: ID Tecnico.' + N' ';
 
 		IF(@fnac IS NOT NULL) AND ( @fnac > CONVERT(DATE, GETDATE()) )
-			THROW 50000, '- Valor invalido: Fecha de Nacimiento.', 1;
+			SET @errores += '- Valor invalido: Fecha de Nacimiento.' + N' ';
 
 		IF(@pais IS NOT NULL) AND (@pais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		IF(@seleccion IS NOT NULL) AND (@seleccion <= 0)
-			THROW 50000, '- Valor invalido: Seleccion.', 1;
+			SET @errores += '- Valor invalido: Seleccion.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Tecnico WHERE IdTecnico = @id)
-			THROW 50000, '- Valor inexistente: ID Tecnico.', 1;
+			SET @errores += '- Valor inexistente: ID Tecnico.' + N' ';
 
 		IF (@pais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		IF (@seleccion IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
-			THROW 50000, '- Valor inexistente: Seleccion.', 1;
+			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
 		--chequeo dup
 		IF (@nombre IS NOT NULL) AND EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre AND IdPersona <> @id)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 
 		BEGIN TRANSACTION;
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			UPDATE equipos.Persona
 			SET
 			Nombre = COALESCE(@nombre, Nombre),
@@ -151,20 +157,23 @@ CREATE PROCEDURE SPTRANS.uspTecnico_Bajar
 @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Tecnico.', 1;
+			SET @errores += '- Valor invalido: ID Tecnico.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Tecnico WHERE IdTecnico = @id)
-			THROW 50000, '- Valor inexistente: ID Tecnico.', 1;
+			SET @errores += '- Valor inexistente: ID Tecnico.' + N' ';
 
 		--Chequeo relaciones
 		IF EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE Amonestado = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.' + N' ';
 
 		BEGIN TRANSACTION;
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			DELETE FROM equipos.Tecnico
 			WHERE IdTecnico = @id;
 

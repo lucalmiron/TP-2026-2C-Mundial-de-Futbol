@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures
 
@@ -24,12 +24,15 @@ GO
 CREATE PROCEDURE SP.uspClub_Registrar @nombre VARCHAR(20)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM equipos.Club WHERE Nombre = @nombre)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO equipos.Club(Nombre) VALUES (@nombre)
 	END TRY
@@ -45,18 +48,21 @@ GO
 CREATE PROCEDURE SP.uspClub_Update @id INT, @nombre VARCHAR(20)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Club.', 1;
+			SET @errores += '- Valor invalido: ID Club.' + N' ';
 
 		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @id)
-			THROW 50000, '- Valor inexistente: ID Club.', 1;
+			SET @errores += '- Valor inexistente: ID Club.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM equipos.Club WHERE Nombre = @nombre AND IdClub <> @id)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE equipos.Club
 		SET Nombre = @nombre
@@ -74,15 +80,18 @@ GO
 CREATE PROCEDURE SP.uspClub_Bajar @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Club.', 1;
+			SET @errores += '- Valor invalido: ID Club.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @id)
-			THROW 50000, '- Valor inexistente: ID Club.', 1;
+			SET @errores += '- Valor inexistente: ID Club.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE Club = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Jugador. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Jugador. Elimine dichos registros para continuar.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM equipos.Club WHERE IdClub = @id
 	END TRY

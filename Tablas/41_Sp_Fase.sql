@@ -4,7 +4,7 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 08/10/2026
+-- 25/10/26
 -- Objetivo: SPs Fase
 
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
@@ -20,16 +20,19 @@ CREATE PROCEDURE SP.uspFase_Registrar
 @Descripcion VARCHAR(20)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@Descripcion IS NULL)
-			THROW 50000, '- Valor invalido: Descripcion nula', 1;
+			SET @errores += '- Valor invalido: Descripcion nula' + N' ';
 		IF(@Descripcion NOT IN ('Grupos','Dieciseisavos','Octavos','Cuartos','Semifinal','Tercer Puesto','Final'))
 		BEGIN
 			DECLARE @msg VARCHAR(100) = '- Valor invalido: ' + ISNULL(@Descripcion,'NULL') + '.';
-			THROW 50000, @msg, 1;
+			SET @errores += @msg + N' ';
 		END
 		IF EXISTS(SELECT 1 FROM partidos.Fase WHERE Descripcion=@Descripcion)
-			THROW 50000, '- Fase repetida', 1;
+			SET @errores += '- Fase repetida' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 		INSERT INTO partidos.Fase(Descripcion) VALUES(@Descripcion)
 	END TRY
 	BEGIN CATCH
@@ -47,26 +50,29 @@ CREATE PROCEDURE SP.uspFase_Update
 @Descripcion VARCHAR(20)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@Id IS NULL OR @Id <= 0)
 		BEGIN
 			DECLARE @msg VARCHAR(100) = '- Valor invalido: Id (' + ISNULL(CAST(@Id AS VARCHAR(10)),'NULL') + ').';
-			THROW 50000, @msg, 1;
+			SET @errores += @msg + N' ';
 		END
 		IF(@Descripcion IS NULL)
-			THROW 50000, '- Valor invalido: Descripcion nula.', 1;
+			SET @errores += '- Valor invalido: Descripcion nula.' + N' ';
 		IF(@Descripcion NOT IN ('Grupos','Dieciseisavos','Octavos','Cuartos','Semifinal','Tercer Puesto','Final'))
 		BEGIN
 			DECLARE @msg2 VARCHAR(100) = '- Valor invalido: ' + ISNULL(@Descripcion,'NULL') + '.';
-			THROW 50000, @msg2, 1;
+			SET @errores += @msg2 + N' ';
 		END
 		IF NOT EXISTS(SELECT 1 FROM partidos.Fase WHERE IdFase=@Id)
 		BEGIN
 			DECLARE @msg3 VARCHAR(100) = '- Valor inexistente: Id (' + ISNULL(CAST(@Id AS VARCHAR(10)),'NULL') + ').';
-			THROW 50000, @msg3, 1;
+			SET @errores += @msg3 + N' ';
 		END
 		IF EXISTS(SELECT 1 FROM partidos.Fase WHERE Descripcion=@Descripcion AND IdFase<>@Id)
-			THROW 50000, '- Valor duplicado: Fase.', 1;
+			SET @errores += '- Valor duplicado: Fase.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 		UPDATE partidos.Fase SET Descripcion=@Descripcion WHERE IdFase=@Id;
 	END TRY
 	BEGIN CATCH
@@ -83,19 +89,22 @@ CREATE PROCEDURE SP.uspFase_Bajar
 @Id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@Id IS NULL OR @Id <= 0)
 		BEGIN
 			DECLARE @msg VARCHAR(100) = '- Valor invalido: Id (' + ISNULL(CAST(@Id AS VARCHAR(10)),'NULL') + ').';
-			THROW 50000, @msg, 1;
+			SET @errores += @msg + N' ';
 		END
 		IF NOT EXISTS(SELECT 1 FROM partidos.Fase WHERE IdFase=@Id)
 		BEGIN
 			DECLARE @msg2 VARCHAR(100) = '- Valor inexistente: Id (' + ISNULL(CAST(@Id AS VARCHAR(10)),'NULL') + ').';
-			THROW 50000, @msg2, 1;
+			SET @errores += @msg2 + N' ';
 		END
 		IF EXISTS(SELECT 1 FROM partidos.Partido WHERE IdFase=@Id)
-			THROW 50000, '- Existen partidos con esta fase.', 1;
+			SET @errores += '- Existen partidos con esta fase.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 		DELETE FROM partidos.Fase WHERE IdFase=@Id;
 	END TRY
 	BEGIN CATCH

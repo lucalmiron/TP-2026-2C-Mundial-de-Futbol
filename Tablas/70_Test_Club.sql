@@ -1,192 +1,85 @@
---/Universidad Nacional de La Matanza
---/Bases de Datos Aplicadas - Comision 02
+-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
+-- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
+-- Fecha: 25/10/26.
+-- Objetivo: comprobar ABM real de clubes.
+-- Ejecutar en una base vacia MUNDIAL_Final_Test*, con las tablas y SP reales instalados.
+-- Los datos son exclusivos de esta base de prueba. No ejecutar en MUNDIAL.
+SET NOCOUNT ON;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar una base MUNDIAL_Final_Test para estas pruebas.', 1;
+IF EXISTS(SELECT 1 FROM equipos.Pais)
+    THROW 51000, 'La base de prueba debe estar vacia.', 1;
 
---/Grupo 7 - Integrantes:
---Almiron, Luca
---Figueroa, Santiago
---Ruarte, Fidel
---Villalba, Leandro
-
---/Fecha: 08/10/2026
-
---Testing de StoredProcedures asociados a la entidad Club
-
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIALtesting')
+DECLARE @pais1 INT,@pais2 INT,@grupo INT,@mundial INT,@s1 INT,@s2 INT,@huso INT,@sede INT,
+        @fase INT,@p1 INT,@p2 INT,@arbitro INT,@motivo INT,@i INT=1,@persona INT;
+INSERT equipos.Pais(NOMBRE) VALUES('Prueba G1 A'); SET @pais1=SCOPE_IDENTITY();
+INSERT equipos.Pais(NOMBRE) VALUES('Prueba G1 B'); SET @pais2=SCOPE_IDENTITY();
+INSERT equipos.Grupo(NOMBRE) VALUES('Prueba G1'); SET @grupo=SCOPE_IDENTITY();
+INSERT sedes.Mundial(IdPais,ACTIVIDAD_FECHA_INICIO,ACTIVIDAD_FECHA_FIN,TAMANIO_SELECCION_MINIMO,TAMANIO_SELECCION_MAXIMO,
+ CAMBIOS_VENTANAS,CAMBIOS_CANTIDAD,SUSPENSION_TARJETAS_MAXIMAS,SUSPENSION_TIEMPO)
+ VALUES(@pais1,'20260601','20260731',0,26,10,10,2,1); SET @mundial=SCOPE_IDENTITY();
+INSERT equipos.Seleccion(IdPais,IdMundial,IdGrupo,CONFEDERACION) VALUES(@pais1,@mundial,@grupo,'Prueba'); SET @s1=SCOPE_IDENTITY();
+INSERT equipos.Seleccion(IdPais,IdMundial,IdGrupo,CONFEDERACION) VALUES(@pais2,@mundial,@grupo,'Prueba'); SET @s2=SCOPE_IDENTITY();
+INSERT sedes.HusoHorario(Nombre,IdPais) VALUES('UTC',@pais1); SET @huso=SCOPE_IDENTITY();
+INSERT sedes.Sede(Nombre,Ciudad,Capacidad,IdPais,IdHuso) VALUES('Prueba G1','Prueba',50000,@pais1,@huso); SET @sede=SCOPE_IDENTITY();
+INSERT partidos.Fase(Descripcion) VALUES('Final'); SET @fase=SCOPE_IDENTITY();
+INSERT partidos.Partido(IdFase,IdSede,IdMundial,Eq1,Eq2,Fecha,HoraUTC,HoraLocal)
+ VALUES(@fase,@sede,@mundial,@s1,@s2,'20260701','18:00','18:00'); SET @p1=SCOPE_IDENTITY();
+INSERT partidos.Partido(IdFase,IdSede,IdMundial,Eq1,Eq2,Fecha,HoraUTC,HoraLocal)
+ VALUES(@fase,@sede,@mundial,@s1,@s2,'20260708','18:00','18:00'); SET @p2=SCOPE_IDENTITY();
+INSERT partidos.Periodo(IdPeriodo,Descripcion,Inicio,Fin,EsPenales) VALUES(901,'Juego',0,120,0),(902,'Penales',NULL,NULL,1);
+INSERT publicidad.Motivo(Descripcion) VALUES('Lesion'); SET @motivo=SCOPE_IDENTITY();
+DECLARE @jugadores TABLE(Numero INT,Id INT);
+WHILE @i<=16
 BEGIN
-	USE MUNDIALtesting
+ INSERT equipos.Persona(Nombre,Fnac,Rol,Pais) VALUES(CONCAT('Prueba G1 jugador ',@i),'20000101','Jugador',@pais1);
+ SET @persona=SCOPE_IDENTITY();
+ INSERT equipos.Jugador(IdJugador,Estado,Posicion,Numero,Seleccion) VALUES(@persona,'Activo','MED',@i,@s1);
+ INSERT @jugadores VALUES(@i,@persona);
+ SET @i+=1;
 END;
-GO
+INSERT equipos.Persona(Nombre,Fnac,Rol,Pais) VALUES('Prueba G1 arbitro','19800101','Arbitro',@pais2); SET @arbitro=SCOPE_IDENTITY();
+INSERT arbitros.Arbitro(IdArbitro,Categoria) VALUES(@arbitro,'FIFA');
+INSERT arbitros.Arbitraje(Arbitro,Funcion,Partido) VALUES(@arbitro,'Principal',@p1),(@arbitro,'Principal',@p2);
+DECLARE @j1 INT=(SELECT Id FROM @jugadores WHERE Numero=1),@j2 INT=(SELECT Id FROM @jugadores WHERE Numero=2),
+ @j12 INT=(SELECT Id FROM @jugadores WHERE Numero=12),@j13 INT=(SELECT Id FROM @jugadores WHERE Numero=13),
+ @j14 INT=(SELECT Id FROM @jugadores WHERE Numero=14),@j15 INT=(SELECT Id FROM @jugadores WHERE Numero=15),
+ @j16 INT=(SELECT Id FROM @jugadores WHERE Numero=16),@gol INT,@evento INT,@cantidad INT;
 
-DROP TABLE IF EXISTS equipos.Jugador
-DROP TABLE IF EXISTS equipos.Club
-GO
+-- alta y modificacion de club.
+EXEC SP.uspClub_Registrar 'Club prueba'; SELECT @persona=IdClub FROM equipos.Club WHERE Nombre='Club prueba'; EXEC SP.uspClub_Update @persona,'Club editado';
+IF NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub=@persona AND Nombre='Club editado')
+ THROW 51998,'Fallo: alta y modificacion de club.',1;
+PRINT 'OK 1: alta y modificacion de club';
 
---tablas a testear
-CREATE TABLE equipos.Club
-(
-	IdClub INT PRIMARY KEY IDENTITY(1, 1),
-	Nombre VARCHAR(20)
-);
-GO
+BEGIN TRY
+ EXEC SP.uspClub_Update -1,NULL;
+ THROW 51999,'La operacion debio rechazarse.',1;
+END TRY
+BEGIN CATCH
+ IF ERROR_NUMBER() NOT IN (50000,51000) OR ERROR_MESSAGE() NOT LIKE '%ID Club%' OR ERROR_MESSAGE() NOT LIKE '%Nombre%' THROW;
+END CATCH;
+PRINT 'OK 2: agrupa errores de club';
 
---tablas aux de testing
-CREATE TABLE equipos.Jugador
-(
-	IdJugador INT PRIMARY KEY,
-	Club INT NULL,
-	FOREIGN KEY(Club) REFERENCES equipos.Club(IdClub)
-);
-GO
+-- asigna club real.
+EXEC SP.uspJugador_ClubUpdate @j1,@persona;
+IF (SELECT Club FROM equipos.Jugador WHERE IdJugador=@j1)<>@persona
+ THROW 51998,'Fallo: asigna club real.',1;
+PRINT 'OK 3: asigna club real';
 
---SPs a testear
-IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspClub_Registrar'))
-    DROP PROCEDURE SP.uspClub_Registrar
-GO
-CREATE PROCEDURE SP.uspClub_Registrar @nombre VARCHAR(20)
-AS
-BEGIN
-	BEGIN TRY
-		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+BEGIN TRY
+ EXEC SP.uspClub_Bajar @persona;
+ THROW 51999,'La operacion debio rechazarse.',1;
+END TRY
+BEGIN CATCH
+ IF ERROR_NUMBER() NOT IN (50000,51000) OR ERROR_MESSAGE() NOT LIKE '%Jugador%' THROW;
+END CATCH;
+PRINT 'OK 4: protege club relacionado';
 
-		IF EXISTS(SELECT 1 FROM equipos.Club WHERE Nombre = @nombre)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+-- baja de club libre.
+EXEC SP.uspJugador_ClubUpdate @j1,NULL; EXEC SP.uspClub_Bajar @persona;
+IF EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub=@persona)
+ THROW 51998,'Fallo: baja de club libre.',1;
+PRINT 'OK 5: baja de club libre';
 
-		INSERT INTO equipos.Club(Nombre) VALUES (@nombre)
-	END TRY
-	BEGIN CATCH
-		THROW;
-	END CATCH
-END;
-GO
-
-IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspClub_Update'))
-    DROP PROCEDURE SP.uspClub_Update
-GO
-CREATE PROCEDURE SP.uspClub_Update @id INT, @nombre VARCHAR(20)
-AS
-BEGIN
-	BEGIN TRY
-		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Club.', 1;
-
-		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
-
-		IF NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @id)
-			THROW 50000, '- Valor inexistente: ID Club.', 1;
-
-		IF EXISTS(SELECT 1 FROM equipos.Club WHERE Nombre = @nombre AND IdClub <> @id)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
-
-		UPDATE equipos.Club
-		SET Nombre = @nombre
-		WHERE IdClub = @id
-	END TRY
-	BEGIN CATCH
-		THROW;
-	END CATCH
-END;
-GO
-
-IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspClub_Bajar'))
-    DROP PROCEDURE SP.uspClub_Bajar
-GO
-CREATE PROCEDURE SP.uspClub_Bajar @id INT
-AS
-BEGIN
-	BEGIN TRY
-		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Club.', 1;
-
-		IF NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @id)
-			THROW 50000, '- Valor inexistente: ID Club.', 1;
-
-		IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE Club = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Jugador. Elimine dichos registros para continuar.', 1;
-
-		DELETE FROM equipos.Club WHERE IdClub = @id
-	END TRY
-	BEGIN CATCH
-		THROW;
-	END CATCH
-END;
-GO
-
---llenado de tablas a testear con registro exitoso
-EXECUTE SP.uspClub_Registrar @nombre = 'Real Madrid';
-EXECUTE SP.uspClub_Registrar @nombre = 'Barcelona FC';
-
-SELECT * FROM equipos.Club;
-GO
---llenado de tablas auxiliares
-INSERT INTO equipos.Jugador VALUES (1, 2);
-
-SELECT * FROM equipos.Jugador;
-GO
-
-
-----Testeo
---/Registro
---Fallido (Valores invalidos)
-EXECUTE SP.uspClub_Registrar @nombre = NULL;
-
-SELECT * FROM equipos.Club;
-GO
---Fallido (Valores dup)
-EXECUTE SP.uspClub_Registrar @nombre = 'Real Madrid';
-
-SELECT * FROM equipos.Club;
-GO
---/Update
---Exitoso
-EXECUTE SP.uspClub_Update @id = 1, @nombre = 'Realisimo Madrid';
-
-SELECT * FROM equipos.Club;
-GO
---Fallido(Valores invalidos)
-EXECUTE SP.uspClub_Update @id = 0, @nombre = NULL;
-
-SELECT * FROM equipos.Club;
-GO
---Fallido(Valores inexistentes)
-EXECUTE SP.uspClub_Update @id = 40, @nombre = 'Realisimo Madrid';
-
-SELECT * FROM equipos.Club;
-GO
---Fallido(Valores dup)
-EXECUTE SP.uspClub_Update @id = 1, @nombre = 'Barcelona FC';
-
-SELECT * FROM equipos.Club;
-GO
---/Baja
---Exitoso
-EXECUTE SP.uspClub_Bajar @id = 1;
-
-SELECT * FROM equipos.Club;
-GO
---Fallido(Valores invalidos)
-EXECUTE SP.uspClub_Bajar @id = 0;
-
-SELECT * FROM equipos.Club;
-GO
---Fallido(Valores inexistentes)
-EXECUTE SP.uspClub_Bajar @id = 40;
-
-SELECT * FROM equipos.Club;
-GO
---Fallido(Registros referenciados)
-EXECUTE SP.uspClub_Bajar @id = 2;
-
-SELECT * FROM equipos.Club;
-GO
-
---limpieza
-DROP PROCEDURE SP.uspClub_Registrar;
-DROP PROCEDURE SP.uspClub_Update;
-DROP PROCEDURE SP.uspClub_Bajar;
-GO
-
-DROP TABLE equipos.Jugador;
-DROP TABLE equipos.Club;
-GO
+PRINT '70_Test_Club.sql: 5 comprobaciones correctas.';

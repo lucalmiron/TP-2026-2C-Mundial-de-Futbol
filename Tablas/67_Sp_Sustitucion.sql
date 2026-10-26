@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Objetivo: Gestionar Tabla Sustitucion
 
@@ -29,6 +29,7 @@ CREATE PROCEDURE SPTRANS.uspSustitucion_Registrar
 @motivo INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @vSeleccion INT
 	DECLARE @vIdMundial INT
 	DECLARE @vCambios INT
@@ -38,66 +39,66 @@ BEGIN
 
 	BEGIN TRY
 		IF (@minuto IS NULL) OR (@minuto < 0)
-			THROW 50000, '- Valor invalido: Minuto.', 1;
+			SET @errores += '- Valor invalido: Minuto.' + N' ';
 
 		IF (@partido IS NULL) OR (@partido <= 0)
-			THROW 50000, '- Valor invalido: Partido.', 1;
+			SET @errores += '- Valor invalido: Partido.' + N' ';
 
 		IF (@periodo IS NULL) OR (@periodo <= 0)
-			THROW 50000, '- Valor invalido: Periodo.', 1;
+			SET @errores += '- Valor invalido: Periodo.' + N' ';
 
 		IF (@ingreso IS NULL) OR (@ingreso <= 0)
-			THROW 50000, '- Valor invalido: Ingreso.', 1;
+			SET @errores += '- Valor invalido: Ingreso.' + N' ';
 
 		IF (@egreso IS NULL) OR (@egreso <= 0)
-			THROW 50000, '- Valor invalido: Egreso.', 1;
+			SET @errores += '- Valor invalido: Egreso.' + N' ';
 
 		IF (@motivo IS NULL) OR (@motivo <= 0)
-			THROW 50000, '- Valor invalido: Motivo.', 1;
+			SET @errores += '- Valor invalido: Motivo.' + N' ';
 
 		IF (@ingreso = @egreso)
-			THROW 50000, '- Ingreso y egreso no pueden ser el mismo jugador.', 1;
+			SET @errores += '- Ingreso y egreso no pueden ser el mismo jugador.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
-			THROW 50000, '- Valor inexistente: Partido.', 1;
+			SET @errores += '- Valor inexistente: Partido.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
-			THROW 50000, '- Valor inexistente: Periodo.', 1;
+			SET @errores += '- Valor inexistente: Periodo.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @ingreso)
-			THROW 50000, '- Valor inexistente: Ingreso.', 1;
+			SET @errores += '- Valor inexistente: Ingreso.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @egreso)
-			THROW 50000, '- Valor inexistente: Egreso.', 1;
+			SET @errores += '- Valor inexistente: Egreso.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM publicidad.Motivo WHERE IdMotivo = @motivo)
-			THROW 50000, '- Valor inexistente: Motivo.', 1;
+			SET @errores += '- Valor inexistente: Motivo.' + N' ';
 
 		SET @vSeleccion = (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @egreso)
 
 		IF (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @ingreso) <> @vSeleccion
-			THROW 50000, '- Ingreso y egreso deben ser de la misma seleccion.', 1;
+			SET @errores += '- Ingreso y egreso deben ser de la misma seleccion.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido AND (Eq1 = @vSeleccion OR Eq2 = @vSeleccion))
-			THROW 50000, '- La seleccion no juega este partido.', 1;
+			SET @errores += '- La seleccion no juega este partido.' + N' ';
 
 		IF partidos.fnJugadorEnCancha(@partido,@egreso,@minuto)=0
-			THROW 50000, '- El egreso no estaba en cancha.', 1;
+			SET @errores += '- El egreso no estaba en cancha.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @partido AND IdJugador = @ingreso AND Rol = 'Suplente')
-			THROW 50000, '- El ingreso no estaba en el banco.', 1;
+			SET @errores += '- El ingreso no estaba en el banco.' + N' ';
 
 		IF EXISTS (SELECT 1 FROM partidos.Sustitucion S JOIN partidos.Evento E ON E.IdEvento=S.IdSustitucion
 			WHERE E.Partido=@partido AND (S.Ingreso=@ingreso OR S.Egreso=@ingreso OR S.Egreso=@egreso))
-			THROW 50000, '- El ingreso ya participo o el egreso ya fue reemplazado.', 1;
+			SET @errores += '- El ingreso ya participo o el egreso ya fue reemplazado.' + N' ';
 
 		IF EXISTS (SELECT 1 FROM partidos.Amonestacion A JOIN partidos.Evento E ON E.IdEvento=A.IdAmonestacion
 			WHERE E.Partido=@partido AND A.Amonestado=@ingreso AND A.Tarjeta='Roja' AND E.Minuto<=@minuto)
-			THROW 50000, '- No puede ingresar un jugador expulsado.', 1;
+			SET @errores += '- No puede ingresar un jugador expulsado.' + N' ';
 
 		-- Los cambios se cargan antes de los eventos posteriores del partido.
 		IF EXISTS (SELECT 1 FROM partidos.Evento WHERE Partido=@partido AND Minuto>@minuto)
-			THROW 50000, '- Registrar los cambios en orden de minuto, antes de los eventos posteriores.', 1;
+			SET @errores += '- Registrar los cambios en orden de minuto, antes de los eventos posteriores.' + N' ';
 
 		SELECT @vIdMundial = IdMundial FROM partidos.Partido WHERE IdPartido = @partido
 
@@ -108,15 +109,17 @@ BEGIN
 		SELECT @vVentanas = COUNT(DISTINCT E.Minuto) FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion
 
 		IF (@vCambios + 1) > @vMaxCambios
-			THROW 50000, '- Tope de cambios del reglamento excedido.', 1;
+			SET @errores += '- Tope de cambios del reglamento excedido.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion AND E.Minuto = @minuto)
 		AND (@vVentanas + 1) > @vMaxVentanas
-			THROW 50000, '- Tope de ventanas del reglamento excedido.', 1;
+			SET @errores += '- Tope de ventanas del reglamento excedido.' + N' ';
 
 		DECLARE @idEvento INT
 
 		BEGIN TRANSACTION
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			INSERT INTO partidos.Evento (Minuto, Tipo, Partido, Periodo)
 			VALUES (@minuto, 'Sustitucion', @partido, @periodo)
 
@@ -142,14 +145,17 @@ CREATE PROCEDURE SPTRANS.uspSustitucion_Bajar
 @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF (@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Sustitucion.', 1;
+			SET @errores += '- Valor invalido: ID Sustitucion.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM partidos.Sustitucion WHERE IdSustitucion = @id)
-			THROW 50000, '- Registro inexistente.', 1;
+			SET @errores += '- Registro inexistente.' + N' ';
 
 		BEGIN TRANSACTION
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			DELETE FROM partidos.Sustitucion
 			WHERE IdSustitucion = @id
 

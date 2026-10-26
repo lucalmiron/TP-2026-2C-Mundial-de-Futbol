@@ -32,6 +32,7 @@ CREATE PROCEDURE SPTRANS.uspJugador_Registrar
 @estado VARCHAR(10) = 'Activo'
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @cantJugadores INT;
 	DECLARE @idPersona INT;
 	DECLARE @nuevo TABLE(ID INT);
@@ -39,53 +40,55 @@ BEGIN
 	BEGIN TRY
 		--Chequeo validez
 		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@fnac IS NULL) OR ( @fnac > CONVERT(DATE, GETDATE()) )
-			THROW 50000, '- Valor invalido: Fecha de Nacimiento.', 1;
+			SET @errores += '- Valor invalido: Fecha de Nacimiento.' + N' ';
 
 		IF(@pais IS NULL) OR (@pais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		IF(@posicion IS NULL)
-			THROW 50000, '- Valor invalido: Posicion.', 1;
+			SET @errores += '- Valor invalido: Posicion.' + N' ';
 
 		IF(@numero IS NULL) OR (@numero <= 0)
-			THROW 50000, '- Valor invalido: Numero.', 1;
+			SET @errores += '- Valor invalido: Numero.' + N' ';
 
 		IF( (@club IS NOT NULL) AND (@club <= 0) )
-			THROW 50000, '- Valor invalido: Club.', 1;
+			SET @errores += '- Valor invalido: Club.' + N' ';
 
 		IF(@seleccion IS NULL) OR (@seleccion <= 0)
-			THROW 50000, '- Valor invalido: Seleccion.', 1;
+			SET @errores += '- Valor invalido: Seleccion.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		IF (@club IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @club)
-			THROW 50000, '- Valor inexistente: Club.', 1;
+			SET @errores += '- Valor inexistente: Club.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
-			THROW 50000, '- Valor inexistente: Seleccion.', 1;
+			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
 		IF @estado IS NULL OR @estado NOT IN ('Activo', 'Inactivo')
-			THROW 50000, '- Estado inicial invalido: use Activo o Inactivo.', 1;
+			SET @errores += '- Estado inicial invalido: use Activo o Inactivo.' + N' ';
 
 		-- Los reemplazantes inactivos no ocupan un lugar en la convocatoria.
 		SET @cantJugadores = (SELECT COUNT(IdJugador) FROM equipos.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo');
 		IF @estado = 'Activo' AND ( (@cantJugadores + 1) > (SELECT TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
-			THROW 50000, '- Cupo maximo de jugadores excedido.', 1;
+			SET @errores += '- Cupo maximo de jugadores excedido.' + N' ';
 
 		--chequeo dup
 		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 		
 		--El dorsal es unico por seleccion (UQ_Jugador_Dorsal), no globalmente.
 		IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE Numero = @numero AND Seleccion = @seleccion)
-			THROW 50000, '- Valor duplicado: Numero.', 1;
+			SET @errores += '- Valor duplicado: Numero.' + N' ';
 
 		BEGIN TRANSACTION;
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			INSERT INTO equipos.Persona(Nombre, Fnac, Pais, Rol)
 			OUTPUT INSERTED.IdPersona INTO @nuevo(ID)
 			VALUES (@nombre, @fnac, @pais, 'Jugador');
@@ -118,44 +121,45 @@ CREATE PROCEDURE SPTRANS.uspJugador_Update
 @seleccion INT = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @selDestino INT;
 
 	BEGIN TRY
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Jugador.', 1;
+			SET @errores += '- Valor invalido: ID Jugador.' + N' ';
 
 		IF(@fnac IS NOT NULL) AND ( @fnac > CONVERT(DATE, GETDATE()) )
-			THROW 50000, '- Valor invalido: Fecha de Nacimiento.', 1;
+			SET @errores += '- Valor invalido: Fecha de Nacimiento.' + N' ';
 
 		IF(@pais IS NOT NULL) AND (@pais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		IF(@numero IS NOT NULL) AND (@numero <= 0)
-			THROW 50000, '- Valor invalido: Numero.', 1;
+			SET @errores += '- Valor invalido: Numero.' + N' ';
 
 		IF(@seleccion IS NOT NULL) AND (@seleccion <= 0)
-			THROW 50000, '- Valor invalido: Seleccion.', 1;
+			SET @errores += '- Valor invalido: Seleccion.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @id)
-			THROW 50000, '- Valor inexistente: IdJugador.', 1;
+			SET @errores += '- Valor inexistente: IdJugador.' + N' ';
 
 		IF (@pais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		IF (@seleccion IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
-			THROW 50000, '- Valor inexistente: Seleccion.', 1;
+			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
 		--chequeo dup
 		IF (@nombre IS NOT NULL) AND EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre AND IdPersona <> @id)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 
 		--El dorsal es unico por seleccion: se controla contra la seleccion que quedara.
 		SET @selDestino = COALESCE(@seleccion, (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id));
 
 		IF EXISTS(SELECT 1 FROM equipos.Jugador WHERE Numero = COALESCE(@numero, (SELECT Numero FROM equipos.Jugador WHERE IdJugador = @id)) AND Seleccion = @selDestino AND IdJugador <> @id)
-			THROW 50000, '- Valor duplicado: Numero.', 1;
+			SET @errores += '- Valor duplicado: Numero.' + N' ';
 
 
 		IF @selDestino <> (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id)
@@ -165,21 +169,23 @@ BEGIN
 			OR EXISTS (SELECT 1 FROM partidos.Amonestacion WHERE Amonestado = @id)
 			OR EXISTS (SELECT 1 FROM partidos.Sustitucion WHERE Ingreso = @id OR Egreso = @id)
 			OR EXISTS (SELECT 1 FROM equipos.CambioConvocatoria WHERE Ingreso = @id OR Egreso = @id)
-				THROW 50000, '- No se puede cambiar la seleccion de un jugador con historial.', 1;
+				SET @errores += '- No se puede cambiar la seleccion de un jugador con historial.' + N' ';
 
 			IF EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @id AND Estado <> 'Inactivo')
 			BEGIN
 				IF (SELECT COUNT(*) FROM equipos.Jugador WHERE Seleccion = @selDestino AND Estado <> 'Inactivo') >=
 				   (SELECT M.TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial M JOIN equipos.Seleccion S ON S.IdMundial = M.IdMundial WHERE S.IdSeleccion = @selDestino)
-					THROW 50000, '- Cupo maximo de jugadores excedido en la seleccion destino.', 1;
+					SET @errores += '- Cupo maximo de jugadores excedido en la seleccion destino.' + N' ';
 
 				IF (SELECT COUNT(*) FROM equipos.Jugador WHERE Seleccion = (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id) AND Estado <> 'Inactivo' AND IdJugador <> @id) <
 				   (SELECT M.TAMANIO_SELECCION_MINIMO FROM sedes.Mundial M JOIN equipos.Seleccion S ON S.IdMundial = M.IdMundial JOIN equipos.Jugador J ON J.Seleccion = S.IdSeleccion WHERE J.IdJugador = @id)
-					THROW 50000, '- Cupo minimo de jugadores no respetado en la seleccion origen.', 1;
+					SET @errores += '- Cupo minimo de jugadores no respetado en la seleccion origen.' + N' ';
 			END
 		END
 
 		BEGIN TRANSACTION;
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			UPDATE equipos.Persona
 			SET
 			Nombre = COALESCE(@nombre, Nombre),
@@ -211,30 +217,31 @@ CREATE PROCEDURE SPTRANS.uspJugador_Bajar
 @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @cantJugadores INT;
 	DECLARE @seleccion INT;
 
 	BEGIN TRY
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Jugador.', 1;
+			SET @errores += '- Valor invalido: ID Jugador.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @id)
-			THROW 50000, '- Valor inexistente: IdJugador.', 1;
+			SET @errores += '- Valor inexistente: IdJugador.' + N' ';
 
 		--Chequeo relaciones
 		IF EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE Amonestado = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM partidos.Gol WHERE Autor = @id OR Asistencia = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Gol. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Gol. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM partidos.Sustitucion WHERE Ingreso = @id OR Egreso = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Sustitucion. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Sustitucion. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM equipos.CambioConvocatoria WHERE Ingreso = @id OR Egreso = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Cambio en Convocatoria. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Cambio en Convocatoria. Elimine dichos registros para continuar.' + N' ';
 
 		--chequeo cupo
 		SET @seleccion = (SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id);
@@ -242,11 +249,13 @@ BEGIN
 		SET @cantJugadores = (SELECT COUNT(IdJugador) FROM equipos.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo' AND IdJugador <> @id);
 
 		IF( @cantJugadores < (SELECT TAMANIO_SELECCION_MINIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
-			THROW 50000, '- Cupo minimo de jugadores no respetado.', 1;
+			SET @errores += '- Cupo minimo de jugadores no respetado.' + N' ';
 
 		BEGIN TRANSACTION;
 			-- Baja logica en vez de DELETE fisico.
 			-- El jugador pasa a Estado='Inactivo' (puede ser reingresado como ingreso de cambio de convocatoria).
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			UPDATE equipos.Jugador
 			SET Estado = 'Inactivo'
 			WHERE IdJugador = @id;

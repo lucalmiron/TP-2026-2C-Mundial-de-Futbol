@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures
 
@@ -24,12 +24,15 @@ GO
 CREATE PROCEDURE SP.uspIdioma_Registrar @descripcion VARCHAR(20)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@descripcion IS NULL)
-			THROW 50000, '- Valor invalido: Descripcion.', 1;
+			SET @errores += '- Valor invalido: Descripcion.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM arbitros.Idioma WHERE Descripcion = @descripcion)
-			THROW 50000, '- Valor duplicado: Descripcion.', 1;
+			SET @errores += '- Valor duplicado: Descripcion.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO arbitros.Idioma(Descripcion) VALUES (@descripcion)
 	END TRY
@@ -45,18 +48,21 @@ GO
 CREATE PROCEDURE SP.uspIdioma_Update @id INT, @descripcion VARCHAR(20)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Idioma.', 1;
+			SET @errores += '- Valor invalido: ID Idioma.' + N' ';
 
 		IF(@descripcion IS NULL)
-			THROW 50000, '- Valor invalido: Descripcion.', 1;
+			SET @errores += '- Valor invalido: Descripcion.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @id)
-			THROW 50000, '- Valor inexistente: ID Idioma.', 1;
+			SET @errores += '- Valor inexistente: ID Idioma.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM arbitros.Idioma WHERE Descripcion = @descripcion AND IdIdioma <> @id)
-			THROW 50000, '- Valor duplicado: Descripcion.', 1;
+			SET @errores += '- Valor duplicado: Descripcion.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE arbitros.Idioma
 		SET Descripcion = @descripcion
@@ -74,18 +80,21 @@ GO
 CREATE PROCEDURE SP.uspIdioma_Bajar @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Idioma.', 1;
+			SET @errores += '- Valor invalido: ID Idioma.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @id)
-			THROW 50000, '- Valor inexistente: ID Idioma.', 1;
+			SET @errores += '- Valor inexistente: ID Idioma.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Idioma = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: HablaIdioma. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: HablaIdioma. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdIdioma = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Publicidad. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Publicidad. Elimine dichos registros para continuar.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM arbitros.Idioma WHERE IdIdioma = @id
 	END TRY

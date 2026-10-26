@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures que involucran transacciones
 
@@ -28,32 +28,35 @@ CREATE PROCEDURE SPTRANS.uspArbitro_Registrar
 @categoria VARCHAR(13)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @idPersona INT;
 	DECLARE @nuevo TABLE(ID INT);
 
 	BEGIN TRY
 		--Chequeo validez
 		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@fnac IS NULL) OR ( @fnac > CONVERT(DATE, GETDATE()) )
-			THROW 50000, '- Valor invalido: Fecha de Nacimiento.', 1;
+			SET @errores += '- Valor invalido: Fecha de Nacimiento.' + N' ';
 
 		IF(@pais IS NULL) OR (@pais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		IF(@categoria IS NULL) OR (@categoria NOT IN ('FIFA', 'Confederacion'))
-			THROW 50000, '- Valor invalido: Categoria.', 1;
+			SET @errores += '- Valor invalido: Categoria.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		--chequeo dup
 		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 
 		BEGIN TRANSACTION;
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			INSERT INTO equipos.Persona(Nombre, Fnac, Pais, Rol)
 			OUTPUT INSERTED.IdPersona INTO @nuevo(ID)
 			VALUES (@nombre, @fnac, @pais, 'Arbitro');
@@ -84,32 +87,35 @@ CREATE PROCEDURE SPTRANS.uspArbitro_Update
 @categoria VARCHAR(13) = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Arbitro.', 1;
+			SET @errores += '- Valor invalido: ID Arbitro.' + N' ';
 
 		IF(@fnac IS NOT NULL) AND ( @fnac > CONVERT(DATE, GETDATE()) )
-			THROW 50000, '- Valor invalido: Fecha de Nacimiento.', 1;
+			SET @errores += '- Valor invalido: Fecha de Nacimiento.' + N' ';
 
 		IF(@pais IS NOT NULL) AND (@pais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		IF(@categoria IS NOT NULL) AND (@categoria NOT IN ('FIFA', 'Confederacion'))
-			THROW 50000, '- Valor invalido: Categoria.', 1;
+			SET @errores += '- Valor invalido: Categoria.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @id)
-			THROW 50000, '- Valor inexistente: IdArbitro.', 1;
+			SET @errores += '- Valor inexistente: IdArbitro.' + N' ';
 
 		IF (@pais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @pais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		--chequeo dup
 		IF (@nombre IS NOT NULL) AND EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre AND IdPersona <> @id)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 
 		BEGIN TRANSACTION;
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			UPDATE equipos.Persona
 			SET
 			Nombre = COALESCE(@nombre, Nombre),
@@ -139,26 +145,29 @@ CREATE PROCEDURE SPTRANS.uspArbitro_Bajar
 @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: IdArbitro.', 1;
+			SET @errores += '- Valor invalido: IdArbitro.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @id)
-			THROW 50000, '- Valor inexistente: IdArbitro.', 1;
+			SET @errores += '- Valor inexistente: IdArbitro.' + N' ';
 
 		--Chequeo relaciones
 		IF EXISTS(SELECT 1 FROM arbitros.Reporte WHERE Arbitro = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Reporte. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Reporte. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Arbitraje. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Arbitraje. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE Arbitro = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Amonestacion. Elimine dichos registros para continuar.' + N' ';
 
 		BEGIN TRANSACTION;
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			DELETE FROM arbitros.HablaIdioma
 			WHERE Arbitro = @id;
 

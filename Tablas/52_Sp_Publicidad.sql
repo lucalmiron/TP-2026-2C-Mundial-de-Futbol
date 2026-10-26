@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures
 
@@ -24,24 +24,27 @@ GO
 CREATE PROCEDURE SP.uspPublicidad_Registrar @nombre VARCHAR(50), @idCampania INT, @idIdioma INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@idCampania IS NULL) OR (@idCampania <= 0)
-			THROW 50000, '- Valor invalido: ID Campania.', 1;
+			SET @errores += '- Valor invalido: ID Campania.' + N' ';
 
 		IF(@idIdioma IS NULL) OR (@idIdioma <= 0)
-			THROW 50000, '- Valor invalido: ID Idioma.', 1;
+			SET @errores += '- Valor invalido: ID Idioma.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM publicidad.Campania WHERE IdCampania = @idCampania)
-			THROW 50000, '- Valor inexistente: ID Campania.', 1;
+			SET @errores += '- Valor inexistente: ID Campania.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idIdioma)
-			THROW 50000, '- Valor inexistente: ID Idioma.', 1;
+			SET @errores += '- Valor inexistente: ID Idioma.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE Nombre = @nombre)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO publicidad.Publicidad(Nombre, IdCampania, IdIdioma) VALUES (@nombre, @idCampania, @idIdioma)
 	END TRY
@@ -57,30 +60,33 @@ GO
 CREATE PROCEDURE SP.uspPublicidad_Update @id INT, @nombre VARCHAR(50), @idCampania INT, @idIdioma INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Publicidad.', 1;
+			SET @errores += '- Valor invalido: ID Publicidad.' + N' ';
 
 		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@idCampania IS NULL) OR (@idCampania <= 0)
-			THROW 50000, '- Valor invalido: ID Campania.', 1;
+			SET @errores += '- Valor invalido: ID Campania.' + N' ';
 
 		IF(@idIdioma IS NULL) OR (@idIdioma <= 0)
-			THROW 50000, '- Valor invalido: ID Idioma.', 1;
+			SET @errores += '- Valor invalido: ID Idioma.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdPublicidad = @id)
-			THROW 50000, '- Valor inexistente: ID Publicidad.', 1;
+			SET @errores += '- Valor inexistente: ID Publicidad.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM publicidad.Campania WHERE IdCampania = @idCampania)
-			THROW 50000, '- Valor inexistente: ID Campania.', 1;
+			SET @errores += '- Valor inexistente: ID Campania.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idIdioma)
-			THROW 50000, '- Valor inexistente: ID Idioma.', 1;
+			SET @errores += '- Valor inexistente: ID Idioma.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE Nombre = @nombre AND IdPublicidad <> @id)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE publicidad.Publicidad
 		SET Nombre = @nombre, IdCampania = @idCampania, IdIdioma = @idIdioma
@@ -98,18 +104,21 @@ GO
 CREATE PROCEDURE SP.uspPublicidad_Bajar @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Publicidad.', 1;
+			SET @errores += '- Valor invalido: ID Publicidad.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdPublicidad = @id)
-			THROW 50000, '- Valor inexistente: ID Publicidad.', 1;
+			SET @errores += '- Valor inexistente: ID Publicidad.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPublicidad = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: HistorialPublicidad. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: HistorialPublicidad. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.PublicidadPais WHERE IdPublicidad = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: PublicidadPais. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: PublicidadPais. Elimine dichos registros para continuar.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM publicidad.Publicidad WHERE IdPublicidad = @id
 	END TRY

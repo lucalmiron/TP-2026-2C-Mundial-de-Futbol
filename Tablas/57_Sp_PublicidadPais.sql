@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 09/10/2026
+--/Fecha: 25/10/26
 
 --Objetivo: Gestionar Tabla PublicidadPais (solo Registrar y Bajar, PK inmutable)
 
@@ -25,21 +25,24 @@ CREATE PROCEDURE SP.uspPublicidadPais_Registrar
 @idPais INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF (@idPublicidad IS NULL) OR (@idPublicidad <= 0)
-			THROW 50000, '- Valor invalido: ID Publicidad.', 1;
+			SET @errores += '- Valor invalido: ID Publicidad.' + N' ';
 
 		IF (@idPais IS NULL) OR (@idPais <= 0)
-			THROW 50000, '- Valor invalido: ID Pais.', 1;
+			SET @errores += '- Valor invalido: ID Pais.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM publicidad.Publicidad WHERE IdPublicidad = @idPublicidad)
-			THROW 50000, '- Valor inexistente: ID Publicidad.', 1;
+			SET @errores += '- Valor inexistente: ID Publicidad.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
-			THROW 50000, '- Valor inexistente: ID Pais.', 1;
+			SET @errores += '- Valor inexistente: ID Pais.' + N' ';
 
 		IF EXISTS (SELECT 1 FROM publicidad.PublicidadPais WHERE IdPublicidad = @idPublicidad AND IdPais = @idPais)
-			THROW 50000, '- Valor duplicado: PublicidadPais.', 1;
+			SET @errores += '- Valor duplicado: PublicidadPais.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO publicidad.PublicidadPais (IdPublicidad, IdPais)
 		VALUES (@idPublicidad, @idPais)
@@ -58,15 +61,18 @@ CREATE PROCEDURE SP.uspPublicidadPais_Bajar
 @idPais INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF (@idPublicidad IS NULL) OR (@idPublicidad <= 0)
-			THROW 50000, '- Valor invalido: ID Publicidad.', 1;
+			SET @errores += '- Valor invalido: ID Publicidad.' + N' ';
 
 		IF (@idPais IS NULL) OR (@idPais <= 0)
-			THROW 50000, '- Valor invalido: ID Pais.', 1;
+			SET @errores += '- Valor invalido: ID Pais.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM publicidad.PublicidadPais WHERE IdPublicidad = @idPublicidad AND IdPais = @idPais)
-			THROW 50000, '- Valor inexistente: PublicidadPais.', 1;
+			SET @errores += '- Valor inexistente: PublicidadPais.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM publicidad.PublicidadPais WHERE IdPublicidad = @idPublicidad AND IdPais = @idPais
 	END TRY

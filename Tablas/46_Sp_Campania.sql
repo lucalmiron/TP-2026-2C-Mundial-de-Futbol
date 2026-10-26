@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures
 
@@ -24,15 +24,18 @@ GO
 CREATE PROCEDURE SP.uspCampania_Registrar @nombre VARCHAR(50), @descripcion VARCHAR(200)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@descripcion IS NULL)
-			THROW 50000, '- Valor invalido: Descripcion.', 1;
+			SET @errores += '- Valor invalido: Descripcion.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.Campania WHERE Nombre = @nombre)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO publicidad.Campania(Nombre, Descripcion) VALUES (@nombre, @descripcion)
 	END TRY
@@ -48,21 +51,24 @@ GO
 CREATE PROCEDURE SP.uspCampania_Update @id INT, @nombre VARCHAR(50), @descripcion VARCHAR(200)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Campania.', 1;
+			SET @errores += '- Valor invalido: ID Campania.' + N' ';
 
 		IF(@nombre IS NULL)
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@descripcion IS NULL)
-			THROW 50000, '- Valor invalido: Descripcion.', 1;
+			SET @errores += '- Valor invalido: Descripcion.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM publicidad.Campania WHERE IdCampania = @id)
-			THROW 50000, '- Valor inexistente: ID Campania.', 1;
+			SET @errores += '- Valor inexistente: ID Campania.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.Campania WHERE Nombre = @nombre AND IdCampania <> @id)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE publicidad.Campania
 		SET Nombre = @nombre, Descripcion = @descripcion
@@ -80,18 +86,21 @@ GO
 CREATE PROCEDURE SP.uspCampania_Bajar @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Campania.', 1;
+			SET @errores += '- Valor invalido: ID Campania.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM publicidad.Campania WHERE IdCampania = @id)
-			THROW 50000, '- Valor inexistente: ID Campania.', 1;
+			SET @errores += '- Valor inexistente: ID Campania.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdCampania = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Publicidad. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Publicidad. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.AnuncianteCampania WHERE IdCampania = @id)
-			THROW 50000, '- Existen 1 o mas registros relacionados: AnuncianteCampania. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: AnuncianteCampania. Elimine dichos registros para continuar.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM publicidad.Campania WHERE IdCampania = @id
 	END TRY

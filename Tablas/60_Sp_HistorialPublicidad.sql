@@ -1,6 +1,6 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 21/10/2026. Revision auxiliar de penales y publicidad por sede.
+-- Fecha: 25/10/26. Revision auxiliar de penales y publicidad por sede.
 USE MUNDIAL;
 GO
 -- Objetivo: asignar piezas a espacios de la sede y conservar el costo pactado.
@@ -17,7 +17,6 @@ BEGIN
  IF NOT EXISTS(SELECT 1 FROM publicidad.EspacioPublicitario WHERE IdEP=@idEP) SET @errores+=N'Espacio inexistente. ';
  IF NOT EXISTS(SELECT 1 FROM publicidad.CostoFranja WHERE IdCF=@idCF) SET @errores+=N'Tarifa de franja inexistente. ';
  IF @costoFinal<0 SET @errores+=N'Costo final negativo. ';
- IF LEN(@errores)>0 THROW 51000,@errores,1;
  BEGIN TRY
   BEGIN TRANSACTION;
   SELECT @sede=IdSede FROM partidos.Partido WITH(UPDLOCK,HOLDLOCK) WHERE IdPartido=@idPartido;
@@ -48,7 +47,6 @@ BEGIN
  IF NOT EXISTS(SELECT 1 FROM publicidad.Publicidad WHERE IdPublicidad=@idPublicidad) SET @errores+=N'Publicidad inexistente. ';
  IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@idPartido) SET @errores+=N'Partido inexistente. ';
  IF @costoFinal IS NULL OR @costoFinal<0 SET @errores+=N'Indicar un costo final no negativo. ';
- IF LEN(@errores)>0 THROW 51000,@errores,1;
  BEGIN TRY
   BEGIN TRANSACTION;
   SELECT @sede=IdSede FROM partidos.Partido WITH(UPDLOCK,HOLDLOCK) WHERE IdPartido=@idPartido;
@@ -67,8 +65,11 @@ END;
 GO
 CREATE OR ALTER PROCEDURE SP.uspHistorialPublicidad_Bajar @id INT AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
  SET NOCOUNT ON;
- IF NOT EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdHistorial=@id) THROW 51000,'Historial inexistente.',1;
+ IF NOT EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdHistorial=@id) SET @errores += 'Historial inexistente.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
  DELETE publicidad.HistorialPublicidad WHERE IdHistorial=@id;
 END;
 GO
@@ -82,15 +83,16 @@ CREATE OR ALTER PROCEDURE SPTRANS.uspPublicidad_AsignarCuatro
 AS
 BEGIN
  SET NOCOUNT ON;
+ DECLARE @errores NVARCHAR(2048)=N'';
  SET XACT_ABORT ON;
- IF (SELECT COUNT(*) FROM @asignaciones)<>4 THROW 51000,'Se requieren exactamente cuatro espacios distintos.',1;
- IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@idPartido) THROW 51000,'Partido inexistente.',1;
+ IF (SELECT COUNT(*) FROM @asignaciones)<>4 SET @errores+='Se requieren exactamente cuatro espacios distintos.'+N' ';
+ IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@idPartido) SET @errores+='Partido inexistente.'+N' ';
  BEGIN TRY
   BEGIN TRANSACTION;
   DECLARE @sede INT;
   SELECT @sede=IdSede FROM partidos.Partido WITH(UPDLOCK,HOLDLOCK) WHERE IdPartido=@idPartido;
-  IF EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPartido=@idPartido) THROW 51000,'El partido ya tiene asignaciones; revisarlas antes de programar cuatro piezas.',1;
-  DECLARE @errores NVARCHAR(2048)=N'';
+  IF EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPartido=@idPartido) SET @errores+='El partido ya tiene asignaciones; revisarlas antes de programar cuatro piezas.'+N' ';
+
   IF EXISTS(SELECT 1 FROM @asignaciones a LEFT JOIN publicidad.EspacioPublicitario e WITH(UPDLOCK,HOLDLOCK) ON e.IdEP=a.IdEP
       WHERE e.IdEP IS NULL OR e.IdSede<>@sede) SET @errores+=N'Espacios inexistentes o de otra sede. ';
   IF EXISTS(SELECT 1 FROM @asignaciones a LEFT JOIN publicidad.CostoFranja c WITH(UPDLOCK,HOLDLOCK) ON c.IdCF=a.IdCF
@@ -109,5 +111,90 @@ BEGIN
   IF @@TRANCOUNT>0 ROLLBACK;
   THROW;
  END CATCH;
+END;
+GO
+
+-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
+-- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
+-- Fecha: 25/10/26.
+-- Objetivo: simular mercados y proponer las cuatro piezas del partido.
+USE MUNDIAL;
+GO
+CREATE OR ALTER PROCEDURE SP.uspPublicidad_PrimeTime @idPartido INT
+AS
+BEGIN
+ SET NOCOUNT ON;
+ IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@idPartido)
+  THROW 51000,'Partido inexistente.',1;
+ -- Un pais con varios husos aparece una vez por huso. Desconocido no equivale a fuera de prime time.
+ SELECT P.IdPais,P.NOMBRE,H.IdHuso,H.Nombre AS HusoHorario,
+  L.FechaHoraLocal,
+  CAST(CASE WHEN L.FechaHoraLocal IS NULL THEN NULL
+   WHEN CAST(L.FechaHoraLocal AS TIME)>='19:00' AND CAST(L.FechaHoraLocal AS TIME)<'23:00' THEN 1 ELSE 0 END AS BIT) AS EsPrimeTime
+ FROM equipos.Pais P LEFT JOIN sedes.HusoHorario H ON H.IdPais=P.IdPais
+ CROSS JOIN partidos.Partido Partido
+ CROSS APPLY(SELECT sedes.fnFechaHoraLocal(Partido.Fecha,Partido.HoraUTC,H.Nombre) AS FechaHoraLocal) L
+ WHERE Partido.IdPartido=@idPartido
+ ORDER BY P.IdPais,H.IdHuso;
+END;
+GO
+CREATE OR ALTER PROCEDURE SP.uspPublicidad_Proponer @idPartido INT
+AS
+BEGIN
+ SET NOCOUNT ON;
+ IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido=@idPartido)
+  THROW 51000,'Partido inexistente.',1;
+ -- Prioridad: pais participante, PBI registrado, prime time [19:00,23:00).
+ -- PBI se usa como indicador disponible, no se interpreta como PBI per capita.
+ -- Se toma el mejor mercado de cada pieza; alcanza con un huso del pais en prime time.
+ -- Empates: IdPublicidad y luego IdPais. Las piezas sin mercado no son candidatas.
+ ;WITH Mercados AS (
+  SELECT PP.IdPublicidad,PP.IdPais,
+   CASE WHEN PP.IdPais IN (S1.IdPais,S2.IdPais) THEN 1 ELSE 0 END AS EsParticipante,
+   Pais.PBI,
+   CASE WHEN EXISTS(SELECT 1 FROM sedes.HusoHorario H
+    WHERE H.IdPais=PP.IdPais AND CAST(sedes.fnFechaHoraLocal(P.Fecha,P.HoraUTC,H.Nombre) AS TIME)>='19:00'
+    AND CAST(sedes.fnFechaHoraLocal(P.Fecha,P.HoraUTC,H.Nombre) AS TIME)<'23:00') THEN 1 ELSE 0 END AS EsPrimeTime
+  FROM publicidad.PublicidadPais PP JOIN equipos.Pais Pais ON Pais.IdPais=PP.IdPais
+  CROSS JOIN partidos.Partido P
+  JOIN equipos.Seleccion S1 ON S1.IdSeleccion=P.Eq1
+  JOIN equipos.Seleccion S2 ON S2.IdSeleccion=P.Eq2
+  WHERE P.IdPartido=@idPartido
+ ), Mejores AS (
+  SELECT *,ROW_NUMBER() OVER(PARTITION BY IdPublicidad ORDER BY EsParticipante DESC,PBI DESC,EsPrimeTime DESC,IdPais) AS OrdenMercado
+  FROM Mercados
+ )
+ SELECT TOP(4) IdPublicidad,IdPais,EsParticipante,PBI,EsPrimeTime
+ FROM Mejores WHERE OrdenMercado=1
+ ORDER BY EsParticipante DESC,PBI DESC,EsPrimeTime DESC,IdPublicidad;
+END;
+GO
+CREATE OR ALTER PROCEDURE SPTRANS.uspPublicidad_AsignarAutomaticamente @idPartido INT,@idCF INT
+AS
+BEGIN
+ SET NOCOUNT ON;
+ DECLARE @errores NVARCHAR(2048)=N'',@sede INT;
+ SELECT @sede=IdSede FROM partidos.Partido WHERE IdPartido=@idPartido;
+ IF @sede IS NULL SET @errores+=N'Partido inexistente. ';
+ IF NOT EXISTS(SELECT 1 FROM publicidad.CostoFranja WHERE IdCF=@idCF AND IdSede=@sede)
+  SET @errores+=N'Tarifa inexistente o de otra sede. ';
+ IF (SELECT COUNT(*) FROM publicidad.EspacioPublicitario WHERE IdSede=@sede)<>4
+  SET @errores+=N'La sede debe tener cuatro espacios. ';
+ IF EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPartido=@idPartido)
+  SET @errores+=N'El partido ya tiene asignaciones. ';
+ IF LEN(@errores)>0 THROW 51000,@errores,1;
+ DECLARE @piezas TABLE(IdPublicidad INT,IdPais INT,EsParticipante INT,PBI BIGINT,EsPrimeTime INT);
+ INSERT @piezas EXEC SP.uspPublicidad_Proponer @idPartido;
+ IF (SELECT COUNT(*) FROM @piezas)<>4 THROW 51000,'No hay cuatro piezas con mercados de interes.',1;
+ DECLARE @asignaciones publicidad.AsignacionesPartido;
+ ;WITH Piezas AS (
+  SELECT IdPublicidad,ROW_NUMBER() OVER(ORDER BY EsParticipante DESC,PBI DESC,EsPrimeTime DESC,IdPublicidad) AS Orden
+  FROM @piezas
+ ), Espacios AS (
+  SELECT IdEP,ROW_NUMBER() OVER(ORDER BY Numero) AS Orden FROM publicidad.EspacioPublicitario WHERE IdSede=@sede
+ )
+ INSERT @asignaciones(IdEP,IdPublicidad,IdCF)
+ SELECT E.IdEP,P.IdPublicidad,@idCF FROM Piezas P JOIN Espacios E ON E.Orden=P.Orden;
+ EXEC SPTRANS.uspPublicidad_AsignarCuatro @idPartido,@asignaciones;
 END;
 GO

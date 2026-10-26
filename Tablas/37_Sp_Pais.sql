@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures (ABM de Pais)
 
@@ -25,17 +25,20 @@ CREATE PROCEDURE SP.uspPais_Registrar
 @pbi BIGINT = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@nombre IS NULL) OR (LTRIM(RTRIM(@nombre)) = '')
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@pbi IS NOT NULL) AND (@pbi < 0)
-			THROW 50000, '- Valor invalido: PBI.', 1;
+			SET @errores += '- Valor invalido: PBI.' + N' ';
 
 		--Chequeo dup
 		IF EXISTS(SELECT 1 FROM equipos.Pais WHERE NOMBRE = LTRIM(RTRIM(@nombre)))
-			THROW 50000, '- Valor duplicado: Pais (nombre).', 1;
+			SET @errores += '- Valor duplicado: Pais (nombre).' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO equipos.Pais(NOMBRE, PBI)
 		VALUES(LTRIM(RTRIM(@nombre)), @pbi)
@@ -55,25 +58,28 @@ CREATE PROCEDURE SP.uspPais_Update
 @pbi BIGINT = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@idPais IS NULL) OR (@idPais <= 0)
-			THROW 50000, '- Valor invalido: ID Pais.', 1;
+			SET @errores += '- Valor invalido: ID Pais.' + N' ';
 
 		IF(@nombre IS NOT NULL) AND (LTRIM(RTRIM(@nombre)) = '')
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@pbi IS NOT NULL) AND (@pbi < 0)
-			THROW 50000, '- Valor invalido: PBI.', 1;
+			SET @errores += '- Valor invalido: PBI.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
-			THROW 50000, '- Valor inexistente: ID Pais.', 1;
+			SET @errores += '- Valor inexistente: ID Pais.' + N' ';
 
 		--Chequeo dup
 		IF(@nombre IS NOT NULL)
 		   AND EXISTS(SELECT 1 FROM equipos.Pais WHERE NOMBRE = LTRIM(RTRIM(@nombre)) AND IdPais <> @idPais)
-			THROW 50000, '- Valor duplicado: Pais (nombre).', 1;
+			SET @errores += '- Valor duplicado: Pais (nombre).' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE equipos.Pais
 		SET NOMBRE = COALESCE(LTRIM(RTRIM(@nombre)), NOMBRE),
@@ -93,36 +99,39 @@ CREATE PROCEDURE SP.uspPais_Bajar
 @idPais INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@idPais IS NULL) OR (@idPais <= 0)
-			THROW 50000, '- Valor invalido: ID Pais.', 1;
+			SET @errores += '- Valor invalido: ID Pais.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
-			THROW 50000, '- Valor inexistente: ID Pais.', 1;
+			SET @errores += '- Valor inexistente: ID Pais.' + N' ';
 
 		--Chequeo relaciones
 		IF EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdPais = @idPais)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Seleccion. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Seleccion. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdPais = @idPais)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Mundial. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Mundial. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE IdPais = @idPais)
-			THROW 50000, '- Existen 1 o mas registros relacionados: HusoHorario. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: HusoHorario. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM sedes.Sede WHERE IdPais = @idPais)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Sede. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Sede. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE Pais = @idPais)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Persona. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Persona. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.Anunciante WHERE IdPais = @idPais)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Anunciante. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Anunciante. Elimine dichos registros para continuar.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM publicidad.PublicidadPais WHERE IdPais = @idPais)
-			THROW 50000, '- Existen 1 o mas registros relacionados: PublicidadPais. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: PublicidadPais. Elimine dichos registros para continuar.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM equipos.Pais WHERE IdPais = @idPais
 	END TRY

@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Tabla Amonestacion
 
@@ -30,6 +30,7 @@ CREATE PROCEDURE SPTRANS.uspAmonestacion_Registrar
 @motivo VARCHAR(300)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @vRol VARCHAR(10)
 	DECLARE @vLimSuspension INT
 	DECLARE @vTarjetasAcum INT
@@ -40,38 +41,38 @@ BEGIN
 	BEGIN TRY
 		--Chequeo validez
 		IF(@minuto IS NOT NULL) AND (@minuto < 0)
-			THROW 50000, '- Valor invalido: Minuto.', 1;
+			SET @errores += '- Valor invalido: Minuto.' + N' ';
 
 		IF(@partido IS NULL) OR (@partido <= 0)
-			THROW 50000, '- Valor invalido: Partido.', 1;
+			SET @errores += '- Valor invalido: Partido.' + N' ';
 
 		IF(@periodo IS NULL) OR (@periodo <= 0)
-			THROW 50000, '- Valor invalido: Periodo.', 1;
+			SET @errores += '- Valor invalido: Periodo.' + N' ';
 
 		IF(@amonestado IS NULL) OR (@amonestado <= 0)
-			THROW 50000, '- Valor invalido: Amonestado.', 1;
+			SET @errores += '- Valor invalido: Amonestado.' + N' ';
 
 		IF(@arbitro IS NULL) OR (@arbitro <= 0)
-			THROW 50000, '- Valor invalido: Arbitro.', 1;
+			SET @errores += '- Valor invalido: Arbitro.' + N' ';
 
 		IF(@tarjeta IS NULL) OR (@tarjeta NOT IN ('Amarilla', 'Roja'))
-			THROW 50000, '- Valor invalido: Tarjeta.', 1;
+			SET @errores += '- Valor invalido: Tarjeta.' + N' ';
 
 		IF(@motivo IS NULL)
-			THROW 50000, '- Valor invalido: Motivo.', 1;
+			SET @errores += '- Valor invalido: Motivo.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
-			THROW 50000, '- Valor inexistente: Periodo.', 1;
+			SET @errores += '- Valor inexistente: Periodo.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Persona WHERE IdPersona = @amonestado)
-			THROW 50000, '- Valor inexistente: Amonestado.', 1;
+			SET @errores += '- Valor inexistente: Amonestado.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
-			THROW 50000, '- Valor inexistente: Arbitro.', 1;
+			SET @errores += '- Valor inexistente: Arbitro.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
-			THROW 50000, '- Valor inexistente: Partido.', 1;
+			SET @errores += '- Valor inexistente: Partido.' + N' ';
 
 		--validez del minuto en relacion al periodo
 		IF(
@@ -91,17 +92,17 @@ BEGIN
 				)
 			)
 		)
-			THROW 50000, '- El minuto esta fuera del rango del periodo indicado.', 1;
+			SET @errores += '- El minuto esta fuera del rango del periodo indicado.' + N' ';
 
 		--validez del amonestado
 		SET @vRol = (SELECT Rol FROM equipos.Persona WHERE IdPersona = @amonestado)
 
 		IF(@vRol = 'Arbitro')
-			THROW 50000, '- Objetivo de amonestacion invalido.', 1;
+			SET @errores += '- Objetivo de amonestacion invalido.' + N' ';
 
 		--chequeo participacion
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido AND Funcion = 'Principal')
-			THROW 50000, '- El arbitro no participo del encuentro o su funcion no le permite sancionar.', 1;
+			SET @errores += '- El arbitro no participo del encuentro o su funcion no le permite sancionar.' + N' ';
 
 		IF(@vRol = 'Tecnico') AND 
 		NOT EXISTS
@@ -113,7 +114,7 @@ BEGIN
 			UNION
 			(SELECT Eq2 FROM partidos.Partido WHERE IdPartido = @partido))
 		)
-			THROW 50000, '- El tecnico no participo del encuentro.', 1;
+			SET @errores += '- El tecnico no participo del encuentro.' + N' ';
 
 		IF(@vRol = 'Jugador') AND
 		NOT EXISTS
@@ -125,7 +126,7 @@ BEGIN
 			UNION
 			(SELECT Eq2 FROM partidos.Partido WHERE IdPartido = @partido))
 		)
-			THROW 50000, '- El jugador no participo del encuentro.', 1;
+			SET @errores += '- El jugador no participo del encuentro.' + N' ';
 
 		SET @vLimSuspension = (SELECT SUSPENSION_TARJETAS_MAXIMAS FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM partidos.Partido WHERE IdPartido = @partido))
 		SET @vAutoRoja = 0
@@ -142,7 +143,9 @@ BEGIN
 			(SELECT IdEvento FROM partidos.Evento WHERE Partido = @partido AND Tipo = 'Amonestacion') AS E
 			ON A.IdAmonestacion = E.IdEvento
 			WHERE A.Amonestado = @amonestado AND A.Tarjeta = 'Roja')
-				THROW 50000, 'Esta persona ya fue expulsada.', 1
+				SET @errores += 'Esta persona ya fue expulsada.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 			INSERT INTO partidos.Evento (Minuto, Periodo, Partido, Tipo)
 			OUTPUT INSERTED.IdEvento into @ID
@@ -240,23 +243,24 @@ CREATE PROCEDURE SPTRANS.uspAmonestacion_UpdateTiempo
 @periodo INT = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Amonestacion.', 1;
+			SET @errores += '- Valor invalido: ID Amonestacion.' + N' ';
 
 		IF(@minuto IS NOT NULL) AND (@minuto < 0)
-			THROW 50000, '- Valor invalido: Minuto.', 1;
+			SET @errores += '- Valor invalido: Minuto.' + N' ';
 
 		IF(@periodo IS NOT NULL) AND (@periodo <= 0)
-			THROW 50000, '- Valor invalido: Periodo.', 1;
+			SET @errores += '- Valor invalido: Periodo.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE IdAmonestacion = @id)
-			THROW 50000, '- Registro inexistente.', 1;
+			SET @errores += '- Registro inexistente.' + N' ';
 
 		IF(@periodo IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
-			THROW 50000, '- Valor inexistente: Periodo.', 1;
+			SET @errores += '- Valor inexistente: Periodo.' + N' ';
 		
 		--validez del minuto en relacion al periodo(cambiando solo el minuto)
 		IF(@periodo IS NULL)
@@ -279,7 +283,7 @@ BEGIN
 					(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @vCheck))
 				)
 			)
-				THROW 50000, '- El minuto esta fuera del rango del periodo actual.', 1;
+				SET @errores += '- El minuto esta fuera del rango del periodo actual.' + N' ';
 		END
 
 		--validez del minuto en relacion al periodo(cambiando ambos)
@@ -301,10 +305,12 @@ BEGIN
 					(@minuto > (SELECT Fin FROM partidos.Periodo WHERE IdPeriodo = @periodo))
 				)
 			)
-				THROW 50000, '- El minuto esta fuera del rango del periodo indicado.', 1;
+				SET @errores += '- El minuto esta fuera del rango del periodo indicado.' + N' ';
 		END
 
 		BEGIN TRANSACTION
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 			UPDATE partidos.Evento
 			SET
@@ -330,19 +336,22 @@ CREATE PROCEDURE SPTRANS.uspAmonestacion_UpdateMotivo
 @motivo VARCHAR(300) 
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Amonestacion.', 1;
+			SET @errores += '- Valor invalido: ID Amonestacion.' + N' ';
 
 		IF(@motivo IS NULL)
-			THROW 50000, '- Valor invalido: Motivo.', 1;
+			SET @errores += '- Valor invalido: Motivo.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE IdAmonestacion = @id)
-			THROW 50000, '- Registro inexistente.', 1;
+			SET @errores += '- Registro inexistente.' + N' ';
 
 		BEGIN TRANSACTION
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 			UPDATE partidos.Amonestacion
 			SET Motivo = @motivo
@@ -365,16 +374,19 @@ CREATE PROCEDURE SPTRANS.uspAmonestacion_Bajar
 @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Amonestacion.', 1;
+			SET @errores += '- Valor invalido: ID Amonestacion.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM partidos.Amonestacion WHERE IdAmonestacion = @id)
-			THROW 50000, '- Registro inexistente.', 1;
+			SET @errores += '- Registro inexistente.' + N' ';
 
 		BEGIN TRANSACTION
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 			DELETE FROM partidos.Amonestacion
 			WHERE IdAmonestacion = @id

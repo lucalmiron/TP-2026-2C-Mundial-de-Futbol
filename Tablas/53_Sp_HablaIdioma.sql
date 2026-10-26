@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures
 
@@ -24,21 +24,24 @@ GO
 CREATE PROCEDURE SP.uspHablaIdioma_Registrar @arbitro INT, @idioma INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@arbitro IS NULL) OR (@arbitro <= 0)
-			THROW 50000, '- Valor invalido: Arbitro.', 1;
+			SET @errores += '- Valor invalido: Arbitro.' + N' ';
 
 		IF(@idioma IS NULL) OR (@idioma <= 0)
-			THROW 50000, '- Valor invalido: Idioma.', 1;
+			SET @errores += '- Valor invalido: Idioma.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
-			THROW 50000, '- Valor inexistente: Arbitro.', 1;
+			SET @errores += '- Valor inexistente: Arbitro.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idioma)
-			THROW 50000, '- Valor inexistente: Idioma.', 1;
+			SET @errores += '- Valor inexistente: Idioma.' + N' ';
 
 		IF EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
-			THROW 50000, '- Valor duplicado: Idioma.', 1;
+			SET @errores += '- Valor duplicado: Idioma.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO arbitros.HablaIdioma VALUES (@arbitro, @idioma)
 	END TRY
@@ -54,21 +57,24 @@ GO
 CREATE PROCEDURE SP.uspHablaIdioma_Bajar @arbitro INT, @idioma INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@arbitro IS NULL) OR (@arbitro <= 0)
-			THROW 50000, '- Valor invalido: Arbitro.', 1;
+			SET @errores += '- Valor invalido: Arbitro.' + N' ';
 
 		IF(@idioma IS NULL) OR (@idioma <= 0)
-			THROW 50000, '- Valor invalido: Idioma.', 1;
+			SET @errores += '- Valor invalido: Idioma.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
-			THROW 50000, '- Valor inexistente: Arbitro.', 1;
+			SET @errores += '- Valor inexistente: Arbitro.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @idioma)
-			THROW 50000, '- Valor inexistente: Idioma.', 1;
+			SET @errores += '- Valor inexistente: Idioma.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma)
-			THROW 50000, '- Registro inexistente.', 1;
+			SET @errores += '- Registro inexistente.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM arbitros.HablaIdioma WHERE Arbitro = @arbitro AND Idioma = @idioma
 	END TRY

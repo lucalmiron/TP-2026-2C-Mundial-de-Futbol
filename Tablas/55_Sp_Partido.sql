@@ -70,65 +70,68 @@ CREATE PROCEDURE SP.uspPartido_Registrar
 @Asistencia INT = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF (@IdFase IS NULL OR @IdFase <= 0)
-			THROW 50000, '- Valor invalido: Fase', 1;
+			SET @errores += '- Valor invalido: Fase' + N' ';
 
 		IF (@IdSede IS NULL OR @IdSede <= 0)
-			THROW 50000, '- Valor invalido: Sede', 1;
+			SET @errores += '- Valor invalido: Sede' + N' ';
 
 		IF (@IdMundial IS NULL OR @IdMundial <= 0)
-			THROW 50000, '- Valor invalido: Mundial', 1;
+			SET @errores += '- Valor invalido: Mundial' + N' ';
 
 		IF (@Fecha IS NULL)
-			THROW 50000, '- Valor invalido: Fecha', 1;
+			SET @errores += '- Valor invalido: Fecha' + N' ';
 
 		IF (@HoraUTC IS NULL OR @HoraLocal IS NULL)
-			THROW 50000, '- Valor invalido: Hora', 1;
+			SET @errores += '- Valor invalido: Hora' + N' ';
 
 		IF (@Eq1 IS NULL OR @Eq2 IS NULL)
-			THROW 50000, '- Deben registrarse ambos equipos', 1;
+			SET @errores += '- Deben registrarse ambos equipos' + N' ';
 
 		IF (@Eq1 IS NOT NULL AND @Eq2 IS NOT NULL AND @Eq1 = @Eq2)
-			THROW 50000, '- Un equipo no puede ser su propio rival', 1;
+			SET @errores += '- Un equipo no puede ser su propio rival' + N' ';
 
 		IF(@Asistencia IS NOT NULL AND @Asistencia<0)
-			THROW 50000, '- La asistencia no puede ser negativa', 1;
+			SET @errores += '- La asistencia no puede ser negativa' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM partidos.Fase WHERE IdFase = @IdFase)
-			THROW 50000, '- Valor inexistente: Fase', 1;
+			SET @errores += '- Valor inexistente: Fase' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede = @IdSede)
-			THROW 50000, '- Valor inexistente: Sede', 1;
+			SET @errores += '- Valor inexistente: Sede' + N' ';
 
 		IF @Asistencia > (SELECT Capacidad FROM sedes.Sede WHERE IdSede = @IdSede)
-			THROW 50000, '- La asistencia supera la capacidad de la sede', 1;
+			SET @errores += '- La asistencia supera la capacidad de la sede' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @IdMundial)
-			THROW 50000, '- Valor inexistente: Mundial', 1;
+			SET @errores += '- Valor inexistente: Mundial' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @Eq1)
-			THROW 50000, '- Valor inexistente: Eq1', 1;
+			SET @errores += '- Valor inexistente: Eq1' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @Eq2)
-			THROW 50000, '- Valor inexistente: Eq2', 1;
+			SET @errores += '- Valor inexistente: Eq2' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @Eq1 AND IdMundial = @IdMundial)
-			THROW 50000, '- Eq1 no pertenece al Mundial', 1;
+			SET @errores += '- Eq1 no pertenece al Mundial' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @Eq2 AND IdMundial = @IdMundial)
-			THROW 50000, '- Eq2 no pertenece al Mundial', 1;
+			SET @errores += '- Eq2 no pertenece al Mundial' + N' ';
 
 		IF EXISTS(SELECT 1 FROM partidos.Partido WHERE Eq1 = @Eq1 AND Eq2 = @Eq2 AND Fecha = @Fecha AND IdFase = @IdFase)
-			THROW 50000, '- Partido duplicado', 1;
+			SET @errores += '- Partido duplicado' + N' ';
 
 		DECLARE @local DATETIMEOFFSET;
 		SELECT @local = sedes.fnFechaHoraLocal(@Fecha, @HoraUTC, H.Nombre)
 		FROM sedes.Sede S JOIN sedes.HusoHorario H ON H.IdHuso = S.IdHuso WHERE S.IdSede = @IdSede;
 		IF @local IS NULL
-			THROW 50000, '- Huso horario no reconocido. Use UTC, UTC con desplazamiento o un nombre de sys.time_zone_info.', 1;
+			SET @errores += '- Huso horario no reconocido. Use UTC, UTC con desplazamiento o un nombre de sys.time_zone_info.' + N' ';
 		IF @HoraLocal <> CAST(@local AS TIME)
-			THROW 50000, '- La hora local no coincide con la hora UTC y el huso de la sede.', 1;
+			SET @errores += '- La hora local no coincide con la hora UTC y el huso de la sede.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO partidos.Partido(IdFase, IdSede, IdMundial, Eq1, Eq2, Fecha, HoraUTC, HoraLocal, GolesEq1, GolesEq2, Asistencia)
 		VALUES(@IdFase, @IdSede, @IdMundial, @Eq1, @Eq2, @Fecha, @HoraUTC, @HoraLocal, 0, 0, @Asistencia)
@@ -162,59 +165,60 @@ CREATE PROCEDURE SP.uspPartido_Update
 @Asistencia INT = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @vMundial INT
 	DECLARE @vEq1 INT
 	DECLARE @vEq2 INT
 
 	BEGIN TRY
 		IF (@Id IS NULL OR @Id <= 0)
-			THROW 50000, '- Valor invalido: Id', 1;
+			SET @errores += '- Valor invalido: Id' + N' ';
 
 		IF (@IdFase IS NOT NULL AND @IdFase <= 0)
-			THROW 50000, '- Valor invalido: Fase', 1;
+			SET @errores += '- Valor invalido: Fase' + N' ';
 
 		IF (@IdSede IS NOT NULL AND @IdSede <= 0)
-			THROW 50000, '- Valor invalido: Sede', 1;
+			SET @errores += '- Valor invalido: Sede' + N' ';
 
 		IF (@IdMundial IS NOT NULL AND @IdMundial <= 0)
-			THROW 50000, '- Valor invalido: Mundial', 1;
+			SET @errores += '- Valor invalido: Mundial' + N' ';
 
 		IF (@GolesEq1 IS NOT NULL AND @GolesEq1 < 0)
-			THROW 50000, '- Los goles no pueden ser negativos', 1;
+			SET @errores += '- Los goles no pueden ser negativos' + N' ';
 
 		IF (@GolesEq2 IS NOT NULL AND @GolesEq2 < 0)
-			THROW 50000, '- Los goles no pueden ser negativos', 1;
+			SET @errores += '- Los goles no pueden ser negativos' + N' ';
 
 		IF (@Asistencia IS NOT NULL AND @Asistencia < 0)
-			THROW 50000, '- La asistencia no puede ser negativa', 1;
+			SET @errores += '- La asistencia no puede ser negativa' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @Id)
-			THROW 50000, '- Valor inexistente: Partido', 1;
+			SET @errores += '- Valor inexistente: Partido' + N' ';
 
 		IF (@IdFase IS NOT NULL AND NOT EXISTS(SELECT 1 FROM partidos.Fase WHERE IdFase = @IdFase))
-			THROW 50000, '- Valor inexistente: Fase', 1;
+			SET @errores += '- Valor inexistente: Fase' + N' ';
 
 		IF (@IdMundial IS NOT NULL AND NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @IdMundial))
-			THROW 50000, '- Valor inexistente: Mundial', 1;
+			SET @errores += '- Valor inexistente: Mundial' + N' ';
 
 		SELECT @vMundial = COALESCE(@IdMundial, IdMundial), @vEq1 = COALESCE(@Eq1, Eq1), @vEq2 = COALESCE(@Eq2, Eq2) FROM partidos.Partido WHERE IdPartido = @Id
 
 		IF (@vEq1 = @vEq2)
-			THROW 50000, '- Un equipo no puede ser su propio rival', 1;
+			SET @errores += '- Un equipo no puede ser su propio rival' + N' ';
 		ELSE IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @vEq1 AND IdMundial = @vMundial)
-			THROW 50000, '- Eq1 no pertenece al Mundial', 1;
+			SET @errores += '- Eq1 no pertenece al Mundial' + N' ';
 		ELSE IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @vEq2 AND IdMundial = @vMundial)
-			THROW 50000, '- Eq2 no pertenece al Mundial', 1;
+			SET @errores += '- Eq2 no pertenece al Mundial' + N' ';
 
 		DECLARE @vSede INT, @vAsistencia INT;
 		SELECT @vSede = COALESCE(@IdSede, IdSede), @vAsistencia = COALESCE(@Asistencia, Asistencia)
 		FROM partidos.Partido WHERE IdPartido = @Id;
 
 		IF NOT EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede = @vSede)
-			THROW 50000, '- Valor inexistente: Sede', 1;
+			SET @errores += '- Valor inexistente: Sede' + N' ';
 
 		IF @vAsistencia > (SELECT Capacidad FROM sedes.Sede WHERE IdSede = @vSede)
-			THROW 50000, '- La asistencia supera la capacidad de la sede', 1;
+			SET @errores += '- La asistencia supera la capacidad de la sede' + N' ';
 
 		IF EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @Id
 			AND (Eq1 <> @vEq1 OR Eq2 <> @vEq2 OR IdMundial <> @vMundial))
@@ -222,11 +226,11 @@ BEGIN
 			IF EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @Id)
 			OR EXISTS (SELECT 1 FROM partidos.Evento WHERE Partido = @Id)
 			OR EXISTS (SELECT 1 FROM arbitros.Arbitraje WHERE Partido = @Id)
-				THROW 50000, '- No se pueden cambiar equipos o mundial con alineaciones, eventos o arbitrajes registrados', 1;
+				SET @errores += '- No se pueden cambiar equipos o mundial con alineaciones, eventos o arbitrajes registrados' + N' ';
 		END
 
 		IF @GolesEq1 IS NOT NULL OR @GolesEq2 IS NOT NULL
-			THROW 51000, 'El marcador se modifica mediante alta y baja de goles, no manualmente.', 1;
+			SET @errores += 'El marcador se modifica mediante alta y baja de goles, no manualmente.' + N' ';
 
 		IF @Fecha IS NOT NULL OR @HoraUTC IS NOT NULL OR @HoraLocal IS NOT NULL OR @IdSede IS NOT NULL
 		BEGIN
@@ -235,11 +239,13 @@ BEGIN
 			FROM partidos.Partido P JOIN sedes.Sede S ON S.IdSede = @vSede
 			JOIN sedes.HusoHorario H ON H.IdHuso = S.IdHuso WHERE P.IdPartido = @Id;
 			IF @local IS NULL
-				THROW 50000, '- Huso horario no reconocido. Use UTC, UTC con desplazamiento o un nombre de sys.time_zone_info.', 1;
+				SET @errores += '- Huso horario no reconocido. Use UTC, UTC con desplazamiento o un nombre de sys.time_zone_info.' + N' ';
 			IF @HoraLocal IS NOT NULL AND @HoraLocal <> CAST(@local AS TIME)
-				THROW 50000, '- La hora local no coincide con la hora UTC y el huso de la sede.', 1;
+				SET @errores += '- La hora local no coincide con la hora UTC y el huso de la sede.' + N' ';
 			SET @HoraLocal = CAST(@local AS TIME);
 		END
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE partidos.Partido
 		SET IdFase = COALESCE(@IdFase, IdFase),
@@ -271,18 +277,21 @@ CREATE PROCEDURE SP.uspPartido_Bajar
 @Id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF (@Id IS NULL OR @Id <= 0)
-			THROW 50000, '- Valor invalido: Id', 1;
+			SET @errores += '- Valor invalido: Id' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @Id)
-			THROW 50000, '- Valor inexistente: Partido', 1;
+			SET @errores += '- Valor inexistente: Partido' + N' ';
 
 		IF EXISTS(SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @Id)
-			THROW 50000, '- Existen alineaciones para este partido', 1;
+			SET @errores += '- Existen alineaciones para este partido' + N' ';
 
 		IF EXISTS(SELECT 1 FROM partidos.Evento WHERE Partido = @Id)
-			THROW 50000, '- Existen eventos para este partido', 1;
+			SET @errores += '- Existen eventos para este partido' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM partidos.Partido WHERE IdPartido = @Id
 	END TRY

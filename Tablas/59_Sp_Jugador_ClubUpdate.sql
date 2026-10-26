@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures
 
@@ -26,18 +26,21 @@ CREATE PROCEDURE SP.uspJugador_ClubUpdate
 @club INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		IF(@id IS NULL) OR (@id<= 0)
-			THROW 50000, '- Valor invalido: ID Jugador.', 1;
+			SET @errores += '- Valor invalido: ID Jugador.' + N' ';
 
 		IF(@club IS NOT NULL) AND (@club <= 0)
-			THROW 50000, '- Valor invalido: Club.', 1;
+			SET @errores += '- Valor invalido: Club.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @id)
-			THROW 50000, '- Valor inexistente: IdJugador.', 1;
+			SET @errores += '- Valor inexistente: IdJugador.' + N' ';
 
 		IF (@club IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Club WHERE IdClub = @club)
-			THROW 50000, '- Valor inexistente: Club.', 1;
+			SET @errores += '- Valor inexistente: Club.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE equipos.Jugador
 		SET Club = @club

@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 -- Objetivo: separar goles de juego y conversiones de tanda en una transaccion.
  
 USE MUNDIAL;
@@ -99,8 +99,7 @@ BEGIN
        )
         SET @errores += N'El asistente debe pertenecer al equipo del autor. ';
  
-    IF LEN(@errores) > 0
-        THROW 51000, @errores, 1;
+
  
     BEGIN TRY
         BEGIN TRANSACTION;
@@ -119,7 +118,7 @@ BEGIN
                 WHERE p.IdPartido = @partido
                   AND f.Descripcion = 'Grupos'
            )
-            THROW 51000, 'La fase de grupos no admite definicion por penales.', 1;
+            SET @errores += 'La fase de grupos no admite definicion por penales.' + N' ';
  
         IF @penales = 1
            AND EXISTS (
@@ -128,7 +127,7 @@ BEGIN
                 WHERE IdPartido = @partido
                   AND GolesEq1 <> GolesEq2
            )
-            THROW 51000, 'Solo se puede iniciar una tanda con marcador empatado.', 1;
+            SET @errores += 'Solo se puede iniciar una tanda con marcador empatado.' + N' ';
  
         IF @penales = 0
            AND EXISTS (
@@ -137,8 +136,10 @@ BEGIN
                 WHERE IdPartido = @partido
                   AND PenalesEq1 IS NOT NULL
            )
-            THROW 51000, 'Anular la tanda antes de corregir goles del partido.', 1;
+            SET @errores += 'Anular la tanda antes de corregir goles del partido.' + N' ';
  
+        IF LEN(@errores)>0 THROW 51000,@errores,1;
+
         INSERT partidos.Evento (Minuto, Tipo, Partido, Periodo)
         VALUES (@minuto, 'Gol', @partido, @periodo);
  
@@ -173,6 +174,7 @@ CREATE OR ALTER PROCEDURE SPTRANS.uspGol_Bajar
     @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
  
@@ -188,7 +190,7 @@ BEGIN
     WHERE IdEvento = @id;
  
     IF @partido IS NULL OR NOT EXISTS (SELECT 1 FROM partidos.Gol WHERE IdGol = @id)
-        THROW 51000, 'Gol inexistente.', 1;
+        SET @errores += 'Gol inexistente.' + N' ';
  
     BEGIN TRY
         BEGIN TRANSACTION;
@@ -199,7 +201,7 @@ BEGIN
         WHERE IdPartido = @partido;
  
         IF NOT EXISTS (SELECT 1 FROM partidos.Gol WHERE IdGol = @id)
-            THROW 51000, 'El gol ya fue eliminado.', 1;
+            SET @errores += 'El gol ya fue eliminado.' + N' ';
  
         SELECT @penales = r.EsPenales,
                @tipo    = g.Tipo,
@@ -217,8 +219,10 @@ BEGIN
                 WHERE IdPartido = @partido
                   AND PenalesEq1 IS NOT NULL
            )
-            THROW 51000, 'Anular la tanda antes de corregir goles del partido.', 1;
+            SET @errores += 'Anular la tanda antes de corregir goles del partido.' + N' ';
  
+        IF LEN(@errores)>0 THROW 50000, @errores, 1;
+
         IF @penales = 1
             UPDATE partidos.Partido
             SET PenalesEq1 = PenalesEq1 - CASE WHEN @sel = @eq1 THEN 1 ELSE 0 END,
@@ -254,14 +258,15 @@ CREATE OR ALTER PROCEDURE SP.uspPartido_Tanda
     @Iniciar   BIT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
  
     IF @Iniciar IS NULL
-        THROW 51000, 'Iniciar es obligatorio.', 1;
+        SET @errores += 'Iniciar es obligatorio.' + N' ';
  
     IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @IdPartido)
-        THROW 51000, 'Partido inexistente.', 1;
+        SET @errores += 'Partido inexistente.' + N' ';
  
     BEGIN TRY
         BEGIN TRANSACTION;
@@ -282,10 +287,10 @@ BEGIN
                 WHERE p.IdPartido = @IdPartido
                   AND f.Descripcion = 'Grupos'
            )
-            THROW 51000, 'La fase de grupos no admite definicion por penales.', 1;
+            SET @errores += 'La fase de grupos no admite definicion por penales.' + N' ';
  
         IF @Iniciar = 1 AND @g1 <> @g2
-            THROW 51000, 'La tanda requiere empate.', 1;
+            SET @errores += 'La tanda requiere empate.' + N' ';
  
         IF @Iniciar = 0
            AND EXISTS (
@@ -296,7 +301,9 @@ BEGIN
                 WHERE e.Partido = @IdPartido
                   AND r.EsPenales = 1
            )
-            THROW 51000, 'Eliminar primero las conversiones de la tanda.', 1;
+            SET @errores += 'Eliminar primero las conversiones de la tanda.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
  
         UPDATE partidos.Partido
         SET PenalesEq1 = CASE WHEN @Iniciar = 1 THEN COALESCE(PenalesEq1, 0) ELSE NULL END,

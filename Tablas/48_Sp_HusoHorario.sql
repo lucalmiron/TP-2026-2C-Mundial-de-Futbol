@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 25/10/26
 
 --Creacion de Stored Procedures (ABM de HusoHorario)
 
@@ -26,21 +26,24 @@ CREATE PROCEDURE SP.uspHusoHorario_Registrar
 @idPais INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@nombre IS NULL) OR (LTRIM(RTRIM(@nombre)) = '')
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@idPais IS NULL) OR (@idPais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		--Chequeo dup
 		IF EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE Nombre = @nombre)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		INSERT INTO sedes.HusoHorario(Nombre, IdPais)
 		VALUES(LTRIM(RTRIM(@nombre)), @idPais)
@@ -61,28 +64,31 @@ CREATE PROCEDURE SP.uspHusoHorario_Update
 @idPais INT = NULL
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez (solo lo que vino con valor)
 		IF(@idHuso IS NULL) OR (@idHuso <= 0)
-			THROW 50000, '- Valor invalido: ID HusoHorario.', 1;
+			SET @errores += '- Valor invalido: ID HusoHorario.' + N' ';
 
 		IF(@nombre IS NOT NULL) AND (LTRIM(RTRIM(@nombre)) = '')
-			THROW 50000, '- Valor invalido: Nombre.', 1;
+			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
 		IF(@idPais IS NOT NULL) AND (@idPais <= 0)
-			THROW 50000, '- Valor invalido: Pais.', 1;
+			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE IdHuso = @idHuso)
-			THROW 50000, '- Valor inexistente: ID HusoHorario.', 1;
+			SET @errores += '- Valor inexistente: ID HusoHorario.' + N' ';
 
 		IF(@idPais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
-			THROW 50000, '- Valor inexistente: Pais.', 1;
+			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		--Chequeo dup (excluyendo el propio registro)
 		IF(@nombre IS NOT NULL)
 		   AND EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE Nombre = @nombre AND IdHuso <> @idHuso)
-			THROW 50000, '- Valor duplicado: Nombre.', 1;
+			SET @errores += '- Valor duplicado: Nombre.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE sedes.HusoHorario
 		SET Nombre = COALESCE(LTRIM(RTRIM(@nombre)), Nombre),
@@ -103,18 +109,21 @@ CREATE PROCEDURE SP.uspHusoHorario_Bajar
 @idHuso INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@idHuso IS NULL) OR (@idHuso <= 0)
-			THROW 50000, '- Valor invalido: ID HusoHorario.', 1;
+			SET @errores += '- Valor invalido: ID HusoHorario.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE IdHuso = @idHuso)
-			THROW 50000, '- Valor inexistente: ID HusoHorario.', 1;
+			SET @errores += '- Valor inexistente: ID HusoHorario.' + N' ';
 
 		--Chequeo relaciones
 		IF EXISTS(SELECT 1 FROM sedes.Sede WHERE IdHuso = @idHuso)
-			THROW 50000, '- Existen 1 o mas registros relacionados: Sede. Elimine dichos registros para continuar.', 1;
+			SET @errores += '- Existen 1 o mas registros relacionados: Sede. Elimine dichos registros para continuar.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		DELETE FROM sedes.HusoHorario
 		WHERE IdHuso = @idHuso

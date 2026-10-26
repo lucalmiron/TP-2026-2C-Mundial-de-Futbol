@@ -27,27 +27,28 @@ CREATE PROCEDURE SPTRANS.uspArbitraje_Registrar
 @partido INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@arbitro IS NULL) OR (@arbitro <= 0)
-			THROW 50000, '- Valor invalido: ID Arbitro.', 1;
+			SET @errores += '- Valor invalido: ID Arbitro.' + N' ';
 
 		IF(@funcion IS NULL) OR (@funcion NOT IN ('Principal', 'Asistente', '4to', 'VAR'))
-			THROW 50000, '- Valor invalido: Funcion.', 1;
+			SET @errores += '- Valor invalido: Funcion.' + N' ';
 
 		IF(@partido IS NULL) OR (@partido <= 0)
-			THROW 50000, '- Valor invalido: ID Partido.', 1;
+			SET @errores += '- Valor invalido: ID Partido.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
-			THROW 50000, '- Valor inexistente: ID Arbitro.', 1;
+			SET @errores += '- Valor inexistente: ID Arbitro.' + N' ';
 
 		IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
-			THROW 50000, '- Valor inexistente: ID Partido.', 1;
+			SET @errores += '- Valor inexistente: ID Partido.' + N' ';
 
 		--chequeo dup
 		IF EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
-			THROW 50000, '- Valor duplicado: Arbitro. Se encuentra ya asignado a alguna funcion de ese partido.', 1;
+			SET @errores += '- Valor duplicado: Arbitro. Se encuentra ya asignado a alguna funcion de ese partido.' + N' ';
 
 		--chequeo cupo
 		IF(
@@ -59,7 +60,7 @@ BEGIN
 			OR
 			((@funcion = '4to') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = '4to') >= 1))
 		)
-			THROW 50000, '- Cupo excedido para esa funcion.', 1;
+			SET @errores += '- Cupo excedido para esa funcion.' + N' ';
 
 		--chequeo nacionalidad(para este partido)
 		IF EXISTS
@@ -74,7 +75,7 @@ BEGIN
 			) AS P
 			WHERE P.IdPais = (SELECT Pais FROM equipos.Persona WHERE IdPersona = @arbitro)
 		)
-			THROW 50000, '- No se puede asignar este arbitro, el pais al que pertenece disputa este partido.', 1;
+			SET @errores += '- No se puede asignar este arbitro, el pais al que pertenece disputa este partido.' + N' ';
 
 		-- Aviso preventivo: el fixture no guarda las llaves de eliminacion.
 		IF EXISTS (
@@ -92,6 +93,8 @@ BEGIN
 			PRINT '-ADVERTENCIA- La seleccion del pais del arbitro tiene otro partido eliminatorio programado en este mundial. Revisar posibles cruces.';
 
 		BEGIN TRANSACTION
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			INSERT INTO arbitros.Arbitraje
 			VALUES (@arbitro, @funcion, @partido)
 
@@ -114,24 +117,25 @@ CREATE PROCEDURE SPTRANS.uspArbitraje_Update
 @partido INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@arbitro IS NULL) OR (@arbitro <= 0)
-			THROW 50000, '- Valor invalido: ID Arbitro.', 1;
+			SET @errores += '- Valor invalido: ID Arbitro.' + N' ';
 
 		IF(@funcion IS NULL) OR (@funcion NOT IN ('Principal', 'Asistente', '4to', 'VAR'))
-			THROW 50000, '- Valor invalido: Funcion.', 1;
+			SET @errores += '- Valor invalido: Funcion.' + N' ';
 
 		IF(@partido IS NULL) OR (@partido <= 0)
-			THROW 50000, '- Valor invalido: ID Partido.', 1;
+			SET @errores += '- Valor invalido: ID Partido.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
-			THROW 50000, '- Registro inexistente.', 1;
+			SET @errores += '- Registro inexistente.' + N' ';
 
 		--chequeo dup
 		IF EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido AND Funcion = @funcion)
-			THROW 50000, '- Valor duplicado: Arbitro. Se encuentra ya asignado a esa funcion.', 1;
+			SET @errores += '- Valor duplicado: Arbitro. Se encuentra ya asignado a esa funcion.' + N' ';
 
 		--chequeo cupo (se excluye el propio registro para no contarse a si mismo)
 		IF(
@@ -143,13 +147,13 @@ BEGIN
 			OR
 			((@funcion = '4to') AND ((SELECT COUNT(Arbitro) FROM arbitros.Arbitraje WHERE Partido = @partido AND Funcion = '4to' AND Arbitro <> @arbitro) >= 1))
 		)
-			THROW 50000, '- Cupo excedido para esa funcion.', 1;
+			SET @errores += '- Cupo excedido para esa funcion.' + N' ';
 
 		IF EXISTS (SELECT 1 FROM partidos.Partido P
 			JOIN equipos.Seleccion S ON S.IdSeleccion IN (P.Eq1, P.Eq2)
 			JOIN equipos.Persona A ON A.Pais = S.IdPais AND A.IdPersona = @arbitro
 			WHERE P.IdPartido = @partido)
-			THROW 50000, '- No se puede asignar este arbitro, el pais al que pertenece disputa este partido.', 1;
+			SET @errores += '- No se puede asignar este arbitro, el pais al que pertenece disputa este partido.' + N' ';
 		-- Aviso preventivo: el fixture no guarda las llaves de eliminacion.
 		IF EXISTS (
 			SELECT 1 FROM partidos.Partido Actual
@@ -166,6 +170,8 @@ BEGIN
 			PRINT '-ADVERTENCIA- La seleccion del pais del arbitro tiene otro partido eliminatorio programado en este mundial. Revisar posibles cruces.';
 
 		BEGIN TRANSACTION
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			UPDATE arbitros.Arbitraje
 			SET Funcion = @funcion
 			WHERE Arbitro = @arbitro AND Partido = @partido
@@ -188,19 +194,22 @@ CREATE PROCEDURE SPTRANS.uspArbitraje_Bajar
 @partido INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	BEGIN TRY
 		--Chequeo validez
 		IF(@arbitro IS NULL) OR (@arbitro <= 0)
-			THROW 50000, '- Valor invalido: ID Arbitro.', 1;
+			SET @errores += '- Valor invalido: ID Arbitro.' + N' ';
 
 		IF(@partido IS NULL) OR (@partido <= 0)
-			THROW 50000, '- Valor invalido: ID Partido.', 1;
+			SET @errores += '- Valor invalido: ID Partido.' + N' ';
 
 		--chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = @arbitro AND Partido = @partido)
-			THROW 50000, '- Registro inexistente.', 1;
+			SET @errores += '- Registro inexistente.' + N' ';
 
 		BEGIN TRANSACTION
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			DELETE FROM arbitros.Arbitraje
 			WHERE Arbitro = @arbitro AND Partido = @partido
 

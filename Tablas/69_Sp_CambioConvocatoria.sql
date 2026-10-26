@@ -28,6 +28,7 @@ CREATE PROCEDURE SPTRANS.uspCambioConvocatoria_Registrar
 @motivo VARCHAR(200)
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @vActivos INT
 	DECLARE @vIdMundial INT
 	DECLARE @vMin INT
@@ -35,34 +36,34 @@ BEGIN
 
 	BEGIN TRY
 		IF (@seleccion IS NULL) OR (@seleccion <= 0)
-			THROW 50000, '- Valor invalido: Seleccion.', 1;
+			SET @errores += '- Valor invalido: Seleccion.' + N' ';
 
 		IF (@egreso IS NULL) OR (@egreso <= 0)
-			THROW 50000, '- Valor invalido: Egreso.', 1;
+			SET @errores += '- Valor invalido: Egreso.' + N' ';
 
 		IF (@ingreso IS NULL) OR (@ingreso <= 0)
-			THROW 50000, '- Valor invalido: Ingreso.', 1;
+			SET @errores += '- Valor invalido: Ingreso.' + N' ';
 
 		IF (@fecha IS NULL)
-			THROW 50000, '- Valor invalido: Fecha.', 1;
+			SET @errores += '- Valor invalido: Fecha.' + N' ';
 
 		IF (@motivo IS NULL)
-			THROW 50000, '- Valor invalido: Motivo.', 1;
+			SET @errores += '- Valor invalido: Motivo.' + N' ';
 
 		IF (@egreso = @ingreso)
-			THROW 50000, '- Egreso e ingreso no pueden ser el mismo jugador.', 1;
+			SET @errores += '- Egreso e ingreso no pueden ser el mismo jugador.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
-			THROW 50000, '- Valor inexistente: Seleccion.', 1;
+			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @egreso AND Seleccion = @seleccion AND Estado = 'Activo')
-			THROW 50000, '- El egreso no es un convocado activo de la seleccion.', 1;
+			SET @errores += '- El egreso no es un convocado activo de la seleccion.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @ingreso AND Seleccion = @seleccion)
-			THROW 50000, '- El ingreso no pertenece a la seleccion.', 1;
+			SET @errores += '- El ingreso no pertenece a la seleccion.' + N' ';
 
 		IF EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @ingreso AND Estado <> 'Inactivo')
-			THROW 50000, '- El ingreso debe ser un jugador inactivo.', 1;
+			SET @errores += '- El ingreso debe ser un jugador inactivo.' + N' ';
 
 		SELECT @vIdMundial = IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion
 
@@ -71,17 +72,19 @@ BEGIN
 		SELECT @vActivos = COUNT(*) FROM equipos.Jugador WHERE Seleccion = @seleccion AND Estado <> 'Inactivo'
 
 		IF (@vActivos < @vMin) OR (@vActivos > @vMax)
-			THROW 50000, '- La convocatoria incumple el cupo del reglamento.', 1;
+			SET @errores += '- La convocatoria incumple el cupo del reglamento.' + N' ';
 
 		IF EXISTS (SELECT 1 FROM equipos.CambioConvocatoria
 			WHERE (Ingreso IN (@ingreso, @egreso) OR Egreso IN (@ingreso, @egreso)) AND Fecha > @fecha)
-			THROW 50000, '- Existen cambios de convocatoria posteriores para estos jugadores.', 1;
+			SET @errores += '- Existen cambios de convocatoria posteriores para estos jugadores.' + N' ';
 
 		IF EXISTS (SELECT 1 FROM partidos.Alineacion A JOIN partidos.Partido P ON P.IdPartido = A.IdPartido
 			WHERE A.IdJugador = @egreso AND P.Fecha >= @fecha)
-			THROW 50000, '- El egreso tiene alineaciones desde la fecha del cambio.', 1;
+			SET @errores += '- El egreso tiene alineaciones desde la fecha del cambio.' + N' ';
 
 		BEGIN TRANSACTION
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			UPDATE equipos.Jugador
 			SET Estado = 'Inactivo'
 			WHERE IdJugador = @egreso
@@ -110,16 +113,17 @@ CREATE PROCEDURE SPTRANS.uspCambioConvocatoria_Bajar
 @id INT
 AS
 BEGIN
+	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @vEgreso INT
 	DECLARE @vIngreso INT
 	DECLARE @vFecha DATE
 
 	BEGIN TRY
 		IF (@id IS NULL) OR (@id <= 0)
-			THROW 50000, '- Valor invalido: ID Cambio.', 1;
+			SET @errores += '- Valor invalido: ID Cambio.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM equipos.CambioConvocatoria WHERE IdCambio = @id)
-			THROW 50000, '- Registro inexistente.', 1;
+			SET @errores += '- Registro inexistente.' + N' ';
 
 		BEGIN TRANSACTION
 			SELECT @vEgreso = Egreso, @vIngreso = Ingreso, @vFecha = Fecha FROM equipos.CambioConvocatoria WHERE IdCambio = @id
@@ -127,15 +131,17 @@ BEGIN
 			IF EXISTS (SELECT 1 FROM equipos.CambioConvocatoria
 				WHERE (Ingreso IN (@vIngreso, @vEgreso) OR Egreso IN (@vIngreso, @vEgreso))
 				AND (Fecha > @vFecha OR (Fecha = @vFecha AND IdCambio > @id)))
-				THROW 50000, '- Anule primero los cambios de convocatoria posteriores.', 1;
+				SET @errores += '- Anule primero los cambios de convocatoria posteriores.' + N' ';
 
 			IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @vEgreso AND Estado = 'Inactivo')
 			OR NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @vIngreso AND Estado = 'Activo')
-				THROW 50000, '- Los estados actuales no permiten anular el cambio.', 1;
+				SET @errores += '- Los estados actuales no permiten anular el cambio.' + N' ';
 
 			IF EXISTS (SELECT 1 FROM partidos.Alineacion A JOIN partidos.Partido P ON P.IdPartido = A.IdPartido
 				WHERE A.IdJugador = @vIngreso AND P.Fecha >= @vFecha)
-				THROW 50000, '- El ingreso tiene alineaciones desde la fecha del cambio.', 1;
+				SET @errores += '- El ingreso tiene alineaciones desde la fecha del cambio.' + N' ';
+
+		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 			UPDATE equipos.Jugador
 			SET Estado = 'Activo'
