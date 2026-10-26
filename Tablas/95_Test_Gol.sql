@@ -141,13 +141,43 @@ IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Gol Test A4')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Gol Test A4', @fnac = '2003-01-04', @pais = @gJugPais4, @posicion = 'MED', @numero = 8, @seleccion = @gJugSel4;
 GO
 
+-- Preparacion de cancha: A1 y A4 son titulares de G1; A2 es titular de G2.
+-- A3 queda fuera del partido para conservar los casos negativos de participacion.
+DECLARE @gPartA INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
+DECLARE @gTitular INT;
+IF @gPartA IS NULL
+    THROW 51998, 'No se creo el partido del test de goles.', 1;
+DECLARE goles_titulares CURSOR LOCAL FAST_FORWARD FOR
+    SELECT J.IdJugador
+    FROM equipos.Jugador J INNER JOIN equipos.Persona P ON P.IdPersona = J.IdJugador
+    WHERE P.Nombre IN ('Gol Test A1', 'Gol Test A2', 'Gol Test A4');
+OPEN goles_titulares;
+FETCH NEXT FROM goles_titulares INTO @gTitular;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @gPartA AND IdJugador = @gTitular)
+        EXEC SP.uspAlineacion_Registrar @IdPartido = @gPartA, @IdJugador = @gTitular, @Rol = 'Titular';
+    FETCH NEXT FROM goles_titulares INTO @gTitular;
+END;
+CLOSE goles_titulares;
+DEALLOCATE goles_titulares;
+-- Esperado: los tres jugadores estan en cancha antes del primer gol.
+IF (SELECT COUNT(*) FROM equipos.Jugador J INNER JOIN equipos.Persona P ON P.IdPersona = J.IdJugador
+    WHERE P.Nombre IN ('Gol Test A1', 'Gol Test A2', 'Gol Test A4')
+      AND partidos.fnJugadorEnCancha(@gPartA, J.IdJugador, 23) = 1) <> 3
+    THROW 51998, 'Fallo la preparacion de las alineaciones del test de goles.', 1;
+SELECT A.* FROM partidos.Alineacion A WHERE A.IdPartido = @gPartA;
+GO
+
 --/ALTA
 
 -- Esperado: gol de jugada con asistencia, 1 fila en Evento y Gol, GolesEq1 = 1 (autor de CONF G1)
-DECLARE @gP1 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP1 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA1 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 DECLARE @gA4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A4');
-EXEC SPTRANS.uspGol_Registrar @minuto = 23, @partido = @gP1, @periodo = 901, @autor = @gA1, @asistencia = @gA4, @tipo = 'Jugada'
+EXEC SPTRANS.uspGol_Registrar @minuto = 23, @partido = @gP1, @periodo = 901, @autor = @gA1, @asistencia = @gA4, @tipo = 'Jugada';
+IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @gP1 AND GolesEq1 = 1 AND GolesEq2 = 0)
+    THROW 51998, 'El gol valido no dejo el marcador esperado.', 1;
 GO
 SELECT * FROM partidos.Evento WHERE Tipo = 'Gol'
 GO
@@ -157,7 +187,7 @@ SELECT IdPartido, Eq1, Eq2, GolesEq1, GolesEq2 FROM partidos.Partido
 GO
 
 -- Esperado: autor y asistencia iguales, 0 filas nuevas, marcador sin cambios
-DECLARE @gP2 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP2 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA1b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 30, @partido = @gP2, @periodo = 901, @autor = @gA1b, @asistencia = @gA1b, @tipo = 'Jugada'
@@ -170,7 +200,7 @@ SELECT * FROM partidos.Gol
 GO
 
 -- Esperado: el gol en contra no lleva asistencia, 0 filas nuevas, marcador sin cambios
-DECLARE @gP3 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP3 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA1c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 DECLARE @gA2b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A2');
 BEGIN TRY
@@ -184,7 +214,7 @@ SELECT * FROM partidos.Gol
 GO
 
 -- Esperado: el autor no participo del encuentro (A3 es de CONF G3), 0 filas nuevas
-DECLARE @gP4 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP4 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA1d INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 DECLARE @gA3  INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A3');
 BEGIN TRY
@@ -198,7 +228,7 @@ SELECT * FROM partidos.Gol
 GO
 
 -- Esperado: la asistencia no participo del encuentro (A3 es de CONF G3), 0 filas nuevas
-DECLARE @gP5 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP5 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA1e INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 DECLARE @gA3b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A3');
 BEGIN TRY
@@ -212,7 +242,7 @@ SELECT * FROM partidos.Gol
 GO
 
 -- Esperado: inexistente Autor (999999), 0 filas nuevas, marcador sin cambios
-DECLARE @gP6 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP6 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA2c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A2');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 45, @partido = @gP6, @periodo = 901, @autor = 999999, @asistencia = @gA2c, @tipo = 'Penal'
@@ -225,7 +255,7 @@ SELECT * FROM partidos.Gol
 GO
 
 -- Esperado: inexistente Asistencia (999999), 0 filas nuevas, marcador sin cambios
-DECLARE @gP7 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP7 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA1f INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 45, @partido = @gP7, @periodo = 901, @autor = @gA1f, @asistencia = 999999, @tipo = 'Penal'
@@ -238,7 +268,7 @@ SELECT * FROM partidos.Gol
 GO
 
 -- Esperado: tipo invalido (Chilena es tecnica, no situacion), 0 filas nuevas, marcador sin cambios
-DECLARE @gP8 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP8 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA1g INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 50, @partido = @gP8, @periodo = 901, @autor = @gA1g, @asistencia = NULL, @tipo = 'Chilena'
@@ -251,7 +281,7 @@ SELECT * FROM partidos.Gol
 GO
 
 -- Esperado: periodo inexistente (999999), 0 filas nuevas, marcador sin cambios
-DECLARE @gP9 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP9 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA1h INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 55, @partido = @gP9, @periodo = 999999, @autor = @gA1h, @asistencia = NULL, @tipo = 'Penal'
@@ -264,9 +294,11 @@ SELECT * FROM partidos.Gol
 GO
 
 -- Esperado: gol en contra sin asistencia del autor de CONF G2, GolesEq1 = 2 (suma al rival)
-DECLARE @gP10 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gP10 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 DECLARE @gA2d INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A2');
-EXEC SPTRANS.uspGol_Registrar @minuto = 45, @partido = @gP10, @periodo = 901, @autor = @gA2d, @asistencia = NULL, @tipo = 'En contra'
+EXEC SPTRANS.uspGol_Registrar @minuto = 45, @partido = @gP10, @periodo = 901, @autor = @gA2d, @asistencia = NULL, @tipo = 'En contra';
+IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @gP10 AND GolesEq1 = 2 AND GolesEq2 = 0)
+    THROW 51998, 'El gol valido no dejo el marcador esperado.', 1;
 GO
 SELECT * FROM partidos.Gol
 GO
@@ -316,11 +348,27 @@ DECLARE @gId INT, @i INT = 0;
 --1) Los goles que quedaron.
 WHILE @i < 10
 BEGIN
-	SET @gId = (SELECT MIN(IdGol) FROM partidos.Gol);
+	SET @gId = (SELECT MIN(G.IdGol) FROM partidos.Gol G INNER JOIN partidos.Evento E ON E.IdEvento = G.IdGol WHERE E.Partido = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15'));
 	IF @gId IS NULL BREAK;
 	EXEC SPTRANS.uspGol_Bajar @id = @gId;
 	SET @i = @i + 1;
 END
+
+-- Retirar las alineaciones despues de los goles y antes de borrar jugadores.
+DECLARE @gPartL INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15'), @gJugadorL INT;
+DECLARE goles_alineaciones CURSOR LOCAL FAST_FORWARD FOR
+    SELECT A.IdJugador FROM partidos.Alineacion A
+    INNER JOIN equipos.Persona P ON P.IdPersona = A.IdJugador
+    WHERE A.IdPartido = @gPartL AND P.Nombre IN ('Gol Test A1', 'Gol Test A2', 'Gol Test A4');
+OPEN goles_alineaciones;
+FETCH NEXT FROM goles_alineaciones INTO @gJugadorL;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    EXEC SP.uspAlineacion_Bajar @IdPartido = @gPartL, @IdJugador = @gJugadorL;
+    FETCH NEXT FROM goles_alineaciones INTO @gJugadorL;
+END;
+CLOSE goles_alineaciones;
+DEALLOCATE goles_alineaciones;
 
 --2) Los jugadores del test.
 SET @i = 0;
@@ -333,7 +381,7 @@ BEGIN
 END
 
 --3) El partido, el periodo y la fase.
-DECLARE @gPartB INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @gPartB INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
 IF @gPartB IS NOT NULL
 	EXEC SP.uspPartido_Bajar @Id = @gPartB;
 
