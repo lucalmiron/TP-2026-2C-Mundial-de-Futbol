@@ -4,13 +4,10 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 25/10/26
+-- 26/10/26
 -- Objetivo: SP Sede.
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+-- Ejecutar en la base seleccionada por el instalador.
 GO
 
 if exists (select name from sys.objects where object_id = object_id('SP.uspSede_Registrar'))
@@ -110,6 +107,10 @@ begin
 				WHERE Nombre = @nombre AND Ciudad = @ciudad AND IdSede <> @idSede)
 				SET @errores += '- Valor duplicado: Sede (nombre y ciudad).' + N' ';
 		END
+
+		IF @capacidad IS NOT NULL AND EXISTS (
+			SELECT 1 FROM partidos.Partido WHERE IdSede=@idSede AND Asistencia>@capacidad)
+			SET @errores += N'- La capacidad no puede ser menor a la asistencia registrada en los partidos de la sede. ';
 
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 

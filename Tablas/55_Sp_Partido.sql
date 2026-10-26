@@ -4,13 +4,10 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 25/10/26
+-- 26/10/26
 -- Objetivo: Gestionar Tabla Partido
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+-- Ejecutar en la base seleccionada por el instalador.
 GO
 
 -- Fecha del partido se interpreta en UTC. El sufijo del huso puede ser una etiqueta.

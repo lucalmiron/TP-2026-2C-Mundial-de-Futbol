@@ -7,15 +7,12 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 26/10/26
 
 --Objetivo: SP de ABM de la tabla partidos.Periodo (Alta, Baja, Modificacion).
 --Las validaciones se acumulan en una variable y se lanzan con un unico THROW.
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+-- Ejecutar en la base seleccionada por el instalador.
 GO
 
 -- =============================================

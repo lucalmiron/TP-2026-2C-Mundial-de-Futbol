@@ -4,13 +4,10 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 08/10/2026
+-- 26/10/26
 -- Objetivo: Crear Tabla Partido
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+-- Ejecutar en la base seleccionada por el instalador.
 GO
 
 -- Si la tabla ya existe se libera el CHECK que referencia a la funcion: mientras

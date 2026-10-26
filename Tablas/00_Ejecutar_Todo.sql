@@ -1,8 +1,8 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 25/10/2026.
+-- Fecha: 26/10/26.
 -- Objetivo: instalar la base, tablas y procedimientos de la entrega 5.
--- Las pruebas se ejecutan por separado con 96_Ejecutar_Pruebas.sql.
+-- Las pruebas se ejecutan por separado con Ejecutar_Pruebas_Aisladas.sql.
 -- La importacion de la entrega 6 no forma parte de esta instalacion.
 -- Ejecutar con sqlcmd desde la carpeta Tablas.
 -- En SSMS, activar modo SQLCMD y cambiar ScriptPath por la ruta de Tablas.
@@ -14,6 +14,8 @@
 :r $(ScriptPath)\01_Base_Mundial.sql
 GO
 :r $(ScriptPath)\02_Base_MundialTesting.sql
+GO
+USE MUNDIAL;
 GO
 :r $(ScriptPath)\03_Tabla_Pais.sql
 GO

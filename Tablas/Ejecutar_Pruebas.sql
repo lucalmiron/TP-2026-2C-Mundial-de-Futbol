@@ -1,7 +1,9 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 25/10/26.
--- Objetivo: ejecutar las pruebas existentes de la entrega 5.
+-- Fecha: 26/10/26.
+-- Objetivo: ejecutar las pruebas antiguas de la entrega 5.
+-- La suite corregida y nueva se ejecuta con Ejecutar_Pruebas_Aisladas.sql.
+-- Ese ejecutor crea las bases de prueba e instala los mismos scripts del proyecto.
 -- Ejecutar despues de 00_Ejecutar_Todo.sql en una instancia de pruebas.
 -- Los scripts incluidos modifican MUNDIAL: usar una instancia exclusiva de pruebas.
 -- Se continua ante errores porque hay rechazos esperados sin TRY/CATCH.

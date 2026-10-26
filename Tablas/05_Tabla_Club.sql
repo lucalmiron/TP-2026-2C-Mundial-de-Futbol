@@ -7,14 +7,11 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 08/10/2026
+--/Fecha: 26/10/26
 
 --Creacion de Tablas
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+-- Ejecutar en la base seleccionada por el instalador.
 GO
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'equipos' AND TABLE_NAME = 'Club')

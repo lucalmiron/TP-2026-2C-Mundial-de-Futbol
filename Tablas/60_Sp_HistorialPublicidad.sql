@@ -1,7 +1,7 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 25/10/26. Revision auxiliar de penales y publicidad por sede.
-USE MUNDIAL;
+-- Fecha: 26/10/26. Revision auxiliar de penales y publicidad por sede.
+
 GO
 -- Objetivo: asignar piezas a espacios de la sede y conservar el costo pactado.
 -- CostoFinal omitido: costo del espacio + costo de franja; explicito: importe pactado.
@@ -116,9 +116,9 @@ GO
 
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 25/10/26.
+-- Fecha: 26/10/26.
 -- Objetivo: simular mercados y proponer las cuatro piezas del partido.
-USE MUNDIAL;
+
 GO
 CREATE OR ALTER PROCEDURE SP.uspPublicidad_PrimeTime @idPartido INT
 AS

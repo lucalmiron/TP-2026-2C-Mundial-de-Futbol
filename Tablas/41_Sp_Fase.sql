@@ -4,13 +4,10 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 25/10/26
+-- 26/10/26
 -- Objetivo: SPs Fase
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+-- Ejecutar en la base seleccionada por el instalador.
 GO
 
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspFase_Registrar'))

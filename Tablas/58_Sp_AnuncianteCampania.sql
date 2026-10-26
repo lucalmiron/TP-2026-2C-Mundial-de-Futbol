@@ -7,14 +7,11 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 25/10/26
+--/Fecha: 26/10/26
 
 --Objetivo: Gestionar Tabla AnuncianteCampania (solo Registrar y Bajar, PK inmutable)
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+-- Ejecutar en la base seleccionada por el instalador.
 GO
 
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspAnuncianteCampania_Registrar'))

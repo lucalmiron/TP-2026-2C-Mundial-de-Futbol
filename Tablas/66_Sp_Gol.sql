@@ -7,10 +7,9 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 25/10/26
+--/Fecha: 26/10/26
 -- Objetivo: separar goles de juego y conversiones de tanda en una transaccion.
- 
-USE MUNDIAL;
+
 GO
  
 CREATE OR ALTER PROCEDURE SPTRANS.uspGol_Registrar

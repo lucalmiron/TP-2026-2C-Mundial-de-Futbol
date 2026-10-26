@@ -7,14 +7,11 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 25/10/26
+--/Fecha: 26/10/26
 
 --Creacion de Stored Procedures (ABM de HusoHorario)
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+-- Ejecutar en la base seleccionada por el instalador.
 GO
 
 --alta de huso horario
