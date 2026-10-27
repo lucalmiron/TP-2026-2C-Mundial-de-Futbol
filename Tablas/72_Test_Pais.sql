@@ -17,23 +17,51 @@ BEGIN
 END;
 GO
 
+--/Datos de prueba: 
+--2 idiomas
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test_SpPais1')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma_Test_SpPais1';
+GO
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test_SpPais2')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma_Test_SpPais2';
+GO
+--2 husos horarios
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE NOMBRE = 'Huso_Test_SpPais1')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'Huso_Test_SpPais1';
+GO
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE NOMBRE = 'Huso_Test_SpPais2')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'Huso_Test_SpPais2';
+GO
+
 --/ALTA
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Nombre.'
-EXEC SP.uspPais_Registrar @nombre = '', @pbi = 1000;
+EXEC SP.uspPais_Registrar @nombre = '', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: PBI.'
-EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @pbi = -5;
+EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = -5;
+GO
+
+-- Esperado: imprime 'Error/es: - Valor invalido: Idioma.'
+EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = -1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
+GO
+
+-- Esperado: imprime 'Error/es: - Valor invalido: Huso Horario.'
+EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = 1, @huso = 0, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
+GO
+
+-- Esperado: imprime 'Error/es: - Valores invalidos: Inicio y Fin de Primetime.'
+EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = 1, @huso = 1, @ptIni = '23:30', @ptFin = '23:00', @pbi = 1000;
 GO
 
 -- Esperado: no imprime nada, se insertan 2 filas.
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 1', @pbi = 1000;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 1', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
 GO
 
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 2')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 2', @pbi = 2000;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 2', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 2000;
 GO
 
 -- Esperado: 2 filas con NOMBRE = Pais Test 1 y Pais Test 2.
@@ -41,7 +69,7 @@ SELECT * FROM equipos.Pais WHERE NOMBRE LIKE 'Pais Test%';
 GO
 
 -- Esperado: imprime 'Error/es: - Valor duplicado: Pais (nombre).'
-EXEC SP.uspPais_Registrar @nombre = 'Pais Test 1', @pbi = 3000;
+EXEC SP.uspPais_Registrar @nombre = 'Pais Test 1', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 3000;
 GO
 
 --/UPDATE
@@ -70,6 +98,18 @@ DECLARE @idPais1b INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pa
 EXEC SP.uspPais_Update @idPais = @idPais1b, @nombre = 'Pais Test 2';
 GO
 
+-- Esperado: Pais Test 1 pasa a usar Idioma 2 y Huso Horario 2
+EXEC SP.uspPais_Update @idPais = @idPais1, @idioma = 2, @huso = 2;
+
+SELECT * FROM equipos.Pais;
+GO
+
+--Esperado: Pais Test 2 pasa a tener franja Primetime (17-18 HS)
+EXEC SP.uspPais_Update @idPais = @idPais2, @ptIni = '17:00', @ptFin = '18:00';
+
+SELECT * FROM equipos.Pais;
+GO
+
 --/BAJA
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: ID Pais.'
@@ -84,31 +124,15 @@ GO
 SELECT * FROM equipos.Pais WHERE NOMBRE LIKE 'Pais Test%';
 GO
 
---/BAJA CON REGISTROS RELACIONADOS
-
--- Esperado: se inserta un HusoHorario del Pais Test 1.
-DECLARE @idPais1c INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 1');
-
-IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (Pais Test)')
-	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (Pais Test)', @idPais = @idPais1c;
+--/Limpieza de lo que genera el test
+DELETE FROM equipos.Pais
+WHERE NOMBRE LIKE 'Pais Test%';
 GO
 
--- Esperado: imprime 'Error/es: - Existen 1 o mas registros relacionados: HusoHorario. Elimine dichos registros para continuar.'
-DECLARE @idPais1d INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 1');
-EXEC SP.uspPais_Bajar @idPais = @idPais1d;
-GO
-
---/Limpieza de lo que genera el test (en orden, por las claves foraneas)
-DECLARE @idHusoL INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (Pais Test)');
-
-IF @idHusoL IS NOT NULL
-	EXEC SP.uspHusoHorario_Bajar @idHuso = @idHusoL;
-GO
-
-DECLARE @idPaisL INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 1');
-
-IF @idPaisL IS NOT NULL
-	EXEC SP.uspPais_Bajar @idPais = @idPaisL;
+DELETE FROM arbitros.Idioma
+WHERE Descripcion LIKE 'Idioma_Test_SpPais%';
+DELETE FROM sedes.HusoHorario
+WHERE NOMBRE LIKE 'Huso_Test_SpPais%';
 GO
 
 SELECT * FROM equipos.Pais WHERE NOMBRE LIKE 'Pais Test%';
