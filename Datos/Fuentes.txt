@@ -1,0 +1,33 @@
+Fuentes de datos — Entrega 6
+1. Jugadores
+Los nombres completos se obtienen de players.csv (Kaggle). Los demás datos deportivos se obtienen de Promiedos. Se relacionan por selección y nombre, y se guarda la equivalencia con el dorsal y el ID interno del jugador.
+2. Fuentes y datos
+- Kaggle — CSV: nombres completos de jugadores.
+- Promiedos — JSON: datos de partidos, selecciones y jugadores; alineaciones, eventos, tandas, DT, árbitro principal y estadio.
+- Wikipedia — scraping a XML: grupos, sedes y árbitros.
+- Dossier Mundial — scraping a XML: publicidad, anunciantes y campañas.
+- Banco Mundial — API XML: países y PBI per cápita.
+- OpenTimezone — API JSON: conversión de horarios.
+3. Enlaces
+- Promiedos, partido: https://api.promiedos.com.ar/gamecenter/{id}
+- Promiedos, torneo: https://api.promiedos.com.ar/league/tables_and_fixtures/fjda    -(Archivo Json ya subido a carpeta Datos del repo)
+- Kaggle: archivo players.csv compartido por el repo.
+- Wikipedia: artículos del torneo y de sus árbitros.
+- Dossier Mundial: https://dossiermundial.netlify.app/
+- Banco Mundial: https://api.worldbank.org/v2/ — indicador NY.GDP.PCAP.CD.
+- OpenTimezone: https://opentimezone.com/
+6. Eventos de Promiedos
+type(numero)
+- 1: gol.
+- 2: gol en contra; el equipo indicado es el beneficiado.
+- 3: penal convertido en la tanda.
+- 4: amarilla.
+- 6: segunda amarilla con expulsión.
+- 9: gol anulado; no suma al marcador.
+- 10: tiro al palo; no se importa.
+- 15: sustitución.
+- 17: penal no convertido en la tanda.
+La tanda se identifica con is_penalties_stage = true y se carga por separado del marcador. Se conserva el descuento de minutos como 90'+6 y se evita duplicar eventos presentes también en las alineaciones. Estos códigos corresponden a las muestras revisadas.
+
+
+Para conseguir los Json de todos los partidos hay que crear un script en python y que los descargue mediante los Id de los partidos del Json cargado en el repo, lo hago yo (Santiago).
