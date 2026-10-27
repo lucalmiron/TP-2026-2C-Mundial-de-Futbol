@@ -19,8 +19,7 @@ IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspHusoH
     DROP PROCEDURE SP.uspHusoHorario_Registrar
 GO
 CREATE PROCEDURE SP.uspHusoHorario_Registrar
-@nombre VARCHAR(50),
-@idPais INT
+@nombre VARCHAR(50)
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
@@ -28,9 +27,6 @@ BEGIN
 		--Chequeo validez
 		IF(@nombre IS NULL) OR (LTRIM(RTRIM(@nombre)) = '')
 			SET @errores += '- Valor invalido: Nombre.' + N' ';
-
-		IF(@idPais IS NULL) OR (@idPais <= 0)
-			SET @errores += '- Valor invalido: Pais.' + N' ';
 
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
@@ -42,8 +38,8 @@ BEGIN
 
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
-		INSERT INTO sedes.HusoHorario(Nombre, IdPais)
-		VALUES(LTRIM(RTRIM(@nombre)), @idPais)
+		INSERT INTO sedes.HusoHorario(Nombre)
+		VALUES( LTRIM(RTRIM(@nombre)) )
 	END TRY
 	BEGIN CATCH
 		THROW;
@@ -57,8 +53,7 @@ IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspHusoH
 GO
 CREATE PROCEDURE SP.uspHusoHorario_Update
 @idHuso INT,
-@nombre VARCHAR(50) = NULL,
-@idPais INT = NULL
+@nombre VARCHAR(50) = NULL
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
@@ -70,15 +65,9 @@ BEGIN
 		IF(@nombre IS NOT NULL) AND (LTRIM(RTRIM(@nombre)) = '')
 			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
-		IF(@idPais IS NOT NULL) AND (@idPais <= 0)
-			SET @errores += '- Valor invalido: Pais.' + N' ';
-
 		--Chequeo existencia
 		IF NOT EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE IdHuso = @idHuso)
 			SET @errores += '- Valor inexistente: ID HusoHorario.' + N' ';
-
-		IF(@idPais IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
-			SET @errores += '- Valor inexistente: Pais.' + N' ';
 
 		--Chequeo dup (excluyendo el propio registro)
 		IF(@nombre IS NOT NULL)
@@ -88,8 +77,7 @@ BEGIN
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
 		UPDATE sedes.HusoHorario
-		SET Nombre = COALESCE(LTRIM(RTRIM(@nombre)), Nombre),
-			IdPais = COALESCE(@idPais, IdPais)
+		SET Nombre = COALESCE(LTRIM(RTRIM(@nombre)), Nombre)
 		WHERE IdHuso = @idHuso
 	END TRY
 	BEGIN CATCH
