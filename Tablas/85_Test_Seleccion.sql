@@ -18,22 +18,29 @@ BEGIN
 END;
 GO
 
---/Datos de prueba: 5 paises (para probar el cupo de 4 selecciones por grupo)
-
+--/Datos de prueba
+--1 idioma y 1 huso horario para poder insertar paises
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test1')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma_Test1';
+GO
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE NOMBRE = 'Huso_Test1')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'Huso_Test1';
+GO
+--5 paises (para probar el cupo de 4 selecciones por grupo)
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S1', @pbi = 1;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S1', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1;
 GO
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S2')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S2', @pbi = 2;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S2', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 2;
 GO
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S3')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S3', @pbi = 3;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S3', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 3;
 GO
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S4')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S4', @pbi = 4;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S4', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 4;
 GO
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S5')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S5', @pbi = 5;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S5', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 5;
 GO
 
 DECLARE @idPaisS1 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test S1');
@@ -49,7 +56,9 @@ IF NOT EXISTS (SELECT 1 FROM equipos.Grupo WHERE NOMBRE = 'Grupo S')
 	EXEC SP.uspGrupo_Registrar @nombre = 'Grupo S';
 GO
 
--- Esperado: 5 paises, 1 mundial y 1 grupo creados por el test.
+-- Esperado: 1 idioma, 1 huso horario, 5 paises, 1 mundial y 1 grupo creados por el test.
+SELECT * FROM arbitros.Idioma;
+SELECT * FROM sedes.HusoHorario;
 SELECT * FROM equipos.Pais WHERE NOMBRE LIKE 'Pais Test S%';
 SELECT * FROM sedes.Mundial;
 SELECT * FROM equipos.Grupo WHERE NOMBRE = 'Grupo S';
@@ -169,7 +178,7 @@ GO
 
 --/Limpieza de lo que genera el test (todo en un solo bloque para no perder variables)
 
-DECLARE @vSel INT, @vGrupo INT, @vMundial INT, @vPais INT, @i INT = 0;
+DECLARE @vSel INT, @vGrupo INT, @vMundial INT, @vPais INT, @vHuso INT, @vIdioma INT, @i INT = 0;
 
 WHILE @i < 10
 BEGIN
@@ -203,6 +212,24 @@ BEGIN
 	SET @vPais = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE LIKE 'Pais Test S%');
 	IF @vPais IS NULL BREAK;
 	EXEC SP.uspPais_Bajar @idPais = @vPais;
+	SET @i = @i + 1;
+END
+
+SET @i = 0;
+WHILE @i < 10
+BEGIN
+	SET @vHuso = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE NOMBRE LIKE 'Huso_Test%');
+	IF @vHuso IS NULL BREAK;
+	EXEC SP.uspHusoHorario_Bajar @idHuso = @vHuso;
+	SET @i = @i + 1;
+END
+
+SET @i = 0;
+WHILE @i < 10
+BEGIN
+	SET @vIdioma = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion LIKE 'Idioma_Test%');
+	IF @vIdioma IS NULL BREAK;
+	EXEC SP.uspIdioma_Bajar @id = @vIdioma;
 	SET @i = @i + 1;
 END
 
