@@ -217,7 +217,7 @@ END
 SET @i = 0;
 WHILE @i < 10
 BEGIN
-	SET @vHuso = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE NOMBRE LIKE 'Huso_Test%');
+	SET @vHuso = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre LIKE 'Huso_Test%');
 	IF @vHuso IS NULL BREAK;
 	EXEC SP.uspHusoHorario_Bajar @idHuso = @vHuso;
 	SET @i = @i + 1;
