@@ -21,6 +21,11 @@ GO
 
 --/Datos de prueba
 
+-- 1 huso horario para registrar el pais
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'Huso_Test1')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'Huso_Test1';
+GO
+
 -- Esperado: se crea el idioma y la campania.
 IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma T89')
 	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma T89';
@@ -31,6 +36,7 @@ GO
 
 DECLARE @pCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania T89');
 DECLARE @pIdio INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma T89');
+DECLARE @idHuso1 INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'Huso_Test1');
 
 -- Esperado: se crea la publicidad.
 IF NOT EXISTS (SELECT 1 FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 89')
@@ -39,7 +45,7 @@ GO
 
 -- Esperado: se crea el pais.
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 89')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 89', @pbi = 86;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 89', @idioma = @pIdio, @huso = @idHuso1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 86;
 GO
 
 --/ALTA
@@ -110,13 +116,17 @@ DECLARE @pCampB INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nom
 IF @pCampB IS NOT NULL
 	EXEC SP.uspCampania_Bajar @id = @pCampB;
 
+DECLARE @pPaisB INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 89');
+IF @pPaisB IS NOT NULL
+	EXEC SP.uspPais_Bajar @idPais = @pPaisB;
+
 DECLARE @pIdioB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma T89');
 IF @pIdioB IS NOT NULL
 	EXEC SP.uspIdioma_Bajar @id = @pIdioB;
 
-DECLARE @pPaisB INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 89');
-IF @pPaisB IS NOT NULL
-	EXEC SP.uspPais_Bajar @idPais = @pPaisB;
+DECLARE @pHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'Huso_Test1');
+IF @pHusoB IS NOT NULL
+	EXEC SP.uspHusoHorario_Bajar @idHuso = @pHusoB;
 
 -- Esperado: no queda nada del test.
 SELECT * FROM publicidad.PublicidadPais;

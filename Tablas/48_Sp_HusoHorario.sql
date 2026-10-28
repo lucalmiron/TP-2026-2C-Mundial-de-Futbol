@@ -28,10 +28,6 @@ BEGIN
 		IF(@nombre IS NULL) OR (LTRIM(RTRIM(@nombre)) = '')
 			SET @errores += '- Valor invalido: Nombre.' + N' ';
 
-		--Chequeo existencia
-		IF NOT EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais = @idPais)
-			SET @errores += '- Valor inexistente: Pais.' + N' ';
-
 		--Chequeo dup
 		IF EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE Nombre = @nombre)
 			SET @errores += '- Valor duplicado: Nombre.' + N' ';

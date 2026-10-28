@@ -12,3 +12,5 @@ CAMBIOS DER
 *La relación  MUNDIAL-FASE-PARTIDO fue cambiada a , MUNDIAL-PARTIDO-FASE
 -21-10
 *La relación MUNDIAL-SELECCION ("recibio a") quedó en 1:N. La clave externa IdMundial queda en SELECCION.
+-28-10
+*La entidad Pais ahora tiene como atributos el Inicio y Fin de Primetime para el pais. Ademas se ha cambiado la relacion con HusoHorario y se agrego una nueva relacion con Idioma. Para cada caso que corresponda, el criterio de designacion se define en el documento correspondiente.

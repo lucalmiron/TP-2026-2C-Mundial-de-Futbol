@@ -22,12 +22,22 @@ GO
 
 --/Datos de prueba
 
--- Esperado: se crean los dos paises.
-IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test M1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test M1', @pbi = 82;
+--1 idioma y 1 huso horario para poder insertar paises
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test1')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma_Test1';
 GO
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'Huso_Test1')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'Huso_Test1';
+GO
+
+-- Esperado: se crean los dos paises.
+DECLARE @idIdioma1 INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test1');
+DECLARE @idHuso1 INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'Huso_Test1');
+
+IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test M1')
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test M1', @idioma = @idIdioma1, @huso = @idHuso1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 82;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test M2')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test M2', @pbi = 83;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test M2', @idioma = @idIdioma1, @huso = @idHuso1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 83;
 GO
 
 -- Esperado: se crea el grupo.
@@ -154,7 +164,7 @@ GO
 
 --/Limpieza de lo que genera el test (en orden, por las claves foraneas)
 
-DECLARE @mId INT, @mSel INT, @i INT = 0;
+DECLARE @mId INT, @mSel INT, @vHuso INT, @vIdioma INT, @i INT = 0;
 
 WHILE @i < 5
 BEGIN
@@ -178,6 +188,24 @@ BEGIN
 	SET @mId = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE IN ('Pais Test M1','Pais Test M2'));
 	IF @mId IS NULL BREAK;
 	EXEC SP.uspPais_Bajar @idPais = @mId;
+	SET @i = @i + 1;
+END
+
+SET @i = 0;
+WHILE @i < 10
+BEGIN
+	SET @vHuso = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre LIKE 'Huso_Test%');
+	IF @vHuso IS NULL BREAK;
+	EXEC SP.uspHusoHorario_Bajar @idHuso = @vHuso;
+	SET @i = @i + 1;
+END
+
+SET @i = 0;
+WHILE @i < 10
+BEGIN
+	SET @vIdioma = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion LIKE 'Idioma_Test%');
+	IF @vIdioma IS NULL BREAK;
+	EXEC SP.uspIdioma_Bajar @id = @vIdioma;
 	SET @i = @i + 1;
 END
 

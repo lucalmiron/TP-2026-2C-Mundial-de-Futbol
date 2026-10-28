@@ -5,13 +5,28 @@
 USE MUNDIAL;
 GO
 SET NOCOUNT ON;
-DECLARE @pais INT,@huso INT,@sede INT;
+
+--/Datos de prueba
+
+--1 idioma para poder insertar pais
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test1')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma_Test1';
+
+--1 huso horario
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'Huso_Test1')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (Sede 84)';
+GO
+
+--1 pais
+DECLARE @pais INT, @sede INT;
+
+DECLARE @idioma INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test1');
+DECLARE @huso INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (Sede 84)');
+
 IF EXISTS(SELECT 1 FROM equipos.Pais WHERE NOMBRE='Pais prueba sede 84')
  THROW 51999,'Ya existen datos de esta prueba; revisarlos antes de repetir.',1;
-EXEC SP.uspPais_Registrar 'Pais prueba sede 84',90;
+EXEC SP.uspPais_Registrar @nombre = 'Pais prueba sede 84', @idioma = @idioma, @huso = @huso, @ptIni = '17:00', @ptFin = '23:00', @pbi = 90;
 SELECT @pais=IdPais FROM equipos.Pais WHERE NOMBRE='Pais prueba sede 84';
-EXEC SP.uspHusoHorario_Registrar 'UTC-3 (Sede 84)',@pais;
-SELECT @huso=IdHuso FROM sedes.HusoHorario WHERE Nombre='UTC-3 (Sede 84)';
 
 BEGIN TRY
  EXEC SP.uspSede_Registrar '', 'Ciudad prueba',50000,@pais,@huso;
@@ -122,10 +137,12 @@ BEGIN CATCH
 END CATCH;
 PRINT 'OK 11: IdSede';
 
+--Limpieza de lo creado por el test
 EXEC SP.uspSede_Bajar @sede;
 IF EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede=@sede) THROW 51999,'No se elimino la sede.',1;
 EXEC SP.uspHusoHorario_Bajar @huso;
 EXEC SP.uspPais_Bajar @pais;
+EXEC SP.uspIdioma_Bajar @idioma;
 IF EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais=@pais) OR EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE IdHuso=@huso)
  THROW 51999,'Quedaron datos de prueba.',1;
 PRINT 'Sede: alta, modificacion, baja y 11 rechazos comprobados.';
