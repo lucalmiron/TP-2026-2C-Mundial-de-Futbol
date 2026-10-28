@@ -1,0 +1,2070 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "egjhhae",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "Fecha 3",
+    "winner": 1,
+    "teams": [
+      {
+        "name": "Turquía",
+        "short_name": "Turquía",
+        "url_name": "turkiye",
+        "id": "faeh",
+        "country_id": "bc",
+        "allow_open": true,
+        "colors": {
+          "color": "#FFFFFF",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Arda Güler",
+            "player_sname": "Güler",
+            "time": 10.0,
+            "time_to_display": "10'"
+          },
+          {
+            "player_name": "Baris Yilmaz",
+            "player_sname": "Yilmaz",
+            "time": 31.0,
+            "time_to_display": "31'"
+          },
+          {
+            "player_name": "Kaan Ayhan",
+            "player_sname": "Ayhan",
+            "time": 90.0,
+            "time_to_display": "90'+8"
+          }
+        ]
+      },
+      {
+        "name": "Estados Unidos",
+        "short_name": "Estados Unidos",
+        "url_name": "usa",
+        "id": "cdij",
+        "country_id": "bi",
+        "allow_open": true,
+        "colors": {
+          "color": "#FFFFFF",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Auston Trusty",
+            "player_sname": "Trusty",
+            "time": 3.0,
+            "time_to_display": "3'"
+          },
+          {
+            "player_name": "Sebastian Berhalter",
+            "player_sname": "Berhalter",
+            "time": 49.0,
+            "time_to_display": "49'"
+          }
+        ]
+      }
+    ],
+    "url_name": "turkiye-vs-usa",
+    "scores": [
+      3.0,
+      2.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Finalizado",
+      "short_name": "Final",
+      "symbol_name": "Fin"
+    },
+    "start_time": "25-06-2026 23:00",
+    "game_time": 90,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Final",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "3-4-2-1",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 23,
+                "name": "Uğurcan Çakır",
+                "player_short_name": "Çakır",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 30,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Abdulkerim Bardakci",
+                "player_short_name": "Bardakci",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 25
+                },
+                "age": 32,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Ozan Kabak",
+                "player_short_name": "Kabak",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 50
+                },
+                "age": 26,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 2,
+                "name": "Zeki Celik",
+                "player_short_name": "Celik",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bc",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 75
+                },
+                "substitution": {
+                  "time": 84.0,
+                  "player": 4,
+                  "type": 2
+                },
+                "age": 29,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 13,
+                "name": "Eren  Elmalı",
+                "player_short_name": "Elmali",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 0
+                },
+                "age": 26,
+                "height": "1.81"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Orkun Kökçü",
+                "player_short_name": "Kökçü",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 88.0,
+                  "player": 22,
+                  "type": 2
+                },
+                "age": 25,
+                "height": "1.75",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 88.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 5,
+                "name": "Salih Özcan",
+                "player_short_name": "Özcan",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 66
+                },
+                "age": 28,
+                "height": "1.82"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Oğuz Aydin",
+                "player_short_name": "Aydın",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 18,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 11,
+                "name": "Kenan Yıldız",
+                "player_short_name": "Yıldız",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 84.0,
+                  "player": 26,
+                  "type": 2
+                },
+                "age": 21,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Arda Güler",
+                "player_short_name": "Güler",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 80
+                },
+                "age": 21,
+                "height": "1.76",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 21,
+                "name": "Baris Yilmaz",
+                "player_short_name": "Yilmaz",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 17,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 22,
+                "name": "Kaan Ayhan",
+                "player_short_name": "Ayhan",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 88.0,
+                  "player": 6,
+                  "type": 1
+                },
+                "age": 31,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 88.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Irfan Kahveci",
+                "player_short_name": "Kahveci",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 21,
+                  "type": 1
+                },
+                "age": 31,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 18,
+                "name": "Mert Muldur",
+                "player_short_name": "Muldur",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 24,
+                  "type": 1
+                },
+                "age": 27,
+                "height": "1.84",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 4,
+                "name": "Çağlar Söyüncü",
+                "player_short_name": "Söyüncü",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 84.0,
+                  "player": 2,
+                  "type": 1
+                },
+                "age": 30,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 26,
+                "name": "Can Uzun",
+                "player_short_name": "Uzun",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 84.0,
+                  "player": 11,
+                  "type": 1
+                },
+                "age": 20,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 25,
+                "name": "Samet Akaydin",
+                "player_short_name": "Akaydin",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 32,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 19,
+                "name": "Yunus Akgün",
+                "player_short_name": "Akgün",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 7,
+                "name": "Kerem Aktürkoğlu",
+                "player_short_name": "Aktürkoğlu",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.72"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Altay Bayindir",
+                "player_short_name": "Bayindir",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.98"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Merih Demiral",
+                "player_short_name": "Demiral",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 9,
+                "name": "Deniz Gul",
+                "player_short_name": "Deniz Gul",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 22,
+                "height": "1.92"
+              },
+              {
+                "jersey_num": 1,
+                "name": "M. Günok",
+                "player_short_name": "M. Günok",
+                "position": "",
+                "formation_position": "",
+                "country_id": "",
+                "is_captain": false
+              },
+              {
+                "jersey_num": 20,
+                "name": "Ferdi Kadioglu",
+                "player_short_name": "Kadioglu",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.74"
+              },
+              {
+                "jersey_num": 16,
+                "name": "İsmail Yüksek",
+                "player_short_name": "Yüksek",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 10,
+                "name": "Hakan Calhanoglu",
+                "player_short_name": "Çalhanoğlu",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 32,
+                "height": "1.78"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Vincenzo Montella",
+                "player_short_name": "Montella",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "d",
+                "is_captain": false,
+                "age": 52,
+                "height": "1.72"
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "4-3-3",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Matt Turner",
+                "player_short_name": "Turner",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bi",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 32,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Auston Trusty",
+                "player_short_name": "Trusty",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bi",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 0
+                },
+                "age": 28,
+                "height": "1.90",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 22,
+                "name": "Mark McKenzie",
+                "player_short_name": "McKenzie",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bi",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 33
+                },
+                "age": 27,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Miles Robinson",
+                "player_short_name": "Robinson",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bi",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 66
+                },
+                "age": 29,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 23,
+                "name": "Joseph Scally",
+                "player_short_name": "Scally",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bi",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 77.0,
+                  "player": 16,
+                  "type": 2
+                },
+                "age": 23,
+                "height": "1.84",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 77.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Giovanni Reyna",
+                "player_short_name": "Reyna",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bi",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 76.0,
+                  "player": 2,
+                  "type": 2
+                },
+                "age": 23,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 14,
+                "name": "Sebastian Berhalter",
+                "player_short_name": "Berhalter",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bi",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 50
+                },
+                "age": 25,
+                "height": "1.75",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Weston McKennie",
+                "player_short_name": "McKennie",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bi",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 80
+                },
+                "substitution": {
+                  "time": 86.0,
+                  "player": 17,
+                  "type": 2
+                },
+                "age": 28,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 86.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 21,
+                "name": "T. Weah",
+                "player_short_name": "T. Weah",
+                "position": "",
+                "formation_position": "",
+                "country_id": "",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 58.0,
+                  "player": 10,
+                  "type": 2
+                },
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 58.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Ricardo Pepi",
+                "player_short_name": "Pepi",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bi",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 50
+                },
+                "age": 23,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 11,
+                "name": "Brenden Aaronson",
+                "player_short_name": "Aaronson",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bi",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 77.0,
+                  "player": 26,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 77.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 2,
+                "name": "Sergino Dest",
+                "player_short_name": "Dest",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bi",
+                "is_captain": false,
+                "substitution": {
+                  "time": 76.0,
+                  "player": 7,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 16,
+                "name": "Alex Freeman",
+                "player_short_name": "Freeman",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bi",
+                "is_captain": false,
+                "substitution": {
+                  "time": 77.0,
+                  "player": 23,
+                  "type": 1
+                },
+                "age": 22,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 77.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Christian Pulisic",
+                "player_short_name": "Pulisic",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bi",
+                "is_captain": false,
+                "substitution": {
+                  "time": 58.0,
+                  "player": 21,
+                  "type": 1
+                },
+                "age": 28,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 58.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Malik Tillman",
+                "player_short_name": "Tillman",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bi",
+                "is_captain": false,
+                "substitution": {
+                  "time": 86.0,
+                  "player": 8,
+                  "type": 1
+                },
+                "age": 24,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 86.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 26,
+                "name": "Álex Zendejas",
+                "player_short_name": "Zendejas",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bi",
+                "is_captain": false,
+                "substitution": {
+                  "time": 77.0,
+                  "player": 11,
+                  "type": 1
+                },
+                "age": 28,
+                "height": "1.67",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 77.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 4,
+                "name": "Tyler Adams",
+                "player_short_name": "Adams",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bi",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.75"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Max Arfsten",
+                "player_short_name": "Arfsten",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bi",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 20,
+                "name": "Folarin Balogun",
+                "player_short_name": "Balogun",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bi",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Christopher Brady",
+                "player_short_name": "Brady",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bi",
+                "is_captain": false,
+                "age": 22,
+                "height": "1.93"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Matt Freese",
+                "player_short_name": "Freese",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bi",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Tim Ream",
+                "player_short_name": "Ream",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bi",
+                "is_captain": false,
+                "age": 39,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Chris Richards",
+                "player_short_name": "Richards",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bi",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Antonee Robinson",
+                "player_short_name": "Robinson",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bi",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 19,
+                "name": "Haji Wright",
+                "player_short_name": "Wright",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bi",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.91"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Mauricio Pochettino",
+                "player_short_name": "Pochettino",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "ba",
+                "is_captain": false,
+                "age": 54,
+                "height": "1.82"
+              }
+            ]
+          }
+        ]
+      },
+      "missing_players": [
+        [],
+        [
+          {
+            "jersey_num": 15,
+            "name": "Cristian Roldan",
+            "player_short_name": "Roldan",
+            "position": "Mediocampista",
+            "formation_position": "Mediocampista Central",
+            "country_id": "bi",
+            "is_captain": false,
+            "age": 31,
+            "height": "1.73",
+            "missing_details": {
+              "type": 1,
+              "reason": "Lesionado",
+              "will_play_status": 2,
+              "will_play": "No jugarán"
+            }
+          }
+        ]
+      ]
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=47&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=47&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "eh",
+      "cta_link": "https://gml-grp.com/C.ashx?btag=a_68154b_3685c_&affid=15975&siteid=68154&adid=3685&c=",
+      "options": [
+        {
+          "name": "1",
+          "votes": 16359,
+          "percentage": 30,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhhae&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 6053,
+          "percentage": 11,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhhae&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 32602,
+          "percentage": 59,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhhae&vote=2"
+        }
+      ],
+      "total_votes": 51713,
+      "odds": [
+        {
+          "name": "1",
+          "value": 3.1,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 3.9,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 2.05,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "SoFi Stadium (Los Angeles)"
+      },
+      {
+        "name": "Capacidad",
+        "value": "70492"
+      },
+      {
+        "name": "Árbitro",
+        "value": "Mustapha Ghorbal"
+      },
+      {
+        "name": "Arg TV",
+        "value": "TyC Sports Play,  , DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          2.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "3'",
+            "events": [
+              {
+                "type": 1,
+                "time": "3'",
+                "team": 2,
+                "texts": [
+                  "Auston Trusty",
+                  "Sebastian Berhalter"
+                ],
+                "player_jersey_num": 6
+              }
+            ]
+          },
+          {
+            "time": "10'",
+            "events": [
+              {
+                "type": 1,
+                "time": "10'",
+                "team": 1,
+                "texts": [
+                  "Arda Güler",
+                  "Baris Yilmaz"
+                ],
+                "player_jersey_num": 8
+              }
+            ]
+          },
+          {
+            "time": "19'",
+            "events": [
+              {
+                "type": 4,
+                "time": "19'",
+                "team": 2,
+                "texts": [
+                  "Sebastian Berhalter"
+                ],
+                "player_jersey_num": 14
+              }
+            ]
+          },
+          {
+            "time": "31'",
+            "events": [
+              {
+                "type": 1,
+                "time": "31'",
+                "team": 1,
+                "texts": [
+                  "Baris Yilmaz",
+                  "Orkun Kökçü"
+                ],
+                "player_jersey_num": 21
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          3.0,
+          2.0
+        ],
+        "rows": [
+          {
+            "time": "49'",
+            "events": [
+              {
+                "type": 1,
+                "time": "49'",
+                "team": 2,
+                "texts": [
+                  "Sebastian Berhalter"
+                ],
+                "player_jersey_num": 14
+              }
+            ]
+          },
+          {
+            "time": "58'",
+            "events": [
+              {
+                "type": 15,
+                "time": "58'",
+                "team": 2,
+                "texts": [
+                  "Christian Pulisic",
+                  "T. Weah"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "63'",
+            "events": [
+              {
+                "type": 10,
+                "time": "63'",
+                "team": 2,
+                "texts": [
+                  "Christian Pulisic"
+                ],
+                "player_jersey_num": 10
+              }
+            ]
+          },
+          {
+            "time": "76'",
+            "events": [
+              {
+                "type": 15,
+                "time": "76'",
+                "team": 2,
+                "texts": [
+                  "Sergino Dest",
+                  "Giovanni Reyna"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "77'",
+            "events": [
+              {
+                "type": 15,
+                "time": "77'",
+                "team": 2,
+                "texts": [
+                  "Álex Zendejas",
+                  "Brenden Aaronson"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "77'",
+            "events": [
+              {
+                "type": 15,
+                "time": "77'",
+                "team": 2,
+                "texts": [
+                  "Alex Freeman",
+                  "Joseph Scally"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "84'",
+            "events": [
+              {
+                "type": 15,
+                "time": "84'",
+                "team": 1,
+                "texts": [
+                  "Çağlar Söyüncü",
+                  "Zeki Celik"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "84'",
+            "events": [
+              {
+                "type": 15,
+                "time": "84'",
+                "team": 1,
+                "texts": [
+                  "Can Uzun",
+                  "Kenan Yıldız"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "86'",
+            "events": [
+              {
+                "type": 15,
+                "time": "86'",
+                "team": 2,
+                "texts": [
+                  "Malik Tillman",
+                  "Weston McKennie"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "88'",
+            "events": [
+              {
+                "type": 15,
+                "time": "88'",
+                "team": 1,
+                "texts": [
+                  "Kaan Ayhan",
+                  "Orkun Kökçü"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 1,
+                "texts": [
+                  "Irfan Kahveci",
+                  "Baris Yilmaz"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 1,
+                "texts": [
+                  "Mert Muldur",
+                  "Oğuz Aydin"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'+8",
+            "events": [
+              {
+                "type": 1,
+                "time": "90'+8",
+                "team": 1,
+                "texts": [
+                  "Kaan Ayhan"
+                ],
+                "player_jersey_num": 22
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "9",
+          "18"
+        ],
+        "percentages": [
+          0.33,
+          0.67
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "3",
+          "7"
+        ],
+        "percentages": [
+          0.3,
+          0.7
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "47%",
+          "53%"
+        ],
+        "percentages": [
+          0.47,
+          0.53
+        ]
+      },
+      {
+        "name": "Ataques",
+        "values": [
+          "84",
+          "80"
+        ],
+        "percentages": [
+          0.51,
+          0.49
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "11",
+          "13"
+        ],
+        "percentages": [
+          0.46,
+          0.54
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "2",
+          "9"
+        ],
+        "percentages": [
+          0.18,
+          0.82
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "2",
+          "5"
+        ],
+        "percentages": [
+          0.29,
+          0.71
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "13",
+          "13"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "0",
+          "1"
+        ],
+        "percentages": [
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "0"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "head_to_head": {
+      "home_wins": 2,
+      "away_wins": 2,
+      "draws": 0,
+      "games": [
+        {
+          "id": "egjhhae",
+          "league": {
+            "name": "Mundial",
+            "id": "fjda",
+            "url_name": "fifa-world-cup",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": true,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 1,
+          "teams": [
+            {
+              "name": "Turquía",
+              "short_name": "Turquía",
+              "url_name": "turkiye",
+              "id": "faeh",
+              "country_id": "bc",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Estados Unidos",
+              "short_name": "Estados Unidos",
+              "url_name": "usa",
+              "id": "cdij",
+              "country_id": "bi",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "turkiye-vs-usa",
+          "scores": [
+            3.0,
+            2.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "25-06-2026 23:00",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 3.1,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 3.9,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 2.05,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "edjfaab",
+          "league": {
+            "name": "Amistoso Internacional",
+            "id": "fha",
+            "url_name": "friendly-international",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 2,
+          "teams": [
+            {
+              "name": "Estados Unidos",
+              "short_name": "Estados Unidos",
+              "url_name": "usa",
+              "id": "cdij",
+              "country_id": "bi",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Turquía",
+              "short_name": "Turquía",
+              "url_name": "turkiye",
+              "id": "faeh",
+              "country_id": "bc",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "usa-vs-turkiye",
+          "scores": [
+            1.0,
+            2.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "07-06-2025 16:30",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 2.7,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 3.4,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 2.45,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "fciaaj",
+          "league": {
+            "name": "Amistoso Internacional",
+            "id": "fha",
+            "url_name": "friendly-international",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 1,
+          "teams": [
+            {
+              "name": "Estados Unidos",
+              "short_name": "Estados Unidos",
+              "url_name": "usa",
+              "id": "cdij",
+              "country_id": "bi",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Turquía",
+              "short_name": "Turquía",
+              "url_name": "turkiye",
+              "id": "faeh",
+              "country_id": "bc",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "usa-vs-turkiye",
+          "scores": [
+            2.0,
+            1.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "01-06-2014 15:00",
+          "game_time_status_to_display": "Final"
+        },
+        {
+          "id": "jiieb",
+          "league": {
+            "name": "Partido Amistoso",
+            "id": "dcb",
+            "url_name": "club-friendlies",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 1,
+          "teams": [
+            {
+              "name": "Estados Unidos",
+              "short_name": "Estados Unidos",
+              "url_name": "usa",
+              "id": "cdij",
+              "country_id": "bi",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Turquía",
+              "short_name": "Turquía",
+              "url_name": "turkiye",
+              "id": "faeh",
+              "country_id": "bc",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "usa-vs-turkiye",
+          "scores": [
+            3.0,
+            1.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "29-05-2010 15:00",
+          "game_time_status_to_display": "Final"
+        }
+      ]
+    },
+    "recent_form": {
+      "home": [
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "away": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    "standings": {
+      "title": "Posiciones",
+      "columns": [
+        {
+          "key": "points",
+          "display_name": "PTS",
+          "is_bold": true
+        },
+        {
+          "key": "games_played",
+          "display_name": "J"
+        },
+        {
+          "key": "ratio",
+          "display_name": "+/-"
+        }
+      ],
+      "rows": [
+        {
+          "num": 1,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Estados Unidos",
+              "short_name": "Estados Unidos",
+              "url_name": "usa",
+              "id": "cdij",
+              "country_id": "bi",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "6"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "4"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Turquía",
+              "short_name": "Turquía",
+              "url_name": "turkiye",
+              "id": "faeh",
+              "country_id": "bc",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "3"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "-2"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

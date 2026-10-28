@@ -1,0 +1,1839 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "egchjcj",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "Fecha 2",
+    "winner": 1,
+    "teams": [
+      {
+        "name": "Portugal",
+        "short_name": "Portugal",
+        "url_name": "portugal",
+        "id": "faci",
+        "country_id": "bb",
+        "allow_open": true,
+        "colors": {
+          "color": "#A81D30",
+          "text_color": "#FFFFFF"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Cristiano Ronaldo",
+            "player_sname": "Ronaldo",
+            "time": 6.0,
+            "time_to_display": "6'"
+          },
+          {
+            "player_name": "Nuno Mendes",
+            "player_sname": "Mendes",
+            "time": 17.0,
+            "time_to_display": "17'"
+          },
+          {
+            "player_name": "Cristiano Ronaldo",
+            "player_sname": "Ronaldo",
+            "time": 39.0,
+            "time_to_display": "39'"
+          },
+          {
+            "player_name": "Abduvokhid Nematov",
+            "player_sname": "Nematov",
+            "time": 60.0,
+            "time_to_display": "60'",
+            "goal_type": "E.C"
+          },
+          {
+            "player_name": "Rafael Leão",
+            "player_sname": "Leao",
+            "time": 87.0,
+            "time_to_display": "87'"
+          }
+        ]
+      },
+      {
+        "name": "Uzbekistán",
+        "short_name": "Uzbekistán",
+        "url_name": "uzbekistan",
+        "id": "faif",
+        "country_id": "bcb",
+        "allow_open": true,
+        "colors": {
+          "color": "#1158BB",
+          "text_color": "#FFFFFF"
+        },
+        "red_cards": 0
+      }
+    ],
+    "url_name": "portugal-vs-uzbekistan",
+    "scores": [
+      5.0,
+      0.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Finalizado",
+      "short_name": "Final",
+      "symbol_name": "Fin"
+    },
+    "start_time": "23-06-2026 14:00",
+    "game_time": 90,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Final",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "4-2-3-1",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Diogo Costa",
+                "player_short_name": "Costa",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 27,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Nuno Mendes",
+                "player_short_name": "Mendes",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 0
+                },
+                "age": 24,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 13,
+                "name": "Renato Veiga",
+                "player_short_name": "Veiga",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 33
+                },
+                "age": 23,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 3,
+                "name": "Ruben Dias",
+                "player_short_name": "Dias",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 66
+                },
+                "age": 29,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 20,
+                "name": "João Cancelo",
+                "player_short_name": "Cancelo",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 2,
+                  "type": 2
+                },
+                "age": 32,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 23,
+                "name": "Vitinha",
+                "player_short_name": "Vitinha",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 83.0,
+                  "player": 17,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.70",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 83.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 15,
+                "name": "João Neves",
+                "player_short_name": "J. Neves",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 80
+                },
+                "substitution": {
+                  "time": 76.0,
+                  "player": 10,
+                  "type": 2
+                },
+                "age": 22,
+                "height": "1.71",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 11,
+                "name": "João Félix",
+                "player_short_name": "Félix",
+                "position": "Delantero",
+                "formation_position": "Segundo Delantero",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 63.0,
+                  "player": 16,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.81",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Bruno Fernandes",
+                "player_short_name": "Fernandes",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 50
+                },
+                "age": 32,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Pedro Neto",
+                "player_short_name": "Neto",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 26,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.74",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Cristiano Ronaldo",
+                "player_short_name": "Ronaldo",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bb",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "age": 41,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 2,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 2,
+                "name": "Nelson Semedo",
+                "player_short_name": "Semedo",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 20,
+                  "type": 1
+                },
+                "age": 32,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 26,
+                "name": "Francisco Conceição",
+                "player_short_name": "Conceição",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 18,
+                  "type": 1
+                },
+                "age": 23,
+                "height": "1.66",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 16,
+                "name": "Francisco Trincão",
+                "player_short_name": "Trincão",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 63.0,
+                  "player": 11,
+                  "type": 1
+                },
+                "age": 26,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Bernardo Silva",
+                "player_short_name": "Bernardo",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 76.0,
+                  "player": 15,
+                  "type": 1
+                },
+                "age": 32,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Rafael Leão",
+                "player_short_name": "Leao",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 83.0,
+                  "player": 23,
+                  "type": 1
+                },
+                "age": 27,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 83.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 4,
+                "name": "Tomás Araújo",
+                "player_short_name": "Araújo",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Diogo Dalot",
+                "player_short_name": "Dalot",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.84"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Rui Silva",
+                "player_short_name": "Silva",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 32,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 19,
+                "name": "Goncalo Guedes",
+                "player_short_name": "Guedes",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Goncalo Inacio",
+                "player_short_name": "Inacio",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 12,
+                "name": "José Sá",
+                "player_short_name": "Sá",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 33,
+                "height": "1.92"
+              },
+              {
+                "jersey_num": 9,
+                "name": "Gonçalo Ramos",
+                "player_short_name": "Ramos",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Matheus Nunes",
+                "player_short_name": "Nunes",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Ruben Neves",
+                "player_short_name": "R. Neves",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Samú Costa",
+                "player_short_name": "S. Costa",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.85"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Roberto Martínez",
+                "player_short_name": "Roberto Martínez",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "c",
+                "is_captain": false,
+                "age": 53
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "3-4-2-1",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 12,
+                "name": "Abduvokhid Nematov",
+                "player_short_name": "Nematov",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 25,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 1
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 5,
+                "name": "Rustam Ashurmatov",
+                "player_short_name": "Ashurmatov",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 25
+                },
+                "age": 30,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Abdulla Abdullaev",
+                "player_short_name": "Abdullayev",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 50
+                },
+                "age": 29,
+                "height": "1.81"
+              },
+              {
+                "jersey_num": 2,
+                "name": "Abdukodir Khusanov",
+                "player_short_name": "Khusanov",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 75
+                },
+                "age": 22,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Sherzod Nasrullaev",
+                "player_short_name": "Nasrullaev",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 3,
+                  "type": 2
+                },
+                "age": 28,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Otabek Shukurov",
+                "player_short_name": "Shukurov",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 23,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Odildzhon Khamrobekov",
+                "player_short_name": "Khamrobekov",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 66
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 6,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 24,
+                "name": "Bekhruz Karimov",
+                "player_short_name": "Karimov",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 10,
+                  "type": 2
+                },
+                "age": 19,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 22,
+                "name": "Abbosbek Fayzullaev",
+                "player_short_name": "Fayzullayev",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 73.0,
+                  "player": 21,
+                  "type": 2
+                },
+                "age": 23,
+                "height": "1.67",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 73.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 19,
+                "name": "Aziz Ganiev",
+                "player_short_name": "Ganiev",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bcb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 80
+                },
+                "age": 28,
+                "height": "1.78",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 14,
+                "name": "Eldor Shomurodov",
+                "player_short_name": "Shomurodov",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bcb",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "age": 31,
+                "height": "1.90"
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 3,
+                "name": "Khozhiakbar Alizhonov",
+                "player_short_name": "Alijonov",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bcb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 13,
+                  "type": 1
+                },
+                "age": 29,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 23,
+                "name": "Sherzod Esanov",
+                "player_short_name": "Esanov",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bcb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 7,
+                  "type": 1
+                },
+                "age": 23,
+                "height": "1.90",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Ruslanbek Jiyanov",
+                "player_short_name": "Ruslanbek Jiyanov",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bcb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 24,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.70",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 6,
+                "name": "Akmal Mozgovoy",
+                "player_short_name": "Mozgovoy",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bcb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 9,
+                  "type": 1
+                },
+                "age": 27,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 21,
+                "name": "Igor Sergeev",
+                "player_short_name": "Sergeev",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bcb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 73.0,
+                  "player": 22,
+                  "type": 1
+                },
+                "age": 33,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 73.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 20,
+                "name": "Azizbek Amanov",
+                "player_short_name": "Amanov",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.81"
+              },
+              {
+                "jersey_num": 16,
+                "name": "Botirali Ergashev",
+                "player_short_name": "Ergashev",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Umar Eshmurodov",
+                "player_short_name": "Eshmurodov",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 33,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 8,
+                "name": "Jamshid Iskanderov",
+                "player_short_name": "Iskandarov",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 33,
+                "height": "1.71"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Dostonbek Khamdamov",
+                "player_short_name": "Khamdamov",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.78"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Avazbek Ulmasaliev",
+                "player_short_name": "Ulmasaliev",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 4,
+                "name": "Farrukh Sayfiev",
+                "player_short_name": "Sayfiyev",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 35,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Jakhongir Urozov",
+                "player_short_name": "Urozov",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 22,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 11,
+                "name": "Oston Urunov",
+                "player_short_name": "Urunov",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.81"
+              },
+              {
+                "jersey_num": 1,
+                "name": "Utkir Yusupov",
+                "player_short_name": "Yusupov",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bcb",
+                "is_captain": false,
+                "age": 35,
+                "height": "1.85"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Fabio Cannavaro",
+                "player_short_name": "Cannavaro",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "d",
+                "is_captain": false,
+                "age": 53,
+                "height": "1.76"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=42&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=42&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "ec",
+      "cta_link": "https://record.pba.betsson.bet.ar/_nrLvEWDn_qD1kXvT18cTCmNd7ZgqdRLk/36",
+      "options": [
+        {
+          "name": "1",
+          "votes": 211154,
+          "percentage": 86,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egchjcj&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 17362,
+          "percentage": 7,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egchjcj&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 17981,
+          "percentage": 7,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egchjcj&vote=2"
+        }
+      ],
+      "total_votes": 305656,
+      "odds": [
+        {
+          "name": "1",
+          "value": 1.14,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 8.5,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 17.0,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "NRG Stadium (Houston)"
+      },
+      {
+        "name": "Capacidad",
+        "value": "68777"
+      },
+      {
+        "name": "Árbitro",
+        "value": "Jalal Jayed"
+      },
+      {
+        "name": "Arg TV",
+        "value": "Telefe, TyC Sports Play, Mitelefe.com,  , Disney+ Premium, DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          3.0,
+          0.0
+        ],
+        "rows": [
+          {
+            "time": "6'",
+            "events": [
+              {
+                "type": 1,
+                "time": "6'",
+                "team": 1,
+                "texts": [
+                  "Cristiano Ronaldo",
+                  "João Cancelo"
+                ],
+                "player_jersey_num": 7
+              }
+            ]
+          },
+          {
+            "time": "14'",
+            "events": [
+              {
+                "type": 4,
+                "time": "14'",
+                "team": 2,
+                "texts": [
+                  "Odildzhon Khamrobekov"
+                ],
+                "player_jersey_num": 9
+              }
+            ]
+          },
+          {
+            "time": "17'",
+            "events": [
+              {
+                "type": 1,
+                "time": "17'",
+                "team": 1,
+                "texts": [
+                  "Nuno Mendes"
+                ],
+                "player_jersey_num": 25
+              }
+            ]
+          },
+          {
+            "time": "30'",
+            "events": [
+              {
+                "type": 9,
+                "time": "30'",
+                "team": 2,
+                "texts": [
+                  "Gol anulado",
+                  "Aziz Ganiev"
+                ],
+                "player_jersey_num": 19
+              }
+            ]
+          },
+          {
+            "time": "39'",
+            "events": [
+              {
+                "type": 1,
+                "time": "39'",
+                "team": 1,
+                "texts": [
+                  "Cristiano Ronaldo",
+                  "Bruno Fernandes"
+                ],
+                "player_jersey_num": 7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          5.0,
+          0.0
+        ],
+        "rows": [
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 1,
+                "texts": [
+                  "Nelson Semedo",
+                  "João Cancelo"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 2,
+                "texts": [
+                  "Akmal Mozgovoy",
+                  "Odildzhon Khamrobekov"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 1,
+                "texts": [
+                  "Francisco Conceição",
+                  "Pedro Neto"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 2,
+                "texts": [
+                  "Khozhiakbar Alizhonov",
+                  "Sherzod Nasrullaev"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "60'",
+            "events": [
+              {
+                "type": 2,
+                "time": "60'",
+                "team": 1,
+                "texts": [
+                  "Abduvokhid Nematov"
+                ],
+                "player_jersey_num": null
+              }
+            ]
+          },
+          {
+            "time": "63'",
+            "events": [
+              {
+                "type": 15,
+                "time": "63'",
+                "team": 1,
+                "texts": [
+                  "Francisco Trincão",
+                  "João Félix"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "68'",
+            "events": [
+              {
+                "type": 4,
+                "time": "68'",
+                "team": 1,
+                "texts": [
+                  "Renato Veiga"
+                ],
+                "player_jersey_num": 13
+              }
+            ]
+          },
+          {
+            "time": "73'",
+            "events": [
+              {
+                "type": 15,
+                "time": "73'",
+                "team": 2,
+                "texts": [
+                  "Igor Sergeev",
+                  "Abbosbek Fayzullaev"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "76'",
+            "events": [
+              {
+                "type": 15,
+                "time": "76'",
+                "team": 1,
+                "texts": [
+                  "Bernardo Silva",
+                  "João Neves"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "83'",
+            "events": [
+              {
+                "type": 15,
+                "time": "83'",
+                "team": 1,
+                "texts": [
+                  "Rafael Leão",
+                  "Vitinha"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "87'",
+            "events": [
+              {
+                "type": 1,
+                "time": "87'",
+                "team": 1,
+                "texts": [
+                  "Rafael Leão"
+                ],
+                "player_jersey_num": 17
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 2,
+                "texts": [
+                  "Ruslanbek Jiyanov",
+                  "Bekhruz Karimov"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 2,
+                "texts": [
+                  "Sherzod Esanov",
+                  "Otabek Shukurov"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "17",
+          "7"
+        ],
+        "percentages": [
+          0.71,
+          0.29
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "9",
+          "2"
+        ],
+        "percentages": [
+          0.82,
+          0.18
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "66%",
+          "34%"
+        ],
+        "percentages": [
+          0.66,
+          0.34
+        ]
+      },
+      {
+        "name": "Ataques",
+        "values": [
+          "128",
+          "77"
+        ],
+        "percentages": [
+          0.62,
+          0.38
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "15",
+          "13"
+        ],
+        "percentages": [
+          0.54,
+          0.46
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "3",
+          "2"
+        ],
+        "percentages": [
+          0.6,
+          0.4
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "2",
+          "2"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "14",
+          "15"
+        ],
+        "percentages": [
+          0.48,
+          0.52
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "1",
+          "1"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "0"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "recent_form": {
+      "home": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "away": [
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    "standings": {
+      "title": "Posiciones",
+      "columns": [
+        {
+          "key": "points",
+          "display_name": "PTS",
+          "is_bold": true
+        },
+        {
+          "key": "games_played",
+          "display_name": "J"
+        },
+        {
+          "key": "ratio",
+          "display_name": "+/-"
+        }
+      ],
+      "rows": [
+        {
+          "num": 2,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Portugal",
+              "short_name": "Portugal",
+              "url_name": "portugal",
+              "id": "faci",
+              "country_id": "bb",
+              "allow_open": true,
+              "colors": {
+                "color": "#A81D30",
+                "text_color": "#FFFFFF"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "5"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "5"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Uzbekistán",
+              "short_name": "Uzbekistán",
+              "url_name": "uzbekistan",
+              "id": "faif",
+              "country_id": "bcb",
+              "allow_open": true,
+              "colors": {
+                "color": "#1158BB",
+                "text_color": "#FFFFFF"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "0"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "-9"
+            }
+          ]
+        }
+      ]
+    },
+    "videos": [
+      {
+        "source": "youtube",
+        "url": "https://www.youtube.com/watch?v=oJJ80ls6z8U",
+        "video_id": "oJJ80ls6z8U",
+        "thumbnail_url": "https://img.youtube.com/vi/oJJ80ls6z8U/maxresdefault.jpg",
+        "embedding_allowed": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,1570 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "egchigh",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "Fecha 3",
+    "winner": 1,
+    "teams": [
+      {
+        "name": "Sudáfrica",
+        "short_name": "Sudáfrica",
+        "url_name": "south-africa",
+        "id": "fbad",
+        "country_id": "bde",
+        "allow_open": true,
+        "colors": {
+          "color": "#FDD301",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Thapelo Maseko",
+            "player_sname": "Maseko",
+            "time": 63.0,
+            "time_to_display": "63'"
+          }
+        ]
+      },
+      {
+        "name": "Corea del Sur",
+        "short_name": "Corea del Sur",
+        "url_name": "south-korea",
+        "id": "cdid",
+        "country_id": "ig",
+        "allow_open": true,
+        "colors": {
+          "color": "#F8373E",
+          "text_color": "#000000"
+        },
+        "red_cards": 0
+      }
+    ],
+    "url_name": "south-africa-vs-south-korea",
+    "scores": [
+      1.0,
+      0.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Finalizado",
+      "short_name": "Final",
+      "symbol_name": "Fin"
+    },
+    "start_time": "24-06-2026 22:00",
+    "game_time": 90,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Final",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "4-2-3-1",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Ronwen Williams",
+                "player_short_name": "Williams",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bde",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 34,
+                "height": "1.84"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Aubrey Modiba",
+                "player_short_name": "Modiba",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bde",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 0
+                },
+                "age": 31,
+                "height": "1.71",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 14,
+                "name": "M. Mbokazi",
+                "player_short_name": "M. Mbokazi",
+                "position": "",
+                "formation_position": "",
+                "country_id": "",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 33
+                }
+              },
+              {
+                "jersey_num": 21,
+                "name": "Ime Okon",
+                "player_short_name": "Okon",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bde",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 66
+                },
+                "age": 22,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 20,
+                "name": "Khuliso Mudau",
+                "player_short_name": "Mudau",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bde",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 100
+                },
+                "age": 31,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Yaya Sithole",
+                "player_short_name": "Sithole",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bde",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 20
+                },
+                "age": 27,
+                "height": "1.97"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Thalente Mbatha",
+                "player_short_name": "Mbatha",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bde",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 80
+                },
+                "age": 26,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 7,
+                "name": "Oswin Appollis",
+                "player_short_name": "Appollis",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bde",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 62.0,
+                  "player": 8,
+                  "type": 2
+                },
+                "age": 25,
+                "height": "1.71",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 62.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Relebohile Mofokeng",
+                "player_short_name": "Mofokeng",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bde",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 80.0,
+                  "player": 23,
+                  "type": 2
+                },
+                "age": 22,
+                "height": "1.68",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 80.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 12,
+                "name": "Thapelo Maseko",
+                "player_short_name": "Maseko",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bde",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 75.0,
+                  "player": 15,
+                  "type": 2
+                },
+                "age": 22,
+                "height": "1.78",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 75.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Evidence Makgopa",
+                "player_short_name": "Makgopa",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bde",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "age": 26,
+                "height": "1.83"
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 23,
+                "name": "Jayden Adams",
+                "player_short_name": "Adams",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bde",
+                "is_captain": false,
+                "substitution": {
+                  "time": 80.0,
+                  "player": 10,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 80.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Tshepang Moremi",
+                "player_short_name": "Moremi",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bde",
+                "is_captain": false,
+                "substitution": {
+                  "time": 62.0,
+                  "player": 7,
+                  "type": 1
+                },
+                "age": 26,
+                "height": "1.69",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 62.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 15,
+                "name": "Iqraam Rayners",
+                "player_short_name": "Rayners",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bde",
+                "is_captain": false,
+                "substitution": {
+                  "time": 75.0,
+                  "player": 12,
+                  "type": 1
+                },
+                "age": 30,
+                "height": "1.74",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 75.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 16,
+                "name": "Sipho Chaine",
+                "player_short_name": "Chaine",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bde",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 26,
+                "name": "B. Cross",
+                "player_short_name": "B. Cross",
+                "position": "",
+                "formation_position": "",
+                "country_id": "",
+                "is_captain": false
+              },
+              {
+                "jersey_num": 9,
+                "name": "Lyle Foster",
+                "player_short_name": "Foster",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bde",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Ricardo Goss",
+                "player_short_name": "Goss",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bde",
+                "is_captain": false,
+                "age": 32,
+                "height": "1.81"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Samukele Kabini",
+                "player_short_name": "Kabini",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bde",
+                "is_captain": false,
+                "age": 22,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Olwethu Makhanya",
+                "player_short_name": "Makhanya",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bde",
+                "is_captain": false,
+                "age": 22,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 2,
+                "name": "Thabang Matuludi",
+                "player_short_name": "Thabang Matuludi",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bde",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Khulumani Ndamane",
+                "player_short_name": "Ndamane",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bde",
+                "is_captain": false,
+                "age": 22,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Kamogelo Sebelebele",
+                "player_short_name": "Sebelebele",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bde",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.66"
+              },
+              {
+                "jersey_num": 19,
+                "name": "Nkosinathi Sibisi",
+                "player_short_name": "Sibisi",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bde",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.72"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Hugo Broos",
+                "player_short_name": "Hugo Broos",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "bg",
+                "is_captain": false,
+                "age": 74
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "3-4-2-1",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Seung-Gyu Kim",
+                "player_short_name": "Kim",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 36,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Gi-hyuk Lee",
+                "player_short_name": "Gi-hyuk",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 25
+                },
+                "age": 26,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 4,
+                "name": "Kim Min-Jae",
+                "player_short_name": "K. Min-Jae",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 65.0,
+                  "player": 16,
+                  "type": 2
+                },
+                "age": 29,
+                "height": "1.90",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 65.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 2,
+                "name": "Han-beom Lee",
+                "player_short_name": "Han-beom",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 75
+                },
+                "age": 24,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Tae-seok Lee",
+                "player_short_name": "Tae-seok",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 23,
+                  "type": 2
+                },
+                "age": 24,
+                "height": "1.74",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 6,
+                "name": "In-beom Hwang",
+                "player_short_name": "Hwang Inbeom",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 33
+                },
+                "age": 30,
+                "height": "1.77"
+              },
+              {
+                "jersey_num": 8,
+                "name": "Seung-Ho Paik",
+                "player_short_name": "Paik",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 66
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 24,
+                  "type": 2
+                },
+                "age": 29,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 22,
+                "name": "Young-woo Seol",
+                "player_short_name": "Young-woo",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 100
+                },
+                "age": 27,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 11,
+                "name": "Hwang Hee-Chan",
+                "player_short_name": "Hwang",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 7,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 19,
+                "name": "Lee Kang-in",
+                "player_short_name": "Kang-in",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 80
+                },
+                "age": 25,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Oh Hyeon-Gyu",
+                "player_short_name": "Hyeon-Gyu",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 74.0,
+                  "player": 9,
+                  "type": 2
+                },
+                "age": 25,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 74.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 23,
+                "name": "Jens Castrop",
+                "player_short_name": "J. Castrop",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 13,
+                  "type": 1
+                },
+                "age": 23,
+                "height": "1.78",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Cho Gue-Sung",
+                "player_short_name": "Cho Gue-Sung",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 74.0,
+                  "player": 18,
+                  "type": 1
+                },
+                "age": 28,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 74.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 24,
+                "name": "Jin-gyu Kim",
+                "player_short_name": "Jin-gyu Kim",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 8,
+                  "type": 1
+                },
+                "age": 29,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 16,
+                "name": "Jin-seob Park",
+                "player_short_name": "Jin-seob",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 65.0,
+                  "player": 4,
+                  "type": 1
+                },
+                "age": 31,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 65.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Heung-Min Son",
+                "player_short_name": "Son",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 11,
+                  "type": 1
+                },
+                "age": 34,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Joon-ho Bae",
+                "player_short_name": "J. Bae",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 23,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Wi-je Cho",
+                "player_short_name": "W. Cho",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Ji-sung Eom",
+                "player_short_name": "Ji-sung",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.76"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Hyeon-woo Jo",
+                "player_short_name": "Hyeon-woo Jo",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 35,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Kim Tae-Hyeon",
+                "player_short_name": "Tae-Hyeon",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Moon-hwan Kim",
+                "player_short_name": "Moon-hwan",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 10,
+                "name": "Lee Jae-Sung",
+                "player_short_name": "Jae-sung",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 34,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Dong-Gyeong Lee",
+                "player_short_name": "D. Lee",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.76"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Bum-keun Song",
+                "player_short_name": "Bum-keun Song",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.96"
+              },
+              {
+                "jersey_num": 20,
+                "name": "Hyun-jun Yang",
+                "player_short_name": "Hyun-jun",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.79"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Hong Myung-Bo",
+                "player_short_name": "Myung-Bo",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 57,
+                "height": "1.82"
+              }
+            ]
+          }
+        ]
+      },
+      "missing_players": [
+        [
+          {
+            "jersey_num": 11,
+            "name": "Themba Zwane",
+            "player_short_name": "Zwane",
+            "position": "Delantero",
+            "formation_position": "Delantero Izquierdo",
+            "country_id": "bde",
+            "is_captain": false,
+            "age": 37,
+            "height": "1.78",
+            "missing_details": {
+              "type": 2,
+              "reason": "Tarjeta Roja",
+              "will_play_status": 2,
+              "will_play": "No jugarán"
+            }
+          }
+        ],
+        []
+      ]
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=47&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=47&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "eh",
+      "cta_link": "https://gml-grp.com/C.ashx?btag=a_68154b_3685c_&affid=15975&siteid=68154&adid=3685&c=",
+      "options": [
+        {
+          "name": "1",
+          "votes": 8672,
+          "percentage": 16,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egchigh&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 6217,
+          "percentage": 11,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egchigh&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 40002,
+          "percentage": 73,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egchigh&vote=2"
+        }
+      ],
+      "total_votes": 61477,
+      "odds": [
+        {
+          "name": "1",
+          "value": 5.5,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 3.6,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 1.67,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "Estadio BBVA (Guadalupe)"
+      },
+      {
+        "name": "Capacidad",
+        "value": "51348"
+      },
+      {
+        "name": "Árbitro",
+        "value": "Facundo Tello Figueroa"
+      },
+      {
+        "name": "Arg TV",
+        "value": "TyC Sports Play,  , DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          0.0,
+          0.0
+        ],
+        "rows": []
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          1.0,
+          0.0
+        ],
+        "rows": [
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 2,
+                "texts": [
+                  "Heung-Min Son",
+                  "Hwang Hee-Chan"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 2,
+                "texts": [
+                  "Jin-gyu Kim",
+                  "Seung-Ho Paik"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 2,
+                "texts": [
+                  "Jens Castrop",
+                  "Tae-seok Lee"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "62'",
+            "events": [
+              {
+                "type": 15,
+                "time": "62'",
+                "team": 1,
+                "texts": [
+                  "Tshepang Moremi",
+                  "Oswin Appollis"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "63'",
+            "events": [
+              {
+                "type": 1,
+                "time": "63'",
+                "team": 1,
+                "texts": [
+                  "Thapelo Maseko",
+                  "Tshepang Moremi"
+                ],
+                "player_jersey_num": 12
+              }
+            ]
+          },
+          {
+            "time": "65'",
+            "events": [
+              {
+                "type": 15,
+                "time": "65'",
+                "team": 2,
+                "texts": [
+                  "Jin-seob Park",
+                  "Kim Min-Jae"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "73'",
+            "events": [
+              {
+                "type": 4,
+                "time": "73'",
+                "team": 1,
+                "texts": [
+                  "Aubrey Modiba"
+                ],
+                "player_jersey_num": 6
+              }
+            ]
+          },
+          {
+            "time": "74'",
+            "events": [
+              {
+                "type": 15,
+                "time": "74'",
+                "team": 2,
+                "texts": [
+                  "Cho Gue-Sung",
+                  "Oh Hyeon-Gyu"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "75'",
+            "events": [
+              {
+                "type": 15,
+                "time": "75'",
+                "team": 1,
+                "texts": [
+                  "Iqraam Rayners",
+                  "Thapelo Maseko"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "79'",
+            "events": [
+              {
+                "type": 4,
+                "time": "79'",
+                "team": 2,
+                "texts": [
+                  "Cho Gue-Sung"
+                ],
+                "player_jersey_num": 9
+              }
+            ]
+          },
+          {
+            "time": "80'",
+            "events": [
+              {
+                "type": 15,
+                "time": "80'",
+                "team": 1,
+                "texts": [
+                  "Jayden Adams",
+                  "Relebohile Mofokeng"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "13",
+          "8"
+        ],
+        "percentages": [
+          0.62,
+          0.38
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "4",
+          "3"
+        ],
+        "percentages": [
+          0.57,
+          0.43
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "32%",
+          "68%"
+        ],
+        "percentages": [
+          0.32,
+          0.68
+        ]
+      },
+      {
+        "name": "Ataques",
+        "values": [
+          "67",
+          "111"
+        ],
+        "percentages": [
+          0.38,
+          0.62
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "9",
+          "7"
+        ],
+        "percentages": [
+          0.56,
+          0.44
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "4",
+          "6"
+        ],
+        "percentages": [
+          0.4,
+          0.6
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "3",
+          "0"
+        ],
+        "percentages": [
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "7",
+          "9"
+        ],
+        "percentages": [
+          0.44,
+          0.56
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "1",
+          "1"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "0"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "recent_form": {
+      "home": [
+        1,
+        1,
+        1,
+        0,
+        1
+      ],
+      "away": [
+        1,
+        2,
+        0,
+        1,
+        0
+      ]
+    },
+    "standings": {
+      "title": "Posiciones",
+      "columns": [
+        {
+          "key": "points",
+          "display_name": "PTS",
+          "is_bold": true
+        },
+        {
+          "key": "games_played",
+          "display_name": "J"
+        },
+        {
+          "key": "ratio",
+          "display_name": "+/-"
+        }
+      ],
+      "rows": [
+        {
+          "num": 2,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Sudáfrica",
+              "short_name": "Sudáfrica",
+              "url_name": "south-africa",
+              "id": "fbad",
+              "country_id": "bde",
+              "allow_open": true,
+              "colors": {
+                "color": "#FDD301",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "4"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "-1"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Corea del Sur",
+              "short_name": "Corea del Sur",
+              "url_name": "south-korea",
+              "id": "cdid",
+              "country_id": "ig",
+              "allow_open": true,
+              "colors": {
+                "color": "#F8373E",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "3"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "-1"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

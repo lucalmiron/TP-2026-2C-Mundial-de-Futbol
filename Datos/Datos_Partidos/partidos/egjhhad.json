@@ -1,0 +1,1734 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "egjhhad",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "Fecha 2",
+    "winner": 2,
+    "teams": [
+      {
+        "name": "Turquía",
+        "short_name": "Turquía",
+        "url_name": "turkiye",
+        "id": "faeh",
+        "country_id": "bc",
+        "allow_open": true,
+        "colors": {
+          "color": "#FFFFFF",
+          "text_color": "#000000"
+        },
+        "red_cards": 0
+      },
+      {
+        "name": "Paraguay",
+        "short_name": "Paraguay",
+        "url_name": "paraguay",
+        "id": "faha",
+        "country_id": "bai",
+        "allow_open": true,
+        "colors": {
+          "color": "#FFFFFF",
+          "text_color": "#000000"
+        },
+        "red_cards": 1,
+        "goals": [
+          {
+            "player_name": "Matías Galarza Fonda",
+            "player_sname": "Galarza",
+            "time": 2.0,
+            "time_to_display": "2'"
+          }
+        ]
+      }
+    ],
+    "url_name": "turkiye-vs-paraguay",
+    "scores": [
+      0.0,
+      1.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Finalizado",
+      "short_name": "Final",
+      "symbol_name": "Fin"
+    },
+    "start_time": "20-06-2026 00:00",
+    "game_time": 90,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Final",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "4-2-3-1",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 23,
+                "name": "Uğurcan Çakır",
+                "player_short_name": "Çakır",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 30,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 20,
+                "name": "Ferdi Kadioglu",
+                "player_short_name": "Kadioglu",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 70.0,
+                  "player": 13,
+                  "type": 2
+                },
+                "age": 27,
+                "height": "1.74",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 70.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 14,
+                "name": "Abdulkerim Bardakci",
+                "player_short_name": "Bardakci",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 86.0,
+                  "player": 6,
+                  "type": 2
+                },
+                "age": 32,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 86.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 3,
+                "name": "Merih Demiral",
+                "player_short_name": "Demiral",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 66
+                },
+                "age": 28,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Mert Muldur",
+                "player_short_name": "Muldur",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 100
+                },
+                "age": 27,
+                "height": "1.84",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 16,
+                "name": "İsmail Yüksek",
+                "player_short_name": "Yüksek",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 60.0,
+                  "player": 26,
+                  "type": 2
+                },
+                "age": 27,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 60.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Hakan Calhanoglu",
+                "player_short_name": "Çalhanoğlu",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bc",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 80
+                },
+                "age": 32,
+                "height": "1.78"
+              },
+              {
+                "jersey_num": 11,
+                "name": "Kenan Yıldız",
+                "player_short_name": "Yıldız",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 0
+                },
+                "age": 21,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 8,
+                "name": "Arda Güler",
+                "player_short_name": "Güler",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 50
+                },
+                "age": 21,
+                "height": "1.76"
+              },
+              {
+                "jersey_num": 19,
+                "name": "Yunus Akgün",
+                "player_short_name": "Akgün",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 60.0,
+                  "player": 9,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 60.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Kerem Aktürkoğlu",
+                "player_short_name": "Aktürkoğlu",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 21,
+                  "type": 2
+                },
+                "age": 28,
+                "height": "1.72",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 13,
+                "name": "Eren  Elmalı",
+                "player_short_name": "Elmali",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 70.0,
+                  "player": 20,
+                  "type": 1
+                },
+                "age": 26,
+                "height": "1.81",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 70.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Deniz Gul",
+                "player_short_name": "Deniz Gul",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 60.0,
+                  "player": 19,
+                  "type": 1
+                },
+                "age": 22,
+                "height": "1.92",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 60.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 6,
+                "name": "Orkun Kökçü",
+                "player_short_name": "Kökçü",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 86.0,
+                  "player": 14,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.75",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 86.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 26,
+                "name": "Can Uzun",
+                "player_short_name": "Uzun",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 60.0,
+                  "player": 16,
+                  "type": 1
+                },
+                "age": 20,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 60.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 21,
+                "name": "Baris Yilmaz",
+                "player_short_name": "Yilmaz",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 7,
+                  "type": 1
+                },
+                "age": 26,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 25,
+                "name": "Samet Akaydin",
+                "player_short_name": "Akaydin",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 32,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Oğuz Aydin",
+                "player_short_name": "Aydın",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Kaan Ayhan",
+                "player_short_name": "Ayhan",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Altay Bayindir",
+                "player_short_name": "Bayindir",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.98"
+              },
+              {
+                "jersey_num": 1,
+                "name": "M. Günok",
+                "player_short_name": "M. Günok",
+                "position": "",
+                "formation_position": "",
+                "country_id": "",
+                "is_captain": false
+              },
+              {
+                "jersey_num": 15,
+                "name": "Ozan Kabak",
+                "player_short_name": "Kabak",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Irfan Kahveci",
+                "player_short_name": "Kahveci",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 4,
+                "name": "Çağlar Söyüncü",
+                "player_short_name": "Söyüncü",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 2,
+                "name": "Zeki Celik",
+                "player_short_name": "Celik",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Salih Özcan",
+                "player_short_name": "Özcan",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bc",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.82"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Vincenzo Montella",
+                "player_short_name": "Montella",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "d",
+                "is_captain": false,
+                "age": 52,
+                "height": "1.72"
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "4-4-2",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 12,
+                "name": "Orlando Gill",
+                "player_short_name": "Gill",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 26,
+                "height": "1.99"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Júnior Alonso",
+                "player_short_name": "Alonso",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 0
+                },
+                "age": 33,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Omar Alderete",
+                "player_short_name": "Alderete",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 33
+                },
+                "age": 29,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Gustavo Gómez",
+                "player_short_name": "Gómez",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 66
+                },
+                "age": 33,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 4,
+                "name": "Juan José Cáceres",
+                "player_short_name": "Cáceres",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 81.0,
+                  "player": 26,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.76",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 81.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 23,
+                "name": "Matías Galarza Fonda",
+                "player_short_name": "Galarza",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 13,
+                  "type": 2
+                },
+                "age": 24,
+                "height": "1.75",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Diego Gómez",
+                "player_short_name": "Gómez",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 67.0,
+                  "player": 2,
+                  "type": 2
+                },
+                "age": 23,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 67.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 14,
+                "name": "Andrés Cubas",
+                "player_short_name": "Cubas",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 66
+                },
+                "age": 30,
+                "height": "1.66"
+              },
+              {
+                "jersey_num": 10,
+                "name": "Miguel Almirón",
+                "player_short_name": "Almirón",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 100
+                },
+                "age": 32,
+                "height": "1.78",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": true,
+                    "red_type": 1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 19,
+                "name": "Julio Enciso",
+                "player_short_name": "Enciso",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 25
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 21,
+                  "type": 2
+                },
+                "age": 22,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 25,
+                "name": "Isidro Pitta",
+                "player_short_name": "Pitta",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 75
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 16,
+                  "type": 2
+                },
+                "age": 27,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 16,
+                "name": "Damián Bobadilla",
+                "player_short_name": "Bobadilla",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 25,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.81",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 13,
+                "name": "José Canale",
+                "player_short_name": "Canale",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 23,
+                  "type": 1
+                },
+                "age": 30,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 26,
+                "name": "Alexandro Maidana",
+                "player_short_name": "Maidana",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 81.0,
+                  "player": 4,
+                  "type": 1
+                },
+                "age": 21,
+                "height": "1.78",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 81.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 2,
+                "name": "Gustavo Velázquez",
+                "player_short_name": "Velázquez",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 67.0,
+                  "player": 8,
+                  "type": 1
+                },
+                "age": 35,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 67.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 21,
+                "name": "Gabriel Ávalos",
+                "player_short_name": "Ávalos",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 19,
+                  "type": 1
+                },
+                "age": 36,
+                "height": "1.91",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 18,
+                "name": "Álex Arce",
+                "player_short_name": "Arce",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Fabián Balbuena",
+                "player_short_name": "Balbuena",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 35,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Gustavo Caballero",
+                "player_short_name": "Caballero",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 1,
+                "name": "Roberto Fernández",
+                "player_short_name": "Fernández",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 38,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 11,
+                "name": "Mauricio Magalhaes",
+                "player_short_name": "Mauricio",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.75"
+              },
+              {
+                "jersey_num": 20,
+                "name": "Braian Ojeda",
+                "player_short_name": "Ojeda",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Gastón Olveira",
+                "player_short_name": "Olveira",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 33,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Alejandro Romero",
+                "player_short_name": "Kaku",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.65"
+              },
+              {
+                "jersey_num": 9,
+                "name": "Antonio Sanabria",
+                "player_short_name": "Sanabria",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 7,
+                "name": "Ramón Sosa",
+                "player_short_name": "Sosa",
+                "position": "Delantero",
+                "formation_position": "Segundo Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.78"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Gustavo Alfaro",
+                "player_short_name": "Alfaro",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "ba",
+                "is_captain": false,
+                "age": 64,
+                "height": "1.81"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=47&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=47&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "eh",
+      "cta_link": "https://gml-grp.com/C.ashx?btag=a_68154b_3685c_&affid=15975&siteid=68154&adid=3685&c=",
+      "options": [
+        {
+          "name": "1",
+          "votes": 51995,
+          "percentage": 67,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhhad&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 9542,
+          "percentage": 12,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhhad&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 16651,
+          "percentage": 21,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhhad&vote=2"
+        }
+      ],
+      "total_votes": 68805,
+      "odds": [
+        {
+          "name": "1",
+          "value": 2.1,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 3.3,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 3.6,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "Levi's Stadium"
+      },
+      {
+        "name": "Capacidad",
+        "value": "68500"
+      },
+      {
+        "name": "Árbitro",
+        "value": "I. Barton"
+      },
+      {
+        "name": "Arg TV",
+        "value": " , DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          0.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "2'",
+            "events": [
+              {
+                "type": 1,
+                "time": "2'",
+                "team": 2,
+                "texts": [
+                  "Matías Galarza Fonda",
+                  "Julio Enciso"
+                ],
+                "player_jersey_num": 23
+              }
+            ]
+          },
+          {
+            "time": "4'",
+            "events": [
+              {
+                "type": 4,
+                "time": "4'",
+                "team": 2,
+                "texts": [
+                  "Matías Galarza Fonda"
+                ],
+                "player_jersey_num": 23
+              }
+            ]
+          },
+          {
+            "time": "35'",
+            "events": [
+              {
+                "type": 10,
+                "time": "35'",
+                "team": 1,
+                "texts": [
+                  "Mert Muldur"
+                ],
+                "player_jersey_num": 18
+              }
+            ]
+          },
+          {
+            "time": "45'+3",
+            "events": [
+              {
+                "type": 5,
+                "time": "45'+3",
+                "team": 2,
+                "texts": [
+                  "Miguel Almirón"
+                ],
+                "player_jersey_num": 10
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          0.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 1,
+                "texts": [
+                  "Baris Yilmaz",
+                  "Kerem Aktürkoğlu"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 2,
+                "texts": [
+                  "Damián Bobadilla",
+                  "Isidro Pitta"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "60'",
+            "events": [
+              {
+                "type": 15,
+                "time": "60'",
+                "team": 1,
+                "texts": [
+                  "Can Uzun",
+                  "İsmail Yüksek"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "60'",
+            "events": [
+              {
+                "type": 15,
+                "time": "60'",
+                "team": 1,
+                "texts": [
+                  "Deniz Gul",
+                  "Yunus Akgün"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "63'",
+            "events": [
+              {
+                "type": 4,
+                "time": "63'",
+                "team": 1,
+                "texts": [
+                  "Vincenzo Montella"
+                ],
+                "player_jersey_num": null
+              }
+            ]
+          },
+          {
+            "time": "67'",
+            "events": [
+              {
+                "type": 15,
+                "time": "67'",
+                "team": 2,
+                "texts": [
+                  "Gustavo Velázquez",
+                  "Diego Gómez"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "70'",
+            "events": [
+              {
+                "type": 15,
+                "time": "70'",
+                "team": 1,
+                "texts": [
+                  "Eren  Elmalı",
+                  "Ferdi Kadioglu"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "71'",
+            "events": [
+              {
+                "type": 4,
+                "time": "71'",
+                "team": 1,
+                "texts": [
+                  "Eren  Elmalı"
+                ],
+                "player_jersey_num": 13
+              }
+            ]
+          },
+          {
+            "time": "81'",
+            "events": [
+              {
+                "type": 15,
+                "time": "81'",
+                "team": 2,
+                "texts": [
+                  "Alexandro Maidana",
+                  "Juan José Cáceres"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "86'",
+            "events": [
+              {
+                "type": 15,
+                "time": "86'",
+                "team": 1,
+                "texts": [
+                  "Orkun Kökçü",
+                  "Abdulkerim Bardakci"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 2,
+                "texts": [
+                  "Gabriel Ávalos",
+                  "Julio Enciso"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 2,
+                "texts": [
+                  "José Canale",
+                  "Matías Galarza Fonda"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "32",
+          "7"
+        ],
+        "percentages": [
+          0.82,
+          0.18
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "5",
+          "2"
+        ],
+        "percentages": [
+          0.71,
+          0.29
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "78%",
+          "22%"
+        ],
+        "percentages": [
+          0.78,
+          0.22
+        ]
+      },
+      {
+        "name": "Ataques",
+        "values": [
+          "154",
+          "60"
+        ],
+        "percentages": [
+          0.72,
+          0.28
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "15",
+          "13"
+        ],
+        "percentages": [
+          0.54,
+          0.46
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "12",
+          "0"
+        ],
+        "percentages": [
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "2",
+          "3"
+        ],
+        "percentages": [
+          0.4,
+          0.6
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "14",
+          "15"
+        ],
+        "percentages": [
+          0.48,
+          0.52
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "1",
+          "1"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "1"
+        ],
+        "percentages": [
+          0.0,
+          1.0
+        ]
+      }
+    ],
+    "recent_form": {
+      "home": [
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "away": [
+        1,
+        1,
+        0,
+        0,
+        2
+      ]
+    },
+    "standings": {
+      "title": "Posiciones",
+      "columns": [
+        {
+          "key": "points",
+          "display_name": "PTS",
+          "is_bold": true
+        },
+        {
+          "key": "games_played",
+          "display_name": "J"
+        },
+        {
+          "key": "ratio",
+          "display_name": "+/-"
+        }
+      ],
+      "rows": [
+        {
+          "num": 3,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Paraguay",
+              "short_name": "Paraguay",
+              "url_name": "paraguay",
+              "id": "faha",
+              "country_id": "bai",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "4"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "-2"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Turquía",
+              "short_name": "Turquía",
+              "url_name": "turkiye",
+              "id": "faeh",
+              "country_id": "bc",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "3"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "-2"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

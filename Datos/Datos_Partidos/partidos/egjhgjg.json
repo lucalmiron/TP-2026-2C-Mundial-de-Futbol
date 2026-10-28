@@ -1,0 +1,1853 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "egjhgjg",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "Fecha 1",
+    "winner": 1,
+    "teams": [
+      {
+        "name": "Corea del Sur",
+        "short_name": "Corea del Sur",
+        "url_name": "south-korea",
+        "id": "cdid",
+        "country_id": "ig",
+        "allow_open": true,
+        "colors": {
+          "color": "#F8373E",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "In-beom Hwang",
+            "player_sname": "Hwang Inbeom",
+            "time": 67.0,
+            "time_to_display": "67'"
+          },
+          {
+            "player_name": "Oh Hyeon-Gyu",
+            "player_sname": "Hyeon-Gyu",
+            "time": 80.0,
+            "time_to_display": "80'"
+          }
+        ]
+      },
+      {
+        "name": "Republica Checa",
+        "short_name": "Republica Checa",
+        "url_name": "czech-republic",
+        "id": "faea",
+        "country_id": "cc",
+        "allow_open": true,
+        "colors": {
+          "color": "#CC0000",
+          "text_color": "#FFFFFF"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Ladislav Krejčí",
+            "player_sname": "Krejčí",
+            "time": 59.0,
+            "time_to_display": "59'"
+          }
+        ]
+      }
+    ],
+    "url_name": "south-korea-vs-czech-republic",
+    "scores": [
+      2.0,
+      1.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Finalizado",
+      "short_name": "Final",
+      "symbol_name": "Fin"
+    },
+    "start_time": "11-06-2026 23:00",
+    "game_time": 90,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Final",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "3-4-2-1",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Seung-Gyu Kim",
+                "player_short_name": "Kim",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 36,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Gi-hyuk Lee",
+                "player_short_name": "Gi-hyuk",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 25
+                },
+                "age": 26,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 4,
+                "name": "Kim Min-Jae",
+                "player_short_name": "K. Min-Jae",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 50
+                },
+                "age": 29,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 2,
+                "name": "Han-beom Lee",
+                "player_short_name": "Han-beom",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 75
+                },
+                "age": 24,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Tae-seok Lee",
+                "player_short_name": "Tae-seok",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 69.0,
+                  "player": 25,
+                  "type": 2
+                },
+                "age": 24,
+                "height": "1.74",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 69.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Seung-Ho Paik",
+                "player_short_name": "Paik",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 84.0,
+                  "player": 16,
+                  "type": 2
+                },
+                "age": 29,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 6,
+                "name": "In-beom Hwang",
+                "player_short_name": "Hwang Inbeom",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 66
+                },
+                "substitution": {
+                  "time": 84.0,
+                  "player": 24,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 22,
+                "name": "Young-woo Seol",
+                "player_short_name": "Young-woo",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 100
+                },
+                "age": 27,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 10,
+                "name": "Lee Jae-Sung",
+                "player_short_name": "Jae-sung",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 62.0,
+                  "player": 11,
+                  "type": 2
+                },
+                "age": 34,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 62.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 19,
+                "name": "Lee Kang-in",
+                "player_short_name": "Kang-in",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 80
+                },
+                "age": 25,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 7,
+                "name": "Heung-Min Son",
+                "player_short_name": "Son",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "ig",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 69.0,
+                  "player": 18,
+                  "type": 2
+                },
+                "age": 34,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 69.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 25,
+                "name": "Ji-sung Eom",
+                "player_short_name": "Ji-sung",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 69.0,
+                  "player": 13,
+                  "type": 1
+                },
+                "age": 24,
+                "height": "1.76",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 69.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 11,
+                "name": "Hwang Hee-Chan",
+                "player_short_name": "Hwang",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 62.0,
+                  "player": 10,
+                  "type": 1
+                },
+                "age": 30,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 62.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 24,
+                "name": "Jin-gyu Kim",
+                "player_short_name": "Jin-gyu Kim",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 84.0,
+                  "player": 6,
+                  "type": 1
+                },
+                "age": 29,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 18,
+                "name": "Oh Hyeon-Gyu",
+                "player_short_name": "Hyeon-Gyu",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 69.0,
+                  "player": 7,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 69.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 16,
+                "name": "Jin-seob Park",
+                "player_short_name": "Jin-seob",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "substitution": {
+                  "time": 84.0,
+                  "player": 8,
+                  "type": 1
+                },
+                "age": 31,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Joon-ho Bae",
+                "player_short_name": "J. Bae",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 23,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Kim Tae-Hyeon",
+                "player_short_name": "Tae-Hyeon",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 23,
+                "name": "Jens Castrop",
+                "player_short_name": "J. Castrop",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 23,
+                "height": "1.78"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Wi-je Cho",
+                "player_short_name": "W. Cho",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 9,
+                "name": "Cho Gue-Sung",
+                "player_short_name": "Cho Gue-Sung",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Hyeon-woo Jo",
+                "player_short_name": "Hyeon-woo Jo",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 35,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Moon-hwan Kim",
+                "player_short_name": "Moon-hwan",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Dong-Gyeong Lee",
+                "player_short_name": "D. Lee",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.76"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Bum-keun Song",
+                "player_short_name": "Bum-keun Song",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.94"
+              },
+              {
+                "jersey_num": 20,
+                "name": "Hyun-jun Yang",
+                "player_short_name": "Hyun-jun",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.76"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Hong Myung-Bo",
+                "player_short_name": "Myung-Bo",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "ig",
+                "is_captain": false,
+                "age": 57,
+                "height": "1.82"
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "3-4-2-1",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Matej Kovar",
+                "player_short_name": "Kovar",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 26,
+                "height": "1.96"
+              },
+              {
+                "jersey_num": 7,
+                "name": "Ladislav Krejčí",
+                "player_short_name": "Krejčí",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cc",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 25
+                },
+                "age": 29,
+                "height": "1.91",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 4,
+                "name": "Robin Hranáč",
+                "player_short_name": "Hranáč",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 50
+                },
+                "age": 26,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Štěpán Chaloupek",
+                "player_short_name": "Chaloupek",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 75
+                },
+                "age": 23,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 20,
+                "name": "Jaroslav Zeleny",
+                "player_short_name": "Zelený",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 0
+                },
+                "age": 34,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Alexandr Sojka",
+                "player_short_name": "Sojka",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 84.0,
+                  "player": 13,
+                  "type": 2
+                },
+                "age": 23,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 22,
+                "name": "Tomas Soucek",
+                "player_short_name": "Soucek",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 66
+                },
+                "age": 31,
+                "height": "1.92",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 5,
+                "name": "Vladimir Coufal",
+                "player_short_name": "Coufal",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 100
+                },
+                "age": 34,
+                "height": "1.75"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Pavel Šulc",
+                "player_short_name": "Šulc",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 64.0,
+                  "player": 9,
+                  "type": 2
+                },
+                "age": 25,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 64.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Lukas Provod",
+                "player_short_name": "Provod",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 80
+                },
+                "substitution": {
+                  "time": 64.0,
+                  "player": 18,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.91",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 64.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Patrik Schick",
+                "player_short_name": "Schick",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cc",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 64.0,
+                  "player": 19,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.91",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 64.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 19,
+                "name": "Tomas Chorý",
+                "player_short_name": "Chorý",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 64.0,
+                  "player": 10,
+                  "type": 1
+                },
+                "age": 31,
+                "height": "2.00",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 64.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 13,
+                "name": "Mojmir Chytil",
+                "player_short_name": "Chytil",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 84.0,
+                  "player": 24,
+                  "type": 1
+                },
+                "age": 27,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 84.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Adam Hložek",
+                "player_short_name": "Hlozek",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 64.0,
+                  "player": 15,
+                  "type": 1
+                },
+                "age": 24,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 64.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 18,
+                "name": "Michal Sadilek",
+                "player_short_name": "Sadílek",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "substitution": {
+                  "time": 64.0,
+                  "player": 17,
+                  "type": 1
+                },
+                "age": 27,
+                "height": "1.69",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 64.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Vladimir Darida",
+                "player_short_name": "Darida",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 36,
+                "height": "1.72"
+              },
+              {
+                "jersey_num": 21,
+                "name": "David Doudera",
+                "player_short_name": "Doudera",
+                "position": "Mediocampista",
+                "formation_position": "Volante Derecho",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.75"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Tomas Holeš",
+                "player_short_name": "Holeš",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 33,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 23,
+                "name": "Lukas Hornicek",
+                "player_short_name": "Hornicek",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.98"
+              },
+              {
+                "jersey_num": 14,
+                "name": "David Jurasek",
+                "player_short_name": "Jurasek",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 11,
+                "name": "Jan Kuchta",
+                "player_short_name": "Kuchta",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Hugo Sochůrek",
+                "player_short_name": "Sochůrek",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 18,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 16,
+                "name": "Jindřich Staněk",
+                "player_short_name": "Staněk",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.92"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Denis Visinsky",
+                "player_short_name": "Višinský",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 23,
+                "height": "1.78"
+              },
+              {
+                "jersey_num": 2,
+                "name": "David Zima",
+                "player_short_name": "Zima",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Lukáš Cerv",
+                "player_short_name": "Cerv",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.82"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Miroslav Koubek",
+                "player_short_name": "Koubek",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "cc",
+                "is_captain": false,
+                "age": 75
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=174&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=174&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "bhe",
+      "cta_link": "http://pba.stake.bet.ar/?c=fmMbyTIj",
+      "options": [
+        {
+          "name": "1",
+          "votes": 97040,
+          "percentage": 68,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhgjg&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 19097,
+          "percentage": 13,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhgjg&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 26447,
+          "percentage": 19,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhgjg&vote=2"
+        }
+      ],
+      "total_votes": 151139,
+      "odds": [
+        {
+          "name": "1",
+          "value": 2.55,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 3.1,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 3.0,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "Estadio AKRON"
+      },
+      {
+        "name": "Capacidad",
+        "value": "45664"
+      },
+      {
+        "name": "Árbitro",
+        "value": "Amin Omar"
+      },
+      {
+        "name": "Arg TV",
+        "value": "TyC Sports, TyC Sports Play,  , DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          0.0,
+          0.0
+        ],
+        "rows": []
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          2.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "59'",
+            "events": [
+              {
+                "type": 1,
+                "time": "59'",
+                "team": 2,
+                "texts": [
+                  "Ladislav Krejčí",
+                  "Vladimir Coufal"
+                ],
+                "player_jersey_num": 7
+              }
+            ]
+          },
+          {
+            "time": "62'",
+            "events": [
+              {
+                "type": 15,
+                "time": "62'",
+                "team": 1,
+                "texts": [
+                  "Hwang Hee-Chan",
+                  "Lee Jae-Sung"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "64'",
+            "events": [
+              {
+                "type": 15,
+                "time": "64'",
+                "team": 2,
+                "texts": [
+                  "Tomas Chorý",
+                  "Patrik Schick"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "64'",
+            "events": [
+              {
+                "type": 15,
+                "time": "64'",
+                "team": 2,
+                "texts": [
+                  "Michal Sadilek",
+                  "Lukas Provod"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "64'",
+            "events": [
+              {
+                "type": 15,
+                "time": "64'",
+                "team": 2,
+                "texts": [
+                  "Adam Hložek",
+                  "Pavel Šulc"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "67'",
+            "events": [
+              {
+                "type": 1,
+                "time": "67'",
+                "team": 1,
+                "texts": [
+                  "In-beom Hwang",
+                  "Lee Kang-in"
+                ],
+                "player_jersey_num": 6
+              }
+            ]
+          },
+          {
+            "time": "69'",
+            "events": [
+              {
+                "type": 15,
+                "time": "69'",
+                "team": 1,
+                "texts": [
+                  "Ji-sung Eom",
+                  "Tae-seok Lee"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "69'",
+            "events": [
+              {
+                "type": 15,
+                "time": "69'",
+                "team": 1,
+                "texts": [
+                  "Oh Hyeon-Gyu",
+                  "Heung-Min Son"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "78'",
+            "events": [
+              {
+                "type": 9,
+                "time": "78'",
+                "team": 2,
+                "texts": [
+                  "Gol anulado",
+                  "Tomas Soucek"
+                ],
+                "player_jersey_num": 22
+              }
+            ]
+          },
+          {
+            "time": "80'",
+            "events": [
+              {
+                "type": 1,
+                "time": "80'",
+                "team": 1,
+                "texts": [
+                  "Oh Hyeon-Gyu",
+                  "In-beom Hwang"
+                ],
+                "player_jersey_num": 18
+              }
+            ]
+          },
+          {
+            "time": "84'",
+            "events": [
+              {
+                "type": 15,
+                "time": "84'",
+                "team": 1,
+                "texts": [
+                  "Jin-gyu Kim",
+                  "In-beom Hwang"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "84'",
+                "team": 2,
+                "texts": [
+                  "Mojmir Chytil",
+                  "Alexandr Sojka"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "84'",
+            "events": [
+              {
+                "type": 15,
+                "time": "84'",
+                "team": 1,
+                "texts": [
+                  "Jin-seob Park",
+                  "Seung-Ho Paik"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'+6",
+            "events": [
+              {
+                "type": 4,
+                "time": "90'+6",
+                "team": 1,
+                "texts": [
+                  "Gi-hyuk Lee"
+                ],
+                "player_jersey_num": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "15",
+          "7"
+        ],
+        "percentages": [
+          0.68,
+          0.32
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "6",
+          "4"
+        ],
+        "percentages": [
+          0.6,
+          0.4
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "62%",
+          "38%"
+        ],
+        "percentages": [
+          0.62,
+          0.38
+        ]
+      },
+      {
+        "name": "Ataques",
+        "values": [
+          "88",
+          "88"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "16",
+          "9"
+        ],
+        "percentages": [
+          0.64,
+          0.36
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "4",
+          "5"
+        ],
+        "percentages": [
+          0.44,
+          0.56
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "2",
+          "2"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "9",
+          "16"
+        ],
+        "percentages": [
+          0.36,
+          0.64
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "1",
+          "0"
+        ],
+        "percentages": [
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "0"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "head_to_head": {
+      "home_wins": 2,
+      "away_wins": 0,
+      "draws": 0,
+      "games": [
+        {
+          "id": "egjhgjg",
+          "league": {
+            "name": "Mundial",
+            "id": "fjda",
+            "url_name": "fifa-world-cup",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": true,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 1,
+          "teams": [
+            {
+              "name": "Corea del Sur",
+              "short_name": "Corea del Sur",
+              "url_name": "south-korea",
+              "id": "cdid",
+              "country_id": "ig",
+              "allow_open": true,
+              "colors": {
+                "color": "#F8373E",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Republica Checa",
+              "short_name": "Republica Checa",
+              "url_name": "czech-republic",
+              "id": "faea",
+              "country_id": "cc",
+              "allow_open": true,
+              "colors": {
+                "color": "#CC0000",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "south-korea-vs-czech-republic",
+          "scores": [
+            2.0,
+            1.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "11-06-2026 23:00",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 2.55,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 3.1,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 3.0,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "jgcbde",
+          "league": {
+            "name": "Amistoso Internacional",
+            "id": "fha",
+            "url_name": "friendly-international",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 2,
+          "teams": [
+            {
+              "name": "Republica Checa",
+              "short_name": "Republica Checa",
+              "url_name": "czech-republic",
+              "id": "faea",
+              "country_id": "cc",
+              "allow_open": true,
+              "colors": {
+                "color": "#CC0000",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Corea del Sur",
+              "short_name": "Corea del Sur",
+              "url_name": "south-korea",
+              "id": "cdid",
+              "country_id": "ig",
+              "allow_open": true,
+              "colors": {
+                "color": "#F8373E",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "czech-republic-vs-south-korea",
+          "scores": [
+            1.0,
+            2.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "05-06-2016 10:10",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 1.62,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 3.6,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 6.0,
+                "trend": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "recent_form": {
+      "home": [
+        1,
+        2,
+        0,
+        1,
+        0
+      ],
+      "away": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "standings": {
+      "title": "Posiciones",
+      "columns": [
+        {
+          "key": "points",
+          "display_name": "PTS",
+          "is_bold": true
+        },
+        {
+          "key": "games_played",
+          "display_name": "J"
+        },
+        {
+          "key": "ratio",
+          "display_name": "+/-"
+        }
+      ],
+      "rows": [
+        {
+          "num": 3,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Corea del Sur",
+              "short_name": "Corea del Sur",
+              "url_name": "south-korea",
+              "id": "cdid",
+              "country_id": "ig",
+              "allow_open": true,
+              "colors": {
+                "color": "#F8373E",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "3"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "-1"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Republica Checa",
+              "short_name": "Republica Checa",
+              "url_name": "czech-republic",
+              "id": "faea",
+              "country_id": "cc",
+              "allow_open": true,
+              "colors": {
+                "color": "#CC0000",
+                "text_color": "#FFFFFF"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "1"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "-4"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
