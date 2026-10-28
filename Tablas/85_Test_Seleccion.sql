@@ -23,24 +23,23 @@ GO
 IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test1')
 	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma_Test1';
 GO
-IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE NOMBRE = 'Huso_Test1')
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'Huso_Test1')
 	EXEC SP.uspHusoHorario_Registrar @nombre = 'Huso_Test1';
 GO
 --5 paises (para probar el cupo de 4 selecciones por grupo)
+DECLARE @idIdioma1 INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test1');
+DECLARE @idHuso1 INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'Huso_Test1');
+	
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S1', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S1', @idioma = @idIdioma1, @huso = @idHuso1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S2')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S2', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 2;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S2', @idioma = @idIdioma1, @huso = @idHuso1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 2;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S3')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S3', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 3;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S3', @idioma = @idIdioma1, @huso = @idHuso1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 3;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S4')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S4', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 4;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S4', @idioma = @idIdioma1, @huso = @idHuso1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 4;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test S5')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S5', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 5;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test S5', @idioma = @idIdioma1, @huso = @idHuso1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 5;
 GO
 
 DECLARE @idPaisS1 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test S1');
