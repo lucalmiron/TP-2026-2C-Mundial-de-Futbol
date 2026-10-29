@@ -13,7 +13,7 @@ IF EXISTS(SELECT 1 FROM equipos.Pais)
 DECLARE @idioma INT, @pais1 INT,@pais2 INT,@grupo INT,@mundial INT,@s1 INT,@s2 INT,@huso INT,@sede INT,
         @fase INT,@p1 INT,@p2 INT,@arbitro INT,@motivo INT,@i INT=1,@persona INT;
 INSERT sedes.HusoHorario(Nombre) VALUES('UTC'); SET @huso=SCOPE_IDENTITY();
-INSERT arbitros.Idioma(Descripcion) VALUES('Idioma'); SET @idioma = SCOPE_IDENTITY();
+INSERT arbitros.Idioma(Descripcion) VALUES('Idioma prueba'); SET @idioma = SCOPE_IDENTITY();
 INSERT equipos.Pais(NOMBRE, Idioma, HusoHorario, PtIni, PtFin, PBI) VALUES('Prueba G1 A', @idioma, @huso, '17:00', '23:00', 1); SET @pais1=SCOPE_IDENTITY();
 INSERT equipos.Pais(NOMBRE, Idioma, HusoHorario, PtIni, PtFin, PBI) VALUES('Prueba G1 B', @idioma, @huso, '17:00', '23:00', 1); SET @pais2=SCOPE_IDENTITY();
 INSERT equipos.Grupo(NOMBRE) VALUES('Prueba G1'); SET @grupo=SCOPE_IDENTITY();
@@ -47,8 +47,8 @@ DECLARE @j1 INT=(SELECT Id FROM @jugadores WHERE Numero=1),@j2 INT=(SELECT Id FR
  @j14 INT=(SELECT Id FROM @jugadores WHERE Numero=14),@j15 INT=(SELECT Id FROM @jugadores WHERE Numero=15),
  @j16 INT=(SELECT Id FROM @jugadores WHERE Numero=16),@gol INT,@evento INT,@cantidad INT;
 
--- alta y edicion de idioma y asignacion.
-EXEC SP.uspIdioma_Registrar 'Idioma prueba'; SELECT @persona=IdIdioma FROM arbitros.Idioma WHERE Descripcion='Idioma prueba'; EXEC SP.uspIdioma_Update @persona,'Idioma editado'; EXEC SP.uspHablaIdioma_Registrar @arbitro,@persona;
+-- edicion de idioma y asignacion.
+SELECT @persona=IdIdioma FROM arbitros.Idioma WHERE Descripcion='Idioma prueba'; EXEC SP.uspIdioma_Update @persona,'Idioma editado'; EXEC SP.uspHablaIdioma_Registrar @arbitro,@persona;
 IF NOT EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Arbitro=@arbitro AND Idioma=@persona)
  THROW 51998,'Fallo: alta y edicion de idioma y asignacion.',1;
 PRINT 'OK 1: alta y edicion de idioma y asignacion';
