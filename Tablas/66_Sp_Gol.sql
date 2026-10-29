@@ -7,7 +7,7 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 26/10/26
+--/Fecha: 28/10/26
 -- Objetivo: separar goles de juego y conversiones de tanda en una transaccion.
 
 GO
@@ -35,6 +35,9 @@ BEGIN
     FROM partidos.Periodo
     WHERE IdPeriodo = @periodo;
  
+    IF EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@periodo AND Descripcion='Descanso')
+        SET @errores += N'No se permiten goles durante el descanso. ';
+
     IF @penales IS NULL
         SET @errores += N'Periodo inexistente. ';
  
@@ -52,10 +55,10 @@ BEGIN
  
     DECLARE @minutoJuego INT = COALESCE(@minuto, 2147483647);
  
-    IF partidos.fnJugadorEnCancha(@partido, @autor, @minutoJuego) = 0
+    IF partidos.fnJugadorEnCanchaPeriodo(@partido, @autor, @minutoJuego, @periodo) = 0
         SET @errores += N'El autor no estaba en cancha. ';
  
-    IF @asistencia IS NOT NULL AND partidos.fnJugadorEnCancha(@partido, @asistencia, @minutoJuego) = 0
+    IF @asistencia IS NOT NULL AND partidos.fnJugadorEnCanchaPeriodo(@partido, @asistencia, @minutoJuego, @periodo) = 0
         SET @errores += N'El asistente no estaba en cancha. ';
  
     IF @penales = 1 AND (@minuto IS NOT NULL OR @tipo <> 'Penal' OR @asistencia IS NOT NULL)

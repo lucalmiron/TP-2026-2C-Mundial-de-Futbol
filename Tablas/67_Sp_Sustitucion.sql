@@ -7,10 +7,11 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 26/10/26
+--/Fecha: 28/10/26
 
 --Objetivo: Gestionar Tabla Sustitucion
 
+-- Ajuste: soporte de Descanso y orden por minuto/periodo.
 -- Ejecutar en la base seleccionada por el instalador.
 GO
 
@@ -33,6 +34,11 @@ BEGIN
 	DECLARE @vVentanas INT
 	DECLARE @vMaxCambios INT
 	DECLARE @vMaxVentanas INT
+
+	DECLARE @vDescanso BIT = 0;
+	DECLARE @vMomento BIGINT = partidos.fnMomentoEvento(@minuto,@periodo);
+	SELECT @vDescanso = CASE WHEN Descripcion='Descanso' THEN 1 ELSE 0 END
+	FROM partidos.Periodo WHERE IdPeriodo=@periodo;
 
 	BEGIN TRY
 		IF (@minuto IS NULL) OR (@minuto < 0)
@@ -62,6 +68,13 @@ BEGIN
 		IF NOT EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
 			SET @errores += '- Valor inexistente: Periodo.' + N' ';
 
+        IF EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@periodo AND EsPenales=1)
+            SET @errores += N'- No se permiten sustituciones mediante este SP durante la tanda de penales. ';
+
+        IF EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@periodo
+                   AND (@minuto<Inicio OR @minuto>Fin))
+            SET @errores += N'- El minuto esta fuera del rango del periodo indicado. ';
+
 		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @ingreso)
 			SET @errores += '- Valor inexistente: Ingreso.' + N' ';
 
@@ -79,7 +92,7 @@ BEGIN
 		IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido AND (Eq1 = @vSeleccion OR Eq2 = @vSeleccion))
 			SET @errores += '- La seleccion no juega este partido.' + N' ';
 
-		IF partidos.fnJugadorEnCancha(@partido,@egreso,@minuto)=0
+		IF partidos.fnJugadorEnCanchaPeriodo(@partido,@egreso,@minuto,@periodo)=0
 			SET @errores += '- El egreso no estaba en cancha.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido = @partido AND IdJugador = @ingreso AND Rol = 'Suplente')
@@ -90,12 +103,12 @@ BEGIN
 			SET @errores += '- El ingreso ya participo o el egreso ya fue reemplazado.' + N' ';
 
 		IF EXISTS (SELECT 1 FROM partidos.Amonestacion A JOIN partidos.Evento E ON E.IdEvento=A.IdAmonestacion
-			WHERE E.Partido=@partido AND A.Amonestado=@ingreso AND A.Tarjeta='Roja' AND E.Minuto<=@minuto)
+			WHERE E.Partido=@partido AND A.Amonestado=@ingreso AND A.Tarjeta='Roja' AND partidos.fnMomentoEvento(E.Minuto,E.Periodo)<=@vMomento)
 			SET @errores += '- No puede ingresar un jugador expulsado.' + N' ';
 
 		-- Los cambios se cargan antes de los eventos posteriores del partido.
-		IF EXISTS (SELECT 1 FROM partidos.Evento WHERE Partido=@partido AND Minuto>@minuto)
-			SET @errores += '- Registrar los cambios en orden de minuto, antes de los eventos posteriores.' + N' ';
+		IF EXISTS (SELECT 1 FROM partidos.Evento WHERE Partido=@partido AND partidos.fnMomentoEvento(Minuto,Periodo)>@vMomento)
+			SET @errores += '- Registrar los cambios en orden de minuto y periodo, antes de los eventos posteriores.' + N' ';
 
 		SELECT @vIdMundial = IdMundial FROM partidos.Partido WHERE IdPartido = @partido
 
@@ -103,12 +116,24 @@ BEGIN
 
 		SELECT @vCambios = COUNT(*) FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion
 
-		SELECT @vVentanas = COUNT(DISTINCT E.Minuto) FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion
+        -- Una ventana por periodo y minuto; el descanso no consume ventanas.
+        -- Se conserva la aproximacion existente: cambios en un mismo minuto = una ventana.
+        SELECT @vVentanas = COUNT(*)
+        FROM (
+            SELECT E.Periodo, E.Minuto
+            FROM partidos.Sustitucion S
+            JOIN partidos.Evento E ON S.IdSustitucion=E.IdEvento
+            JOIN equipos.Jugador J ON S.Egreso=J.IdJugador
+            JOIN partidos.Periodo P ON P.IdPeriodo=E.Periodo
+            WHERE E.Partido=@partido AND J.Seleccion=@vSeleccion
+              AND P.Descripcion<>'Descanso' AND P.EsPenales=0
+            GROUP BY E.Periodo,E.Minuto
+        ) V;
 
 		IF (@vCambios + 1) > @vMaxCambios
 			SET @errores += '- Tope de cambios del reglamento excedido.' + N' ';
 
-		IF NOT EXISTS (SELECT 1 FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion AND E.Minuto = @minuto)
+		IF @vDescanso = 0 AND NOT EXISTS (SELECT 1 FROM partidos.Sustitucion S INNER JOIN partidos.Evento E ON S.IdSustitucion = E.IdEvento INNER JOIN equipos.Jugador J ON S.Egreso = J.IdJugador WHERE E.Partido = @partido AND J.Seleccion = @vSeleccion AND E.Minuto = @minuto AND E.Periodo = @periodo)
 		AND (@vVentanas + 1) > @vMaxVentanas
 			SET @errores += '- Tope de ventanas del reglamento excedido.' + N' ';
 

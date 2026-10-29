@@ -4,32 +4,68 @@
 -- Figueroa, Santiago
 -- Ruarte, Fidel
 -- Villalba, Leandro
--- 26/10/26
+-- 28/10/26
 -- Objetivo: Registrar y Eliminar Alineacion
 
+-- Ajuste: soporte de Descanso y orden por minuto/periodo.
 -- Ejecutar en la base seleccionada por el instalador.
 GO
 
--- Consulta si el jugador sigue en cancha en el minuto indicado.
--- En un mismo minuto se consideran los cambios y expulsiones ya registrados.
-CREATE OR ALTER FUNCTION partidos.fnJugadorEnCancha(@partido INT, @jugador INT, @minuto INT)
+-- Orden temporal: distingue 45 del primer tiempo, descanso y segundo tiempo.
+-- Los nombres corresponden al catalogo de Periodo. No representa descuento.
+CREATE OR ALTER FUNCTION partidos.fnMomentoEvento(@minuto INT, @periodo INT)
+RETURNS BIGINT
+AS
+BEGIN
+    DECLARE @orden INT = 0;
+    IF @periodo IS NULL
+        SET @orden = 9; -- Consulta antigua: incluye todo lo registrado en ese minuto.
+    ELSE
+        SELECT @orden = CASE
+            WHEN EsPenales = 1 THEN 5
+            WHEN Descripcion = 'Descanso' THEN 1
+            WHEN Descripcion = '2do tiempo' THEN 2
+            WHEN Descripcion = 'Alargue 1' THEN 3
+            WHEN Descripcion = 'Alargue 2' THEN 4
+            ELSE 0 END
+        FROM partidos.Periodo WHERE IdPeriodo = @periodo;
+    RETURN CONVERT(BIGINT, COALESCE(@minuto, 2147483647)) * 10 + @orden;
+END;
+GO
+
+-- Consulta precisa: los eventos ya registrados en el mismo momento se aplican.
+CREATE OR ALTER FUNCTION partidos.fnJugadorEnCanchaPeriodo
+(@partido INT, @jugador INT, @minuto INT, @periodo INT)
 RETURNS BIT
 AS
 BEGIN
+    DECLARE @momento BIGINT = partidos.fnMomentoEvento(@minuto, @periodo);
     IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido=@partido AND IdJugador=@jugador)
         RETURN 0;
     IF NOT EXISTS (SELECT 1 FROM partidos.Alineacion WHERE IdPartido=@partido AND IdJugador=@jugador AND Rol='Titular')
        AND NOT EXISTS (SELECT 1 FROM partidos.Sustitucion S JOIN partidos.Evento E ON E.IdEvento=S.IdSustitucion
-                       WHERE E.Partido=@partido AND S.Ingreso=@jugador AND E.Minuto<=@minuto)
+                       WHERE E.Partido=@partido AND S.Ingreso=@jugador
+                         AND partidos.fnMomentoEvento(E.Minuto,E.Periodo)<=@momento)
         RETURN 0;
     IF EXISTS (SELECT 1 FROM partidos.Sustitucion S JOIN partidos.Evento E ON E.IdEvento=S.IdSustitucion
-               WHERE E.Partido=@partido AND S.Egreso=@jugador AND E.Minuto<=@minuto)
+               WHERE E.Partido=@partido AND S.Egreso=@jugador
+                 AND partidos.fnMomentoEvento(E.Minuto,E.Periodo)<=@momento)
         RETURN 0;
     IF EXISTS (SELECT 1 FROM partidos.Amonestacion A JOIN partidos.Evento E ON E.IdEvento=A.IdAmonestacion
                WHERE E.Partido=@partido AND A.Amonestado=@jugador AND A.Tarjeta='Roja'
-                 AND (E.Minuto<=@minuto OR (E.Minuto IS NULL AND @minuto=2147483647)))
+                 AND partidos.fnMomentoEvento(E.Minuto,E.Periodo)<=@momento)
         RETURN 0;
     RETURN 1;
+END;
+GO
+
+-- Conserva la firma y semantica de las consultas anteriores.
+-- Para distinguir periodos en un minuto compartido usar la funcion de 4 parametros.
+CREATE OR ALTER FUNCTION partidos.fnJugadorEnCancha(@partido INT, @jugador INT, @minuto INT)
+RETURNS BIT
+AS
+BEGIN
+    RETURN partidos.fnJugadorEnCanchaPeriodo(@partido, @jugador, @minuto, NULL);
 END;
 GO
 

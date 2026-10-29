@@ -7,11 +7,12 @@
 --Ruarte, Fidel
 --Villalba, Leandro
 
---/Fecha: 26/10/26
+--/Fecha: 28/10/26
 
 --Objetivo: SP de ABM de la tabla partidos.Evento (Alta, Baja, Modificacion).
 --Las validaciones se acumulan en una variable y se lanzan con un unico THROW.
 
+-- Ajuste: soporte de Descanso y orden por minuto/periodo.
 -- Ejecutar en la base seleccionada por el instalador.
 GO
 
@@ -47,6 +48,14 @@ BEGIN
 		SET @errores += N'El periodo es obligatorio. ';
 	IF @periodo IS NOT NULL AND NOT EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
 		SET @errores += N'No existe un periodo con IdPeriodo ' + CAST(@periodo AS NVARCHAR(10)) + N'. ';
+
+    IF EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@periodo AND Descripcion='Descanso')
+    BEGIN
+        IF LTRIM(RTRIM(@tipo))='Gol'
+            SET @errores += N'No se permiten goles durante el descanso. ';
+        IF @minuto IS NULL
+            SET @errores += N'El descanso requiere el minuto de referencia del periodo. ';
+    END;
 
 	IF @minuto IS NOT NULL AND @minuto < 0
 		SET @errores += N'El minuto no puede ser negativo. ';
@@ -113,6 +122,14 @@ BEGIN
 		SET @errores += N'El periodo es obligatorio. ';
 	IF @periodo IS NOT NULL AND NOT EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = @periodo)
 		SET @errores += N'No existe un periodo con IdPeriodo ' + CAST(@periodo AS NVARCHAR(10)) + N'. ';
+
+    IF EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo=@periodo AND Descripcion='Descanso')
+    BEGIN
+        IF LTRIM(RTRIM(@tipo))='Gol'
+            SET @errores += N'No se permiten goles durante el descanso. ';
+        IF @minuto IS NULL
+            SET @errores += N'El descanso requiere el minuto de referencia del periodo. ';
+    END;
 
 	IF @minuto IS NOT NULL AND @minuto < 0
 		SET @errores += N'El minuto no puede ser negativo. ';
