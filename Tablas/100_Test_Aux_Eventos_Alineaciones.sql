@@ -26,6 +26,7 @@ DECLARE @pais1   INT,
         @mundial INT,
         @s1      INT,
         @s2      INT,
+        @idioma  INT,
         @huso    INT,
         @sede    INT,
         @fase    INT,
@@ -36,13 +37,21 @@ DECLARE @pais1   INT,
         @i       INT = 1,
         @persona INT;
 
-INSERT equipos.Pais (NOMBRE)
-VALUES ('Prueba G1 A');
-SET @pais1 = SCOPE_IDENTITY();
+INSERT sedes.HusoHorario (Nombre)
+VALUES ('UTC');
+SET @huso = SCOPE_IDENTITY();
 
-INSERT equipos.Pais (NOMBRE)
-VALUES ('Prueba G1 B');
-SET @pais2 = SCOPE_IDENTITY();
+INSERT arbitros.Idioma(Descripcion) 
+VALUES('Idioma'); 
+SET @idioma = SCOPE_IDENTITY();
+
+INSERT equipos.Pais(NOMBRE, Idioma, HusoHorario, PtIni, PtFin, PBI) 
+VALUES('Prueba G1 A', @idioma, @huso, '17:00', '23:00', 1); 
+SET @pais1=SCOPE_IDENTITY();
+
+INSERT equipos.Pais(NOMBRE, Idioma, HusoHorario, PtIni, PtFin, PBI) 
+VALUES('Prueba G1 B', @idioma, @huso, '17:00', '23:00', 1); 
+SET @pais2=SCOPE_IDENTITY();
 
 INSERT equipos.Grupo (NOMBRE)
 VALUES ('Prueba G1');
@@ -69,10 +78,6 @@ SET @s1 = SCOPE_IDENTITY();
 INSERT equipos.Seleccion (IdPais, IdMundial, IdGrupo, CONFEDERACION)
 VALUES (@pais2, @mundial, @grupo, 'Prueba');
 SET @s2 = SCOPE_IDENTITY();
-
-INSERT sedes.HusoHorario (Nombre, IdPais)
-VALUES ('UTC', @pais1);
-SET @huso = SCOPE_IDENTITY();
 
 INSERT sedes.Sede (Nombre, Ciudad, Capacidad, IdPais, IdHuso)
 VALUES ('Prueba G1', 'Prueba', 50000, @pais1, @huso);
