@@ -7,7 +7,7 @@ SET NOCOUNT ON;
 IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%' THROW 51000,'Seleccionar una base de pruebas aislada.',1;
 
 BEGIN TRY
- EXEC SP.uspPais_Registrar @nombre=NULL,@pbi=NULL;
+ EXEC SP.uspPais_Registrar @nombre=NULL, @idioma=NULL, @huso=NULL, @ptIni=NULL, @ptFin=NULL, @pbi=NULL;
  THROW 51999,'SP.uspPais_Registrar acepto entrada nula.',1;
 END TRY
 BEGIN CATCH
@@ -247,7 +247,7 @@ IF @@TRANCOUNT<>0 THROW 51999,'SP.uspMundial_Bajar dejo transaccion abierta.',1;
 PRINT 'OK: SP.uspMundial_Bajar';
 
 BEGIN TRY
- EXEC SP.uspHusoHorario_Registrar @nombre=NULL,@idPais=NULL;
+ EXEC SP.uspHusoHorario_Registrar @nombre=NULL;
  THROW 51999,'SP.uspHusoHorario_Registrar acepto entrada nula.',1;
 END TRY
 BEGIN CATCH
@@ -257,7 +257,7 @@ IF @@TRANCOUNT<>0 THROW 51999,'SP.uspHusoHorario_Registrar dejo transaccion abie
 PRINT 'OK: SP.uspHusoHorario_Registrar';
 
 BEGIN TRY
- EXEC SP.uspHusoHorario_Update @idHuso=NULL,@nombre=NULL,@idPais=NULL;
+ EXEC SP.uspHusoHorario_Update @idHuso=NULL,@nombre=NULL;
  THROW 51999,'SP.uspHusoHorario_Update acepto entrada nula.',1;
 END TRY
 BEGIN CATCH
