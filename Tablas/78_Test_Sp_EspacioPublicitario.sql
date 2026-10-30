@@ -23,7 +23,7 @@ IF OBJECT_ID('tempdb..#TestSetup') IS NOT NULL DROP TABLE #TestSetup;
 CREATE TABLE #TestSetup (testSedeId INT);
 
 IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test')
-    EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 Test', @idPais = 1;
+    EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 Test';
 GO
 
 IF NOT EXISTS (SELECT 1 FROM sedes.Sede WHERE Nombre = 'Sede Test')
@@ -165,11 +165,19 @@ GO
 --y para registrarla hace falta la cadena Pais > Mundial > Selecciones > Sede > Fase > Partido.
 
 -- Esperado: se crean 2 paises.
-IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP1', @pbi = 21;
+DECLARE @husoT INT, @idiomaT INT;
+
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Espanol EP';
 GO
+
+SET @husoT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test');
+SET @idiomaT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP');
+
+IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1')
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP1', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 21;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP2')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP2', @pbi = 22;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP2', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 22;
 GO
 
 DECLARE @epPais1 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
@@ -208,7 +216,7 @@ DECLARE @epPais3 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pai
 
 -- Esperado: se crea el huso horario y la sede.
 IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (EP)')
-	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (EP)', @idPais = @epPais3;
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (EP)';
 GO
 
 DECLARE @epHuso   INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (EP)');
@@ -236,11 +244,7 @@ IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdFase = @epFase AND Eq1 = @
 		@Eq1 = @epSel1, @Eq2 = @epSel2, @Fecha = '2026-06-15', @HoraUTC = '16:00', @HoraLocal = '13:00';
 GO
 
--- Esperado: se crea el idioma, la campana y la publicidad.
-IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP')
-	EXEC SP.uspIdioma_Registrar @descripcion = 'Espanol EP';
-GO
-
+-- Esperado: se crea la campana y la publicidad.
 IF NOT EXISTS (SELECT 1 FROM publicidad.Campania WHERE Nombre = 'Campana Test EP')
 	EXEC SP.uspCampania_Registrar @nombre = 'Campana Test EP', @descripcion = 'Campana del test de espacio';
 GO
@@ -279,7 +283,7 @@ GO
 --/Limpieza de lo que genera el test
 --Todo en un solo bloque para no perder las variables. Cada loop tiene su propio contador y tope.
 
---1) El historial de publicidad, la publicidad, la campana y el idioma.
+--1) El historial de publicidad, la publicidad y la campana.
 DECLARE @epId INT, @i INT = 0;
 
 WHILE @i < 5
@@ -308,7 +312,7 @@ BEGIN
 	SET @i = @i + 1;
 END
 
---2) El partido, la fase, la sede y el huso horario.
+--2) El partido, la fase y la sede.
 DECLARE @epPartidoB INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 IF @epPartidoB IS NOT NULL
 	EXEC SP.uspPartido_Bajar @Id = @epPartidoB;
@@ -321,11 +325,7 @@ DECLARE @epSedeB INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede 
 IF @epSedeB IS NOT NULL
 	EXEC SP.uspSede_Bajar @idSede = @epSedeB;
 
-DECLARE @epHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (EP)');
-IF @epHusoB IS NOT NULL
-	EXEC SP.uspHusoHorario_Bajar @idHuso = @epHusoB;
-
---3) Las selecciones, el grupo, el mundial y los paises.
+--3) Las selecciones, el grupo, el mundial, los paises, el huso horario y el idioma.
 DECLARE @epSelB INT;
 SET @i = 0;
 WHILE @i < 5
@@ -358,6 +358,10 @@ END
 DECLARE @epIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP');
 IF @epIdiomaB IS NOT NULL
 	EXEC SP.uspIdioma_Bajar @id = @epIdiomaB;
+
+DECLARE @epHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (EP)');
+IF @epHusoB IS NOT NULL
+	EXEC SP.uspHusoHorario_Bajar @idHuso = @epHusoB;
 
 -- Esperado: no queda nada del test.
 SELECT * FROM publicidad.HistorialPublicidad;
