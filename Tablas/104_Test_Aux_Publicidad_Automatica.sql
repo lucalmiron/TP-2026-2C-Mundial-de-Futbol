@@ -10,17 +10,18 @@ IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
 IF EXISTS(SELECT 1 FROM equipos.Pais)
     THROW 51000, 'La base de prueba debe estar vacia.', 1;
 
-DECLARE @pais1 INT,@pais2 INT,@grupo INT,@mundial INT,@s1 INT,@s2 INT,@huso INT,@sede INT,
+DECLARE @idioma INT,@pais1 INT,@pais2 INT,@grupo INT,@mundial INT,@s1 INT,@s2 INT,@huso INT,@sede INT,
         @fase INT,@p1 INT,@p2 INT,@arbitro INT,@motivo INT,@i INT=1,@persona INT;
-INSERT equipos.Pais(NOMBRE) VALUES('Prueba G1 A'); SET @pais1=SCOPE_IDENTITY();
-INSERT equipos.Pais(NOMBRE) VALUES('Prueba G1 B'); SET @pais2=SCOPE_IDENTITY();
+INSERT sedes.HusoHorario(Nombre) VALUES('UTC'); SET @huso=SCOPE_IDENTITY();
+INSERT arbitros.Idioma(Descripcion) VALUES('Idioma publicidad'); SET @idioma = SCOPE_IDENTITY();
+INSERT equipos.Pais(NOMBRE, Idioma, HusoHorario, PtIni, PtFin, PBI) VALUES('Prueba G1 A', @idioma, @huso, '17:00', '23:00', 1); SET @pais1=SCOPE_IDENTITY();
+INSERT equipos.Pais(NOMBRE, Idioma, HusoHorario, PtIni, PtFin, PBI) VALUES('Prueba G1 B', @idioma, @huso, '17:00', '23:00', 1); SET @pais2=SCOPE_IDENTITY();
 INSERT equipos.Grupo(NOMBRE) VALUES('Prueba G1'); SET @grupo=SCOPE_IDENTITY();
 INSERT sedes.Mundial(IdPais,ACTIVIDAD_FECHA_INICIO,ACTIVIDAD_FECHA_FIN,TAMANIO_SELECCION_MINIMO,TAMANIO_SELECCION_MAXIMO,
  CAMBIOS_VENTANAS,CAMBIOS_CANTIDAD,SUSPENSION_TARJETAS_MAXIMAS,SUSPENSION_TIEMPO)
  VALUES(@pais1,'20260601','20260731',0,26,10,10,2,1); SET @mundial=SCOPE_IDENTITY();
 INSERT equipos.Seleccion(IdPais,IdMundial,IdGrupo,CONFEDERACION) VALUES(@pais1,@mundial,@grupo,'Prueba'); SET @s1=SCOPE_IDENTITY();
 INSERT equipos.Seleccion(IdPais,IdMundial,IdGrupo,CONFEDERACION) VALUES(@pais2,@mundial,@grupo,'Prueba'); SET @s2=SCOPE_IDENTITY();
-INSERT sedes.HusoHorario(Nombre,IdPais) VALUES('UTC',@pais1); SET @huso=SCOPE_IDENTITY();
 INSERT sedes.Sede(Nombre,Ciudad,Capacidad,IdPais,IdHuso) VALUES('Prueba G1','Prueba',50000,@pais1,@huso); SET @sede=SCOPE_IDENTITY();
 INSERT partidos.Fase(Descripcion) VALUES('Final'); SET @fase=SCOPE_IDENTITY();
 INSERT partidos.Partido(IdFase,IdSede,IdMundial,Eq1,Eq2,Fecha,HoraUTC,HoraLocal)
@@ -46,9 +47,8 @@ DECLARE @j1 INT=(SELECT Id FROM @jugadores WHERE Numero=1),@j2 INT=(SELECT Id FR
  @j14 INT=(SELECT Id FROM @jugadores WHERE Numero=14),@j15 INT=(SELECT Id FROM @jugadores WHERE Numero=15),
  @j16 INT=(SELECT Id FROM @jugadores WHERE Numero=16),@gol INT,@evento INT,@cantidad INT;
 
-DECLARE @camp INT,@idioma INT,@cf INT,@pub INT,@mercado INT,@ep INT;
+DECLARE @camp INT,@cf INT,@pub INT,@mercado INT,@ep INT;
 INSERT publicidad.Campania(Nombre,Descripcion) VALUES('Campania prueba','Prueba'); SET @camp=SCOPE_IDENTITY();
-INSERT arbitros.Idioma(Descripcion) VALUES('Idioma publicidad'); SET @idioma=SCOPE_IDENTITY();
 INSERT publicidad.CostoFranja(IdSede,TipoFranja,Costo) VALUES(@sede,'General',50); SET @cf=SCOPE_IDENTITY();
 SET @i=1;
 WHILE @i<=4 BEGIN INSERT publicidad.EspacioPublicitario(IdSede,Numero,Tipo,Costo) VALUES(@sede,@i,'Panel',100); SET @i+=1; END;
