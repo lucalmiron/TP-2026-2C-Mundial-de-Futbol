@@ -23,8 +23,19 @@ GO
 --/Datos de prueba
 
 -- Esperado: se crea el pais.
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma Test';
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'Huso Test')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'Huso Test';
+GO
+
+DECLARE @idiomaT INT, @husoT INT
+
+SET @idiomaT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
+SET @husoT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'Huso Test');
+
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test G1', @pbi = 81;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test G1', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 81;
 GO
 
 DECLARE @gPais INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1');
@@ -144,6 +155,14 @@ IF @gMundB IS NOT NULL
 DECLARE @gPaisB INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1');
 IF @gPaisB IS NOT NULL
 	EXEC SP.uspPais_Bajar @idPais = @gPaisB;
+
+DECLARE @idi = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
+IF @idi IS NOT NULL
+	EXEC SP.uspIdioma_Bajar @id = @idi;
+
+DECLARE @hu = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'Huso Test');
+IF @hu IS NOT NULL
+	EXEC SP.uspHusoHorario_Bajar @idHuso = @hu;
 
 -- Esperado: no queda nada del test.
 SELECT * FROM equipos.Grupo;
