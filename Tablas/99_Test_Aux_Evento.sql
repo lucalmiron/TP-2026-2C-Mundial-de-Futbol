@@ -14,8 +14,8 @@ DECLARE @idioma INT,@pais1 INT,@pais2 INT,@grupo INT,@mundial INT,@s1 INT,@s2 IN
         @fase INT,@p1 INT,@p2 INT,@arbitro INT,@motivo INT,@i INT=1,@persona INT;
 INSERT arbitros.Idioma(Descripcion) VALUES ('Idioma Test'); SET @idioma=SCOPE_IDENTITY();
 INSERT sedes.HusoHorario(Nombre) VALUES('UTC'); SET @huso=SCOPE_IDENTITY();
-INSERT equipos.Pais(NOMBRE) VALUES('Prueba G1 A', @idioma, @huso, '17:00', '23:00', 1); SET @pais1=SCOPE_IDENTITY();
-INSERT equipos.Pais(NOMBRE) VALUES('Prueba G1 B', @idioma, @huso, '17:00', '23:00', 1); SET @pais2=SCOPE_IDENTITY();
+INSERT equipos.Pais(NOMBRE, Idioma, HusoHorario, PtIni, PtFin, PBI) VALUES('Prueba G1 A', @idioma, @huso, '17:00', '23:00', 1); SET @pais1=SCOPE_IDENTITY();
+INSERT equipos.Pais(NOMBRE, Idioma, HusoHorario, PtIni, PtFin, PBI) VALUES('Prueba G1 B', @idioma, @huso, '17:00', '23:00', 1); SET @pais2=SCOPE_IDENTITY();
 INSERT equipos.Grupo(NOMBRE) VALUES('Prueba G1'); SET @grupo=SCOPE_IDENTITY();
 INSERT sedes.Mundial(IdPais,ACTIVIDAD_FECHA_INICIO,ACTIVIDAD_FECHA_FIN,TAMANIO_SELECCION_MINIMO,TAMANIO_SELECCION_MAXIMO,
  CAMBIOS_VENTANAS,CAMBIOS_CANTIDAD,SUSPENSION_TARJETAS_MAXIMAS,SUSPENSION_TIEMPO)
