@@ -20,15 +20,24 @@ GO
 
 --/Datos de prueba
 
+-- Esperado: se crean 1 huso horario y 1 idioma
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (G)')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (G)';
+GO
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma Test';
+GO
+
+DECLARE @idiomaT INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
+DECLARE @husoT INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (G)')
+
 -- Esperado: se crean los 3 paises.
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test G1', @pbi = 51;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test G1', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 51;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test G2')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test G2', @pbi = 52;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test G2', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 52;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test G3')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test G3', @pbi = 53;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test G3', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 53;
 GO
 
 DECLARE @gPais1 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1');
@@ -75,11 +84,7 @@ GO
 
 DECLARE @gPais1e INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1');
 
--- Esperado: se crea el huso horario y la sede.
-IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (G)')
-	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (G)', @idPais = @gPais1e;
-GO
-
+-- Esperado: se crea la sede.
 DECLARE @gHuso   INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (G)');
 DECLARE @gPais1f INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1');
 
@@ -397,10 +402,6 @@ DECLARE @gSedeB INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede T
 IF @gSedeB IS NOT NULL
 	EXEC SP.uspSede_Bajar @idSede = @gSedeB;
 
-DECLARE @gHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (G)');
-IF @gHusoB IS NOT NULL
-	EXEC SP.uspHusoHorario_Bajar @idHuso = @gHusoB;
-
 SET @i = 0;
 WHILE @i < 5
 BEGIN
@@ -427,6 +428,14 @@ BEGIN
 	EXEC SP.uspPais_Bajar @idPais = @gId;
 	SET @i = @i + 1;
 END
+
+DECLARE @gHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (G)');
+IF @gHusoB IS NOT NULL
+	EXEC SP.uspHusoHorario_Bajar @idHuso = @gHusoB;
+
+DECLARE @gIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Nombre = 'Idioma Test');
+IF @gIdiomaB IS NOT NULL
+	EXEC SP.uspIdioma_Bajar @id = @gIdiomaB;
 
 -- Esperado: no queda nada del test.
 SELECT * FROM partidos.Gol;
