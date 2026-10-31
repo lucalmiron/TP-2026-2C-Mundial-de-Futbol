@@ -45,15 +45,26 @@ CREATE TABLE #TestSetup83 (
 
 --/Datos de prueba
 
+-- Esperado: se crean 1 huso horario y 1 idioma
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (83)')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (83)';
+GO
+
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma T83')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma T83';
+GO
+
+DECLARE @idiomaT INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma T83');
+DECLARE @husoT INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (83)');
+
 -- Esperado: se crea el pais.
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 83')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 83', @pbi = 90;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 83', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 90;
 
 -- Esperado: se crea un segundo pais. Cada seleccion es de un pais distinto,
 -- si no, la clave (pais, mundial) quedaria duplicada y la segunda no se crearia.
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 83b')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 83b', @pbi = 91;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 83b', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 91;
 GO
 
 DECLARE @hPais INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 83');
@@ -88,11 +99,7 @@ GO
 
 DECLARE @hPais4 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 83');
 
--- Esperado: se crea el huso horario y la sede.
-IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (83)')
-	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (83)', @idPais = @hPais4;
-GO
-
+-- Esperado: se crea la sede.
 DECLARE @hHuso  INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (83)');
 DECLARE @hPais5 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 83');
 
@@ -142,10 +149,7 @@ IF NOT EXISTS (SELECT 1 FROM publicidad.CostoFranja WHERE IdSede = @hSedeId2)
 		@idSede = @hSedeId2;
 GO
 
--- Esperado: se crea el idioma, la campania y la publicidad.
-IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma T83')
-	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma T83';
-GO
+-- Esperado: se crea la campania y la publicidad.
 IF NOT EXISTS (SELECT 1 FROM publicidad.Campania WHERE Nombre = 'Campania T83')
 	EXEC SP.uspCampania_Registrar @nombre = 'Campania T83', @descripcion = 'Campania de prueba del test 83';
 GO
