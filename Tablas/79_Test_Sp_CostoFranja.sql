@@ -20,14 +20,19 @@ GO
 --/Datos de prueba
 --CostoFranja tiene clave foranea a Sede (@idSede), asi que el test crea su propia sede.
 --Los ids se resuelven por nombre en cada lote (los DECLARE no sobreviven a los GO).
-
-IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 91')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 91', @pbi = 91;
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma Test';
 GO
-DECLARE @cfPais INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 91');
 IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (91)')
-	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (91)', @idPais = @cfPais;
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (91)';
 GO
+
+DECLARE @husoT INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (91)');
+DECLARE @idiomaT INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
+IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 91')
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 91', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '20:00', @pbi = 91;
+GO
+
 DECLARE @cfPais2 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 91');
 DECLARE @cfHuso INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (91)');
 IF NOT EXISTS (SELECT 1 FROM sedes.Sede WHERE Nombre = 'Sede Test 91')
@@ -180,9 +185,6 @@ IF @cfSedeB IS NOT NULL
 		PRINT 'Aviso limpieza: ' + ERROR_MESSAGE()
 	END CATCH
 
-IF EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (91)')
-	DELETE FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (91)';
-
 DECLARE @cfPaisB INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 91');
 IF @cfPaisB IS NOT NULL
 	BEGIN TRY
@@ -191,6 +193,12 @@ IF @cfPaisB IS NOT NULL
 	BEGIN CATCH
 		PRINT 'Aviso limpieza: ' + ERROR_MESSAGE()
 	END CATCH
+
+IF EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (91)')
+	DELETE FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (91)';
+
+IF EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test')
+	DELETE FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test';
 
 -- Esperado: no queda nada del test.
 SELECT * FROM publicidad.CostoFranja;
