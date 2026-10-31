@@ -19,15 +19,25 @@ GO
 
 --/Datos de prueba
 
+-- Esperado: se crea el huso horario
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (73)')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (73)';
+-- Esperado: se crea 1 idioma para insertar los paises
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma Test';
+GO
+
+DECLARE @husoT INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (73)');
+DECLARE @idiomaT INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test')
+
 -- Esperado: se crea el pais (equipo 1 y pais organizador del mundial).
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 73')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 73', @pbi = 89;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 73', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 89;
 
 -- Esperado: se crea un segundo pais. Cada seleccion es de un pais distinto,
 -- si no, la clave (pais, mundial) quedaria duplicada y la segunda no se crearia.
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 73b')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 73b', @pbi = 90;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test 73b', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 90;
 GO
 
 DECLARE @tPais INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 73');
@@ -63,9 +73,7 @@ GO
 DECLARE @tPais4 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 73');
 
 -- Esperado: se crea el huso horario y la sede.
-IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (73)')
-	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (73)', @idPais = @tPais4;
-GO
+
 
 DECLARE @tHuso   INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (73)');
 DECLARE @tPais5  INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 73');
@@ -310,15 +318,6 @@ IF @lSede IS NOT NULL
 		PRINT 'Esperado: ' + ERROR_MESSAGE()
 	END CATCH
 
-DECLARE @lHuso INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (73)');
-IF @lHuso IS NOT NULL
-	BEGIN TRY
-		EXEC SP.uspHusoHorario_Bajar @idHuso = @lHuso
-	END TRY
-	BEGIN CATCH
-		PRINT 'Esperado: ' + ERROR_MESSAGE()
-	END CATCH
-
 DECLARE @lId INT, @lSel INT, @lj INT = 0;
 WHILE @lj < 5
 BEGIN
@@ -364,6 +363,24 @@ BEGIN
 	END CATCH
 	SET @lj = @lj + 1;
 END
+
+DECLARE @lHuso INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (73)');
+IF @lHuso IS NOT NULL
+	BEGIN TRY
+		EXEC SP.uspHusoHorario_Bajar @idHuso = @lHuso
+	END TRY
+	BEGIN CATCH
+		PRINT 'Esperado: ' + ERROR_MESSAGE()
+	END CATCH
+
+DECLARE @lIdioma INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
+IF @lIdioma IS NOT NULL
+	BEGIN TRY
+		EXEC SP.uspIdioma_Bajar @id = @lIdioma
+	END TRY
+	BEGIN CATCH
+		PRINT 'Esperado: ' + ERROR_MESSAGE()
+	END CATCH
 
 -- Esperado: no queda nada del test.
 SELECT * FROM partidos.Partido;
