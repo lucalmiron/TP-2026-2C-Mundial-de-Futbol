@@ -21,12 +21,22 @@ GO
 
 --/Datos de prueba
 
+-- Esperado: se crean 1 huso horario y 1 idioma
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (X)')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (X)';
+GO
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma Test';
+GO
+
+DECLARE @idiomaT INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
+DECLARE @husoT INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (X)')
+
 -- Esperado: se crean los 2 paises del partido.
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test X1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test X1', @pbi = 41;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test X1', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 41;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test X2')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test X2', @pbi = 42;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test X2', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 42;
 GO
 
 DECLARE @xPais1 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test X1');
@@ -63,11 +73,7 @@ GO
 
 DECLARE @xPais1d INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test X1');
 
--- Esperado: se crea el huso horario y la sede.
-IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (X)')
-	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (X)', @idPais = @xPais1d;
-GO
-
+-- Esperado: se crea la sede.
 DECLARE @xHuso  INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (X)');
 DECLARE @xPais1e INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test X1');
 
@@ -452,10 +458,6 @@ DECLARE @xSedeB INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede T
 IF @xSedeB IS NOT NULL
 	EXEC SP.uspSede_Bajar @idSede = @xSedeB;
 
-DECLARE @xHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (X)');
-IF @xHusoB IS NOT NULL
-	EXEC SP.uspHusoHorario_Bajar @idHuso = @xHusoB;
-
 SET @i = 0;
 WHILE @i < 5
 BEGIN
@@ -482,6 +484,14 @@ BEGIN
 	EXEC SP.uspPais_Bajar @idPais = @xId;
 	SET @i = @i + 1;
 END
+
+DECLARE @xHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (X)');
+IF @xHusoB IS NOT NULL
+	EXEC SP.uspHusoHorario_Bajar @idHuso = @xHusoB;
+
+DECLARE @xIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Nombre = 'Idioma Test');
+IF @xIdiomaB IS NOT NULL
+	EXEC SP.uspIdioma_Bajar @id = @xIdiomaB;
 
 --6) El motivo de la sustitucion.
 DECLARE @xMotivoB INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
