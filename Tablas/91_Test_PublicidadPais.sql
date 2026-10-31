@@ -41,7 +41,6 @@ DECLARE @idHuso1 INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'Hus
 -- Esperado: se crea la publicidad.
 IF NOT EXISTS (SELECT 1 FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 89')
 	EXEC SP.uspPublicidad_Registrar @nombre = 'Pub Test 89', @idCampania = @pCamp, @idIdioma = @pIdio;
-GO
 
 -- Esperado: se crea el pais.
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test 89')
