@@ -17,16 +17,26 @@ BEGIN
 END;
 GO
 
---/Datos de prueba: 3 paises (dos que juegan el partido y uno neutral)
+--/Datos de prueba
 
+-- Esperado: se insertan 1 huso horario y 1 idioma
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (A)')
+	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (A)';
+GO
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma Test';
+GO
+
+DECLARE @idiomaT INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
+DECLARE @husoT INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (A)')
+
+-- Esperado: se insertan 3 paises (dos que juegan el partido y uno neutral)
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test A1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test A1', @pbi = 11;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test A1', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 11;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test A2')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test A2', @pbi = 12;
-GO
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test A2', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 12;
 IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test A3')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test A3', @pbi = 13;
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test A3', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 13;
 GO
 
 -- Esperado: no imprime nada, se inserta 1 mundial.
@@ -61,12 +71,8 @@ IF NOT EXISTS (SELECT 1 FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF A2')
 	EXEC SP.uspSeleccion_Registrar @idPais = @idPaisA2c, @idMundial = @idMundialA2, @idGrupo = @idGrupoA2, @confederacion = 'CONF A2';
 GO
 
--- Esperado: no imprime nada, se inserta 1 huso horario y 1 sede.
+-- Esperado: no imprime nada, 1 sede.
 DECLARE @idPaisA1c INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test A1');
-
-IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (A)')
-	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (A)', @idPais = @idPaisA1c;
-GO
 
 DECLARE @idHusoA INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (A)');
 DECLARE @idPaisA1d INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test A1');
@@ -236,7 +242,7 @@ BEGIN
 	SET @i = @i + 1;
 END
 
---3) El partido, la fase, la sede y el huso horario.
+--3) El partido, la fase y la sede.
 DECLARE @vPartido INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 IF @vPartido IS NOT NULL
 	EXEC SP.uspPartido_Bajar @Id = @vPartido;
@@ -249,10 +255,6 @@ DECLARE @vSede INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Te
 IF @vSede IS NOT NULL
 	EXEC SP.uspSede_Bajar @idSede = @vSede;
 
-DECLARE @vHuso INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (A)');
-IF @vHuso IS NOT NULL
-	EXEC SP.uspHusoHorario_Bajar @idHuso = @vHuso;
-
 --4) Las selecciones del test.
 DECLARE @vSel INT;
 SET @i = 0;
@@ -264,7 +266,7 @@ BEGIN
 	SET @i = @i + 1;
 END
 
---5) El grupo, el mundial y los paises.
+--5) El grupo, el mundial, los paises, el idioma y la sede.
 DECLARE @vGrupo INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo A');
 IF @vGrupo IS NOT NULL
 	EXEC SP.uspGrupo_Bajar @id = @vGrupo;
@@ -283,6 +285,14 @@ BEGIN
 	EXEC SP.uspPais_Bajar @idPais = @vPaisB;
 	SET @i = @i + 1;
 END
+
+DECLARE @vHuso INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (A)');
+IF @vHuso IS NOT NULL
+	EXEC SP.uspHusoHorario_Bajar @idHuso = @vHuso;
+
+DECLARE @vIdioma INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Nombre = 'Idioma Test');
+IF @vIdioma IS NOT NULL
+	EXEC SP.uspIdioma_Bajar @id = @vIdioma;
 
 SELECT * FROM arbitros.Arbitraje;
 SELECT * FROM partidos.Partido;
