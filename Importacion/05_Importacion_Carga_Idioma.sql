@@ -84,7 +84,6 @@ END;
 CLOSE idiomas;
 DEALLOCATE idiomas;
 
-SELECT Idioma, Estado, Detalle FROM @Resultado ORDER BY Idioma;
 IF EXISTS (SELECT 1 FROM @Resultado WHERE Estado = 'Error')
     THROW 51001, 'Hubo errores. Revise el detalle; las altas exitosas se conservaron.', 1;
 GO
