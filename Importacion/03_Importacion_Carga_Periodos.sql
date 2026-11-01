@@ -6,6 +6,9 @@
 -- Ejecutar en MUNDIAL despues de instalar tablas y procedimientos.
 -- Puede repetirse sin duplicar registros por descripcion.
 
+USE MUNDIAL
+GO
+
 SET NOCOUNT ON;
 
 IF OBJECT_ID('partidos.Periodo', 'U') IS NULL

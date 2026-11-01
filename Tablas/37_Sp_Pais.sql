@@ -172,9 +172,6 @@ BEGIN
 		IF EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdPais = @idPais)
 			SET @errores += '- Existen 1 o mas registros relacionados: Mundial. Elimine dichos registros para continuar.' + N' ';
 
-		IF EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE IdPais = @idPais)
-			SET @errores += '- Existen 1 o mas registros relacionados: HusoHorario. Elimine dichos registros para continuar.' + N' ';
-
 		IF EXISTS(SELECT 1 FROM sedes.Sede WHERE IdPais = @idPais)
 			SET @errores += '- Existen 1 o mas registros relacionados: Sede. Elimine dichos registros para continuar.' + N' ';
 

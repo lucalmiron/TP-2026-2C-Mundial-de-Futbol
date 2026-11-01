@@ -3,14 +3,10 @@
 -- Fecha: 26/10/26.
 -- Objetivo: instalar la base, tablas y procedimientos de la entrega 5.
 -- Orden: 01-02 bases y esquemas; 03-36 tablas y restricciones; 37-69 SP.
--- Al terminar, ejecutar 70_Ejecutar_Pruebas.sql para las pruebas antiguas.
--- Las pruebas antiguas se ejecutan con 70_Ejecutar_Pruebas.sql en una instancia de pruebas.
--- Para las nuevas, preparar una base con 71_Preparar_Pruebas.sql y ejecutar un test manualmente.
--- La importacion de la entrega 6 no forma parte de esta instalacion.
--- Ejecutar con sqlcmd desde la carpeta Tablas.
 -- En SSMS, activar modo SQLCMD y cambiar ScriptPath por la ruta de Tablas.
 -- Mantener las comillas si la ruta contiene espacios.
-:setvar ScriptPath "."
+
+:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
 
 :ON ERROR EXIT
 
@@ -20,13 +16,15 @@ GO
 GO
 USE MUNDIAL;
 GO
+:r $(ScriptPath)\06_Tabla_Idioma.sql
+GO
+:r $(ScriptPath)\14_Tabla_HusoHorario.sql
+GO
 :r $(ScriptPath)\03_Tabla_Pais.sql
 GO
 :r $(ScriptPath)\04_Tabla_Grupo.sql
 GO
 :r $(ScriptPath)\05_Tabla_Club.sql
-GO
-:r $(ScriptPath)\06_Tabla_Idioma.sql
 GO
 :r $(ScriptPath)\07_Tabla_Fase.sql
 GO
@@ -41,8 +39,6 @@ GO
 :r $(ScriptPath)\12_Tabla_Campania.sql
 GO
 :r $(ScriptPath)\13_Tabla_Mundial.sql
-GO
-:r $(ScriptPath)\14_Tabla_HusoHorario.sql
 GO
 :r $(ScriptPath)\15_Tabla_Sede.sql
 GO
