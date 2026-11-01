@@ -1,15 +1,9 @@
-#!/usr/bin/env python3
 """
-Descarga el JSON de cada partido de Promiedos a partir de un JSON con los ids.
-
-Uso:
-    python descargar_partidos.py ids.json
-    python descargar_partidos.py ids.json -o partidos --delay 0.5
-    python descargar_partidos.py ids.json --key id --dry-run
-
+python descargar_partidos.py ids.json
+python descargar_partidos.py ids.json -o partidos --delay 0.5
+python descargar_partidos.py ids.json --key id --dry-run
 Requiere: pip install requests
 """
-
 import argparse
 import json
 import sys
@@ -32,20 +26,11 @@ HEADERS = {
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "same-site",
-    # Header propio de Promiedos: sin este, la API contesta {} vacio.
-    # Si algun dia vuelve a fallar, miralo en DevTools > Network y pasalo con -H "x-ver: NUEVO".
     "x-ver": "1.11.7.5",
 }
 
 
 def extraer_ids(data, key="id", lista="games"):
-    """Saca los ids de los partidos.
-
-    - Si el JSON es un dict con una lista `lista` (por defecto "games"),
-      toma solo el `key` de cada partido (no toca los ids de equipos anidados).
-    - Si es una lista de strings/numeros -> son los ids.
-    - Si no, recorre todo y junta los valores de las claves `key`.
-    """
     ids = []
 
     if isinstance(data, dict) and isinstance(data.get(lista), list):
@@ -71,7 +56,6 @@ def extraer_ids(data, key="id", lista="games"):
 
         recorrer(data)
 
-    # sacar duplicados manteniendo el orden
     vistos = set()
     unicos = []
     for i in ids:
@@ -82,7 +66,6 @@ def extraer_ids(data, key="id", lista="games"):
 
 
 def descargar_partido(session, match_id, reintentos=3, timeout=20, debug=False):
-    """Devuelve el JSON del partido o lanza excepcion si falla tras los reintentos."""
     url = BASE_URL.format(id=match_id)
     ultimo_error = None
 
@@ -103,7 +86,6 @@ def descargar_partido(session, match_id, reintentos=3, timeout=20, debug=False):
             resp.raise_for_status()
             data = resp.json()
             if not data:
-                # La API contesto 200 pero con {} o []: reintentar no sirve.
                 raise RuntimeError(
                     f"respuesta vacia (status {resp.status_code}, body: {resp.text[:100]!r}). "
                     "Probablemente faltan headers; usa --debug y -H para pasarlos."
@@ -119,7 +101,6 @@ def descargar_partido(session, match_id, reintentos=3, timeout=20, debug=False):
 
 
 def archivo_valido(path):
-    """True si el archivo existe y tiene un JSON no vacio (ignora los '{}' de descargas fallidas)."""
     if not path.exists():
         return False
     try:

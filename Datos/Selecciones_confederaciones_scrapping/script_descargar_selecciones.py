@@ -10,12 +10,9 @@ URL = "https://www.ussoccer.com/stories/2025/09/which-nations-qualified-2026-fif
 
 
 def extraer(html: str) -> pd.DataFrame:
-    """Toma el HTML renderizado y devuelve solo seleccion y confederacion."""
     tabla = pd.read_html(StringIO(html), header=0)[0]
     df = pd.DataFrame({
-        # "1. USA" -> "USA"
         "seleccion": tabla["Team"].str.replace(r"^\d+\.\s*", "", regex=True).str.strip(),
-        # la pagina mezcla "CONCACAF" y "Concacaf" -> normalizo
         "confederacion": tabla["Confederation"].str.strip().str.upper(),
     })
     return df
@@ -28,7 +25,7 @@ def guardar_xml(df: pd.DataFrame, ruta: str) -> None:
         ET.SubElement(sel, "nombre").text = fila.seleccion
         ET.SubElement(sel, "confederacion").text = fila.confederacion
     arbol = ET.ElementTree(raiz)
-    ET.indent(arbol, space="  ")  # formato legible
+    ET.indent(arbol, space="  ") 
     arbol.write(ruta, encoding="utf-8", xml_declaration=True)
 
 
