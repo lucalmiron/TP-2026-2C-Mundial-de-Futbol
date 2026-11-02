@@ -7,10 +7,11 @@
 -- Fecha 01/11/26
 -- Entrega 6: importar el JSON original de GET /timezones (OpenTimezone).
 
+-- En SSMS: Consulta -> Modo SQLCMD. Cambiar la ruta de abajo.
+:setvar RutaHusos "C:\ruta\proyecto\Datos\Husos_horarios\husos_horarios.json"
+
 USE MUNDIAL
 GO
-
-DECLARE @rutaArchivo NVARCHAR(4000) = N'C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json';
 
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -20,7 +21,7 @@ IF @@TRANCOUNT <> 0
     THROW 51000, 'Ejecute el importador fuera de una transaccion externa.', 1;
 IF (2 & @@OPTIONS) = 2
     THROW 51000, 'Desactive IMPLICIT_TRANSACTIONS antes de importar.', 1;
-IF NULLIF(LTRIM(RTRIM(@rutaArchivo)), N'') IS NULL
+IF NULLIF(LTRIM(RTRIM(N'$(RutaHusos)')), N'') IS NULL
     THROW 51000, 'Debe indicar la ruta del JSON en el servidor SQL.', 1;
 IF OBJECT_ID(N'sedes.HusoHorario', N'U') IS NULL
    OR OBJECT_ID(N'SP.uspHusoHorario_Registrar', N'P') IS NULL
@@ -28,14 +29,13 @@ IF OBJECT_ID(N'sedes.HusoHorario', N'U') IS NULL
 IF COL_LENGTH(N'sedes.HusoHorario', N'IdPais') IS NOT NULL
     THROW 51000, 'Este importador requiere la version de HusoHorario sin IdPais.', 1;
 
-DECLARE @json NVARCHAR(MAX), @sql NVARCHAR(MAX);
--- BULK no acepta la ruta como variable. Se escapan comillas simples.
-SET @sql = N'SELECT @contenido = BulkColumn FROM OPENROWSET(BULK '''
-         + REPLACE(@rutaArchivo, N'''', N'''''')
-         + N''', SINGLE_CLOB, CODEPAGE = ''65001'') AS archivo;';
+DECLARE @json NVARCHAR(MAX);
 BEGIN TRY
-    EXEC sys.sp_executesql @sql, N'@contenido NVARCHAR(MAX) OUTPUT',
-         @contenido = @json OUTPUT;
+    -- SQLCMD sustituye la ruta antes de enviar el lote a SQL Server.
+    SELECT @json = BulkColumn
+    FROM OPENROWSET(
+        BULK '$(RutaHusos)', SINGLE_CLOB, CODEPAGE = '65001'
+    ) AS archivo;
 END TRY
 BEGIN CATCH
     DECLARE @errorLectura NVARCHAR(2048) = LEFT(

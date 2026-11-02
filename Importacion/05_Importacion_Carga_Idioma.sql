@@ -7,11 +7,12 @@
 -- Fecha 01/11/26
 -- Carga del catalogo Idioma leyendo los idiomas desde pais_idioma.csv. Ejecutar en MUNDIAL.
 
+-- En SSMS: Consulta -> Modo SQLCMD. Cambiar la ruta de abajo.
+:setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
+
 USE [MUNDIAL];
 GO
 SET NOCOUNT ON;
-
-DECLARE @RutaCsv NVARCHAR(4000) = N'C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv'; 
 
 IF UPPER(DB_NAME()) <> N'MUNDIAL'
     THROW 51000, 'Seleccione la base MUNDIAL.', 1;
@@ -25,12 +26,11 @@ IF @@TRANCOUNT <> 0 OR (2 & @@OPTIONS) = 2
 CREATE TABLE #PaisIdiomaCsv (Pais NVARCHAR(100) NULL, Idioma NVARCHAR(100) NULL);
 
 BEGIN TRY
-    DECLARE @sql NVARCHAR(MAX) = N'
-        BULK INSERT #PaisIdiomaCsv
-        FROM ' + QUOTENAME(@RutaCsv, '''') + N'
-        WITH (FORMAT = ''CSV'', FIRSTROW = 2, FIELDTERMINATOR = '','',
-              ROWTERMINATOR = ''0x0a'', CODEPAGE = ''65001'', TABLOCK);';
-    EXEC sys.sp_executesql @sql;
+    -- SQLCMD sustituye la ruta antes de enviar el lote a SQL Server.
+    BULK INSERT #PaisIdiomaCsv
+    FROM '$(RutaIdiomas)'
+    WITH (FORMAT = 'CSV', FIRSTROW = 2, FIELDTERMINATOR = ',',
+          ROWTERMINATOR = '0x0a', CODEPAGE = '65001', TABLOCK);
 END TRY
 BEGIN CATCH
     DROP TABLE #PaisIdiomaCsv;
