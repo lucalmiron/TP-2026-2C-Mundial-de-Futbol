@@ -31,3 +31,13 @@ La tanda se identifica con is_penalties_stage = true y se carga por separado del
 
 
 Para conseguir los Json de todos los partidos hay que crear un script en python y que los descargue mediante los Id de los partidos del Json cargado en el repo, lo hago yo (Santiago).
+
+7. Banco Mundial — API XML: PBI per cápita de cada país.
+- Indicador: NY.GDP.PCAP.CD (PBI per cápita en dólares corrientes), año 2024.
+- Circuito: script_descargar_pbi_API.py (descarga, en Datos\BancoMundial\)
+  → pbi_por_pais.xml (sin modificar, con todos los países, paginación unida)
+  → XX_Importacion_Carga_PBI_Pais.sql (importación a equipos.Pais.PBI).
+- El importador solo actualiza países que ya existen en la base (cargados por
+  06_Importacion_Carga_Pais.sql); los demás países del XML se saltean.
+- Equivalencia manual País_NOMBRE ↔ ISO3 en pais_iso3.csv, porque la API
+  devuelve el código ISO3 de 3 letras y no el nombre usado en la base.
