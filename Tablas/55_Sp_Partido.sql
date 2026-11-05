@@ -7,9 +7,6 @@
 -- 26/10/26
 -- Objetivo: Gestionar Tabla Partido
 
--- Ejecutar en la base seleccionada por el instalador.
-GO
-
 -- Fecha del partido se interpreta en UTC. El sufijo del huso puede ser una etiqueta.
 CREATE OR ALTER FUNCTION sedes.fnFechaHoraLocal(@fecha DATE, @hora TIME, @huso VARCHAR(50))
 RETURNS DATETIMEOFFSET
@@ -21,7 +18,22 @@ BEGIN
 	IF EXISTS (SELECT 1 FROM sys.time_zone_info WHERE name = @nombre)
 		RETURN (@utc AT TIME ZONE 'UTC') AT TIME ZONE @nombre;
 
-	-- Desplazamientos fijos: UTC-3, UTC+05:30, UTC-3 (Prueba).
+	DECLARE @windows VARCHAR(50) = CASE @nombre
+		WHEN 'America/New_York' THEN 'Eastern Standard Time'
+		WHEN 'America/Toronto' THEN 'Eastern Standard Time'
+		WHEN 'America/Chicago' THEN 'Central Standard Time'
+		WHEN 'America/Los_Angeles' THEN 'Pacific Standard Time'
+		WHEN 'America/Mexico_City' THEN 'Central Standard Time (Mexico)'
+		WHEN 'America/Monterrey' THEN 'Central Standard Time (Mexico)'
+		WHEN 'America/Vancouver' THEN 'Pacific Standard Time' END;
+	IF @nombre = 'America/Vancouver' AND @fecha >= '20261101'
+		SET @windows = CASE WHEN EXISTS (SELECT 1 FROM sys.time_zone_info
+		    WHERE name = 'British Columbia Standard Time')
+		    THEN 'British Columbia Standard Time' ELSE 'Yukon Standard Time' END;
+	IF EXISTS (SELECT 1 FROM sys.time_zone_info WHERE name = @windows)
+		RETURN (@utc AT TIME ZONE 'UTC') AT TIME ZONE @windows;
+
+	-- Desplazamientos fijos: UTC-3, UTC+05:30, UTC-3.
 	SET @nombre = LEFT(@nombre, CHARINDEX(' ', @nombre + ' ') - 1);
 	IF @nombre = 'UTC' RETURN TODATETIMEOFFSET(@utc, 0);
 	IF LEFT(@nombre, 3) <> 'UTC' OR SUBSTRING(@nombre, 4, 1) NOT IN ('+', '-') RETURN NULL;
@@ -59,8 +71,6 @@ IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID ('SP.uspPart
 	DROP PROCEDURE SP.uspPartido_Registrar
 GO
 
--- Nota: el marcador oficial (GolesEq1/GolesEq2) lo mueve Gol via
--- SPTRANS.uspGol_Registrar y SPTRANS.uspGol_Bajar, por eso el alta inserta siempre 0-0
 CREATE PROCEDURE SP.uspPartido_Registrar
 @IdFase INT, @IdSede INT, @IdMundial INT, @Eq1 INT, @Eq2 INT,
 @Fecha DATE, @HoraUTC TIME, @HoraLocal TIME,
@@ -145,8 +155,6 @@ IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspParti
 	DROP PROCEDURE SP.uspPartido_Update
 GO
 
--- Nota: el marcador oficial (GolesEq1/GolesEq2) lo mueve Gol via
--- SPTRANS.uspGol_Registrar y SPTRANS.uspGol_Bajar. Los parametros de goles se conservan por compatibilidad, pero se rechazan
 CREATE PROCEDURE SP.uspPartido_Update
 @Id INT,
 @IdFase INT = NULL,

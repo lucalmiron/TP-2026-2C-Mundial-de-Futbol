@@ -1,0 +1,182 @@
+seleccion,nombre_csv,nombre_promiedos,habilitado,criterio
+Algeria,Mohamed Amine Tougai,Mohamed Tougai,1,Nombre con componentes adicionales
+Algeria,Rayan Aït-Nouri,Rayan Ait Nouri,1,"Puntuacion, espacios o transliteracion"
+Algeria,Yassine Titraoui,Y. Titraoui,1,Iniciales y apellido coincidentes
+Argentina,Flaco López,José Manuel López,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Australia,Jordy Bos,Jordan Bos,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Australia,Mo Touré,Mohamed Toure,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Brazil,Gleison Bremer,Bremer,1,Nombre corto presente completo en el otro nombre
+Brazil,Vinicius Júnior,Vinicius,1,Nombre corto presente completo en el otro nombre
+Brazil,Éderson Silva,Éderson,1,Nombre corto presente completo en el otro nombre
+Cabo Verde,C.J. dos Santos,CJ dos Santos,1,"Puntuacion, espacios o transliteracion"
+Cabo Verde,Dailon Livramento,Livramento,1,Nombre corto presente completo en el otro nombre
+Cabo Verde,Diney,Diney Borges,1,Nombre corto presente completo en el otro nombre
+Cabo Verde,Gilson Benchimol,Benchimol,1,Nombre corto presente completo en el otro nombre
+Cabo Verde,João Paulo Fernandes,João Paulo,1,Nombre con componentes adicionales
+Cabo Verde,Kevin Pina,Kevin Lenini,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Cabo Verde,Pico,Roberto Lopes,1,Identidad indicada por el usuario; nombre destino localizado en alineaciones JSON
+Cabo Verde,Sidny Lopes Cabral,Sidny Cabral,1,Nombre con componentes adicionales
+Cabo Verde,Yannick,Yannick Semedo,1,Nombre corto presente completo en el otro nombre
+Canada,Dayne St. Clair,Dayne St Clair,1,"Puntuacion, espacios o transliteracion"
+Canada,Nathan Saliba,Nathan-Dylan Saliba,1,Nombre con componentes adicionales
+Colombia,Cucho,Juan Camilo Hernández,1,Identidad indicada por el usuario; nombre destino localizado en alineaciones JSON
+Colombia,Juan Camilo Portilla,Juan Portilla,1,Nombre con componentes adicionales
+Colombia,Juan Quintero,Juan Fernando Quintero,1,Nombre con componentes adicionales
+Colombia,Álvaro David Montero,Álvaro Montero,1,Nombre con componentes adicionales
+Congo DR,Meschak Elia,Meschack Elia,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Côte d'Ivoire,Jean Seri,Jean Michael Seri,1,Nombre con componentes adicionales
+Côte d'Ivoire,Obite N'Dicka,Evan N'Dicka,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Ecuador,Félix Torres Caicedo,Félix Torres,1,Nombre con componentes adicionales
+Egypt,El Mahdy Soliman,Mahdi Soliman,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Egypt,Marwan Attia,Marwan Ateya,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Egypt,Mohamed Abdelmonem,Mohamed Abdel Monem,1,"Puntuacion, espacios o transliteracion"
+Egypt,Mohamed El-Shenawy,Mohamed El Shenawy,1,"Puntuacion, espacios o transliteracion"
+Egypt,Mostafa Shobeir,Mostafa Shobeir Oufa,1,Nombre con componentes adicionales
+Egypt,Nabil Dunga,Nabil Emad Dunga,1,Nombre con componentes adicionales
+Egypt,Ramy Rabia,Rami Rabia,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Egypt,Trézéguet,Mahmoud Trézéguet,1,Nombre corto presente completo en el otro nombre
+Egypt,Zizo,Ahmed Sayed Zizo,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+France,Jean-Philippe Mateta,Jean Philippe Mateta,1,"Puntuacion, espacios o transliteracion"
+Germany,Pascal Groß,Pascal Gross,1,"Puntuacion, espacios o transliteracion"
+Ghana,Abdul Fatawu Issahaku,Issahaku Fatawu,1,Nombre con componentes adicionales
+Ghana,Abdul Rahman Baba,Baba Rahman,1,Nombre con componentes adicionales
+Ghana,Christopher Bonsu-Baah,Christopher Bonsu Baah,1,"Puntuacion, espacios o transliteracion"
+Haiti,Carl Fred Sainté,Carl Sainté,1,Nombre con componentes adicionales
+Haiti,Danley Jean-Jacques,Danley Jean Jacques,1,"Puntuacion, espacios o transliteracion"
+Haiti,Derrick Etienne,Derrick Etienne Jr.,1,Nombre con componentes adicionales
+Haiti,Duke Lacroix,Markhus Lacroix,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Haiti,Lenny Joseph,L. Joseph,1,Iniciales y apellido coincidentes
+IR Iran,Aria Yousefi,Arya Yousefi,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+IR Iran,Hossein Hosseini,Seyed Hossein Hosseini,1,Nombre con componentes adicionales
+IR Iran,Hossein Kanaanizadegan,Hossein Kanaani,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+IR Iran,Rouzbeh Cheshmi,Roozbeh Cheshmi,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+IR Iran,Saeid Ezatolahi,Saeed Ezatolahi,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+IR Iran,Shoja' Khalilzadeh,Shoja Khalilzadeh,1,"Puntuacion, espacios o transliteracion"
+Iraq,Ahmed Maknzi,Ahmed Hasan Maknzi,1,Nombre con componentes adicionales
+Iraq,Akam Hashim,Akam Hashem,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Iraq,Ali Al Hamadi,Ali Al-Hamadi,1,"Puntuacion, espacios o transliteracion"
+Iraq,Ali Yousif,Ali Yousif Hashim,1,Nombre con componentes adicionales
+Iraq,Amir Al Ammari,Amir Al-Ammari,1,"Puntuacion, espacios o transliteracion"
+Iraq,Ayman Hussein,Aymen Hussein,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Iraq,Jalal Hassan,Jalal Hassan Hachim,1,Nombre con componentes adicionales
+Iraq,Zaid Tahseen,Zaid Tahsen,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Jordan,Abdallah Al-Fakhouri,Abdallah Al Fakhouri,1,"Puntuacion, espacios o transliteracion"
+Jordan,Ali Azaizeh,Ali Al-Azaizeh,1,Nombre con componentes adicionales
+Jordan,Ali Olwan,Ali Alowan,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Jordan,Husam Abu Dahab,Husam Abudahab,1,"Puntuacion, espacios o transliteracion"
+Jordan,Ibrahim Sadeh,Ibrahim Saadeh,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Jordan,Ihsan Haddad,Ehsan Haddad,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Jordan,Mahmoud Al-Mardi,Mahmoud Al Mardi,1,"Puntuacion, espacios o transliteracion"
+Jordan,Mo Abualnadi,Mohammad Abualnadi,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Jordan,Mohammad Al-Dawud,Mohammad Al-Dawoud,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Jordan,Mohammad Taha,Mohammad Taha Abu Ghoush,1,Nombre con componentes adicionales
+Jordan,Mohannad Abu Taha,Mohannad Mahmoud Abu Taha,1,Nombre con componentes adicionales
+Jordan,Noor Al Rawabdeh,Noor Al-Rawabdeh,1,"Puntuacion, espacios o transliteracion"
+Jordan,Nour Bani Attiah,Nour Bani Ateyah,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Jordan,Odeh Al-Fakhouri,Odeh Fakhouri,1,Nombre con componentes adicionales
+Jordan,Saed Al-Rosan,Saed Al Rosan,1,"Puntuacion, espacios o transliteracion"
+Jordan,Salim Obaid,Saleem Obaid,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Jordan,Sharara,Mohamed Abu Zraiq Sharara,1,Nombre corto presente completo en el otro nombre
+Jordan,Yazeed Abulaila,Yazeed Abu laila,1,"Puntuacion, espacios o transliteracion"
+Korea Republic,Bae Jun-ho,Joon-ho Bae,1,Identidad indicada por el usuario; nombre destino localizado en alineaciones JSON
+Korea Republic,Cho Wi-je,Wi-je Cho,1,"Mismos componentes, distinto orden"
+Korea Republic,Eom Ji-sung,Ji-sung Eom,1,"Mismos componentes, distinto orden"
+Korea Republic,Hwang In-beom,In-beom Hwang,1,"Mismos componentes, distinto orden"
+Korea Republic,Jo Hyeon-woo,Hyeon-woo Jo,1,"Mismos componentes, distinto orden"
+Korea Republic,Kim Jin-gyu,Jin-gyu Kim,1,"Mismos componentes, distinto orden"
+Korea Republic,Kim Moon-hwan,Moon-hwan Kim,1,"Mismos componentes, distinto orden"
+Korea Republic,Kim Seung-gyu,Seung-Gyu Kim,1,"Mismos componentes, distinto orden"
+Korea Republic,Lee Dong-gyeong,Dong-Gyeong Lee,1,"Mismos componentes, distinto orden"
+Korea Republic,Lee Gi-hyuk,Gi-hyuk Lee,1,"Mismos componentes, distinto orden"
+Korea Republic,Lee Han-beom,Han-beom Lee,1,"Mismos componentes, distinto orden"
+Korea Republic,Lee Tae-seok,Tae-seok Lee,1,"Mismos componentes, distinto orden"
+Korea Republic,Paik Seung-ho,Seung-Ho Paik,1,"Mismos componentes, distinto orden"
+Korea Republic,Park Jinseob,Jin-seob Park,1,Identidad indicada por el usuario; nombre destino localizado en alineaciones JSON
+Korea Republic,Seol Young-woo,Young-woo Seol,1,"Mismos componentes, distinto orden"
+Korea Republic,Son Heung-min,Heung-Min Son,1,"Mismos componentes, distinto orden"
+Korea Republic,Song Bum-keun,Bum-keun Song,1,"Mismos componentes, distinto orden"
+Korea Republic,Yang Hyun-jun,Hyun-jun Yang,1,"Mismos componentes, distinto orden"
+Mexico,Guillermo Martínez Ayala,Guillermo Martínez,1,Nombre con componentes adicionales
+Morocco,Achraf Hakimi,Hakimi,1,Nombre corto presente completo en el otro nombre
+Morocco,Ayoube Amaimouni,Ayoube Amaimouni-Echghouyab,1,Nombre con componentes adicionales
+Morocco,Bilal El Khannouss,Bilel El Khanouss,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Morocco,Munir,Munir El Kajoui,1,Nombre corto presente completo en el otro nombre
+Netherlands,Memphis,Memphis Depay,1,Nombre corto presente completo en el otro nombre
+New Zealand,Callan Elliot,Callan Elliott,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+New Zealand,Ryan Thomas,R. Thomas,1,Iniciales y apellido coincidentes
+Norway,Alexander Sørloth,Alexander Sorloth,1,"Puntuacion, espacios o transliteracion"
+Norway,David Møller Wolfe,David Moller Wolfe,1,"Puntuacion, espacios o transliteracion"
+Norway,Fredrik André Bjørkan,Fredrik Bjørkan,1,Nombre con componentes adicionales
+Norway,Jens Petter Hauge,Jens Hauge,1,Nombre con componentes adicionales
+Norway,Leo Østigård,Leo Oestigaard,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Norway,Martin Ødegaard,Martin Odegaard,1,"Puntuacion, espacios o transliteracion"
+Norway,Torbjørn Heggem,Torbjörn Heggem,1,"Puntuacion, espacios o transliteracion"
+Norway,Ørjan Nyland,Örjan Nyland,1,"Puntuacion, espacios o transliteracion"
+Panama,Alberto Quintero,A. Quintero,1,Iniciales y apellido coincidentes
+Panama,Andrés Andrade Cedeño,Andrés Andrade,1,Nombre con componentes adicionales
+Panama,Erick Davis,Éric Davis,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Panama,Michael Amir Murillo,Amir Murillo,1,Nombre con componentes adicionales
+Panama,Roderick Miller,R. Miller,1,Iniciales y apellido coincidentes
+Paraguay,Gatito Fernández,Roberto Fernández,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Paraguay,Gustavo Velásquez,Gustavo Velázquez,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Paraguay,Juan Cáceres,Juan José Cáceres,1,Nombre con componentes adicionales
+Paraguay,Kaku,Alejandro Romero,1,Identidad indicada por el usuario; nombre destino localizado en alineaciones JSON
+Paraguay,Matías Galarza,Matías Galarza Fonda,1,Nombre con componentes adicionales
+Paraguay,Mauricio,Mauricio Magalhaes,1,Nombre corto presente completo en el otro nombre
+Qatar,Ahmed Al-Ganehi,Ahmed Al Ganehi,1,"Puntuacion, espacios o transliteracion"
+Qatar,Ahmed Fathy,Ahmed Fathi,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Qatar,Al-Hashmi Al-Hussain,Al Hashmi Al Hussain,1,"Puntuacion, espacios o transliteracion"
+Qatar,Hassan Al-Haydos,Hasan Al-Haydos,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Qatar,Homam Ahmed,Homam Al-Amin,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Qatar,Mohamed Manai,Mohamed Al-Mannai,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Qatar,Ró-Ró,Pedro Miguel,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Qatar,Sultan Al-Brake,Sultan Al Brake,1,"Puntuacion, espacios o transliteracion"
+Saudi Arabia,Abdullah Al-Khaibari,Abdullah Alkhaibari,1,"Puntuacion, espacios o transliteracion"
+Saudi Arabia,Ahmed Al-Kassar,Ahmed Al Kassar,1,"Puntuacion, espacios o transliteracion"
+Saudi Arabia,Alaa Al Hejji,Alaa Hejji,1,Nombre con componentes adicionales
+Saudi Arabia,Firas Al-Buraikan,Firas Al-Braikan,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Saudi Arabia,Hassan Kadesh,Hasan Kadesh,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Saudi Arabia,Mohammed Al-Owais,Mohammed Al Owais,1,"Puntuacion, espacios o transliteracion"
+Saudi Arabia,Musab Al Juwayr,Musab Al-Juwayr,1,"Puntuacion, espacios o transliteracion"
+Saudi Arabia,Nawaf Al Aqidi,Nawaf Al-Aqeedi,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Saudi Arabia,Salem Al-Dawsari,Salem Al Dawsari,1,"Puntuacion, espacios o transliteracion"
+Saudi Arabia,Sultan Mendash,Sultan Mandash,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Saudi Arabia,Ziyad Al Johani,Ziyad Aljohani,1,"Puntuacion, espacios o transliteracion"
+Scotland,Andy Robertson,Andrew Robertson,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Scotland,Ben Gannon-Doak,Ben Doak,1,Nombre con componentes adicionales
+Scotland,Dominic Hyam,D. Hyam,1,Iniciales y apellido coincidentes
+Scotland,John Souttar,J. Souttar,1,Iniciales y apellido coincidentes
+Senegal,Pape Matar Sarr,Pape Sarr,1,Nombre con componentes adicionales
+South Africa,Bradley Cross,B. Cross,1,Iniciales y apellido coincidentes
+South Africa,Mbekezeli Mbokazi,M. Mbokazi,1,Iniciales y apellido coincidentes
+South Africa,Sphephelo Sithole,Yaya Sithole,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Spain,Fabián Ruiz Peña,Fabián Ruiz,1,Nombre con componentes adicionales
+Spain,Rodri,Rodri Hernández,1,Nombre corto presente completo en el otro nombre
+Sweden,Herman Johansson,H. Johansson,1,Iniciales y apellido coincidentes
+Sweden,Jacob Widell Zetterström,Jacob Zetterström,1,Nombre con componentes adicionales
+Switzerland,Eray Cömert,Eray Cümart,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Tunisia,Ali Abdi,A. Abdi,1,Iniciales y apellido coincidentes
+Tunisia,Mortadha Ben Ouanes,M. Ben Ouanes,1,Iniciales y apellido coincidentes
+Tunisia,Mouhib Chamakh,Abdelmouhib Chamakh,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Tunisia,Sabri Ben Hassen,Sabri Ben Hessen,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Türkiye,Abdülkerim Bardakcı,Abdulkerim Bardakci,1,"Puntuacion, espacios o transliteracion"
+Türkiye,Altay Bayındır,Altay Bayindir,1,"Puntuacion, espacios o transliteracion"
+Türkiye,Barış Alper Yılmaz,Baris Yilmaz,1,Nombre con componentes adicionales
+Türkiye,Eren Elmalı,Eren  Elmalı,1,"Puntuacion, espacios o transliteracion"
+Türkiye,Mert Günok,M. Günok,1,Iniciales y apellido coincidentes
+Türkiye,Oğuz Aydın,Oğuz Aydin,1,"Puntuacion, espacios o transliteracion"
+Türkiye,Samet Akaydın,Samet Akaydin,1,"Puntuacion, espacios o transliteracion"
+Türkiye,İrfan Can Kahveci,Irfan Kahveci,1,Nombre con componentes adicionales
+United States,Alejandro Zendejas,Álex Zendejas,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+United States,Chris Brady,Christopher Brady,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+United States,Gio Reyna,Giovanni Reyna,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+United States,Joe Scally,Joseph Scally,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+United States,Timothy Weah,T. Weah,1,Iniciales y apellido coincidentes
+Uruguay,Juan Manuel Sanabria,Juan Sanabria,1,Nombre con componentes adicionales
+Uruguay,Maxi Araújo,Maximiliano Araújo,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Uzbekistan,Abbosbek Fayzullayev,Abbosbek Fayzullaev,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Uzbekistan,Abduvohid Nematov,Abduvokhid Nematov,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Uzbekistan,Aziz Gʻaniyev,Aziz Ganiev,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Uzbekistan,Azizbek Amonov,Azizbek Amanov,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Uzbekistan,Khojiakbar Alijonov,Khozhiakbar Alizhonov,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
+Uzbekistan,Odiljon Hamrobekov,Odildzhon Khamrobekov,1,Candidato 1 habilitado por decision del usuario; verificacion individual pendiente
