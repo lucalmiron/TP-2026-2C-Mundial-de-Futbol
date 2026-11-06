@@ -10,11 +10,20 @@
 -- Las propuestas habilitado=0 NO se aplican. No se inventan dorsales.
 -- Dependencias: paises, selecciones del Mundial 1, clubes y SP de entrega 5.
 -- SSMS: activar Consulta > Modo SQLCMD y ejecutar el archivo completo.
-:setvar RutaJugadores "C:\ruta\proyecto\Datos\jugadores.csv"
-:setvar RutaAliasJugadores "C:\ruta\proyecto\Datos\equivalencias_jugadores.csv"
-:setvar RutaEquipos "C:\ruta\proyecto\Datos\equivalencias_equipos_jugadores.csv"
-:setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
-:setvar RutaLectura "C:\ruta\proyecto\Importacion\10_Lectura_JSON_Jugadores.sql"
+
+--:setvar RutaJugadores "C:\ruta\proyecto\Datos\jugadores.csv"
+--:setvar RutaAliasJugadores "C:\ruta\proyecto\Datos\equivalencias_jugadores.csv"
+--:setvar RutaEquipos "C:\ruta\proyecto\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
+--:setvar RutaLectura "C:\ruta\proyecto\Importacion\10_Lectura_JSON_Jugadores.sql"
+
+--L
+:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+:setvar RutaEquipos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar CarpetaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLectura "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
+--L
 
 USE MUNDIAL;
 GO
@@ -160,7 +169,7 @@ IF EXISTS (
     THROW 51600,'Una equivalencia apunta al nombre de otro jugador del CSV. Revisar identidad.',1;
 
 -- Lecturas estaticas. Para incorporar archivos nuevos, agregar bloques al auxiliar.
-:r "$(RutaLectura)"
+:r $(RutaLectura)
 
 DECLARE @Dorsales TABLE (Slug NVARCHAR(100),Nombre NVARCHAR(200),Numero INT,Posicion NVARCHAR(100));
 DECLARE @archivo NVARCHAR(100),@json NVARCHAR(MAX);
