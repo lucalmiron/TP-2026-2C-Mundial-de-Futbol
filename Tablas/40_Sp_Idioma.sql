@@ -85,6 +85,9 @@ BEGIN
 		IF NOT EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma = @id)
 			SET @errores += '- Valor inexistente: ID Idioma.' + N' ';
 
+		IF EXISTS(SELECT 1 FROM equipos.Pais WHERE Idioma = @id)
+			SET @errores += N'- Existen paises relacionados con el idioma: Pais. ';
+
 		IF EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Idioma = @id)
 			SET @errores += '- Existen 1 o mas registros relacionados: HablaIdioma. Elimine dichos registros para continuar.' + N' ';
 

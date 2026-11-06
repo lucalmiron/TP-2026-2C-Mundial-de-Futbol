@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza
+﻿-- Universidad Nacional de La Matanza
 -- Bases de datos aplicada
 -- Almiron, Luca
 -- Figueroa, Santiago
@@ -7,15 +7,12 @@
 -- 26/10/26
 -- Objetivo: Testear Registro y Baja de Gol
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 --Juegan CONF G1 (autor) y CONF G2 (asistencia); CONF G3 esta preservada para probar los casos
 --de jugador que no participo del encuentro.
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -376,14 +373,15 @@ CLOSE goles_alineaciones;
 DEALLOCATE goles_alineaciones;
 
 --2) Los jugadores del test.
-SET @i = 0;
-WHILE @i < 10
-BEGIN
-	SET @gId = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre LIKE 'Gol Test%');
-	IF @gId IS NULL BREAK;
-	EXEC SPTRANS.uspJugador_Bajar @id = @gId;
-	SET @i = @i + 1;
-END
+DECLARE @jugadoresPrueba TABLE (IdJugador INT PRIMARY KEY);
+INSERT INTO @jugadoresPrueba (IdJugador)
+SELECT J.IdJugador FROM equipos.Jugador AS J
+JOIN equipos.Persona AS P ON P.IdPersona = J.IdJugador
+WHERE P.Nombre IN (
+    'Gol Test A1', 'Gol Test A2', 'Gol Test A3', 'Gol Test A4');
+
+DELETE FROM equipos.Jugador WHERE IdJugador IN (SELECT IdJugador FROM @jugadoresPrueba);
+DELETE FROM equipos.Persona WHERE IdPersona IN (SELECT IdJugador FROM @jugadoresPrueba);
 
 --3) El partido, el periodo y la fase.
 DECLARE @gPartB INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
@@ -433,7 +431,7 @@ DECLARE @gHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 
 IF @gHusoB IS NOT NULL
 	EXEC SP.uspHusoHorario_Bajar @idHuso = @gHusoB;
 
-DECLARE @gIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Nombre = 'Idioma Test');
+DECLARE @gIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
 IF @gIdiomaB IS NOT NULL
 	EXEC SP.uspIdioma_Bajar @id = @gIdiomaB;
 

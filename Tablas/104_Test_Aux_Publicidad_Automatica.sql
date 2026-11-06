@@ -23,7 +23,7 @@ INSERT sedes.Mundial(IdPais,ACTIVIDAD_FECHA_INICIO,ACTIVIDAD_FECHA_FIN,TAMANIO_S
  VALUES(@pais1,'20260601','20260731',0,26,10,10,2,1); SET @mundial=SCOPE_IDENTITY();
 INSERT equipos.Seleccion(IdPais,IdMundial,IdGrupo,CONFEDERACION) VALUES(@pais1,@mundial,@grupo,'Prueba'); SET @s1=SCOPE_IDENTITY();
 INSERT equipos.Seleccion(IdPais,IdMundial,IdGrupo,CONFEDERACION) VALUES(@pais2,@mundial,@grupo,'Prueba'); SET @s2=SCOPE_IDENTITY();
-INSERT sedes.Sede(Nombre,Ciudad,Capacidad,IdPais,IdHuso) VALUES('Prueba G1','Prueba',50000,@pais1,@huso); SET @sede=SCOPE_IDENTITY();
+INSERT sedes.Sede(Nombre,Ciudad,Capacidad,IdPais,IdHuso) VALUES('Prueba G1','Prueba',50000,@pais1,@huso1); SET @sede=SCOPE_IDENTITY();
 INSERT partidos.Fase(Descripcion) VALUES('Final'); SET @fase=SCOPE_IDENTITY();
 INSERT partidos.Partido(IdFase,IdSede,IdMundial,Eq1,Eq2,Fecha,HoraUTC,HoraLocal)
  VALUES(@fase,@sede,@mundial,@s1,@s2,'20260701','18:00','18:00'); SET @p1=SCOPE_IDENTITY();
@@ -56,8 +56,9 @@ WHILE @i<=4 BEGIN INSERT publicidad.EspacioPublicitario(IdSede,Numero,Tipo,Costo
 DECLARE @candidatas TABLE(Numero INT,IdPublicidad INT,IdPais INT);
 SET @i=1;
 WHILE @i<=6 BEGIN
- INSERT equipos.Pais(NOMBRE,PBI) VALUES(CONCAT('Mercado ',@i),700-@i*100); SET @mercado=SCOPE_IDENTITY();
- INSERT sedes.HusoHorario(Nombre,IdPais) VALUES('UTC+2',@mercado);
+ INSERT sedes.HusoHorario(Nombre) VALUES('UTC+2');
+ DECLARE @husoMercado INT = SCOPE_IDENTITY();
+ INSERT equipos.Pais(NOMBRE,PBI,HusoHorario) VALUES(CONCAT('Mercado ',@i),700-@i*100,@husoMercado); SET @mercado=SCOPE_IDENTITY();
  INSERT publicidad.Publicidad(Nombre,IdCampania,IdIdioma) VALUES(CONCAT('Pieza ',@i),@camp,@idioma); SET @pub=SCOPE_IDENTITY();
  INSERT publicidad.PublicidadPais VALUES(@pub,@mercado);
  INSERT @candidatas VALUES(@i,@pub,@mercado);
@@ -137,7 +138,7 @@ PRINT 'OK 9: excluye las 23 locales';
 INSERT publicidad.PublicidadPais SELECT C.IdPublicidad,C.IdPais FROM @candidatas C WHERE NOT EXISTS(SELECT 1 FROM publicidad.PublicidadPais PP WHERE PP.IdPublicidad=C.IdPublicidad AND PP.IdPais=C.IdPais);
 INSERT publicidad.PublicidadPais SELECT IdPublicidad,@pais1 FROM @candidatas WHERE Numero=6;
 UPDATE equipos.Pais SET PBI=100 WHERE IdPais IN (SELECT IdPais FROM @candidatas);
-UPDATE sedes.HusoHorario SET Nombre='UTC' WHERE IdPais=(SELECT IdPais FROM @candidatas WHERE Numero=1);
+UPDATE sedes.HusoHorario SET Nombre='UTC' WHERE IdHuso=(SELECT P.HusoHorario FROM equipos.Pais P JOIN @candidatas C ON C.IdPais=P.IdPais WHERE C.Numero=1);
 DELETE @propuesta;
 
 -- prime time desempata PBI y luego desempata el identificador.
@@ -152,7 +153,7 @@ UPDATE publicidad.EspacioPublicitario SET Costo=200 WHERE IdSede=@sede; UPDATE p
 IF EXISTS(SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPartido=@p1 AND CostoFinal<>150)
  THROW 51998,'Fallo: conserva tarifa historica aunque cambien precios.',1;
 PRINT 'OK 11: conserva tarifa historica aunque cambien precios';
-DELETE sedes.HusoHorario WHERE IdPais=(SELECT IdPais FROM @candidatas WHERE Numero=5); DELETE @simulacion;
+UPDATE equipos.Pais SET HusoHorario=NULL WHERE IdPais=(SELECT IdPais FROM @candidatas WHERE Numero=5); DELETE @simulacion;
 
 -- mercado sin huso queda sin dato de prime time.
 INSERT @simulacion EXEC SP.uspPublicidad_PrimeTime @p1;

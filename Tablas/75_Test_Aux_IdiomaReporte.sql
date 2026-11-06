@@ -47,9 +47,12 @@ DECLARE @j1 INT=(SELECT Id FROM @jugadores WHERE Numero=1),@j2 INT=(SELECT Id FR
  @j14 INT=(SELECT Id FROM @jugadores WHERE Numero=14),@j15 INT=(SELECT Id FROM @jugadores WHERE Numero=15),
  @j16 INT=(SELECT Id FROM @jugadores WHERE Numero=16),@gol INT,@evento INT,@cantidad INT;
 
--- edicion de idioma y asignacion.
-SELECT @persona=IdIdioma FROM arbitros.Idioma WHERE Descripcion='Idioma prueba'; EXEC SP.uspIdioma_Update @persona,'Idioma editado'; EXEC SP.uspHablaIdioma_Registrar @arbitro,@persona;
-IF NOT EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Arbitro=@arbitro AND Idioma=@persona)
+-- Idioma del arbitro, independiente del que usan los dos paises.
+EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma del arbitro';
+DECLARE @idiomaArbitro INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma del arbitro');
+EXEC SP.uspIdioma_Update @idiomaArbitro, 'Idioma editado';
+EXEC SP.uspHablaIdioma_Registrar @arbitro, @idiomaArbitro;
+IF NOT EXISTS(SELECT 1 FROM arbitros.HablaIdioma WHERE Arbitro=@arbitro AND Idioma=@idiomaArbitro)
  THROW 51998,'Fallo: alta y edicion de idioma y asignacion.',1;
 PRINT 'OK 1: alta y edicion de idioma y asignacion';
 
@@ -63,7 +66,7 @@ END CATCH;
 PRINT 'OK 2: agrupa errores de idioma del arbitro';
 
 BEGIN TRY
- EXEC SP.uspIdioma_Bajar @persona;
+ EXEC SP.uspIdioma_Bajar @idiomaArbitro;
  THROW 51999,'La operacion debio rechazarse.',1;
 END TRY
 BEGIN CATCH
@@ -88,9 +91,22 @@ END CATCH;
 PRINT 'OK 5: agrupa errores de informe';
 
 -- bajas de informe e idioma.
-EXEC SP.uspReporte_Baja @evento; EXEC SP.uspHablaIdioma_Bajar @arbitro,@persona; EXEC SP.uspIdioma_Bajar @persona;
-IF EXISTS(SELECT 1 FROM arbitros.Reporte WHERE IdReporte=@evento) OR EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma=@persona)
+EXEC SP.uspReporte_Baja @evento;
+EXEC SP.uspHablaIdioma_Bajar @arbitro, @idiomaArbitro;
+EXEC SP.uspIdioma_Bajar @idiomaArbitro;
+
+-- Los dos paises de prueba todavia usan el idioma.
+BEGIN TRY
+    EXEC SP.uspIdioma_Bajar @idioma;
+    THROW 51999, 'Se esperaba que Pais impidiera la baja.', 1;
+END TRY
+BEGIN CATCH
+    IF NOT ((ERROR_NUMBER() = 50000 AND ERROR_MESSAGE() LIKE '%Pais%')
+         OR (ERROR_NUMBER() = 547 AND ERROR_MESSAGE() LIKE '%FK[_]Pais[_]Idioma%')) THROW;
+END CATCH;
+
+IF EXISTS(SELECT 1 FROM arbitros.Reporte WHERE IdReporte=@evento) OR EXISTS(SELECT 1 FROM arbitros.Idioma WHERE IdIdioma=@idiomaArbitro)
  THROW 51998,'Fallo: bajas de informe e idioma.',1;
 PRINT 'OK 6: bajas de informe e idioma';
 
-PRINT '75_Test_IdiomaReporte.sql: 6 comprobaciones correctas.';
+PRINT '75_Test_Aux_IdiomaReporte.sql: 6 comprobaciones correctas.';

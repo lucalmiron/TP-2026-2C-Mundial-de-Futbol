@@ -7,12 +7,9 @@
 -- 26/10/26
 -- Objetivo: Testear Registro, Update y Baja de Campania
 
---Los objetos de negocio viven en MUNDIAL, el test se ejecuta contra ellos.
 --Sin prerrequisitos.
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 -- Esperado: inserta 1 fila
@@ -22,31 +19,51 @@ SELECT * FROM publicidad.Campania
 GO
 
 -- Esperado: PRINT nulo, 0 filas nuevas
-EXEC SP.uspCampania_Registrar NULL, 'Campania mundialista'
+BEGIN TRY
+    EXEC SP.uspCampania_Registrar NULL, 'Campania mundialista';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Campania
 GO
 
 -- Esperado: update 1
-EXEC SP.uspCampania_Update 1, 'Qatar 2026', 'Descripcion nueva'
+DECLARE @idPrueba INT = (SELECT IdCampania FROM publicidad.Campania WHERE Nombre = 'Qatar 2026');
+EXEC SP.uspCampania_Update @idPrueba, 'Qatar 2026', 'Descripcion nueva'
 GO
 SELECT * FROM publicidad.Campania
 GO
 
 -- Esperado: PRINT inexistente Id (99)
-EXEC SP.uspCampania_Update 99, 'Qatar 2026', 'Descripcion nueva'
+BEGIN TRY
+    EXEC SP.uspCampania_Update 99, 'Qatar 2026', 'Descripcion nueva';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Campania
 GO
 
 -- Esperado: borra Id 1
-EXEC SP.uspCampania_Bajar 1
+DECLARE @idPrueba INT = (SELECT IdCampania FROM publicidad.Campania WHERE Nombre = 'Qatar 2026');
+EXEC SP.uspCampania_Bajar @idPrueba
 GO
 SELECT * FROM publicidad.Campania
 GO
 
 -- Esperado: PRINT inexistente (99), 0 borradas
-EXEC SP.uspCampania_Bajar 99
+BEGIN TRY
+    EXEC SP.uspCampania_Bajar 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Campania
 GO

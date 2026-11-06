@@ -237,8 +237,8 @@ END CATCH;
 
 PRINT 'OK 8: rechaza edicion local contradictoria';
 
-INSERT sedes.HusoHorario (Nombre, IdPais)
-VALUES ('Eastern Standard Time', @pais1);
+INSERT sedes.HusoHorario (Nombre)
+VALUES ('Eastern Standard Time');
 SET @huso2 = SCOPE_IDENTITY();
 
 INSERT sedes.Sede (Nombre, Ciudad, Capacidad, IdPais, IdHuso)

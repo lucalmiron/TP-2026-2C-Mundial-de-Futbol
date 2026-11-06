@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza
+﻿-- Universidad Nacional de La Matanza
 -- Bases de datos aplicada
 -- Almiron, Luca
 -- Figueroa, Santiago
@@ -7,16 +7,13 @@
 -- 26/10/26
 -- Objetivo: Testear Registro y Baja de Sustitucion
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 --Mundial del test: 5 cambios y 2 ventanas de cambios por partido (los topes del reglamento).
 --El minimo de jugadores del Mundial es 0 para que la limpieza al final pueda borrar a todos.
 --Alineacion: 6 titulares (T1 a T6), 6 suplentes (S1 a S6) y 1 jugador que no fue alineado (NA).
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -87,7 +84,7 @@ IF NOT EXISTS (SELECT 1 FROM partidos.Fase WHERE Descripcion = 'Grupos')
 GO
 
 IF NOT EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = 900)
-	EXEC partidos.Periodo_Alta @idPeriodo = 900, @descripcion = 'Tiempo Test', @inicio = 0, @fin = 45;
+	EXEC partidos.Periodo_Alta @idPeriodo = 900, @descripcion = '2do tiempo', @inicio = 46, @fin = 90;
 GO
 
 DECLARE @xSede     INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test X');
@@ -243,14 +240,26 @@ DECLARE @xP1 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xT1 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T1');
 DECLARE @xS1 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S1');
 DECLARE @xM1 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP1, @periodo = 999999, @ingreso = @xS1, @egreso = @xT1, @motivo = @xM1;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP1, @periodo = 999999, @ingreso = @xS1, @egreso = @xT1, @motivo = @xM1;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Ingreso y egreso no pueden ser el mismo jugador.', 0 filas nuevas
 DECLARE @xP2 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xT1b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T1');
 DECLARE @xM2 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP2, @periodo = 900, @ingreso = @xT1b, @egreso = @xT1b, @motivo = @xM2;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP2, @periodo = 900, @ingreso = @xT1b, @egreso = @xT1b, @motivo = @xM2;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Sustitucion;
 GO
@@ -259,7 +268,13 @@ GO
 DECLARE @xT1c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T1');
 DECLARE @xS1b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S1');
 DECLARE @xM3 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = 999999, @periodo = 900, @ingreso = @xS1b, @egreso = @xT1c, @motivo = @xM3;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = 999999, @periodo = 900, @ingreso = @xS1b, @egreso = @xT1c, @motivo = @xM3;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Sustitucion;
 GO
@@ -268,7 +283,13 @@ GO
 DECLARE @xP3 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xT1d INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T1');
 DECLARE @xM4 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP3, @periodo = 900, @ingreso = 999999, @egreso = @xT1d, @motivo = @xM4;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP3, @periodo = 900, @ingreso = 999999, @egreso = @xT1d, @motivo = @xM4;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Sustitucion;
 GO
@@ -277,7 +298,13 @@ GO
 DECLARE @xP4 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xS1c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S1');
 DECLARE @xM5 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP4, @periodo = 900, @ingreso = @xS1c, @egreso = 999999, @motivo = @xM5;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP4, @periodo = 900, @ingreso = @xS1c, @egreso = 999999, @motivo = @xM5;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Sustitucion;
 GO
@@ -286,7 +313,13 @@ GO
 DECLARE @xP5 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xT1e INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T1');
 DECLARE @xS1d INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S1');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP5, @periodo = 900, @ingreso = @xS1d, @egreso = @xT1e, @motivo = 999999;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP5, @periodo = 900, @ingreso = @xS1d, @egreso = @xT1e, @motivo = 999999;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Sustitucion;
 GO
@@ -298,7 +331,13 @@ DECLARE @xP6 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xNA INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test NA');
 DECLARE @xS2a INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S2');
 DECLARE @xM6 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP6, @periodo = 900, @ingreso = @xS2a, @egreso = @xNA, @motivo = @xM6;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP6, @periodo = 900, @ingreso = @xS2a, @egreso = @xNA, @motivo = @xM6;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Sustitucion;
 GO
@@ -308,7 +347,13 @@ DECLARE @xP7 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xNA2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test NA');
 DECLARE @xT2a INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T2');
 DECLARE @xM7 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP7, @periodo = 900, @ingreso = @xNA2, @egreso = @xT2a, @motivo = @xM7;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP7, @periodo = 900, @ingreso = @xNA2, @egreso = @xT2a, @motivo = @xM7;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Sustitucion;
 GO
@@ -337,12 +382,12 @@ GO
 SELECT COUNT(*) AS Sustituciones FROM partidos.Sustitucion;
 GO
 
--- Esperado: 3er cambio en el minuto 46 (misma ventana), 3 filas en total
+-- Esperado: 3er cambio en el minuto 47 (misma ventana), 3 filas en total
 DECLARE @xP10 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xT3 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T3');
 DECLARE @xS3 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S3');
 DECLARE @xM10 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP10, @periodo = 900, @ingreso = @xS3, @egreso = @xT3, @motivo = @xM10;
+EXEC SPTRANS.uspSustitucion_Registrar @minuto = 47, @partido = @xP10, @periodo = 900, @ingreso = @xS3, @egreso = @xT3, @motivo = @xM10;
 GO
 SELECT COUNT(*) AS Sustituciones FROM partidos.Sustitucion;
 GO
@@ -352,7 +397,13 @@ DECLARE @xP11 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xT4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T4');
 DECLARE @xS4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S4');
 DECLARE @xM11 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 60, @partido = @xP11, @periodo = 900, @ingreso = @xS4, @egreso = @xT4, @motivo = @xM11;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 60, @partido = @xP11, @periodo = 900, @ingreso = @xS4, @egreso = @xT4, @motivo = @xM11;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 50000 OR ERROR_MESSAGE() NOT LIKE '%Tope de ventanas del reglamento excedido%' THROW;
+END CATCH;
 GO
 SELECT COUNT(*) AS Sustituciones FROM partidos.Sustitucion;
 GO
@@ -367,12 +418,12 @@ GO
 SELECT COUNT(*) AS Sustituciones FROM partidos.Sustitucion;
 GO
 
--- Esperado: 5to cambio en el minuto 46 (ventana ya abierta), 5 filas en total
+-- Esperado: 5to cambio en el minuto 47 (ventana ya abierta), 5 filas en total
 DECLARE @xP13 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xT5 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T5');
 DECLARE @xS5 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S5');
 DECLARE @xM13 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP13, @periodo = 900, @ingreso = @xS5, @egreso = @xT5, @motivo = @xM13;
+EXEC SPTRANS.uspSustitucion_Registrar @minuto = 47, @partido = @xP13, @periodo = 900, @ingreso = @xS5, @egreso = @xT5, @motivo = @xM13;
 GO
 SELECT COUNT(*) AS Sustituciones FROM partidos.Sustitucion;
 GO
@@ -382,9 +433,19 @@ DECLARE @xP14 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @xT6 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test T6');
 DECLARE @xS6 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jugador Test S6');
 DECLARE @xM14 INT = (SELECT MIN(IdMotivo) FROM publicidad.Motivo WHERE Descripcion = 'Lesion Test');
-EXEC SPTRANS.uspSustitucion_Registrar @minuto = 46, @partido = @xP14, @periodo = 900, @ingreso = @xS6, @egreso = @xT6, @motivo = @xM14;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Registrar @minuto = 47, @partido = @xP14, @periodo = 900, @ingreso = @xS6, @egreso = @xT6, @motivo = @xM14;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 50000 OR ERROR_MESSAGE() NOT LIKE '%Tope de cambios del reglamento excedido%' THROW;
+END CATCH;
 GO
 SELECT COUNT(*) AS Sustituciones FROM partidos.Sustitucion;
+GO
+
+IF (SELECT COUNT(*) FROM partidos.Sustitucion) <> 5
+    THROW 51999, 'Se esperaban cinco sustituciones registradas.', 1;
 GO
 
 --/BAJA
@@ -400,7 +461,13 @@ SELECT * FROM partidos.Sustitucion;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: IdSustitucion.', 0 borradas
-EXEC SPTRANS.uspSustitucion_Bajar @id = 999999;
+BEGIN TRY
+    EXEC SPTRANS.uspSustitucion_Bajar @id = 999999;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Sustitucion;
 GO
@@ -433,14 +500,18 @@ BEGIN
 END
 
 --3) Los jugadores del test.
-SET @i = 0;
-WHILE @i < 20
-BEGIN
-	SET @xId = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre LIKE 'Jugador Test %');
-	IF @xId IS NULL BREAK;
-	EXEC SPTRANS.uspJugador_Bajar @id = @xId;
-	SET @i = @i + 1;
-END
+DECLARE @jugadoresPrueba TABLE (IdJugador INT PRIMARY KEY);
+INSERT INTO @jugadoresPrueba (IdJugador)
+SELECT J.IdJugador FROM equipos.Jugador AS J
+JOIN equipos.Persona AS P ON P.IdPersona = J.IdJugador
+WHERE P.Nombre IN (
+    'Jugador Test T1', 'Jugador Test T2', 'Jugador Test T3', 'Jugador Test T4',
+    'Jugador Test T5', 'Jugador Test T6', 'Jugador Test S1', 'Jugador Test S2',
+    'Jugador Test S3', 'Jugador Test S4', 'Jugador Test S5', 'Jugador Test S6',
+    'Jugador Test NA');
+
+DELETE FROM equipos.Jugador WHERE IdJugador IN (SELECT IdJugador FROM @jugadoresPrueba);
+DELETE FROM equipos.Persona WHERE IdPersona IN (SELECT IdJugador FROM @jugadoresPrueba);
 
 --4) El partido, el periodo y la fase.
 IF @xPartB IS NOT NULL
@@ -489,7 +560,7 @@ DECLARE @xHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 
 IF @xHusoB IS NOT NULL
 	EXEC SP.uspHusoHorario_Bajar @idHuso = @xHusoB;
 
-DECLARE @xIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Nombre = 'Idioma Test');
+DECLARE @xIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
 IF @xIdiomaB IS NOT NULL
 	EXEC SP.uspIdioma_Bajar @id = @xIdiomaB;
 

@@ -7,12 +7,9 @@
 -- 26/10/26
 -- Objetivo: Testear Registro, Update y Baja de Fase
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/ALTA
@@ -25,19 +22,37 @@ SELECT * FROM partidos.Fase;
 GO
 
 -- Esperado: descripcion invalida (solo las del catalogo), 0 filas nuevas
-EXEC SP.uspFase_Registrar 'Amistoso';
+BEGIN TRY
+    EXEC SP.uspFase_Registrar 'Amistoso';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Fase;
 GO
 
 -- Esperado: descripcion nula, 0 filas nuevas
-EXEC SP.uspFase_Registrar NULL;
+BEGIN TRY
+    EXEC SP.uspFase_Registrar NULL;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Fase;
 GO
 
 -- Esperado: fase duplicada, 0 filas nuevas
-EXEC SP.uspFase_Registrar 'Grupos';
+BEGIN TRY
+    EXEC SP.uspFase_Registrar 'Grupos';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Fase;
 GO
@@ -53,13 +68,25 @@ SELECT * FROM partidos.Fase;
 GO
 
 -- Esperado: id invalido (0), 0 filas modificadas
-EXEC SP.uspFase_Update 0, 'Grupos';
+BEGIN TRY
+    EXEC SP.uspFase_Update 0, 'Grupos';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Fase;
 GO
 
 -- Esperado: id inexistente (99), 0 filas modificadas
-EXEC SP.uspFase_Update 99, 'Grupos';
+BEGIN TRY
+    EXEC SP.uspFase_Update 99, 'Grupos';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Fase;
 GO
@@ -75,7 +102,13 @@ SELECT * FROM partidos.Fase;
 GO
 
 -- Esperado: id inexistente (99), 0 borradas
-EXEC SP.uspFase_Bajar 99;
+BEGIN TRY
+    EXEC SP.uspFase_Bajar 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Fase;
 GO

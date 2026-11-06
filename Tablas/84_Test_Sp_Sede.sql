@@ -2,7 +2,8 @@
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 26/10/26.
 -- Objetivo: comprobar ABM de sede con identificadores obtenidos de sus datos de prueba.
-USE MUNDIAL;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 SET NOCOUNT ON;
 
@@ -13,7 +14,7 @@ IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Idioma_Test1')
 	EXEC SP.uspIdioma_Registrar @descripcion = 'Idioma_Test1';
 
 --1 huso horario
-IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'Huso_Test1')
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (Sede 84)')
 	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (Sede 84)';
 GO
 
@@ -140,8 +141,8 @@ PRINT 'OK 11: IdSede';
 --Limpieza de lo creado por el test
 EXEC SP.uspSede_Bajar @sede;
 IF EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede=@sede) THROW 51999,'No se elimino la sede.',1;
-EXEC SP.uspHusoHorario_Bajar @huso;
 EXEC SP.uspPais_Bajar @pais;
+EXEC SP.uspHusoHorario_Bajar @huso;
 EXEC SP.uspIdioma_Bajar @idioma;
 IF EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais=@pais) OR EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE IdHuso=@huso)
  THROW 51999,'Quedaron datos de prueba.',1;

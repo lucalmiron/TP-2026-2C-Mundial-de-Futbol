@@ -11,12 +11,9 @@
 
 --Objetivo: Testear Registro y Baja de PublicidadPais (sin Update, PK inmutable)
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -61,28 +58,52 @@ GO
 -- Esperado: duplicado, 0 filas nuevas
 DECLARE @pPub INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 89');
 DECLARE @pPais INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 89');
-EXEC SP.uspPublicidadPais_Registrar @idPublicidad = @pPub, @idPais = @pPais
+BEGIN TRY
+    EXEC SP.uspPublicidadPais_Registrar @idPublicidad = @pPub, @idPais = @pPais;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.PublicidadPais
 GO
 
 -- Esperado: publicidad inexistente (99), 0 filas nuevas
 DECLARE @pPais INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 89');
-EXEC SP.uspPublicidadPais_Registrar @idPublicidad = 99, @idPais = @pPais
+BEGIN TRY
+    EXEC SP.uspPublicidadPais_Registrar @idPublicidad = 99, @idPais = @pPais;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.PublicidadPais
 GO
 
 -- Esperado: pais inexistente (99), 0 filas nuevas
 DECLARE @pPub INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 89');
-EXEC SP.uspPublicidadPais_Registrar @idPublicidad = @pPub, @idPais = 99
+BEGIN TRY
+    EXEC SP.uspPublicidadPais_Registrar @idPublicidad = @pPub, @idPais = 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.PublicidadPais
 GO
 
 -- Esperado: id invalido (0), 0 filas nuevas
 DECLARE @pPais INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 89');
-EXEC SP.uspPublicidadPais_Registrar @idPublicidad = 0, @idPais = @pPais
+BEGIN TRY
+    EXEC SP.uspPublicidadPais_Registrar @idPublicidad = 0, @idPais = @pPais;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.PublicidadPais
 GO
@@ -100,7 +121,13 @@ GO
 -- Esperado: inexistente, 0 borradas
 DECLARE @pPub INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 89');
 DECLARE @pPais INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 89');
-EXEC SP.uspPublicidadPais_Bajar @idPublicidad = @pPub, @idPais = @pPais
+BEGIN TRY
+    EXEC SP.uspPublicidadPais_Bajar @idPublicidad = @pPub, @idPais = @pPais;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.PublicidadPais
 GO

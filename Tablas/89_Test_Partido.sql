@@ -7,14 +7,11 @@
 -- 26/10/26
 -- Objetivo: Testear Registro, Update y Baja de partido
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 --uspPartido_* lanza excepciones (THROW), por eso los casos esperados a fallar van envueltos
 --en TRY/CATCH: el CATCH captura la excepcion y deja el mensaje en el log del test.
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba

@@ -1,4 +1,4 @@
---/Universidad Nacional de La Matanza
+﻿--/Universidad Nacional de La Matanza
 --/Bases de Datos Aplicadas - Comision 02
 
 --/Grupo 7 - Integrantes:
@@ -9,12 +9,10 @@
 
 --/Fecha: 26/10/26
 
---Test de los SP transaccionales de Arbitraje (se ejecutan los SP reales de MUNDIAL)
+--Test de los SP transaccionales de Arbitraje
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -133,23 +131,47 @@ GO
 -- Esperado: imprime 'Error/es: - Valor invalido: Funcion.'
 DECLARE @idArbN1 INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 1');
 DECLARE @idPartA1 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1, @funcion = 'Cuarto Arbitro', @partido = @idPartA1;
+BEGIN TRY
+    EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1, @funcion = 'Cuarto Arbitro', @partido = @idPartA1;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: ID Arbitro.'
 DECLARE @idPartA2 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-EXEC SPTRANS.uspArbitraje_Registrar @arbitro = 999999, @funcion = 'Principal', @partido = @idPartA2;
+BEGIN TRY
+    EXEC SPTRANS.uspArbitraje_Registrar @arbitro = 999999, @funcion = 'Principal', @partido = @idPartA2;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: ID Partido.'
 DECLARE @idArbN1c INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 1');
-EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1c, @funcion = 'Principal', @partido = 999999;
+BEGIN TRY
+    EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1c, @funcion = 'Principal', @partido = 999999;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - No se puede asignar este arbitro, el pais al que pertenece disputa este partido.'
 DECLARE @idArbLoc INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Local');
 DECLARE @idPartA3 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbLoc, @funcion = 'VAR', @partido = @idPartA3;
+BEGIN TRY
+    EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbLoc, @funcion = 'VAR', @partido = @idPartA3;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: no imprime nada, se asigna el Principal.
@@ -165,7 +187,13 @@ GO
 -- Esperado: imprime 'Error/es: - Valor duplicado: Arbitro. Se encuentra ya asignado a alguna funcion de ese partido.'
 DECLARE @idArbN1e INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 1');
 DECLARE @idPartA5 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1e, @funcion = 'VAR', @partido = @idPartA5;
+BEGIN TRY
+    EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1e, @funcion = 'VAR', @partido = @idPartA5;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 --/Cupo por funcion
@@ -173,7 +201,13 @@ GO
 -- Esperado: imprime 'Error/es: - Cupo excedido para esa funcion.' (ya hay 1 Principal)
 DECLARE @idArbN2a INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 2');
 DECLARE @idPartA6 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN2a, @funcion = 'Principal', @partido = @idPartA6;
+BEGIN TRY
+    EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN2a, @funcion = 'Principal', @partido = @idPartA6;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: no imprime nada, se asigna el Asistente.
@@ -202,7 +236,13 @@ GO
 
 -- Esperado: imprime 'Error/es: - Registro inexistente.'
 DECLARE @idPartA9 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-EXEC SPTRANS.uspArbitraje_Bajar @arbitro = 999999, @partido = @idPartA9;
+BEGIN TRY
+    EXEC SPTRANS.uspArbitraje_Bajar @arbitro = 999999, @partido = @idPartA9;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: se borra la fila del arbitro neutral 2.
@@ -290,7 +330,7 @@ DECLARE @vHuso INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = '
 IF @vHuso IS NOT NULL
 	EXEC SP.uspHusoHorario_Bajar @idHuso = @vHuso;
 
-DECLARE @vIdioma INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Nombre = 'Idioma Test');
+DECLARE @vIdioma INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
 IF @vIdioma IS NOT NULL
 	EXEC SP.uspIdioma_Bajar @id = @vIdioma;
 

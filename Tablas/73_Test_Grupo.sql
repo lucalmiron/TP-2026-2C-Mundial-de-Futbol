@@ -11,13 +11,10 @@
 
 --Objetivo: Testear Registro, Update y Baja de Grupo
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 --El grupo Q queda con una seleccion para probar que la baja se bloquea.
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -69,13 +66,25 @@ SELECT * FROM equipos.Grupo
 GO
 
 -- Esperado: nombre nulo, 0 filas nuevas
-EXEC SP.uspGrupo_Registrar NULL
+BEGIN TRY
+    EXEC SP.uspGrupo_Registrar NULL;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.Grupo
 GO
 
 -- Esperado: duplicado, 0 filas nuevas
-EXEC SP.uspGrupo_Registrar 'Grupo Q'
+BEGIN TRY
+    EXEC SP.uspGrupo_Registrar 'Grupo Q';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.Grupo
 GO
@@ -93,19 +102,37 @@ GO
 
 -- Esperado: duplicado (R ya existe), 0 filas modificadas
 DECLARE @gQ INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo Q2');
-EXEC SP.uspGrupo_Update @gQ, 'Grupo R'
+BEGIN TRY
+    EXEC SP.uspGrupo_Update @gQ, 'Grupo R';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.Grupo
 GO
 
 -- Esperado: id invalido (0)
-EXEC SP.uspGrupo_Update 0, 'Grupo Q2'
+BEGIN TRY
+    EXEC SP.uspGrupo_Update 0, 'Grupo Q2';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.Grupo
 GO
 
 -- Esperado: id inexistente (99)
-EXEC SP.uspGrupo_Update 99, 'Grupo Q2'
+BEGIN TRY
+    EXEC SP.uspGrupo_Update 99, 'Grupo Q2';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.Grupo
 GO
@@ -114,7 +141,13 @@ GO
 
 -- Esperado: el grupo Q2 tiene una seleccion, no se puede borrar
 DECLARE @gQ INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo Q2');
-EXEC SP.uspGrupo_Bajar @gQ
+BEGIN TRY
+    EXEC SP.uspGrupo_Bajar @gQ;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.Grupo
 GO
@@ -127,7 +160,13 @@ SELECT * FROM equipos.Grupo
 GO
 
 -- Esperado: id inexistente (99), 0 borradas
-EXEC SP.uspGrupo_Bajar 99
+BEGIN TRY
+    EXEC SP.uspGrupo_Bajar 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.Grupo
 GO
@@ -156,11 +195,11 @@ DECLARE @gPaisB INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais
 IF @gPaisB IS NOT NULL
 	EXEC SP.uspPais_Bajar @idPais = @gPaisB;
 
-DECLARE @idi = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
+DECLARE @idi INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
 IF @idi IS NOT NULL
 	EXEC SP.uspIdioma_Bajar @id = @idi;
 
-DECLARE @hu = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'Huso Test');
+DECLARE @hu INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'Huso Test');
 IF @hu IS NOT NULL
 	EXEC SP.uspHusoHorario_Bajar @idHuso = @hu;
 

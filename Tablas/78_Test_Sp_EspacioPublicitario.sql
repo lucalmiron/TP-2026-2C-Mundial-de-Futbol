@@ -9,12 +9,10 @@
 
 --/Fecha: 26/10/26
 
---Test de los SP de Espacio Publicitario (se ejecutan los SP reales de MUNDIAL)
+--Test de los SP de Espacio Publicitario
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 -- Setup: crear una sede de prueba para los tests
@@ -26,10 +24,27 @@ IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test')
     EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 Test';
 GO
 
+-- Esperado: se crean 2 paises.
+
+
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Espanol EP';
+GO
+
+DECLARE @husoT INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test');
+DECLARE @idiomaT INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP');
+
+IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1')
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP1', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 21;
+IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP2')
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP2', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 22;
+GO
+
 IF NOT EXISTS (SELECT 1 FROM sedes.Sede WHERE Nombre = 'Sede Test')
 BEGIN
     DECLARE @husoId INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test');
-    EXEC SP.uspSede_Registrar @nombre = 'Sede Test', @ciudad = 'Ciudad Test', @capacidad = 50000, @pais = 1, @huso = @husoId;
+    DECLARE @paisId INT = (SELECT IdPais FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
+    EXEC SP.uspSede_Registrar @nombre = 'Sede Test', @ciudad = 'Ciudad Test', @capacidad = 50000, @pais = @paisId, @huso = @husoId;
 END
 GO
 
@@ -43,19 +58,21 @@ GO
 DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Registrar @tipo = '', @costo = 5000, @idSede = @testSedeId, @numero = 1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Costo.'
 DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
 BEGIN TRY
-EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = 0, @idSede = @testSedeId, @numero = 1;
+EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = NULL, @idSede = @testSedeId, @numero = 1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -63,9 +80,10 @@ GO
 DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = -100, @idSede = @testSedeId, @numero = 1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -94,9 +112,10 @@ GO
 DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Registrar @tipo = 'Cubo LED', @costo = 7000, @idSede = @testSedeId, @numero = 2;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -115,9 +134,10 @@ GO
 -- Esperado: imprime 'Error/es: - Valor inexistente: IdEP.'
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Update @idEP = 999999, @costo = 7500;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -125,19 +145,21 @@ GO
 DECLARE @idCubo2 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED');
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Update @idEP = @idCubo2, @costo = -1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
--- Esperado: imprime 'Error/es: - Valor duplicado: Tipo de espacio.'
+-- Esperado: rechaza el tipo vacio.
 DECLARE @idCubo3 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED');
 BEGIN TRY
-EXEC SP.EspacioPublicitario_Update @idEP = @idCubo3, @tipo = 'Panel Perimetral';
+EXEC SP.EspacioPublicitario_Update @idEP = @idCubo3, @tipo = '';
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -146,9 +168,10 @@ GO
 -- Esperado: imprime 'Error/es: - Valor inexistente: IdEP.'
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Bajar @idEP = 999999;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -163,22 +186,6 @@ GO
 --/BAJA CON REGISTROS RELACIONADOS
 --Para bloquear la baja hace falta una publicidad exhibida en ese espacio,
 --y para registrarla hace falta la cadena Pais > Mundial > Selecciones > Sede > Fase > Partido.
-
--- Esperado: se crean 2 paises.
-DECLARE @husoT INT, @idiomaT INT;
-
-IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP')
-	EXEC SP.uspIdioma_Registrar @descripcion = 'Espanol EP';
-GO
-
-SET @husoT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test');
-SET @idiomaT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP');
-
-IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP1', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 21;
-IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP2')
-	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP2', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 22;
-GO
 
 DECLARE @epPais1 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
 
@@ -212,26 +219,12 @@ IF NOT EXISTS (SELECT 1 FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF EP2')
 	EXEC SP.uspSeleccion_Registrar @idPais = @epPais2, @idMundial = @epMundial2, @idGrupo = @epGrupo2, @confederacion = 'CONF EP2';
 GO
 
-DECLARE @epPais3 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
-
--- Esperado: se crea el huso horario y la sede.
-IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (EP)')
-	EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 (EP)';
-GO
-
-DECLARE @epHuso   INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (EP)');
-DECLARE @epPais4  INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
-
-IF NOT EXISTS (SELECT 1 FROM sedes.Sede WHERE Nombre = 'Sede Test EP')
-	EXEC SP.uspSede_Registrar @nombre = 'Sede Test EP', @ciudad = 'Ciudad Test EP', @capacidad = 50000, @pais = @epPais4, @huso = @epHuso;
-GO
-
 -- Esperado: se crea la fase.
 IF NOT EXISTS (SELECT 1 FROM partidos.Fase WHERE Descripcion = 'Grupos')
 	EXEC SP.uspFase_Registrar @Descripcion = 'Grupos';
 GO
 
-DECLARE @epSede     INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test EP');
+DECLARE @epSede     INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test');
 DECLARE @epFase     INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Grupos');
 DECLARE @epPais1c   INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
 DECLARE @epMundial3 INT = (SELECT MIN(IdMundial) FROM sedes.Mundial WHERE IdPais = @epPais1c);
@@ -262,17 +255,21 @@ DECLARE @epPartido INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @epEspacio INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Panel Perimetral');
 
 -- Esperado: se crea el historial de exhibicion de esa publicidad en el Panel Perimetral.
+DECLARE @sedeEspacio INT = (SELECT IdSede FROM publicidad.EspacioPublicitario WHERE IdEP = @epEspacio);
+EXEC SP.CostoFranja_Registrar @tipoFranja = 'General', @costo = 100, @idSede = @sedeEspacio;
+DECLARE @tarifa INT = (SELECT IdCF FROM publicidad.CostoFranja WHERE IdSede = @sedeEspacio);
 IF NOT EXISTS (SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPublicidad = @epPub AND IdEP = @epEspacio)
-	EXEC SP.uspHistorialPublicidad_Registrar @idPublicidad = @epPub, @idPartido = @epPartido, @idEP = @epEspacio, @costoFinal = 5000;
+	EXEC SP.uspHistorialPublicidad_Registrar @idPublicidad = @epPub, @idPartido = @epPartido, @idEP = @epEspacio, @costoFinal = 5000, @idCF = @tarifa;
 GO
 
 -- Esperado: imprime 'Error/es: - Existen 1 o mas registros relacionados: Historial Publicidad. Elimine dichos registros para continuar.'
 DECLARE @epEspacio2 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Panel Perimetral');
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Bajar @idEP = @epEspacio2;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -321,7 +318,9 @@ DECLARE @epFaseB INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion 
 IF @epFaseB IS NOT NULL
 	EXEC SP.uspFase_Bajar @Id = @epFaseB;
 
-DECLARE @epSedeB INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test EP');
+DECLARE @epSedeB INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test');
+DELETE publicidad.EspacioPublicitario WHERE IdSede = @epSedeB;
+DELETE publicidad.CostoFranja WHERE IdSede = @epSedeB;
 IF @epSedeB IS NOT NULL
 	EXEC SP.uspSede_Bajar @idSede = @epSedeB;
 
@@ -359,7 +358,7 @@ DECLARE @epIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descri
 IF @epIdiomaB IS NOT NULL
 	EXEC SP.uspIdioma_Bajar @id = @epIdiomaB;
 
-DECLARE @epHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 (EP)');
+DECLARE @epHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test');
 IF @epHusoB IS NOT NULL
 	EXEC SP.uspHusoHorario_Bajar @idHuso = @epHusoB;
 

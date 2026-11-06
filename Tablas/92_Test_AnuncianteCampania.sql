@@ -1,4 +1,4 @@
---/Universidad Nacional de La Matanza
+﻿--/Universidad Nacional de La Matanza
 --/Bases de Datos Aplicadas - Comision 02
 
 --/Grupo 7 - Integrantes:
@@ -11,12 +11,9 @@
 
 --Objetivo: Testear Registro y Baja de AnuncianteCampania (sin Update, PK inmutable)
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -61,28 +58,52 @@ GO
 -- Esperado: duplicado, 0 filas nuevas
 DECLARE @cAnun INT = (SELECT MIN(IdAnunciante) FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90');
 DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
-EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = @cAnun, @idCampania = @cCamp
+BEGIN TRY
+    EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = @cAnun, @idCampania = @cCamp;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
 
 -- Esperado: anunciante inexistente (99), 0 filas nuevas
 DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
-EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 99, @idCampania = @cCamp
+BEGIN TRY
+    EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 99, @idCampania = @cCamp;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
 
 -- Esperado: campania inexistente (99), 0 filas nuevas
 DECLARE @cAnun INT = (SELECT MIN(IdAnunciante) FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90');
-EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = @cAnun, @idCampania = 99
+BEGIN TRY
+    EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = @cAnun, @idCampania = 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
 
 -- Esperado: id invalido (0), 0 filas nuevas
 DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
-EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 0, @idCampania = @cCamp
+BEGIN TRY
+    EXEC SP.uspAnuncianteCampania_Registrar @idAnunciante = 0, @idCampania = @cCamp;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
@@ -100,7 +121,13 @@ GO
 -- Esperado: inexistente, 0 borradas
 DECLARE @cAnun INT = (SELECT MIN(IdAnunciante) FROM publicidad.Anunciante WHERE Nombre = 'Anun Test 90');
 DECLARE @cCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campania 90');
-EXEC SP.uspAnuncianteCampania_Bajar @idAnunciante = @cAnun, @idCampania = @cCamp
+BEGIN TRY
+    EXEC SP.uspAnuncianteCampania_Bajar @idAnunciante = @cAnun, @idCampania = @cCamp;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.AnuncianteCampania
 GO
@@ -123,7 +150,7 @@ DECLARE @cHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 
 IF @cHusoB IS NOT NULL
 	EXEC SP.uspHusoHorario_Bajar @idHuso = @cHusoB;
 
-DECLARE @cIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Nombre = 'Idioma Test');
+DECLARE @cIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
 IF @cIdiomaB IS NOT NULL
 	EXEC SP.uspIdioma_Bajar @id = @cIdiomaB;
 

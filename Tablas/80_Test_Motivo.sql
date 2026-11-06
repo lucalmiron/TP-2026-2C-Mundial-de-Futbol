@@ -7,12 +7,9 @@
 -- 26/10/26
 -- Objetivo: Testear Registro, Update y Baja de Motivo
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --Sin prerrequisitos.
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 -- Esperado: inserta 1 fila
@@ -22,37 +19,63 @@ SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: PRINT nulo, 0 filas nuevas
-EXEC SP.uspMotivo_Registrar NULL
+BEGIN TRY
+    EXEC SP.uspMotivo_Registrar NULL;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: PRINT duplicado, 0 filas nuevas
-EXEC SP.uspMotivo_Registrar 'Tactico'
+BEGIN TRY
+    EXEC SP.uspMotivo_Registrar 'Tactico';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: update a Lesion
-EXEC SP.uspMotivo_Update 1, 'Lesion'
+DECLARE @idPrueba INT = (SELECT IdMotivo FROM publicidad.Motivo WHERE Descripcion = 'Tactico');
+EXEC SP.uspMotivo_Update @idPrueba, 'Lesion'
 GO
 SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: PRINT inexistente Id (99)
-EXEC SP.uspMotivo_Update 99, 'Lesion'
+BEGIN TRY
+    EXEC SP.uspMotivo_Update 99, 'Lesion';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: borra Id 1
-EXEC SP.uspMotivo_Bajar 1
+DECLARE @idPrueba INT = (SELECT IdMotivo FROM publicidad.Motivo WHERE Descripcion = 'Lesion');
+EXEC SP.uspMotivo_Bajar @idPrueba
 GO
 SELECT * FROM publicidad.Motivo
 GO
 
 -- Esperado: PRINT inexistente (99), 0 borradas
-EXEC SP.uspMotivo_Bajar 99
+BEGIN TRY
+    EXEC SP.uspMotivo_Bajar 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Motivo
 GO

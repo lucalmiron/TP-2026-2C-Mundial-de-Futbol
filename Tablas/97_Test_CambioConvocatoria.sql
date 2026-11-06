@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza
+﻿-- Universidad Nacional de La Matanza
 -- Bases de datos aplicada
 -- Almiron, Luca
 -- Figueroa, Santiago
@@ -7,17 +7,14 @@
 -- 26/10/26
 -- Objetivo: Testear Registro y Baja de CambioConvocatoria
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 --ATENCION: el caso valido (egreso activo + ingreso inactivo) NO se puede probar todavia.
 --uspCambioConvocatoria_Registrar exige un ingreso con Estado 'Inactivo', pero
 --uspJugador_Registrar siempre da de alta como 'Activo' y ningun SP deja uno inactivo
 --(solo lo hace el propio cambio de convocatoria). Queda pendiente, ver el punto 4.2 del
 --listado de la Entrega 6.
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -83,7 +80,13 @@ DECLARE @ccE INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipo
 DECLARE @ccI INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
 
 -- Esperado: egreso e ingreso iguales, 0 filas nuevas
-EXEC SPTRANS.uspCambioConvocatoria_Registrar @ccSel3, @ccE, @ccE, '2026-06-01', 'Lesion muscular'
+BEGIN TRY
+    EXEC SPTRANS.uspCambioConvocatoria_Registrar @ccSel3, @ccE, @ccE, '2026-06-01', 'Lesion muscular';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.CambioConvocatoria
 GO
@@ -93,7 +96,13 @@ DECLARE @ccE2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equip
 DECLARE @ccI2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
 
 -- Esperado: motivo nulo, 0 filas nuevas
-EXEC SPTRANS.uspCambioConvocatoria_Registrar @ccSel4, @ccE2, @ccI2, '2026-06-01', NULL
+BEGIN TRY
+    EXEC SPTRANS.uspCambioConvocatoria_Registrar @ccSel4, @ccE2, @ccI2, '2026-06-01', NULL;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.CambioConvocatoria
 GO
@@ -103,7 +112,13 @@ DECLARE @ccE3 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equip
 DECLARE @ccI3 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
 
 -- Esperado: el ingreso ya es un convocado activo, 0 filas nuevas
-EXEC SPTRANS.uspCambioConvocatoria_Registrar @ccSel5, @ccE3, @ccI3, '2026-06-01', 'Lesion muscular'
+BEGIN TRY
+    EXEC SPTRANS.uspCambioConvocatoria_Registrar @ccSel5, @ccE3, @ccI3, '2026-06-01', 'Lesion muscular';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.CambioConvocatoria
 GO
@@ -113,7 +128,13 @@ DECLARE @ccE4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equip
 DECLARE @ccI4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
 
 -- Esperado: seleccion inexistente (99), 0 filas nuevas
-EXEC SPTRANS.uspCambioConvocatoria_Registrar 99, @ccE4, @ccI4, '2026-06-01', 'Lesion muscular'
+BEGIN TRY
+    EXEC SPTRANS.uspCambioConvocatoria_Registrar 99, @ccE4, @ccI4, '2026-06-01', 'Lesion muscular';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.CambioConvocatoria
 GO
@@ -122,7 +143,13 @@ DECLARE @ccSel7 INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONF
 DECLARE @ccI5 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
 
 -- Esperado: el egreso no es un convocado activo (99), 0 filas nuevas
-EXEC SPTRANS.uspCambioConvocatoria_Registrar @ccSel7, 99, @ccI5, '2026-06-01', 'Lesion muscular'
+BEGIN TRY
+    EXEC SPTRANS.uspCambioConvocatoria_Registrar @ccSel7, 99, @ccI5, '2026-06-01', 'Lesion muscular';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.CambioConvocatoria
 GO
@@ -130,21 +157,28 @@ GO
 --/BAJA
 
 -- Esperado: registro inexistente (99), 0 borradas
-EXEC SPTRANS.uspCambioConvocatoria_Bajar 99
+BEGIN TRY
+    EXEC SPTRANS.uspCambioConvocatoria_Bajar 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM equipos.CambioConvocatoria
 GO
 
 --/Limpieza de lo que genera el test (en orden, por las claves foraneas)
 
-DECLARE @ccJ INT, @ci INT = 0;
-WHILE @ci < 10
-BEGIN
-	SET @ccJ = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre LIKE 'Jug Test 86%');
-	IF @ccJ IS NULL BREAK;
-	EXEC SPTRANS.uspJugador_Bajar @id = @ccJ;
-	SET @ci = @ci + 1;
-END
+DECLARE @jugadoresPrueba TABLE (IdJugador INT PRIMARY KEY);
+INSERT INTO @jugadoresPrueba (IdJugador)
+SELECT J.IdJugador FROM equipos.Jugador AS J
+JOIN equipos.Persona AS P ON P.IdPersona = J.IdJugador
+WHERE P.Nombre IN (
+    'Jug Test 86 E', 'Jug Test 86 I');
+
+DELETE FROM equipos.Jugador WHERE IdJugador IN (SELECT IdJugador FROM @jugadoresPrueba);
+DELETE FROM equipos.Persona WHERE IdPersona IN (SELECT IdJugador FROM @jugadoresPrueba);
 
 DECLARE @ccId INT, @ccSelL INT, @cl INT = 0;
 WHILE @cl < 5
@@ -171,7 +205,7 @@ DECLARE @ccHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre =
 IF @ccHusoB IS NOT NULL
 	EXEC SP.uspHusoHorario_Bajar @idHuso = @ccHusoB;
 
-DECLARE @ccIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Nombre = 'Idioma Test');
+DECLARE @ccIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Idioma Test');
 IF @ccIdiomaB IS NOT NULL
 	EXEC SP.uspIdioma_Bajar @id = @ccIdiomaB;
 

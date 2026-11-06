@@ -9,13 +9,11 @@
 
 --/Fecha: 26/10/26
 
---Test de los SP de Seleccion (se ejecutan los SP reales de MUNDIAL)
+--Test de los SP de Seleccion
 --Nota: cada bloque vuelve a declarar sus variables porque un GO corta el ambito.
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -68,26 +66,50 @@ GO
 -- Esperado: imprime 'Error/es: - Valor inexistente: Pais.'
 DECLARE @idMundialA INT = (SELECT MIN(IdMundial) FROM sedes.Mundial);
 DECLARE @idGrupoA   INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo S');
-EXEC SP.uspSeleccion_Registrar @idPais = 999999, @idMundial = @idMundialA, @idGrupo = @idGrupoA, @confederacion = 'CONF';
+BEGIN TRY
+    EXEC SP.uspSeleccion_Registrar @idPais = 999999, @idMundial = @idMundialA, @idGrupo = @idGrupoA, @confederacion = 'CONF';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: Mundial.'
 DECLARE @idGrupoB   INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo S');
 DECLARE @idPaisS1c  INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test S1');
-EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS1c, @idMundial = 999999, @idGrupo = @idGrupoB, @confederacion = 'CONF';
+BEGIN TRY
+    EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS1c, @idMundial = 999999, @idGrupo = @idGrupoB, @confederacion = 'CONF';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: Grupo.'
 DECLARE @idMundialB INT = (SELECT MIN(IdMundial) FROM sedes.Mundial);
 DECLARE @idPaisS1d  INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test S1');
-EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS1d, @idMundial = @idMundialB, @idGrupo = 999999, @confederacion = 'CONF';
+BEGIN TRY
+    EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS1d, @idMundial = @idMundialB, @idGrupo = 999999, @confederacion = 'CONF';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Confederacion.'
 DECLARE @idMundialC INT = (SELECT MIN(IdMundial) FROM sedes.Mundial);
 DECLARE @idGrupoC   INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo S');
 DECLARE @idPaisS1e  INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test S1');
-EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS1e, @idMundial = @idMundialC, @idGrupo = @idGrupoC, @confederacion = '';
+BEGIN TRY
+    EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS1e, @idMundial = @idMundialC, @idGrupo = @idGrupoC, @confederacion = '';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: no imprime nada, se inserta la seleccion 1.
@@ -101,7 +123,13 @@ GO
 DECLARE @idMundialE INT = (SELECT MIN(IdMundial) FROM sedes.Mundial);
 DECLARE @idGrupoE   INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo S');
 DECLARE @idPaisS1g  INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test S1');
-EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS1g, @idMundial = @idMundialE, @idGrupo = @idGrupoE, @confederacion = 'CONF OTRA';
+BEGIN TRY
+    EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS1g, @idMundial = @idMundialE, @idGrupo = @idGrupoE, @confederacion = 'CONF OTRA';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 --/Cupo: se completan las 4 selecciones del grupo y la 5ta debe rebotar
@@ -131,7 +159,13 @@ GO
 DECLARE @idMundialI INT = (SELECT MIN(IdMundial) FROM sedes.Mundial);
 DECLARE @idGrupoI   INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo S');
 DECLARE @idPaisS5   INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test S5');
-EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS5, @idMundial = @idMundialI, @idGrupo = @idGrupoI, @confederacion = 'CONF S5';
+BEGIN TRY
+    EXEC SP.uspSeleccion_Registrar @idPais = @idPaisS5, @idMundial = @idMundialI, @idGrupo = @idGrupoI, @confederacion = 'CONF S5';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: 4 filas (el cupo del grupo en el mundial es 4).
@@ -150,20 +184,38 @@ SELECT * FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF S1 Modificada';
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: ID Seleccion.'
-EXEC SP.uspSeleccion_Update @idSeleccion = 999999, @confederacion = 'NO EXISTE';
+BEGIN TRY
+    EXEC SP.uspSeleccion_Update @idSeleccion = 999999, @confederacion = 'NO EXISTE';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor duplicado: Seleccion (pais y mundial).'
 DECLARE @idSel1b    INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF S1 Modificada');
 DECLARE @idPaisS2b  INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test S2');
 DECLARE @idMundialJ INT = (SELECT MIN(IdMundial) FROM sedes.Mundial);
-EXEC SP.uspSeleccion_Update @idSeleccion = @idSel1b, @idPais = @idPaisS2b, @idMundial = @idMundialJ;
+BEGIN TRY
+    EXEC SP.uspSeleccion_Update @idSeleccion = @idSel1b, @idPais = @idPaisS2b, @idMundial = @idMundialJ;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 --/BAJA
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: ID Seleccion.'
-EXEC SP.uspSeleccion_Bajar @idSeleccion = 999999;
+BEGIN TRY
+    EXEC SP.uspSeleccion_Bajar @idSeleccion = 999999;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: se borra la seleccion 4.

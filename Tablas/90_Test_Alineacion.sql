@@ -7,15 +7,12 @@
 -- 26/10/26
 -- Objetivo: Testear Registro y Baja de Alineacion
 
---Los objetos de negocio (TABLAS y SP) viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 --Juegan CONF A1 y CONF A2; CONF A3 esta preservada para probar el caso de jugador
 --cuya seleccion no juega ese partido.
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -145,7 +142,13 @@ GO
 -- Esperado: ya cargo el jugador en ese partido, 0 filas nuevas
 DECLARE @aP2 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @aT1b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test T1');
-EXEC SP.uspAlineacion_Registrar @IdPartido = @aP2, @IdJugador = @aT1b, @Rol = 'Titular'
+BEGIN TRY
+    EXEC SP.uspAlineacion_Registrar @IdPartido = @aP2, @IdJugador = @aT1b, @Rol = 'Titular';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Alineacion
 GO
@@ -153,21 +156,39 @@ GO
 -- Esperado: rol invalido (solo Titular o Suplente), 0 filas nuevas
 DECLARE @aP3 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @aT2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test T2');
-EXEC SP.uspAlineacion_Registrar @IdPartido = @aP3, @IdJugador = @aT2, @Rol = 'Arquero'
+BEGIN TRY
+    EXEC SP.uspAlineacion_Registrar @IdPartido = @aP3, @IdJugador = @aT2, @Rol = 'Arquero';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Alineacion
 GO
 
 -- Esperado: partido inexistente (99), 0 filas nuevas
 DECLARE @aT2b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test T2');
-EXEC SP.uspAlineacion_Registrar @IdPartido = 99, @IdJugador = @aT2b, @Rol = 'Suplente'
+BEGIN TRY
+    EXEC SP.uspAlineacion_Registrar @IdPartido = 99, @IdJugador = @aT2b, @Rol = 'Suplente';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Alineacion
 GO
 
 -- Esperado: jugador inexistente (99), 0 filas nuevas
 DECLARE @aP4 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-EXEC SP.uspAlineacion_Registrar @IdPartido = @aP4, @IdJugador = 99, @Rol = 'Suplente'
+BEGIN TRY
+    EXEC SP.uspAlineacion_Registrar @IdPartido = @aP4, @IdJugador = 99, @Rol = 'Suplente';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Alineacion
 GO
@@ -175,7 +196,13 @@ GO
 -- Esperado: la seleccion del jugador (CONF A3) no juega este partido, 0 filas nuevas
 DECLARE @aP5 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
 DECLARE @aNA INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test NA');
-EXEC SP.uspAlineacion_Registrar @IdPartido = @aP5, @IdJugador = @aNA, @Rol = 'Suplente'
+BEGIN TRY
+    EXEC SP.uspAlineacion_Registrar @IdPartido = @aP5, @IdJugador = @aNA, @Rol = 'Suplente';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Alineacion
 GO
@@ -200,7 +227,13 @@ GO
 
 -- Esperado: inexistente, 0 borradas
 DECLARE @aPc INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-EXEC SP.uspAlineacion_Bajar @IdPartido = @aPc, @IdJugador = 99
+BEGIN TRY
+    EXEC SP.uspAlineacion_Bajar @IdPartido = @aPc, @IdJugador = 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM partidos.Alineacion
 GO
@@ -217,20 +250,22 @@ BEGIN
 		FROM partidos.Alineacion A
 		INNER JOIN equipos.Persona P ON P.IdPersona = A.IdJugador
 		WHERE P.Nombre LIKE 'Ali Test%';
-	IF @aAux1 IS NULL BREAK;
+	IF @@ROWCOUNT = 0 BREAK;
 	EXEC SP.uspAlineacion_Bajar @IdPartido = @aAux1, @IdJugador = @aAux2;
 	SET @i = @i + 1;
 END
 
---2) Los jugadores del test.
-SET @i = 0;
-WHILE @i < 10
-BEGIN
-	SET @aId = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre LIKE 'Ali Test%');
-	IF @aId IS NULL BREAK;
-	EXEC SPTRANS.uspJugador_Bajar @id = @aId;
-	SET @i = @i + 1;
-END
+--2) Eliminar las filas de prueba antes de borrar las selecciones.
+-- La baja de negocio conserva al jugador inactivo y su FK a Seleccion.
+DECLARE @jugadoresPrueba TABLE (IdJugador INT PRIMARY KEY);
+INSERT INTO @jugadoresPrueba (IdJugador)
+SELECT J.IdJugador
+FROM equipos.Jugador AS J
+JOIN equipos.Persona AS P ON P.IdPersona = J.IdJugador
+WHERE P.Nombre IN ('Ali Test T1', 'Ali Test T2', 'Ali Test NA');
+
+DELETE FROM equipos.Jugador WHERE IdJugador IN (SELECT IdJugador FROM @jugadoresPrueba);
+DELETE FROM equipos.Persona WHERE IdPersona IN (SELECT IdJugador FROM @jugadoresPrueba);
 
 --3) El partido y la fase.
 DECLARE @aPartB INT = (SELECT MIN(IdPartido) FROM partidos.Partido);

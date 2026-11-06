@@ -7,12 +7,9 @@
 -- 26/10/26
 -- Objetivo: Testear Registro, Update y Baja de Anunciante
 
---Los objetos de negocio viven en MUNDIAL, el test se ejecuta contra ellos.
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -47,19 +44,37 @@ SELECT * FROM publicidad.Anunciante;
 GO
 
 -- Esperado: nombre nulo, 0 filas nuevas
-EXEC SP.uspAnunciante_Registrar NULL, 1
+BEGIN TRY
+    EXEC SP.uspAnunciante_Registrar NULL, 1;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Anunciante
 GO
 
 -- Esperado: duplicado, 0 filas nuevas
-EXEC SP.uspAnunciante_Registrar 'Anun Test A', 1
+BEGIN TRY
+    EXEC SP.uspAnunciante_Registrar 'Anun Test A', 1;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Anunciante
 GO
 
 -- Esperado: pais inexistente (99), 0 filas nuevas
-EXEC SP.uspAnunciante_Registrar 'Anun Test B', 99
+BEGIN TRY
+    EXEC SP.uspAnunciante_Registrar 'Anun Test B', 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Anunciante
 GO
@@ -76,7 +91,13 @@ SELECT * FROM publicidad.Anunciante
 GO
 
 -- Esperado: id inexistente (99)
-EXEC SP.uspAnunciante_Update 99, 'Anun Test B', 1
+BEGIN TRY
+    EXEC SP.uspAnunciante_Update 99, 'Anun Test B', 1;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Anunciante
 GO
@@ -92,7 +113,13 @@ SELECT * FROM publicidad.Anunciante
 GO
 
 -- Esperado: id inexistente (99), 0 borradas
-EXEC SP.uspAnunciante_Bajar 99
+BEGIN TRY
+    EXEC SP.uspAnunciante_Bajar 99;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 SELECT * FROM publicidad.Anunciante
 GO

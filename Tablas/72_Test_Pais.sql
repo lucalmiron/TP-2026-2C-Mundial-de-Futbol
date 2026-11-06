@@ -9,12 +9,10 @@
 
 --/Fecha: 26/10/26
 
---Test de los SP de Pais (se ejecutan los SP reales de MUNDIAL)
+--Test de los SP de Pais
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba: 
@@ -36,23 +34,53 @@ GO
 --/ALTA
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Nombre.'
-EXEC SP.uspPais_Registrar @nombre = '', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
+BEGIN TRY
+    EXEC SP.uspPais_Registrar @nombre = '', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: PBI.'
-EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = -5;
+BEGIN TRY
+    EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = -5;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Idioma.'
-EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = -1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
+BEGIN TRY
+    EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = -1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Huso Horario.'
-EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = 1, @huso = 0, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
+BEGIN TRY
+    EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = 1, @huso = 0, @ptIni = '17:00', @ptFin = '23:00', @pbi = 1000;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valores invalidos: Inicio y Fin de Primetime.'
-EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = 1, @huso = 1, @ptIni = '23:30', @ptFin = '23:00', @pbi = 1000;
+BEGIN TRY
+    EXEC SP.uspPais_Registrar @nombre = 'Pais Test Negativo', @idioma = 1, @huso = 1, @ptIni = '23:30', @ptFin = '23:00', @pbi = 1000;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: no imprime nada, se insertan 2 filas.
@@ -69,7 +97,13 @@ SELECT * FROM equipos.Pais WHERE NOMBRE LIKE 'Pais Test%';
 GO
 
 -- Esperado: imprime 'Error/es: - Valor duplicado: Pais (nombre).'
-EXEC SP.uspPais_Registrar @nombre = 'Pais Test 1', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 3000;
+BEGIN TRY
+    EXEC SP.uspPais_Registrar @nombre = 'Pais Test 1', @idioma = 1, @huso = 1, @ptIni = '17:00', @ptFin = '23:00', @pbi = 3000;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 --/UPDATE
@@ -86,25 +120,45 @@ SELECT * FROM equipos.Pais WHERE NOMBRE = 'Pais Test 1';
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: ID Pais.'
-EXEC SP.uspPais_Update @idPais = 0, @pbi = 1500;
+BEGIN TRY
+    EXEC SP.uspPais_Update @idPais = 0, @pbi = 1500;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: ID Pais.'
-EXEC SP.uspPais_Update @idPais = 999999, @pbi = 1500;
+BEGIN TRY
+    EXEC SP.uspPais_Update @idPais = 999999, @pbi = 1500;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor duplicado: Pais (nombre).'
 DECLARE @idPais1b INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 1');
-EXEC SP.uspPais_Update @idPais = @idPais1b, @nombre = 'Pais Test 2';
+BEGIN TRY
+    EXEC SP.uspPais_Update @idPais = @idPais1b, @nombre = 'Pais Test 2';
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: Pais Test 1 pasa a usar Idioma 2 y Huso Horario 2
+DECLARE @idPais1 INT = (SELECT IdPais FROM equipos.Pais WHERE NOMBRE = 'Pais Test 1');
 EXEC SP.uspPais_Update @idPais = @idPais1, @idioma = 2, @huso = 2;
 
 SELECT * FROM equipos.Pais;
 GO
 
 --Esperado: Pais Test 2 pasa a tener franja Primetime (17-18 HS)
+DECLARE @idPais2 INT = (SELECT IdPais FROM equipos.Pais WHERE NOMBRE = 'Pais Test 2');
 EXEC SP.uspPais_Update @idPais = @idPais2, @ptIni = '17:00', @ptFin = '18:00';
 
 SELECT * FROM equipos.Pais;
@@ -113,7 +167,13 @@ GO
 --/BAJA
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: ID Pais.'
-EXEC SP.uspPais_Bajar @idPais = 999999;
+BEGIN TRY
+    EXEC SP.uspPais_Bajar @idPais = 999999;
+    THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() NOT IN (50000, 51000) THROW;
+END CATCH;
 GO
 
 -- Esperado: se borra la fila.

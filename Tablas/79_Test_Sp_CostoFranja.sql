@@ -9,12 +9,10 @@
 
 --/Fecha: 26/10/26
 
---Test de los SP de Costo Franja (se ejecutan los SP reales de MUNDIAL)
+--Test de los SP de Costo Franja
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
+    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
 GO
 
 --/Datos de prueba
@@ -47,19 +45,21 @@ GO
 DECLARE @cfSede1 INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test 91');
 BEGIN TRY
 	EXEC SP.CostoFranja_Registrar @tipoFranja = '', @costo = 12000, @idSede = @cfSede1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-	PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Costo.'
 DECLARE @cfSede2 INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test 91');
 BEGIN TRY
-	EXEC SP.CostoFranja_Registrar @tipoFranja = 'Prime Time', @costo = 0, @idSede = @cfSede2;
+	EXEC SP.CostoFranja_Registrar @tipoFranja = 'Prime Time', @costo = NULL, @idSede = @cfSede2;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-	PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -67,9 +67,10 @@ GO
 DECLARE @cfSede3 INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test 91');
 BEGIN TRY
 	EXEC SP.CostoFranja_Registrar @tipoFranja = 'Prime Time', @costo = -500, @idSede = @cfSede3;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-	PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -94,9 +95,10 @@ GO
 DECLARE @cfSede7 INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test 91');
 BEGIN TRY
 	EXEC SP.CostoFranja_Registrar @tipoFranja = 'Prime Time', @costo = 25000, @idSede = @cfSede7;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-	PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -115,9 +117,10 @@ GO
 -- Esperado: imprime 'Error/es: - Valor inexistente: IdCF.'
 BEGIN TRY
 	EXEC SP.CostoFranja_Update @idCF = 999999, @costo = 27000;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-	PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -125,9 +128,10 @@ GO
 DECLARE @cfPrime2 INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE TipoFranja = 'Prime Time');
 BEGIN TRY
 	EXEC SP.CostoFranja_Update @idCF = @cfPrime2, @costo = -1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-	PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -135,9 +139,10 @@ GO
 DECLARE @cfPrime3 INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE TipoFranja = 'Prime Time');
 BEGIN TRY
 	EXEC SP.CostoFranja_Update @idCF = @cfPrime3, @tipoFranja = 'Off Prime Time';
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-	PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
@@ -146,9 +151,10 @@ GO
 -- Esperado: imprime 'Error/es: - Valor inexistente: IdCF.'
 BEGIN TRY
 	EXEC SP.CostoFranja_Bajar @idCF = 999999;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
 END TRY
 BEGIN CATCH
-	PRINT 'Esperado: ' + ERROR_MESSAGE()
+    IF ERROR_NUMBER() <> 51000 THROW;
 END CATCH
 GO
 
