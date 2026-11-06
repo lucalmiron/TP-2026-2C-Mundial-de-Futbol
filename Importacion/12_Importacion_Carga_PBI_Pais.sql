@@ -9,17 +9,14 @@
 -- y la carga 06_Importacion_Carga_Pais.sql (que crea los paises con PBI NULL).
 
 -- En SSMS: Consulta -> Modo SQLCMD. Cambiar estas dos rutas.
--- IMPORTANTE: cada integrante debe cambiar las rutas por las de su propia PC,
--- porque SQL Server lee los archivos desde el disco local del servidor.
--- Ejemplo en esta maquina:
--- :setvar RutaPBI "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
--- :setvar RutaEquiv "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
+
+--Santutu
+ :setvar RutaPBI "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
+ :setvar RutaEquiv "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
+
 --L
-:setvar RutaPBI "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
--- :setvar RutaPBI "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
---L
-:setvar RutaEquiv "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
--- :setvar RutaEquiv "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
+--:setvar RutaPBI "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
+--:setvar RutaEquiv "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
 
 USE [MUNDIAL];
 GO

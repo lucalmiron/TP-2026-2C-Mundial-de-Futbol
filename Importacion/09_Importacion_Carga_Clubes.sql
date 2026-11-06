@@ -121,11 +121,10 @@ FETCH NEXT FROM crsClubes INTO @fila,@nombre;
 WHILE @@FETCH_STATUS=0
 BEGIN
     BEGIN TRY
-        IF DATALENGTH(CONVERT(VARCHAR(400),@nombre))>40
-           OR CONVERT(NVARCHAR(100),CONVERT(VARCHAR(400),@nombre)) COLLATE Latin1_General_100_BIN2
-              <> @nombre COLLATE Latin1_General_100_BIN2
-            THROW 51502, 'El nombre no se puede guardar sin perdida en Club.Nombre NVARCHAR(40).', 1;
-        SET @nombreSp=CONVERT(NVARCHAR(40),@nombre);
+        IF DATALENGTH(@nombre) > 80
+            THROW 51502, 'El nombre del club excede NVARCHAR(40).', 1;
+            
+        SET @nombreSp = @nombre;
         BEGIN TRANSACTION;
         SELECT @cantidad=COUNT(*),@id=MIN(IdClub)
         FROM equipos.Club WITH (UPDLOCK,HOLDLOCK) WHERE Nombre=@nombreSp;

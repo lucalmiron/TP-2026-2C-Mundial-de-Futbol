@@ -9,8 +9,8 @@
 
 -- En SSMS: Consulta -> Modo SQLCMD. Cambiar la ruta de abajo.
 --L
-:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
--- :setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
+--:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+:setvar RutaIdiomas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 
 USE [MUNDIAL];
 GO

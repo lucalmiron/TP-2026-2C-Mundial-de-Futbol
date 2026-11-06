@@ -18,8 +18,8 @@ GO
 IF OBJECT_ID('SPTRANS.uspTecnico_Registrar', 'P') IS NOT NULL
     DROP PROCEDURE SPTRANS.uspTecnico_Registrar;
 GO
-CREATE PROCEDURE SPTRANS.uspTecnico_Registrar 
-@nombre VARCHAR(30),
+CREATE PROCEDURE SPTRANS.uspTecnico_Registrar
+@nombre NVARCHAR(30),
 @fnac DATE,
 @pais INT,
 @funcion VARCHAR(40),
@@ -85,7 +85,7 @@ IF OBJECT_ID('SPTRANS.uspTecnico_Update', 'P') IS NOT NULL
 GO
 CREATE PROCEDURE SPTRANS.uspTecnico_Update 
 @id INT,
-@nombre VARCHAR(30) = NULL,
+@nombre NVARCHAR(30) = NULL,
 @fnac DATE = NULL,
 @pais INT = NULL,
 @funcion VARCHAR(40) = NULL,

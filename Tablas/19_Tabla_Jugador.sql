@@ -20,7 +20,7 @@ BEGIN
 	(
 		IdJugador INT,
 		Estado VARCHAR(10) NOT NULL,
-		Posicion VARCHAR(20) NOT NULL,
+		Posicion NVARCHAR(20) NOT NULL,
 		Numero INT NOT NULL,
 		Club INT NULL,
 		Seleccion INT NOT NULL,
@@ -32,4 +32,17 @@ BEGIN
 		CONSTRAINT UQ_Jugador_Dorsal UNIQUE (Seleccion, Numero)
 	);
 END;
+GO
+
+-- Bases creadas con la version anterior tenian VARCHAR(20): se migra a NVARCHAR(20).
+-- El ALTER es idempotente: si ya es NVARCHAR(20) no hace nada.
+IF EXISTS (
+	SELECT 1
+	FROM sys.columns c
+	JOIN sys.types t ON t.user_type_id = c.user_type_id
+	WHERE c.object_id = OBJECT_ID(N'equipos.Jugador')
+	  AND c.name = N'Posicion'
+	  AND (t.name <> N'nvarchar' OR c.max_length <> 40)
+)
+	ALTER TABLE equipos.Jugador ALTER COLUMN Posicion NVARCHAR(20) NOT NULL;
 GO

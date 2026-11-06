@@ -1,0 +1,3 @@
+# Los importadores usan ROWTERMINATOR = '0x0a' (LF).
+# Forzar LF evita que un checkout con core.autocrlf=true los convierta a CRLF y rompa el BULK INSERT.
+*.csv text eol=lf

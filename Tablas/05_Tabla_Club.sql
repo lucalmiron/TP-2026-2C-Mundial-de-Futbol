@@ -25,3 +25,24 @@ BEGIN
 	);
 END;
 GO
+
+-- Bases creadas con la version anterior tenian VARCHAR(20): se migra a NVARCHAR(40).
+-- El ALTER es idempotente: si ya es NVARCHAR(40) no hace nada.
+IF EXISTS (
+	SELECT 1
+	FROM sys.columns c
+	JOIN sys.types t ON t.user_type_id = c.user_type_id
+	WHERE c.object_id = OBJECT_ID(N'equipos.Club')
+	  AND c.name = N'Nombre'
+	  AND (t.name <> N'nvarchar' OR c.max_length <> 80)
+)
+BEGIN
+	IF EXISTS (SELECT 1 FROM sys.key_constraints
+	           WHERE parent_object_id = OBJECT_ID(N'equipos.Club') AND name = N'UQ_Club_Nombre')
+		ALTER TABLE equipos.Club DROP CONSTRAINT UQ_Club_Nombre;
+
+	ALTER TABLE equipos.Club ALTER COLUMN Nombre NVARCHAR(40) NOT NULL;
+
+	ALTER TABLE equipos.Club ADD CONSTRAINT UQ_Club_Nombre UNIQUE (Nombre);
+END;
+GO

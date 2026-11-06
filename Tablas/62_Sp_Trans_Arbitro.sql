@@ -18,8 +18,8 @@ GO
 IF OBJECT_ID('SPTRANS.uspArbitro_Registrar', 'P') IS NOT NULL
     DROP PROCEDURE SPTRANS.uspArbitro_Registrar;
 GO
-CREATE PROCEDURE SPTRANS.uspArbitro_Registrar 
-@nombre VARCHAR(30),
+CREATE PROCEDURE SPTRANS.uspArbitro_Registrar
+@nombre NVARCHAR(30),
 @fnac DATE,
 @pais INT,
 @categoria VARCHAR(13)
@@ -78,7 +78,7 @@ IF OBJECT_ID('SPTRANS.uspArbitro_Update', 'P') IS NOT NULL
 GO
 CREATE PROCEDURE SPTRANS.uspArbitro_Update 
 @id INT,
-@nombre VARCHAR(30) = NULL,
+@nombre NVARCHAR(30) = NULL,
 @fnac DATE = NULL,
 @pais INT = NULL,
 @categoria VARCHAR(13) = NULL

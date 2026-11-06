@@ -11,19 +11,20 @@
 -- Dependencias: paises, selecciones del Mundial 1, clubes y SP de entrega 5.
 -- SSMS: activar Consulta > Modo SQLCMD y ejecutar el archivo completo.
 
---:setvar RutaJugadores "C:\ruta\proyecto\Datos\jugadores.csv"
---:setvar RutaAliasJugadores "C:\ruta\proyecto\Datos\equivalencias_jugadores.csv"
---:setvar RutaEquipos "C:\ruta\proyecto\Datos\equivalencias_equipos_jugadores.csv"
---:setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
---:setvar RutaLectura "C:\ruta\proyecto\Importacion\10_Lectura_JSON_Jugadores.sql"
+-- santutu
+:setvar RutaJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLectura "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
 
 --L
-:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
-:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
-:setvar RutaEquipos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar CarpetaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLectura "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
---L
+--:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+--:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--:setvar RutaEquipos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar CarpetaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLectura "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
+
 
 USE MUNDIAL;
 GO
@@ -128,7 +129,9 @@ CREATE TABLE #EquiposCsv (
     Slug NVARCHAR(100) COLLATE DATABASE_DEFAULT,
     Pais NVARCHAR(100) COLLATE DATABASE_DEFAULT
 );
-CREATE TABLE #ArchivosJugadores (Archivo NVARCHAR(100),Contenido NVARCHAR(MAX));
+-- El contenido se guarda como VARCHAR con collation UTF8 porque SINGLE_BLOB
+-- entrega los bytes crudos del archivo; luego se convierte a NVARCHAR al leerlo.
+CREATE TABLE #ArchivosJugadores (Archivo NVARCHAR(100),Contenido VARCHAR(MAX) COLLATE Latin1_General_100_CI_AS_SC_UTF8);
 CREATE TABLE #ErroresArchivos (Archivo NVARCHAR(100),Detalle NVARCHAR(2048));
 BEGIN TRY
     BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
@@ -205,11 +208,12 @@ CLOSE crsArchivos;
 DEALLOCATE crsArchivos;
 DECLARE @Resultado TABLE (
     Fila INT IDENTITY PRIMARY KEY,Nombre NVARCHAR(100),Equipo NVARCHAR(60),Anio NVARCHAR(10),Club NVARCHAR(100),
-    NombrePromiedos NVARCHAR(200),TipoCruce VARCHAR(20),
+    PosicionCsv NVARCHAR(20),NombrePromiedos NVARCHAR(200),TipoCruce VARCHAR(20),
     Estado VARCHAR(20) DEFAULT 'Pendiente',Detalle NVARCHAR(2048)
 );
-INSERT @Resultado (Nombre,Equipo,Anio,Club)
-SELECT LTRIM(RTRIM(player)),LTRIM(RTRIM(team)),LTRIM(RTRIM(birth_year)),NULLIF(LTRIM(RTRIM(club)),N'')
+INSERT @Resultado (Nombre,Equipo,Anio,Club,PosicionCsv)
+SELECT LTRIM(RTRIM(player)),LTRIM(RTRIM(team)),LTRIM(RTRIM(birth_year)),NULLIF(LTRIM(RTRIM(club)),N''),
+       NULLIF(LTRIM(RTRIM(position)),N'')
 FROM #JugadoresCsv;
 DROP TABLE #JugadoresCsv;
 IF NOT EXISTS (SELECT 1 FROM @Resultado) THROW 51600,'CSV de jugadores vacio.',1;
@@ -219,11 +223,11 @@ FROM @Resultado r WHERE EXISTS (SELECT 1 FROM @Resultado o WHERE o.Fila<>r.Fila 
 DECLARE @fila INT,@nombre NVARCHAR(100),@equipo NVARCHAR(60),@anioTxt NVARCHAR(10),@club NVARCHAR(100),
  @anio INT,@fnac DATE,@slug NVARCHAR(100),@pais NVARCHAR(100),@numero INT,@pos NVARCHAR(100),
  @idPais INT,@idSeleccion INT,@idClub INT,@idJugador INT,@cantidad INT,@estado VARCHAR(20),
- @nombreSp VARCHAR(30),@posSp VARCHAR(20),@nombreJson NVARCHAR(200),@tipoCruce VARCHAR(20);
+ @nombreSp NVARCHAR(30),@posSp NVARCHAR(20),@nombreJson NVARCHAR(200),@tipoCruce VARCHAR(20),@posCsv NVARCHAR(20);
 DECLARE crsJugadores CURSOR LOCAL FAST_FORWARD FOR
- SELECT Fila,Nombre,Equipo,Anio,Club FROM @Resultado WHERE Estado='Pendiente' ORDER BY Fila;
+ SELECT Fila,Nombre,Equipo,Anio,Club,PosicionCsv FROM @Resultado WHERE Estado='Pendiente' ORDER BY Fila;
 OPEN crsJugadores;
-FETCH NEXT FROM crsJugadores INTO @fila,@nombre,@equipo,@anioTxt,@club;
+FETCH NEXT FROM crsJugadores INTO @fila,@nombre,@equipo,@anioTxt,@club,@posCsv;
 WHILE @@FETCH_STATUS=0
 BEGIN
  BEGIN TRY
@@ -246,21 +250,36 @@ BEGIN
         SET @tipoCruce='Equivalencia';
     END;
     UPDATE @Resultado SET NombrePromiedos=@nombreJson,TipoCruce=@tipoCruce WHERE Fila=@fila;
-    SELECT @cantidad=COUNT(*),@numero=MIN(Numero),@pos=MIN(Posicion)
-    FROM (SELECT DISTINCT Numero,Posicion FROM @Dorsales WHERE Slug=@slug
-          AND Nombre COLLATE Latin1_General_100_CI_AI=@nombreJson COLLATE Latin1_General_100_CI_AI) d;
-    IF @cantidad<>1 OR @numero IS NULL OR @numero<=0 OR NULLIF(@pos,N'') IS NULL
+    SELECT @cantidad=COUNT(DISTINCT Numero),@numero=MIN(Numero),@pos=MIN(NULLIF(Posicion,N''))
+    FROM @Dorsales WHERE Slug=@slug
+      AND Nombre COLLATE Latin1_General_100_CI_AI=@nombreJson COLLATE Latin1_General_100_CI_AI;
+    IF @cantidad<>1 OR @numero IS NULL OR @numero<=0
         THROW 51602,'Sin dorsal y posicion unicos en Promiedos para el nombre resuelto.',1;
-    IF EXISTS (SELECT 1 FROM @Dorsales WHERE Slug=@slug AND Numero=@numero
-               AND Nombre COLLATE Latin1_General_100_CI_AI<>@nombreJson COLLATE Latin1_General_100_CI_AI)
+    -- Promiedos omite la posicion en algunos planteles abreviados: se usa la del CSV.
+    IF NULLIF(@pos,N'') IS NULL
+        SET @pos = CASE LEFT(@posCsv,2)
+            WHEN 'GK' THEN N'Arquero'
+            WHEN 'DF' THEN N'Defensor'
+            WHEN 'MF' THEN N'Mediocampista'
+            WHEN 'FW' THEN N'Delantero'
+        END;
+    IF NULLIF(@pos,N'') IS NULL
+        THROW 51602,'Sin dorsal y posicion unicos en Promiedos para el nombre resuelto.',1;
+    -- Promiedos alterna nombre completo y abreviado ("A. Witsel" / "Axel Witsel"):
+    -- se comparan inicial y apellido para no confundir al mismo jugador con otro.
+    IF EXISTS (
+        SELECT 1 FROM @Dorsales d
+        WHERE d.Slug=@slug AND d.Numero=@numero
+          AND NOT (
+              LEFT(d.Nombre,1) COLLATE Latin1_General_100_CI_AI=LEFT(@nombreJson,1) COLLATE Latin1_General_100_CI_AI
+              AND REVERSE(LEFT(REVERSE(d.Nombre),CHARINDEX(' ',REVERSE(d.Nombre)+' ')-1)) COLLATE Latin1_General_100_CI_AI
+                = REVERSE(LEFT(REVERSE(@nombreJson),CHARINDEX(' ',REVERSE(@nombreJson)+' ')-1)) COLLATE Latin1_General_100_CI_AI
+          )
+    )
         THROW 51602,'El dorsal aparece asociado a otro nombre en Promiedos. Revisar identidad.',1;
-    IF DATALENGTH(CONVERT(VARCHAR(400),@nombre))>30 OR DATALENGTH(CONVERT(VARCHAR(400),@pos))>20
-       OR CONVERT(NVARCHAR(100),CONVERT(VARCHAR(400),@nombre)) COLLATE Latin1_General_100_BIN2
-          <>@nombre COLLATE Latin1_General_100_BIN2
-       OR CONVERT(NVARCHAR(100),CONVERT(VARCHAR(400),@pos)) COLLATE Latin1_General_100_BIN2
-          <>@pos COLLATE Latin1_General_100_BIN2
-        THROW 51602,'Nombre o posicion no se pueden guardar fielmente en los VARCHAR actuales.',1;
-    SET @nombreSp=CONVERT(VARCHAR(30),@nombre);SET @posSp=CONVERT(VARCHAR(20),@pos);
+    IF LEN(@nombre)>30 OR LEN(@pos)>20
+        THROW 51602,'Nombre o posicion exceden el largo permitido (30/20).',1;
+    SET @nombreSp=CONVERT(NVARCHAR(30),@nombre);SET @posSp=CONVERT(NVARCHAR(20),@pos);
     BEGIN TRANSACTION;
     SELECT @cantidad=COUNT(*),@idPais=MIN(IdPais) FROM equipos.Pais WITH (HOLDLOCK) WHERE NOMBRE=@pais;
     IF @cantidad<>1 THROW 51602,'Pais no cargado o ambiguo.',1;
@@ -306,7 +325,7 @@ BEGIN
     IF XACT_STATE()<>0 ROLLBACK TRANSACTION;
     UPDATE @Resultado SET Estado='Error',Detalle=ERROR_MESSAGE() WHERE Fila=@fila;
  END CATCH;
- FETCH NEXT FROM crsJugadores INTO @fila,@nombre,@equipo,@anioTxt,@club;
+ FETCH NEXT FROM crsJugadores INTO @fila,@nombre,@equipo,@anioTxt,@club,@posCsv;
 END;
 CLOSE crsJugadores;
 DEALLOCATE crsJugadores;

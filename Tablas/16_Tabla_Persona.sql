@@ -19,7 +19,7 @@ BEGIN
 	CREATE TABLE equipos.Persona
 	(
 		IdPersona INT IDENTITY(1, 1),
-		Nombre VARCHAR(30) NOT NULL,
+		Nombre NVARCHAR(30) NOT NULL,
 		Fnac DATE NOT NULL,
 		Rol VARCHAR(10) NOT NULL,
 		Pais INT NOT NULL,
@@ -27,4 +27,17 @@ BEGIN
 		CONSTRAINT FK_Persona_Pais FOREIGN KEY (Pais) REFERENCES equipos.Pais(IdPais)
 	);
 END;
+GO
+
+-- Bases creadas con la version anterior tenian VARCHAR(30): se migra a NVARCHAR(30).
+-- El ALTER es idempotente: si ya es NVARCHAR(30) no hace nada.
+IF EXISTS (
+	SELECT 1
+	FROM sys.columns c
+	JOIN sys.types t ON t.user_type_id = c.user_type_id
+	WHERE c.object_id = OBJECT_ID(N'equipos.Persona')
+	  AND c.name = N'Nombre'
+	  AND (t.name <> N'nvarchar' OR c.max_length <> 60)
+)
+	ALTER TABLE equipos.Persona ALTER COLUMN Nombre NVARCHAR(30) NOT NULL;
 GO

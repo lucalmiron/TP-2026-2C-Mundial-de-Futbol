@@ -19,10 +19,10 @@ IF OBJECT_ID('SPTRANS.uspJugador_Registrar', 'P') IS NOT NULL
     DROP PROCEDURE SPTRANS.uspJugador_Registrar;
 GO
 CREATE PROCEDURE SPTRANS.uspJugador_Registrar 
-@nombre VARCHAR(30),
+@nombre NVARCHAR(30),
 @fnac DATE,
 @pais INT,
-@posicion VARCHAR(20),
+@posicion NVARCHAR(20),
 @numero INT,
 @club INT = NULL,
 @seleccion INT,
@@ -75,8 +75,10 @@ BEGIN
 		IF @estado = 'Activo' AND ( (@cantJugadores + 1) > (SELECT TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
 			SET @errores += '- Cupo maximo de jugadores excedido.' + N' ';
 
-		--chequeo dup
-		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre)
+		--chequeo dup: el mismo nombre en otra seleccion es otra persona.
+		IF EXISTS(SELECT 1 FROM equipos.Persona p
+		          JOIN equipos.Jugador j ON j.IdJugador = p.IdPersona
+		          WHERE p.Nombre = @nombre AND j.Seleccion = @seleccion)
 			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 		
 		--El dorsal es unico por seleccion (UQ_Jugador_Dorsal), no globalmente.
@@ -110,10 +112,10 @@ IF OBJECT_ID('SPTRANS.uspJugador_Update', 'P') IS NOT NULL
 GO
 CREATE PROCEDURE SPTRANS.uspJugador_Update 
 @id INT,
-@nombre VARCHAR(30) = NULL,
+@nombre NVARCHAR(30) = NULL,
 @fnac DATE = NULL,
 @pais INT = NULL,
-@posicion VARCHAR(20) = NULL,
+@posicion NVARCHAR(20) = NULL,
 @numero INT = NULL,
 @seleccion INT = NULL
 AS
@@ -148,8 +150,12 @@ BEGIN
 		IF (@seleccion IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
 			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
-		--chequeo dup
-		IF (@nombre IS NOT NULL) AND EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre AND IdPersona <> @id)
+		--chequeo dup: el mismo nombre en otra seleccion es otra persona.
+		IF (@nombre IS NOT NULL) AND EXISTS(
+			SELECT 1 FROM equipos.Persona p
+			JOIN equipos.Jugador j ON j.IdJugador = p.IdPersona
+			WHERE p.Nombre = @nombre AND j.IdJugador <> @id
+			  AND j.Seleccion = COALESCE(@seleccion,(SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id)))
 			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 
 		--El dorsal es unico por seleccion: se controla contra la seleccion que quedara.
