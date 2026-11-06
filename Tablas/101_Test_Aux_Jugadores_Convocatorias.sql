@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
+﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 26/10/26.
 -- Objetivo: comprobar jugadores y cambios de convocatoria.
@@ -7,8 +7,8 @@
 
 SET NOCOUNT ON;
 
-IF DB_NAME() NOT LIKE 'MUNDIAL[_]Grupo3[_]Test%'
-    THROW 51000, 'Seleccionar una base MUNDIAL_Grupo3_Test para estas pruebas.', 1;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Grupo3[_]Test%' AND DB_NAME() <> N'MUNDIAL_Final_Test_Suite'
+    THROW 51000, 'Seleccionar la base de pruebas del grupo o la base de la suite.', 1;
 
 IF EXISTS (SELECT 1 FROM equipos.Pais)
     THROW 51000, 'La base de prueba debe estar vacia.', 1;

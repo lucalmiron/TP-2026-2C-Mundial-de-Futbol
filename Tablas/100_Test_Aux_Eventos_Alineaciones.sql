@@ -1,4 +1,4 @@
---/Universidad Nacional de La Matanza
+﻿--/Universidad Nacional de La Matanza
 --/Bases de Datos Aplicadas - Comision 02
 
 --/Grupo 7 - Integrantes:
@@ -14,8 +14,8 @@
 
 SET NOCOUNT ON;
 
-IF DB_NAME() NOT LIKE 'MUNDIAL[_]Grupo2[_]Test%'
-    THROW 51000, 'Seleccionar una base MUNDIAL_Grupo2_Test para estas pruebas.', 1;
+IF DB_NAME() NOT LIKE 'MUNDIAL[_]Grupo2[_]Test%' AND DB_NAME() <> N'MUNDIAL_Final_Test_Suite'
+    THROW 51000, 'Seleccionar la base de pruebas del grupo o la base de la suite.', 1;
 
 IF EXISTS (SELECT 1 FROM equipos.Pais)
     THROW 51000, 'La base de prueba debe estar vacia.', 1;
