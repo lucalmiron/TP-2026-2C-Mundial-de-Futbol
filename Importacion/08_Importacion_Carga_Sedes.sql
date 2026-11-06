@@ -5,11 +5,13 @@
 -- Requiere las cargas 04 (husos) y 06 (paises).
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar ambas rutas del servidor SQL.
 --L
-:setvar RutaSedes "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
--- :setvar RutaSedes "C:\ruta\proyecto\Datos\sedes.csv"
+--:setvar RutaSedes "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
+--Santutu
+:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
 --L
-:setvar RutaEquivalencias "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
--- :setvar RutaEquivalencias "C:\ruta\proyecto\Datos\equivalencias_ubicacion_sedes.csv"
+--:setvar RutaEquivalencias "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
+--Santutu
+:setvar RutaEquivalencias "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
 
 USE MUNDIAL;
 GO

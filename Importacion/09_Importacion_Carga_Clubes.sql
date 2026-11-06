@@ -4,8 +4,9 @@
 -- Objetivo: cargar clubes desde la columna club del CSV original de jugadores.
 -- SSMS: Consulta > Modo SQLCMD. Ajustar la ruta del servidor SQL.
 --L
-:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
--- :setvar RutaJugadores "C:\ruta\proyecto\Datos\jugadores.csv"
+--:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+-- Santutu
+ :setvar RutaJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
 USE MUNDIAL;
 GO
@@ -113,18 +114,18 @@ INSERT @Resultado (Nombre)
 SELECT DISTINCT club FROM #JugadoresCsv WHERE NULLIF(club,N'') IS NOT NULL;
 DROP TABLE #JugadoresCsv;
 IF @filas=0 THROW 51501, 'El CSV no contiene jugadores.', 1;
-DECLARE @fila INT,@nombre NVARCHAR(100),@nombreSp VARCHAR(20),@id INT,@cantidad INT,@estado VARCHAR(20);
+DECLARE @fila INT,@nombre NVARCHAR(100),@nombreSp NVARCHAR(40),@id INT,@cantidad INT,@estado VARCHAR(20);
 DECLARE crsClubes CURSOR LOCAL FAST_FORWARD FOR SELECT Fila,Nombre FROM @Resultado ORDER BY Fila;
 OPEN crsClubes;
 FETCH NEXT FROM crsClubes INTO @fila,@nombre;
 WHILE @@FETCH_STATUS=0
 BEGIN
     BEGIN TRY
-        IF DATALENGTH(CONVERT(VARCHAR(400),@nombre))>20
+        IF DATALENGTH(CONVERT(VARCHAR(400),@nombre))>40
            OR CONVERT(NVARCHAR(100),CONVERT(VARCHAR(400),@nombre)) COLLATE Latin1_General_100_BIN2
               <> @nombre COLLATE Latin1_General_100_BIN2
-            THROW 51502, 'El nombre no se puede guardar sin perdida en Club.Nombre VARCHAR(20).', 1;
-        SET @nombreSp=CONVERT(VARCHAR(20),@nombre);
+            THROW 51502, 'El nombre no se puede guardar sin perdida en Club.Nombre NVARCHAR(40).', 1;
+        SET @nombreSp=CONVERT(NVARCHAR(40),@nombre);
         BEGIN TRANSACTION;
         SELECT @cantidad=COUNT(*),@id=MIN(IdClub)
         FROM equipos.Club WITH (UPDLOCK,HOLDLOCK) WHERE Nombre=@nombreSp;

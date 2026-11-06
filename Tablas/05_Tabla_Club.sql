@@ -19,7 +19,7 @@ BEGIN
 	CREATE TABLE equipos.Club
 	(
 		IdClub INT IDENTITY(1, 1),
-		Nombre VARCHAR(20) NOT NULL,
+		Nombre NVARCHAR(40) NOT NULL,
 		CONSTRAINT PK_Club PRIMARY KEY (IdClub),
 		CONSTRAINT UQ_Club_Nombre UNIQUE (Nombre)
 	);

@@ -18,7 +18,7 @@ GO
 IF EXISTS(SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspClub_Registrar'))
     DROP PROCEDURE SP.uspClub_Registrar
 GO
-CREATE PROCEDURE SP.uspClub_Registrar @nombre VARCHAR(20)
+CREATE PROCEDURE SP.uspClub_Registrar @nombre NVARCHAR(40)
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
@@ -42,7 +42,7 @@ GO
 IF EXISTS(SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspClub_Update'))
     DROP PROCEDURE SP.uspClub_Update
 GO
-CREATE PROCEDURE SP.uspClub_Update @id INT, @nombre VARCHAR(20)
+CREATE PROCEDURE SP.uspClub_Update @id INT, @nombre NVARCHAR(40)
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';

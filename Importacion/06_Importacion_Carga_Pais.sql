@@ -6,14 +6,17 @@
 
 -- En SSMS: Consulta -> Modo SQLCMD. Cambiar estas tres rutas.
 --L
-:setvar RutaSelecciones "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
--- :setvar RutaSelecciones "C:\ruta\proyecto\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+--:setvar RutaSelecciones "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+--Santutu
+:setvar RutaSelecciones "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
 --L
-:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
--- :setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
+--:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+--Santutu
+:setvar RutaIdiomas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 --L
-:setvar RutaZonas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\pais_zona.csv"
--- :setvar RutaZonas "C:\ruta\proyecto\Datos\Husos_horarios\pais_zona.csv"
+--:setvar RutaZonas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\pais_zona.csv"
+--Santutu
+ :setvar RutaZonas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\pais_zona.csv"
 
 USE [MUNDIAL];
 GO

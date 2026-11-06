@@ -35,7 +35,7 @@ DECLARE @suspTiempo INT = 1;
 
 SELECT @idPais = MIN(IdPais)
 FROM equipos.Pais WITH (HOLDLOCK)
-WHERE NOMBRE = 'Estados Unidos';
+WHERE NOMBRE = 'USA';
 
 IF @idPais IS NULL
     THROW 51804, 'No se encontro el pais Estados Unidos en equipos.Pais. Ejecute primero la carga 06 y verificá el nombre exacto.', 1;
