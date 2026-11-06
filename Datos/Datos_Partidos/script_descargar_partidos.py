@@ -84,13 +84,13 @@ def descargar_partido(session, match_id, reintentos=3, timeout=20, debug=False):
                 time.sleep(espera)
                 continue
             resp.raise_for_status()
-            data = resp.json()
-            if not data:
+            texto = resp.text
+            if not texto:
                 raise RuntimeError(
                     f"respuesta vacia (status {resp.status_code}, body: {resp.text[:100]!r}). "
                     "Probablemente faltan headers; usa --debug y -H para pasarlos."
                 )
-            return data
+            return texto
         except RuntimeError:
             raise
         except (requests.RequestException, ValueError) as e:
@@ -105,7 +105,7 @@ def archivo_valido(path):
         return False
     try:
         with open(path, "r", encoding="utf-8") as f:
-            return bool(json.load(f))
+            return bool(f.read())
     except (ValueError, OSError):
         return False
 
@@ -165,9 +165,9 @@ def main():
             continue
 
         try:
-            partido = descargar_partido(session, match_id, debug=args.debug)
+            partido_texto = descargar_partido(session, match_id, debug=args.debug)
             with open(destino, "w", encoding="utf-8") as f:
-                json.dump(partido, f, ensure_ascii=False, indent=2)
+                f.write(partido_texto)
             ok += 1
             print(f"[{n}/{len(ids)}] {match_id} OK")
         except Exception as e:
