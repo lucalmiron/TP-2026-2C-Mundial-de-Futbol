@@ -7,11 +7,21 @@
 -- Requiere cargas 02, 04, 06, 07 y 08. Mundial = 1.
 -- SSMS: Consulta > Modo SQLCMD.;
 :on error exit
-:setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
-:setvar RutaEquipos "C:\ruta\proyecto\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\ruta\proyecto\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\ruta\proyecto\Datos\equivalencias_fases_partidos.csv"
-:setvar RutaLectura "C:\ruta\proyecto\Importacion\11_Lectura_JSON_Partidos.sql"
+--L
+:setvar CarpetaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+-- :setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
+--L
+:setvar RutaEquipos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+-- :setvar RutaEquipos "C:\ruta\proyecto\Datos\equivalencias_equipos_jugadores.csv"
+--L
+:setvar RutaSedes "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+-- :setvar RutaSedes "C:\ruta\proyecto\Datos\equivalencias_sedes_partidos.csv"
+--L
+:setvar RutaFases "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+-- :setvar RutaFases "C:\ruta\proyecto\Datos\equivalencias_fases_partidos.csv"
+--L
+:setvar RutaLectura "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+-- :setvar RutaLectura "C:\ruta\proyecto\Importacion\11_Lectura_JSON_Partidos.sql"
 
 USE MUNDIAL;
 GO

@@ -4,9 +4,12 @@
 -- Objetivo: importar sedes.csv original.
 -- Requiere las cargas 04 (husos) y 06 (paises).
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar ambas rutas del servidor SQL.
-
-:setvar RutaSedes "C:\ruta\proyecto\Datos\sedes.csv"
-:setvar RutaEquivalencias "C:\ruta\proyecto\Datos\equivalencias_ubicacion_sedes.csv"
+--L
+:setvar RutaSedes "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
+-- :setvar RutaSedes "C:\ruta\proyecto\Datos\sedes.csv"
+--L
+:setvar RutaEquivalencias "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
+-- :setvar RutaEquivalencias "C:\ruta\proyecto\Datos\equivalencias_ubicacion_sedes.csv"
 
 USE MUNDIAL;
 GO

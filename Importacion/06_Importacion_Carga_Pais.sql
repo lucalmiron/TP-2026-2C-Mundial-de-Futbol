@@ -5,9 +5,15 @@
 -- Requiere ejecutar antes las cargas 04 (husos) y 05 (idiomas).
 
 -- En SSMS: Consulta -> Modo SQLCMD. Cambiar estas tres rutas.
-:setvar RutaSelecciones "C:\ruta\proyecto\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
-:setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
-:setvar RutaZonas "C:\ruta\proyecto\Datos\Husos_horarios\pais_zona.csv"
+--L
+:setvar RutaSelecciones "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+-- :setvar RutaSelecciones "C:\ruta\proyecto\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+--L
+:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+-- :setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
+--L
+:setvar RutaZonas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\pais_zona.csv"
+-- :setvar RutaZonas "C:\ruta\proyecto\Datos\Husos_horarios\pais_zona.csv"
 
 USE [MUNDIAL];
 GO

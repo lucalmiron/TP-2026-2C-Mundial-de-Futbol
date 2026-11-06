@@ -3,7 +3,9 @@
 -- Fecha: 02/11/2026.
 -- Objetivo: cargar clubes desde la columna club del CSV original de jugadores.
 -- SSMS: Consulta > Modo SQLCMD. Ajustar la ruta del servidor SQL.
-:setvar RutaJugadores "C:\ruta\proyecto\Datos\jugadores.csv"
+--L
+:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+-- :setvar RutaJugadores "C:\ruta\proyecto\Datos\jugadores.csv"
 
 USE MUNDIAL;
 GO

@@ -8,7 +8,11 @@
 -- Entrega 6: importar el JSON original de GET /timezones (OpenTimezone).
 
 -- En SSMS: Consulta -> Modo SQLCMD. Cambiar la ruta de abajo.
-:setvar RutaHusos "C:\ruta\proyecto\Datos\Husos_horarios\husos_horarios.json"
+
+--L
+:setvar RutaHusos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
+
+--:setvar RutaHusos "C:\ruta\proyecto\Datos\Husos_horarios\husos_horarios.json"
 
 USE MUNDIAL
 GO

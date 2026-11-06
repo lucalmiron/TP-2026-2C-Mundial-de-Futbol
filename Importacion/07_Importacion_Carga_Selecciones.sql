@@ -6,9 +6,15 @@
 -- Requiere paises (06), grupos (01) y el Mundial con IdMundial = 1 cargados.
 
 -- En SSMS: Consulta > Modo SQLCMD. Ajustar estas tres rutas del servidor SQL.
-:setvar RutaGrupos "C:\ruta\proyecto\Datos\selecciones_grupos.csv"
-:setvar RutaSelecciones "C:\ruta\proyecto\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
-:setvar RutaEquivalencias "C:\ruta\proyecto\Datos\equivalencias_selecciones.csv"
+--L
+:setvar RutaGrupos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
+-- :setvar RutaGrupos "C:\ruta\proyecto\Datos\selecciones_grupos.csv"
+--L
+:setvar RutaSelecciones "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+-- :setvar RutaSelecciones "C:\ruta\proyecto\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+--L
+:setvar RutaEquivalencias "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
+-- :setvar RutaEquivalencias "C:\ruta\proyecto\Datos\equivalencias_selecciones.csv"
 
 USE [MUNDIAL];
 GO

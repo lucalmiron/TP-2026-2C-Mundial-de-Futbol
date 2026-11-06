@@ -8,7 +8,9 @@
 -- Carga del catalogo Idioma leyendo los idiomas desde pais_idioma.csv. Ejecutar en MUNDIAL.
 
 -- En SSMS: Consulta -> Modo SQLCMD. Cambiar la ruta de abajo.
-:setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
+--L
+:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+-- :setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
 
 USE [MUNDIAL];
 GO
