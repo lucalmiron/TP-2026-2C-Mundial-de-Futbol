@@ -1,18 +1,23 @@
--- Universidad Nacional de La Matanza - Bases de Datos Aplicadas
--- Comision 02 - Grupo 7
--- Almiron Luca, 
--- Figueroa Santiago, 
--- Ruarte Fidel, 
--- Villalba Leandro
--- Fecha 01/11/26
--- Entrega 6: importar el JSON original de GET /timezones (OpenTimezone).
+-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
+-- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
+-- Fecha: 10/11/2026.
+-- Objetivo: importar el JSON original de GET /timezones (OpenTimezone) con la
+-- metodologia de tres fases.
+--   FASE 1 STAGING     : se baja TODO a tablas temporales. #HusosCrudo guarda
+--                         el archivo original sin modificar y #HusosStaging una
+--                         fila por elemento del arreglo, con los campos del
+--                         dominio y las columnas Estado y Detalle.
+--   FASE 2 DEPURACION  : reglas de conjunto (UPDATE) que marcan los elementos
+--                         invalidos con su motivo, sin borrar ninguno. Se
+--                         informa el resultado antes de tocar la base.
+--   FASE 3 PERSISTENCIA : solo los elementos validos pasan por el SP de ABM
+--                         (SP.uspHusoHorario_Registrar).
+-- SSMS: Consulta -> Modo SQLCMD. Ajustar la ruta del servidor SQL.
+-- IMPORTANTE: cada integrante debe poner la ruta de su propia PC, porque
+-- SQL Server lee los archivos desde el disco local del servidor.
+-- :setvar RutaHusos "C:\ruta\proyecto\Datos\Husos_horarios\husos_horarios.json"
 
--- En SSMS: Consulta -> Modo SQLCMD. Cambiar la ruta de abajo.
-
---L
---:setvar RutaHusos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
---Santutu
-:setvar RutaHusos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
+:setvar RutaHusos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
 
 USE MUNDIAL
 GO
@@ -33,12 +38,43 @@ IF OBJECT_ID(N'sedes.HusoHorario', N'U') IS NULL
 IF COL_LENGTH(N'sedes.HusoHorario', N'IdPais') IS NOT NULL
     THROW 51000, 'Este importador requiere la version de HusoHorario sin IdPais.', 1;
 
-DECLARE @json NVARCHAR(MAX);
+IF OBJECT_ID(N'tempdb..#HusosCrudo') IS NOT NULL DROP TABLE #HusosCrudo;
+IF OBJECT_ID(N'tempdb..#HusosStaging') IS NOT NULL DROP TABLE #HusosStaging;
+
+---------------------------------------------------------------------------------------
+-- FASE 1 - STAGING
+-- Todavia no se descarta nada: primero baja todo a tablas temporales.
+---------------------------------------------------------------------------------------
+
+-- 1.a) Archivo crudo: los bytes originales del JSON, sin modificar.
+--      VARCHAR con collation UTF-8 para leer el texto sin re-serializar.
+CREATE TABLE #HusosCrudo (
+    Archivo NVARCHAR(100) COLLATE DATABASE_DEFAULT,
+    Contenido VARCHAR(MAX) COLLATE Latin1_General_100_CI_AS_SC_UTF8
+);
+
+-- 1.b) Staging de campos: una fila por elemento del arreglo JSON.
+CREATE TABLE #HusosStaging (
+    Fila INT IDENTITY(1,1) PRIMARY KEY,
+    Archivo NVARCHAR(100) COLLATE DATABASE_DEFAULT,
+    NumeroElemento INT,
+    TipoElemento INT,
+    CantidadId INT,
+    TipoId INT,
+    IdZona NVARCHAR(200) COLLATE DATABASE_DEFAULT,
+    DisplayName NVARCHAR(200) COLLATE DATABASE_DEFAULT,
+    BaseOffset NVARCHAR(50) COLLATE DATABASE_DEFAULT,
+    IdHuso INT,
+    Estado VARCHAR(20) COLLATE DATABASE_DEFAULT NOT NULL DEFAULT 'Pendiente',
+    Detalle NVARCHAR(2048) COLLATE DATABASE_DEFAULT
+);
+
 BEGIN TRY
     -- SQLCMD sustituye la ruta antes de enviar el lote a SQL Server.
-    SELECT @json = BulkColumn
+    INSERT #HusosCrudo (Archivo, Contenido)
+    SELECT N'husos_horarios.json', BulkColumn
     FROM OPENROWSET(
-        BULK '$(RutaHusos)', SINGLE_CLOB, CODEPAGE = '65001'
+        BULK '$(RutaHusos)', SINGLE_BLOB
     ) AS archivo;
 END TRY
 BEGIN CATCH
@@ -48,6 +84,10 @@ BEGIN CATCH
     THROW 51001, @errorLectura, 1;
 END CATCH;
 
+DECLARE @json NVARCHAR(MAX) =
+    (SELECT CONVERT(NVARCHAR(MAX), Contenido) FROM #HusosCrudo);
+
+-- 1.c) Se valida la forma del documento antes de interpretarlo.
 IF LEFT(@json, 1) = NCHAR(65279) SET @json = SUBSTRING(@json, 2, LEN(@json));
 IF ISNULL(ISJSON(@json), 0) <> 1
     THROW 51002, 'El archivo no contiene JSON valido; no se cargo ninguna fila.', 1;
@@ -59,48 +99,92 @@ IF SUBSTRING(@json, @primero, 1) <> N'['
 IF NOT EXISTS (SELECT 1 FROM OPENJSON(@json))
     THROW 51002, 'El arreglo de zonas horarias esta vacio.', 1;
 
-DECLARE @Filas TABLE (
-    Fila INT PRIMARY KEY,
-    Zona NVARCHAR(MAX) COLLATE DATABASE_DEFAULT NULL,
-    TipoElemento INT NOT NULL,
-    TipoId INT NULL,
-    CantidadId INT NOT NULL,
-    IdHuso INT NULL,
-    Estado VARCHAR(20) NOT NULL DEFAULT 'Pendiente',
-    Detalle NVARCHAR(2048) NULL
-);
--- Se lee id como texto ancho antes de validar su longitud: sin truncar.
-INSERT @Filas(Fila, Zona, TipoElemento, TipoId, CantidadId)
-SELECT CONVERT(INT, j.[key]) + 1, a.Zona, j.[type], a.TipoId, a.CantidadId
+-- 1.d) Extraccion: una fila por elemento. Si un elemento no es un objeto, se
+--      lee igual y queda marcado en la fase 2; no se pierde informacion.
+INSERT #HusosStaging
+    (Archivo, NumeroElemento, TipoElemento, CantidadId, TipoId,
+     IdZona, DisplayName, BaseOffset)
+SELECT N'husos_horarios.json', CONVERT(INT, j.[key]) + 1, j.[type],
+       a.CantidadId, a.TipoId, a.IdZona, b.DisplayName, c.BaseOffset
 FROM OPENJSON(@json) AS j
 OUTER APPLY (
-    SELECT MAX(p.value) AS Zona, MAX(p.type) AS TipoId, COUNT(*) AS CantidadId
+    -- Se lee id como texto ancho antes de validar su longitud: sin truncar.
+    SELECT MAX(p.value) AS IdZona, MAX(p.type) AS TipoId, COUNT(*) AS CantidadId
     FROM OPENJSON(CASE WHEN j.type = 5 THEN j.value ELSE N'{}' END) AS p
     WHERE p.[key] COLLATE Latin1_General_100_BIN2 = N'id'
-) AS a;
+) AS a
+OUTER APPLY (
+    SELECT MAX(p.value) AS DisplayName
+    FROM OPENJSON(CASE WHEN j.type = 5 THEN j.value ELSE N'{}' END) AS p
+    WHERE p.[key] COLLATE Latin1_General_100_BIN2 = N'displayName'
+) AS b
+OUTER APPLY (
+    SELECT MAX(p.value) AS BaseOffset
+    FROM OPENJSON(CASE WHEN j.type = 5 THEN j.value ELSE N'{}' END) AS p
+    WHERE p.[key] COLLATE Latin1_General_100_BIN2 = N'baseOffset'
+) AS c;
 
-UPDATE @Filas SET Estado = 'Error', Detalle =
-    CASE WHEN TipoElemento <> 5 THEN N'El elemento debe ser un objeto.'
-         WHEN CantidadId <> 1 THEN N'Debe existir exactamente una propiedad id.'
-         WHEN TipoId <> 1 THEN N'id debe ser una cadena de texto.'
-         ELSE N'id vacio, mayor de 50 caracteres o con caracteres no admitidos.' END
-WHERE TipoElemento <> 5 OR CantidadId <> 1 OR TipoId <> 1
-   OR Zona IS NULL OR DATALENGTH(Zona) = 0 OR DATALENGTH(Zona) > 100
-   OR Zona COLLATE Latin1_General_100_BIN2 LIKE N'%[^A-Za-z0-9/_+-]%';
+IF NOT EXISTS (SELECT 1 FROM #HusosStaging)
+    THROW 51002, 'El arreglo de zonas horarias esta vacio.', 1;
 
--- Deduplicar con la collation de la base, igual que el SP de alta.
-UPDATE f SET Estado = 'Duplicada', Detalle = N'id repetido en este archivo.'
-FROM @Filas AS f
-WHERE f.Estado = 'Pendiente' AND EXISTS (
-    SELECT 1 FROM @Filas AS anterior
-    WHERE anterior.Estado = 'Pendiente'
-      AND anterior.Zona = f.Zona AND anterior.Fila < f.Fila
+---------------------------------------------------------------------------------------
+-- FASE 2 - DEPURACION
+-- Reglas de conjunto: cada UPDATE marca los elementos invalidos y su motivo.
+-- No se borra nada; los elementos validos quedan en Estado = 'Pendiente'.
+---------------------------------------------------------------------------------------
+
+-- D1: el elemento debe ser un objeto JSON.
+UPDATE #HusosStaging SET Estado='Error',
+    Detalle=N'El elemento debe ser un objeto.'
+WHERE Estado='Pendiente' AND TipoElemento <> 5;
+
+-- D2: debe existir exactamente una propiedad id.
+UPDATE #HusosStaging SET Estado='Error',
+    Detalle=N'Debe existir exactamente una propiedad id.'
+WHERE Estado='Pendiente' AND CantidadId <> 1;
+
+-- D3: id debe ser una cadena de texto.
+UPDATE #HusosStaging SET Estado='Error',
+    Detalle=N'id debe ser una cadena de texto.'
+WHERE Estado='Pendiente' AND TipoId <> 1;
+
+-- D4: id vacio, mayor de 50 caracteres (VARCHAR(50) de la tabla) o con
+--      caracteres no admitidos. Se mide sobre la conversion a VARCHAR para
+--      no contar bytes de UTF-16 como caracteres.
+UPDATE #HusosStaging SET Estado='Error',
+    Detalle=N'id vacio, mayor de 50 caracteres o con caracteres no admitidos.'
+WHERE Estado='Pendiente'
+  AND (IdZona IS NULL OR DATALENGTH(IdZona) = 0
+       OR DATALENGTH(CONVERT(VARCHAR(MAX), IdZona)) > 50
+       OR CONVERT(NVARCHAR(MAX),CONVERT(VARCHAR(MAX),IdZona)) COLLATE Latin1_General_100_BIN2
+            <> IdZona COLLATE Latin1_General_100_BIN2
+       OR IdZona COLLATE Latin1_General_100_BIN2 LIKE N'%[^A-Za-z0-9/_+-]%');
+
+-- D5: id repetido dentro del archivo: se conserva solo la primera aparicion.
+UPDATE f SET Estado='Duplicada', Detalle=N'id repetido en este archivo.'
+FROM #HusosStaging AS f
+WHERE f.Estado='Pendiente' AND EXISTS (
+    SELECT 1 FROM #HusosStaging AS anterior
+    WHERE anterior.Estado='Pendiente'
+      AND anterior.IdZona=f.IdZona AND anterior.Fila<f.Fila
 );
 
-DECLARE @fila INT, @nombre VARCHAR(50), @id INT, @cantidad INT;
+-- Reporte de la depuracion: se informa ANTES de escribir en la tabla real.
+SELECT 'FASE 2 - Depuracion de husos horarios (antes de la persistencia)' AS Fase;
+SELECT Estado, COUNT(*) AS Cantidad FROM #HusosStaging GROUP BY Estado ORDER BY Estado;
+SELECT Fila, NumeroElemento, IdZona, DisplayName, Estado, Detalle
+FROM #HusosStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
+
+---------------------------------------------------------------------------------------
+-- FASE 3 - PERSISTENCIA
+-- Solo las filas que quedaron en 'Pendiente' llegan a la tabla real, siempre
+-- a traves del SP de ABM de la entrega 5.
+---------------------------------------------------------------------------------------
+
+DECLARE @fila INT, @nombre VARCHAR(50), @id INT, @cantidad INT, @estado VARCHAR(20);
 DECLARE filas CURSOR LOCAL FAST_FORWARD FOR
-    SELECT Fila, CONVERT(VARCHAR(50), Zona)
-    FROM @Filas WHERE Estado = 'Pendiente' ORDER BY Fila;
+    SELECT Fila, CONVERT(VARCHAR(50), IdZona)
+    FROM #HusosStaging WHERE Estado='Pendiente' ORDER BY Fila;
 OPEN filas;
 FETCH NEXT FROM filas INTO @fila, @nombre;
 WHILE @@FETCH_STATUS = 0
@@ -119,13 +203,13 @@ BEGIN
             SELECT @id = IdHuso FROM sedes.HusoHorario WHERE Nombre = @nombre;
         END;
         COMMIT TRANSACTION;
-        UPDATE @Filas SET IdHuso = @id,
+        UPDATE #HusosStaging SET IdHuso = @id,
             Estado = CASE WHEN @cantidad = 0 THEN 'Insertada' ELSE 'SinCambios' END
         WHERE Fila = @fila;
     END TRY
     BEGIN CATCH
         IF XACT_STATE() <> 0 ROLLBACK TRANSACTION;
-        UPDATE @Filas SET Estado = 'Error', Detalle = ERROR_MESSAGE()
+        UPDATE #HusosStaging SET Estado = 'Error', Detalle = ERROR_MESSAGE()
         WHERE Fila = @fila;
     END CATCH;
     FETCH NEXT FROM filas INTO @fila, @nombre;
@@ -133,10 +217,15 @@ END;
 CLOSE filas;
 DEALLOCATE filas;
 
-SELECT Estado, COUNT(*) AS Cantidad FROM @Filas GROUP BY Estado ORDER BY Estado;
-SELECT Fila, Zona, IdHuso, Estado, Detalle FROM @Filas ORDER BY Fila;
-IF EXISTS (SELECT 1 FROM @Filas WHERE Estado = 'Error')
+-- Reporte final de la persistencia.
+SELECT 'FASE 3 - Persistencia de husos horarios' AS Fase;
+SELECT Estado, COUNT(*) AS Cantidad FROM #HusosStaging GROUP BY Estado ORDER BY Estado;
+SELECT Fila, NumeroElemento, IdZona, DisplayName, BaseOffset, IdHuso, Estado, Detalle
+FROM #HusosStaging ORDER BY Fila;
+
+DECLARE @fallos INT = (SELECT COUNT(*) FROM #HusosStaging WHERE Estado='Error');
+DROP TABLE #HusosCrudo;
+DROP TABLE #HusosStaging;
+IF @fallos > 0
     THROW 51004, 'Importacion parcial: se conservaron las filas validas. Revise el resultado de errores.', 1;
 GO
-
-
