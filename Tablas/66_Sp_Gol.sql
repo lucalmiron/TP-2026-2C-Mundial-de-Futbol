@@ -10,6 +10,7 @@
 --/Fecha: 28/10/26
 -- Objetivo: separar goles de juego y conversiones de tanda en una transaccion.
 
+--USE MUNDIAL
 GO
  
 CREATE OR ALTER PROCEDURE SPTRANS.uspGol_Registrar

@@ -12,6 +12,7 @@
 --Objetivo: Gestionar Tabla CambioConvocatoria
 
 -- Ejecutar en la base seleccionada por el instalador.
+--USE MUNDIAL
 GO
 
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspCambioConvocatoria_Registrar'))

@@ -13,6 +13,7 @@
 --Las validaciones se acumulan en una variable y se lanzan con un unico THROW.
 
 -- Ejecutar en la base seleccionada por el instalador.
+--USE MUNDIAL
 GO
 
 -- =============================================

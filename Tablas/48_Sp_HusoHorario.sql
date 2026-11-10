@@ -12,6 +12,7 @@
 --Creacion de Stored Procedures (ABM de HusoHorario)
 
 -- Ejecutar en la base seleccionada por el instalador.
+--USE MUNDIAL
 GO
 
 --alta de huso horario

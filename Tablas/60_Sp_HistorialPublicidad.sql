@@ -4,6 +4,8 @@
 -- Objetivo: asignar piezas a espacios de la sede y conservar el costo pactado.
 -- CostoFinal omitido: costo del espacio + costo de franja; explicito: importe pactado.
 
+--USE MUNDIAL
+GO
 
 CREATE OR ALTER PROCEDURE SP.uspHistorialPublicidad_Registrar
     @idPublicidad INT,

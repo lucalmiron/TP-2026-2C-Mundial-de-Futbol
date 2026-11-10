@@ -12,6 +12,7 @@
 --Creacion de Stored Procedures (ABM de Pais)
 
 -- Ejecutar en la base seleccionada por el instalador.
+--USE MUNDIAL
 GO
 
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspPais_Registrar'))

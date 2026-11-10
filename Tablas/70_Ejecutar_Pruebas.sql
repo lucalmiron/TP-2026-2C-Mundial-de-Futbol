@@ -1,5 +1,7 @@
 -- Modo SQLCMD. Las cuatro pruebas usan tablas distintas en una base nueva.
-:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
+--:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
+--L
+:setvar ScriptPath "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
 :ON ERROR EXIT
 USE master;
 GO
@@ -24,18 +26,18 @@ CREATE SCHEMA SP;
 GO
 CREATE SCHEMA SPTRANS;
 GO
-:r $(ScriptPath)\06_Tabla_Idioma.sql
-:r $(ScriptPath)\14_Tabla_HusoHorario.sql
-:r $(ScriptPath)\03_Tabla_Pais.sql
-:r $(ScriptPath)\04_Tabla_Grupo.sql
-:r $(ScriptPath)\05_Tabla_Club.sql
-:r $(ScriptPath)\07_Tabla_Fase.sql
-:r $(ScriptPath)\08_Tabla_Periodo.sql
-:r $(ScriptPath)\09_Tabla_EspacioPublicitario.sql
-:r $(ScriptPath)\10_Tabla_CostoFranja.sql
-:r $(ScriptPath)\11_Tabla_Motivo.sql
-:r $(ScriptPath)\12_Tabla_Campania.sql
-:r $(ScriptPath)\13_Tabla_Mundial.sql
+:r $(ScriptPath)\03_Tabla_Idioma.sql
+:r $(ScriptPath)\04_Tabla_HusoHorario.sql
+:r $(ScriptPath)\05_Tabla_Pais.sql
+:r $(ScriptPath)\06_Tabla_Grupo.sql
+:r $(ScriptPath)\07_Tabla_Club.sql
+:r $(ScriptPath)\08_Tabla_Fase.sql
+:r $(ScriptPath)\09_Tabla_Periodo.sql
+:r $(ScriptPath)\10_Tabla_EspacioPublicitario.sql
+:r $(ScriptPath)\11_Tabla_CostoFranja.sql
+:r $(ScriptPath)\12_Tabla_Motivo.sql
+:r $(ScriptPath)\13_Tabla_Campania.sql
+:r $(ScriptPath)\14_Tabla_Mundial.sql
 :r $(ScriptPath)\15_Tabla_Sede.sql
 :r $(ScriptPath)\16_Tabla_Persona.sql
 :r $(ScriptPath)\17_Tabla_Seleccion.sql

@@ -7,6 +7,9 @@
 -- 26/10/26
 -- Objetivo: Gestionar Tabla Partido
 
+--USE MUNDIAL
+GO
+
 -- Fecha del partido se interpreta en UTC. El sufijo del huso puede ser una etiqueta.
 CREATE OR ALTER FUNCTION sedes.fnFechaHoraLocal(@fecha DATE, @hora TIME, @huso VARCHAR(50))
 RETURNS DATETIMEOFFSET

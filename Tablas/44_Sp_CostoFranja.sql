@@ -2,6 +2,7 @@
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 26/10/26. Revision auxiliar de penales y publicidad por sede.
 
+--USE MUNDIAL
 GO
 -- Objetivo: ABM de CostoFranja por sede; la identidad de sede no se mueve en Update.
 CREATE OR ALTER PROCEDURE SP.CostoFranja_Registrar

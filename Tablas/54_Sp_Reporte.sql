@@ -12,6 +12,7 @@
 --Creacion de Stored Procedures
 
 -- Ejecutar en la base seleccionada por el instalador.
+--USE MUNDIAL
 GO
 
 --Reporte

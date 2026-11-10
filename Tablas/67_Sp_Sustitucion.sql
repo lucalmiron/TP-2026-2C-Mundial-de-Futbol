@@ -13,6 +13,7 @@
 
 -- Ajuste: soporte de Descanso y orden por minuto/periodo.
 -- Ejecutar en la base seleccionada por el instalador.
+--USE MUNDIAL
 GO
 
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SPTRANS.uspSustitucion_Registrar'))

@@ -8,6 +8,7 @@
 -- Objetivo: SP Sede.
 
 -- Ejecutar en la base seleccionada por el instalador.
+--USE MUNDIAL
 GO
 
 if exists (select name from sys.objects where object_id = object_id('SP.uspSede_Registrar'))
