@@ -173,6 +173,7 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
         -- Retener bloqueos hasta confirmar evita duplicados entre importadores.
+        SET @id = NULL;
         SELECT @id = IdIdioma FROM arbitros.Idioma WITH (UPDLOCK, HOLDLOCK)
         WHERE Descripcion = @descripcion;
         IF @id IS NULL

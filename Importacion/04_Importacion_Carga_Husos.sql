@@ -200,7 +200,8 @@ BEGIN
         IF @cantidad = 0
         BEGIN
             EXEC SP.uspHusoHorario_Registrar @nombre = @nombre;
-            SELECT @id = IdHuso FROM sedes.HusoHorario WHERE Nombre = @nombre;
+            SET @id = NULL;
+        SELECT @id = IdHuso FROM sedes.HusoHorario WHERE Nombre = @nombre;
         END;
         COMMIT TRANSACTION;
         UPDATE #HusosStaging SET IdHuso = @id,

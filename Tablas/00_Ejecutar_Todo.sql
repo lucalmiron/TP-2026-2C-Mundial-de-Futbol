@@ -18,7 +18,7 @@
 GO
 :r $(ScriptPath)\02_Base_MundialTesting.sql
 GO
-USE MUNDIAL_Final_Test_E5
+USE MUNDIAL;
 GO
 :r $(ScriptPath)\03_Tabla_Idioma.sql
 GO
