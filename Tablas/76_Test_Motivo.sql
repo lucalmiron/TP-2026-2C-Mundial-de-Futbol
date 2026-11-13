@@ -8,8 +8,8 @@
 -- Objetivo: Testear Registro, Update y Baja de Motivo
 
 --Sin prerrequisitos.
-IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
-    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
+IF DB_NAME() <> N'MUNDIALtesting'
+    THROW 51000, 'Seleccionar la base MUNDIALtesting para estas pruebas.', 1;
 GO
 
 -- Esperado: inserta 1 fila

@@ -11,8 +11,8 @@
 --Juegan CONF G1 (autor) y CONF G2 (asistencia); CONF G3 esta preservada para probar los casos
 --de jugador que no participo del encuentro.
 
-IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
-    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
+IF DB_NAME() <> N'MUNDIALtesting'
+    THROW 51000, 'Seleccionar la base MUNDIALtesting para estas pruebas.', 1;
 GO
 
 --/Datos de prueba

@@ -10,8 +10,8 @@
 --El test arma su propio juego de datos y lo borra al final, asi se puede ejecutar mas de una vez.
 --usHistorialPublicidad_* lanza excepciones (THROW), por eso los casos esperados a fallar van
 --envueltos en TRY/CATCH: el CATCH captura la excepcion y deja el mensaje en el log del test.
-IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
-    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
+IF DB_NAME() <> N'MUNDIALtesting'
+    THROW 51000, 'Seleccionar la base MUNDIALtesting para estas pruebas.', 1;
 GO
 
 -- Use temp table to persist values across GO batches

@@ -2,8 +2,8 @@
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 26/10/26.
 -- Objetivo: comprobar ABM de sede con identificadores obtenidos de sus datos de prueba.
-IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
-    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
+IF DB_NAME() <> N'MUNDIALtesting'
+    THROW 51000, 'Seleccionar la base MUNDIALtesting para estas pruebas.', 1;
 GO
 SET NOCOUNT ON;
 

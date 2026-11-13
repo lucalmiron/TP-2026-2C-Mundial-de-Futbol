@@ -1,30 +1,27 @@
 -- Modo SQLCMD. Las cuatro pruebas usan tablas distintas en una base nueva.
 --:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
 --L
-:setvar ScriptPath "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
+:setvar ScriptPath "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
 :ON ERROR EXIT
 USE master;
 GO
-IF DB_ID('MUNDIAL_Final_Test_E5_Simples') IS NOT NULL
- THROW 51000,'La base de pruebas ya existe. Revisarla antes de repetir la ejecucion.',1;
 GO
-CREATE DATABASE [MUNDIAL_Final_Test_E5_Simples] COLLATE Latin1_General_100_CI_AS_SC;
 GO
-USE [MUNDIAL_Final_Test_E5_Simples];
+USE [MUNDIALtesting];
 GO
-CREATE SCHEMA equipos;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'equipos') EXECUTE('CREATE SCHEMA equipos');
 GO
-CREATE SCHEMA sedes;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'sedes') EXECUTE('CREATE SCHEMA sedes');
 GO
-CREATE SCHEMA partidos;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'partidos') EXECUTE('CREATE SCHEMA partidos');
 GO
-CREATE SCHEMA arbitros;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'arbitros') EXECUTE('CREATE SCHEMA arbitros');
 GO
-CREATE SCHEMA publicidad;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'publicidad') EXECUTE('CREATE SCHEMA publicidad');
 GO
-CREATE SCHEMA SP;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'SP') EXECUTE('CREATE SCHEMA SP');
 GO
-CREATE SCHEMA SPTRANS;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'SPTRANS') EXECUTE('CREATE SCHEMA SPTRANS');
 GO
 :r $(ScriptPath)\03_Tabla_Idioma.sql
 :r $(ScriptPath)\04_Tabla_HusoHorario.sql
@@ -93,13 +90,11 @@ GO
 :r $(ScriptPath)\67_Sp_Sustitucion.sql
 :r $(ScriptPath)\68_Sp_Evento.sql
 :r $(ScriptPath)\69_Sp_CambioConvocatoria.sql
-:r $(ScriptPath)\76_Test_Fase.sql
-:r $(ScriptPath)\80_Test_Motivo.sql
-:r $(ScriptPath)\81_Test_Campania.sql
-:r $(ScriptPath)\83_Test_Sp_HusoHorario.sql
-USE master;
-GO
-DROP DATABASE [MUNDIAL_Final_Test_E5_Simples];
+:r $(ScriptPath)\73_Test_Fase.sql
+:r $(ScriptPath)\76_Test_Motivo.sql
+:r $(ScriptPath)\77_Test_Campania.sql
+:r $(ScriptPath)\79_Test_Sp_HusoHorario.sql
+PRINT 'MUNDIALtesting queda lista para las pruebas.';
 GO
 PRINT 'Etapa 3 finalizada.';
 GO

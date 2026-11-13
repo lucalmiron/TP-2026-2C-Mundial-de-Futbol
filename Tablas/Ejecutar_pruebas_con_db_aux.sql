@@ -1,31 +1,28 @@
 -- Pruebas de una tabla y luego multitabla, en una base exclusiva por corrida.
 --L
-:setvar ScriptPath "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
+:setvar ScriptPath "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
 --Santutu
 --:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
 :ON ERROR EXIT
 USE master;
 GO
-IF DB_ID(N'MUNDIAL_Final_Test_Suite') IS NOT NULL
-    THROW 51000, 'La base de la suite ya existe. Revisar la corrida anterior.', 1;
 GO
-CREATE DATABASE [MUNDIAL_Final_Test_Suite] COLLATE Latin1_General_100_CI_AS_SC;
 GO
-USE [MUNDIAL_Final_Test_Suite];
+USE [MUNDIALtesting];
 GO
-CREATE SCHEMA equipos;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'equipos') EXECUTE('CREATE SCHEMA equipos');
 GO
-CREATE SCHEMA sedes;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'sedes') EXECUTE('CREATE SCHEMA sedes');
 GO
-CREATE SCHEMA partidos;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'partidos') EXECUTE('CREATE SCHEMA partidos');
 GO
-CREATE SCHEMA arbitros;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'arbitros') EXECUTE('CREATE SCHEMA arbitros');
 GO
-CREATE SCHEMA publicidad;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'publicidad') EXECUTE('CREATE SCHEMA publicidad');
 GO
-CREATE SCHEMA SP;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'SP') EXECUTE('CREATE SCHEMA SP');
 GO
-CREATE SCHEMA SPTRANS;
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name=N'SPTRANS') EXECUTE('CREATE SCHEMA SPTRANS');
 GO
 :r $(ScriptPath)\03_Tabla_Idioma.sql
 :r $(ScriptPath)\04_Tabla_HusoHorario.sql
@@ -100,7 +97,7 @@ CREATE PROCEDURE SP.uspLimpiarDatosDePrueba AS
 BEGIN
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
-    IF DB_NAME() <> N'MUNDIAL_Final_Test_Suite' OR @@TRANCOUNT <> 0
+    IF DB_NAME() <> N'MUNDIALtesting' OR @@TRANCOUNT <> 0
         THROW 51000, 'Se requiere la base exclusiva de la suite sin transacciones abiertas.', 1;
     BEGIN TRY
         BEGIN TRANSACTION;
@@ -189,210 +186,178 @@ BEGIN
     END CATCH;
 END;
 GO
-PRINT 'Ejecutando 76_Test_Fase.sql';
+PRINT 'Ejecutando 73_Test_Fase.sql';
 GO
-:r $(ScriptPath)\76_Test_Fase.sql
+:r $(ScriptPath)\73_Test_Fase.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 80_Test_Motivo.sql';
+PRINT 'Ejecutando 76_Test_Motivo.sql';
 GO
-:r $(ScriptPath)\80_Test_Motivo.sql
+:r $(ScriptPath)\76_Test_Motivo.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 81_Test_Campania.sql';
+PRINT 'Ejecutando 77_Test_Campania.sql';
 GO
-:r $(ScriptPath)\81_Test_Campania.sql
+:r $(ScriptPath)\77_Test_Campania.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 83_Test_Sp_HusoHorario.sql';
+PRINT 'Ejecutando 79_Test_Sp_HusoHorario.sql';
 GO
-:r $(ScriptPath)\83_Test_Sp_HusoHorario.sql
+:r $(ScriptPath)\79_Test_Sp_HusoHorario.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 72_Test_Pais.sql';
+PRINT 'Ejecutando 71_Test_Pais.sql';
 GO
-:r $(ScriptPath)\72_Test_Pais.sql
+:r $(ScriptPath)\71_Test_Pais.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 73_Test_Grupo.sql';
+PRINT 'Ejecutando 72_Test_Grupo.sql';
 GO
-:r $(ScriptPath)\73_Test_Grupo.sql
+:r $(ScriptPath)\72_Test_Grupo.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 74_Test_Aux_Club.sql';
 GO
-:r $(ScriptPath)\74_Test_Aux_Club.sql
-GO
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 75_Test_Aux_IdiomaReporte.sql';
-GO
-:r $(ScriptPath)\75_Test_Aux_IdiomaReporte.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 77_Test_Aux_Periodo.sql';
 GO
-:r $(ScriptPath)\77_Test_Aux_Periodo.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 78_Test_Sp_EspacioPublicitario.sql';
 GO
-:r $(ScriptPath)\78_Test_Sp_EspacioPublicitario.sql
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 79_Test_Sp_CostoFranja.sql';
-GO
-:r $(ScriptPath)\79_Test_Sp_CostoFranja.sql
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 82_Test_Mundial.sql';
-GO
-:r $(ScriptPath)\82_Test_Mundial.sql
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 84_Test_Sp_Sede.sql';
-GO
-:r $(ScriptPath)\84_Test_Sp_Sede.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 85_Test_Seleccion.sql';
+PRINT 'Ejecutando 74_Test_Sp_EspacioPublicitario.sql';
 GO
-:r $(ScriptPath)\85_Test_Seleccion.sql
+:r $(ScriptPath)\74_Test_Sp_EspacioPublicitario.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 86_Test_Anunciante.sql';
+PRINT 'Ejecutando 75_Test_Sp_CostoFranja.sql';
 GO
-:r $(ScriptPath)\86_Test_Anunciante.sql
+:r $(ScriptPath)\75_Test_Sp_CostoFranja.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 87_Test_Publicidad.sql';
+PRINT 'Ejecutando 78_Test_Mundial.sql';
 GO
-:r $(ScriptPath)\87_Test_Publicidad.sql
+:r $(ScriptPath)\78_Test_Mundial.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 88_Test_Aux_Persona.sql';
+PRINT 'Ejecutando 80_Test_Sp_Sede.sql';
 GO
-:r $(ScriptPath)\88_Test_Aux_Persona.sql
-GO
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 89_Test_Partido.sql';
-GO
-:r $(ScriptPath)\89_Test_Partido.sql
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 90_Test_Alineacion.sql';
-GO
-:r $(ScriptPath)\90_Test_Alineacion.sql
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 91_Test_PublicidadPais.sql';
-GO
-:r $(ScriptPath)\91_Test_PublicidadPais.sql
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 92_Test_AnuncianteCampania.sql';
-GO
-:r $(ScriptPath)\92_Test_AnuncianteCampania.sql
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 93_Test_HistorialPublicidad.sql';
-GO
-:r $(ScriptPath)\93_Test_HistorialPublicidad.sql
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 94_Test_Aux_Sp_Amonestacion.sql';
-GO
-:r $(ScriptPath)\94_Test_Aux_Sp_Amonestacion.sql
+:r $(ScriptPath)\80_Test_Sp_Sede.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 95_Test_Gol.sql';
+PRINT 'Ejecutando 81_Test_Seleccion.sql';
 GO
-:r $(ScriptPath)\95_Test_Gol.sql
+:r $(ScriptPath)\81_Test_Seleccion.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 96_Test_Sustitucion.sql';
+PRINT 'Ejecutando 82_Test_Anunciante.sql';
 GO
-:r $(ScriptPath)\96_Test_Sustitucion.sql
+:r $(ScriptPath)\82_Test_Anunciante.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 97_Test_CambioConvocatoria.sql';
+PRINT 'Ejecutando 83_Test_Publicidad.sql';
 GO
-:r $(ScriptPath)\97_Test_CambioConvocatoria.sql
+:r $(ScriptPath)\83_Test_Publicidad.sql
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 98_Test_Trans_Arbitraje.sql';
 GO
-:r $(ScriptPath)\98_Test_Trans_Arbitraje.sql
-EXEC SP.uspLimpiarDatosDePrueba;
-GO
-PRINT 'Ejecutando 99_Test_Aux_Evento.sql';
-GO
-:r $(ScriptPath)\99_Test_Aux_Evento.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 100_Test_Aux_Eventos_Alineaciones.sql';
+PRINT 'Ejecutando 84_Test_Partido.sql';
 GO
-:r $(ScriptPath)\100_Test_Aux_Eventos_Alineaciones.sql
+:r $(ScriptPath)\84_Test_Partido.sql
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+PRINT 'Ejecutando 85_Test_Alineacion.sql';
+GO
+:r $(ScriptPath)\85_Test_Alineacion.sql
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+PRINT 'Ejecutando 86_Test_PublicidadPais.sql';
+GO
+:r $(ScriptPath)\86_Test_PublicidadPais.sql
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+PRINT 'Ejecutando 87_Test_AnuncianteCampania.sql';
+GO
+:r $(ScriptPath)\87_Test_AnuncianteCampania.sql
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+PRINT 'Ejecutando 88_Test_HistorialPublicidad.sql';
+GO
+:r $(ScriptPath)\88_Test_HistorialPublicidad.sql
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+GO
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 101_Test_Aux_Jugadores_Convocatorias.sql';
+PRINT 'Ejecutando 89_Test_Gol.sql';
 GO
-:r $(ScriptPath)\101_Test_Aux_Jugadores_Convocatorias.sql
+:r $(ScriptPath)\89_Test_Gol.sql
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+PRINT 'Ejecutando 90_Test_Sustitucion.sql';
+GO
+:r $(ScriptPath)\90_Test_Sustitucion.sql
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+PRINT 'Ejecutando 91_Test_CambioConvocatoria.sql';
+GO
+:r $(ScriptPath)\91_Test_CambioConvocatoria.sql
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+PRINT 'Ejecutando 92_Test_Trans_Arbitraje.sql';
+GO
+:r $(ScriptPath)\92_Test_Trans_Arbitraje.sql
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+GO
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 102_Test_Aux_Partidos_Arbitraje.sql';
 GO
-:r $(ScriptPath)\102_Test_Aux_Partidos_Arbitraje.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 103_Test_Aux_Horarios.sql';
 GO
-:r $(ScriptPath)\103_Test_Aux_Horarios.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 104_Test_Aux_Publicidad_Automatica.sql';
 GO
-:r $(ScriptPath)\104_Test_Aux_Publicidad_Automatica.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 105_Test_Aux_Sede_Capacidad.sql';
 GO
-:r $(ScriptPath)\105_Test_Aux_Sede_Capacidad.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 106_Test_Aux_Tanda.sql';
 GO
-:r $(ScriptPath)\106_Test_Aux_Tanda.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 107_Test_Aux_Validaciones.sql';
 GO
-:r $(ScriptPath)\107_Test_Aux_Validaciones.sql
 GO
 EXEC SP.uspLimpiarDatosDePrueba;
 GO
-PRINT 'Ejecutando 108_Test_Aux_Descanso.sql';
 GO
-:r $(ScriptPath)\108_Test_Aux_Descanso.sql
+GO
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+GO
+GO
+EXEC SP.uspLimpiarDatosDePrueba;
+GO
+GO
 GO
 IF @@TRANCOUNT <> 0 THROW 51000, 'La ultima prueba dejo una transaccion abierta.', 1;
 GO
 USE master;
 GO
-DROP DATABASE [MUNDIAL_Final_Test_Suite];
-GO
-PRINT 'Suite finalizada: se ejecutaron las 37 pruebas.';
+PRINT 'Suite finalizada: se ejecutaron las pruebas.';
 GO

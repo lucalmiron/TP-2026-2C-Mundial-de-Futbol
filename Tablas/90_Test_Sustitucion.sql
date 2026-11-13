@@ -12,8 +12,8 @@
 --El minimo de jugadores del Mundial es 0 para que la limpieza al final pueda borrar a todos.
 --Alineacion: 6 titulares (T1 a T6), 6 suplentes (S1 a S6) y 1 jugador que no fue alineado (NA).
 
-IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
-    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
+IF DB_NAME() <> N'MUNDIALtesting'
+    THROW 51000, 'Seleccionar la base MUNDIALtesting para estas pruebas.', 1;
 GO
 
 --/Datos de prueba

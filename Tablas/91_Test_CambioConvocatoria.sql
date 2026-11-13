@@ -13,8 +13,8 @@
 --uspJugador_Registrar siempre da de alta como 'Activo' y ningun SP deja uno inactivo
 --(solo lo hace el propio cambio de convocatoria). Queda pendiente, ver el punto 4.2 del
 --listado de la Entrega 6.
-IF DB_NAME() NOT LIKE 'MUNDIAL[_]Final[_]Test%'
-    THROW 51000, 'Seleccionar la base aislada de pruebas.', 1;
+IF DB_NAME() <> N'MUNDIALtesting'
+    THROW 51000, 'Seleccionar la base MUNDIALtesting para estas pruebas.', 1;
 GO
 
 --/Datos de prueba
