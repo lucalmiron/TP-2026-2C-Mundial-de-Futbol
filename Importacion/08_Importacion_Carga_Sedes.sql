@@ -20,10 +20,15 @@
 -- :setvar RutaSedes "C:\ruta\proyecto\Datos\Sedes\sedes.csv"
 -- :setvar RutaEquivalencias "C:\ruta\proyecto\Datos\equivalencias_ubicacion_sedes.csv"
 
-:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
-:setvar RutaEquivalencias "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
+--L
+:setvar RutaSedes "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
+:setvar RutaEquivalencias "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
 
-USE MUNDIAL;
+--Fidel
+--:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
+--:setvar RutaEquivalencias "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
+
+USE MUNDIALtesting;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

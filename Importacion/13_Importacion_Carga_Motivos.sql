@@ -13,9 +13,13 @@
 -- IMPORTANTE: cada integrante debe poner la ruta de su propia PC.
 -- :setvar RutaMotivos "C:\ruta\proyecto\Datos\motivos_sustitucion.csv"
 
-:setvar RutaMotivos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
+--L
+:setvar RutaMotivos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
 
-USE [MUNDIAL];
+--Fidel
+--:setvar RutaMotivos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
+
+USE [MUNDIALtesting];
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

@@ -17,9 +17,13 @@
 -- SQL Server lee los archivos desde el disco local del servidor.
 -- :setvar RutaJugadores "C:\ruta\proyecto\Datos\Jugadores\jugadores.csv"
 
-:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+--L
+:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
-USE MUNDIAL;
+--Fidel
+--:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+
+USE MUNDIALtesting;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

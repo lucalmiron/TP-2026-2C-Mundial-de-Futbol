@@ -18,15 +18,19 @@
 -- SQL Server lee los archivos desde el disco local del servidor.
 -- :setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
 
-:setvar RutaIdiomas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+--L
+:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 
-USE [MUNDIAL];
+--Fidel
+--:setvar RutaIdiomas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+
+USE [MUNDIALtesting];
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
-IF UPPER(DB_NAME()) <> N'MUNDIAL'
-    THROW 51000, 'Seleccione la base MUNDIAL.', 1;
+--IF UPPER(DB_NAME()) <> N'MUNDIAL'
+--   THROW 51000, 'Seleccione la base MUNDIAL.', 1;
 IF OBJECT_ID(N'arbitros.Idioma', N'U') IS NULL
    OR OBJECT_ID(N'SP.uspIdioma_Registrar', N'P') IS NULL
     THROW 51000, 'Ejecute primero el instalador 00: faltan Idioma o su SP.', 1;

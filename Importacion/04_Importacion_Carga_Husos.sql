@@ -17,9 +17,13 @@
 -- SQL Server lee los archivos desde el disco local del servidor.
 -- :setvar RutaHusos "C:\ruta\proyecto\Datos\Husos_horarios\husos_horarios.json"
 
-:setvar RutaHusos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
+--L
+:setvar RutaHusos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
 
-USE MUNDIAL
+--Fidel
+--:setvar RutaHusos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
+
+USE MUNDIALtesting
 GO
 
 SET NOCOUNT ON;

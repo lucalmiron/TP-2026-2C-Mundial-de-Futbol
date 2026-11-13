@@ -25,11 +25,17 @@
 -- :setvar RutaSelecciones "C:\ruta\proyecto\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
 -- :setvar RutaEquivalencias "C:\ruta\proyecto\Datos\equivalencias_selecciones.csv"
 
-:setvar RutaGrupos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
-:setvar RutaSelecciones "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
-:setvar RutaEquivalencias "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
+--L
+ :setvar RutaGrupos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
+ :setvar RutaSelecciones "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+ :setvar RutaEquivalencias "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
 
-USE [MUNDIAL];
+--Fidel
+--:setvar RutaGrupos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
+--:setvar RutaSelecciones "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+--:setvar RutaEquivalencias "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
+
+USE [MUNDIALtesting];
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
