@@ -19,10 +19,10 @@
 -- :setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
 
 --L
-:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+--:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 
 --Fidel
---:setvar RutaIdiomas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+:setvar RutaIdiomas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 
 USE [MUNDIALtesting];
 GO
