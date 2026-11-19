@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
+﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 19/11/2026.
 -- Objetivo: cargar los espacios publicitarios de cada sede con la metodologia de
@@ -172,13 +172,22 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
         IF @idEP IS NULL
+        BEGIN
             EXEC SP.EspacioPublicitario_Registrar
                  @tipo=@tipo, @costo=@costo, @idSede=@idSede, @numero=@numero;
+            SELECT @idEP=IdEP
+            FROM publicidad.EspacioPublicitario
+            WHERE IdSede=@idSede AND Numero=@numero;
+            SET @estado='Insertada';
+        END
         ELSE
+        BEGIN
             EXEC SP.EspacioPublicitario_Update
                  @idEP=@idEP, @tipo=@tipo, @costo=@costo;
+            SET @estado='Actualizada';
+        END;
         COMMIT TRANSACTION;
-        SET @estado = CASE WHEN @idEP IS NULL THEN 'Insertada' ELSE 'Actualizada' END;
+        UPDATE #EspacioStaging SET IdEP=@idEP WHERE Fila=@fila;
     END TRY
     BEGIN CATCH
         IF XACT_STATE() <> 0 ROLLBACK TRANSACTION;

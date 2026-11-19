@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
+﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 19/11/2026.
 -- Objetivo: cargar el costo de cada franja horaria por sede (Manana, Tarde y
@@ -40,6 +40,7 @@ IF OBJECT_ID(N'sedes.Sede', N'U') IS NULL
    OR OBJECT_ID(N'publicidad.CostoFranja', N'U') IS NULL
    OR OBJECT_ID(N'SP.CostoFranja_Registrar', N'P') IS NULL
    OR OBJECT_ID(N'SP.CostoFranja_Update', N'P') IS NULL
+   OR OBJECT_ID(N'publicidad.HistorialPublicidad', N'U') IS NULL
     THROW 52300, 'Faltan tablas o SP ABM. Ejecute primero el instalador.', 1;
 
 IF OBJECT_ID(N'tempdb..#FranjaCrudo') IS NOT NULL DROP TABLE #FranjaCrudo;
@@ -140,14 +141,6 @@ WHERE Estado='Pendiente' AND IdCF IS NOT NULL AND CostoActual = Costo;
 UPDATE #FranjaStaging SET Detalle = N'Se actualiza el costo de la franja cargada.'
 WHERE Estado='Pendiente' AND IdCF IS NOT NULL;
 
--- D7 (aviso): se avisa si la franja ya se usa en el historial, porque _Update
---     no permite renombrarla (solo cambiar el costo).
-UPDATE s SET Detalle = ISNULL(s.Detalle + N' ', N'')
-            + N'La franja ya se usa en el historial: no se puede renombrar.'
-FROM #FranjaStaging AS s
-WHERE s.Estado='Pendiente' AND s.IdCF IS NOT NULL
-  AND EXISTS (SELECT 1 FROM publicidad.HistorialPublicidad AS h WHERE h.IdCF = s.IdCF);
-
 -- Reporte de la depuracion: se informa ANTES de escribir en la tabla real.
 SELECT 'FASE 2 - Depuracion de costos por franja (antes de la persistencia)' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #FranjaStaging GROUP BY Estado ORDER BY Estado;
@@ -170,13 +163,22 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
         IF @idCF IS NULL
+        BEGIN
             EXEC SP.CostoFranja_Registrar
                  @tipoFranja=@tipoFranja, @costo=@costo, @idSede=@idSede;
+            SELECT @idCF=IdCF
+            FROM publicidad.CostoFranja
+            WHERE IdSede=@idSede AND TipoFranja=@tipoFranja;
+            SET @estado='Insertada';
+        END
         ELSE
+        BEGIN
             EXEC SP.CostoFranja_Update
                  @idCF=@idCF, @tipoFranja=@tipoFranja, @costo=@costo;
+            SET @estado='Actualizada';
+        END;
         COMMIT TRANSACTION;
-        SET @estado = CASE WHEN @idCF IS NULL THEN 'Insertada' ELSE 'Actualizada' END;
+        UPDATE #FranjaStaging SET IdCF=@idCF WHERE Fila=@fila;
     END TRY
     BEGIN CATCH
         IF XACT_STATE() <> 0 ROLLBACK TRANSACTION;

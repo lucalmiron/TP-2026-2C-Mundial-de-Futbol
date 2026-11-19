@@ -1,4 +1,4 @@
--- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
+﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 19/11/2026.
 -- Objetivo: cargar el historial publicitario por partido (que campania ocupa
@@ -100,7 +100,7 @@ CREATE TABLE #HistorialStaging (
     IdPublicidad INT,
     CostoCalculado DECIMAL(10,2),
     IdHistorial INT,
-    PublicidadActual VARCHAR(50) COLLATE DATABASE_DEFAULT,
+    PublicidadActual NVARCHAR(100) COLLATE DATABASE_DEFAULT,
     IdCFActual INT,
     CostoActual DECIMAL(10,2),
     Estado VARCHAR(20) COLLATE DATABASE_DEFAULT NOT NULL DEFAULT 'Pendiente',
@@ -251,15 +251,27 @@ UPDATE #HistorialStaging SET Detalle = N'El costo final no coincide con espacio 
         + CONVERT(NVARCHAR(20), CostoCalculado) + N'); se registra el del archivo.'
 WHERE Estado='Pendiente' AND CostoFinal <> CostoCalculado;
 
--- D13: si el partido ya tiene cuatro espacios, no se puede agregar otro.
+-- D13: un partido admite como maximo cuatro espacios. Se contempla el total
+--      ya persistido y las nuevas filas del CSV para no aceptar, por ejemplo,
+--      dos altas cuando al partido solo le queda un lugar disponible.
+;WITH NuevasAsignaciones AS (
+    SELECT s.Fila, s.IdPartido,
+           COUNT(*) OVER (PARTITION BY s.IdPartido ORDER BY s.Fila
+                          ROWS UNBOUNDED PRECEDING) AS OrdenNueva,
+           (SELECT COUNT(*) FROM publicidad.HistorialPublicidad AS h
+            WHERE h.IdPartido=s.IdPartido) AS YaExistentes
+    FROM #HistorialStaging AS s
+    WHERE s.Estado='Pendiente'
+      AND NOT EXISTS (
+          SELECT 1 FROM publicidad.HistorialPublicidad AS h
+          WHERE h.IdPartido=s.IdPartido AND h.IdEP=s.IdEP
+      )
+)
 UPDATE s SET Estado='Error',
-    Detalle=N'El partido ya tiene cuatro espacios asignados.'
+    Detalle=N'El partido ya tiene cuatro espacios asignados o supera el maximo de cuatro.'
 FROM #HistorialStaging AS s
-WHERE s.Estado='Pendiente'
-  AND NOT EXISTS (SELECT 1 FROM publicidad.HistorialPublicidad AS h
-                  WHERE h.IdPartido = s.IdPartido AND h.IdEP = s.IdEP)
-  AND (SELECT COUNT(*) FROM publicidad.HistorialPublicidad AS h
-       WHERE h.IdPartido = s.IdPartido) >= 4;
+JOIN NuevasAsignaciones AS n ON n.Fila=s.Fila
+WHERE n.YaExistentes + n.OrdenNueva > 4;
 
 -- D14: la asignacion ya existe; se compara con lo cargado.
 UPDATE s SET IdHistorial = h.IdHistorial, PublicidadActual = p.Nombre,
@@ -303,16 +315,25 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
         IF @idHistorial IS NULL
+        BEGIN
             -- Se pasa el costo del archivo: el SP solo lo calcula si viene NULL.
             EXEC SP.uspHistorialPublicidad_Registrar
                  @idPublicidad=@idPublicidad, @idPartido=@idPartido, @idEP=@idEP,
                  @costoFinal=@costoFinal, @idCF=@idCF;
+            SELECT @idHistorial=IdHistorial
+            FROM publicidad.HistorialPublicidad
+            WHERE IdPartido=@idPartido AND IdEP=@idEP;
+            SET @estado='Insertada';
+        END
         ELSE
+        BEGIN
             EXEC SP.uspHistorialPublicidad_Update
                  @id=@idHistorial, @idPublicidad=@idPublicidad, @idPartido=@idPartido,
                  @idEP=@idEP, @costoFinal=@costoFinal, @idCF=@idCF;
+            SET @estado='Actualizada';
+        END;
         COMMIT TRANSACTION;
-        SET @estado = CASE WHEN @idHistorial IS NULL THEN 'Insertada' ELSE 'Actualizada' END;
+        UPDATE #HistorialStaging SET IdHistorial=@idHistorial WHERE Fila=@fila;
     END TRY
     BEGIN CATCH
         IF XACT_STATE() <> 0 ROLLBACK TRANSACTION;
