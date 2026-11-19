@@ -1,17 +1,28 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 13/11/2026.
+-- Fecha: 18/11/2026.
 -- Objetivo: cargar los goles de los 104 JSON de Promiedos con la metodologia
 -- de tres fases. Tipos de evento de la fuente: 1 gol, 2 gol en contra.
---   FASE 1 STAGING     : una fila por gol.
+-- La ASISTENCIA del gol viene en el mismo evento, en texts[1] (texts[0] es el
+-- autor). De los 278 goles de jugada, 228 traen asistente; los 14 goles en
+-- contra no llevan asistencia. Se verifico contra las alineaciones que los 228
+-- asistentes son jugadores convocados de su equipo y estaban en cancha en el
+-- minuto del gol, asi que en una carga limpia se cargan las 228.
+-- Es un dato OPCIONAL: si no se puede resolver, el gol se carga igual con
+-- Asistencia NULL y queda el aviso en la staging.
+--   FASE 1 STAGING     : una fila por gol, con autor y asistente informados.
 --   FASE 2 DEPURACION  : reglas de conjunto (UPDATE) sobre la staging.
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
 --                         SPTRANS.uspGol_Registrar, que crea el Evento y el Gol
 --                         y actualiza el marcador del partido.
 -- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos) y
--- 13 (alineaciones): el SP exige que el autor este en cancha.
--- La tanda de penales (tipos 3 y 17) no se carga aqui: se registra con
--- SP.uspPartido_Tanda, una vez-starter el resultado del partido.
+-- 13 (alineaciones): el SP exige que el autor y el asistente esten en cancha.
+-- La tanda de penales (tipos 3, 16 y 17) no se carga aqui: la tanda se registra
+-- con SP.uspPartido_Tanda (carga 21) y los penales de tiempo regular con la
+-- carga 22.
+-- No existe SP de modificacion de goles (solo uspGol_Registrar y uspGol_Bajar):
+-- si los goles ya estaban cargados sin asistencia, hay que darlos de baja y
+-- volver a ejecutar esta carga. El importador lo informa, no lo hace solo.
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
 -- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
 -- :setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
@@ -75,18 +86,23 @@ CREATE TABLE #GolesStaging (
     Team INT,
     NombreAutor NVARCHAR(60) COLLATE DATABASE_DEFAULT,
     NombreAutorBd NVARCHAR(200) COLLATE DATABASE_DEFAULT,
+    NombreAsistencia NVARCHAR(60) COLLATE DATABASE_DEFAULT,
+    NombreAsistenciaBd NVARCHAR(200) COLLATE DATABASE_DEFAULT,
     Seleccion INT,
     SeleccionPais NVARCHAR(100) COLLATE DATABASE_DEFAULT,
     Tipo VARCHAR(20) COLLATE DATABASE_DEFAULT,
     IdJugador INT,
+    IdAsistencia INT,
     DetallePartido NVARCHAR(2048) COLLATE DATABASE_DEFAULT,
     Estado VARCHAR(20) COLLATE DATABASE_DEFAULT NOT NULL DEFAULT 'Pendiente',
-    Detalle NVARCHAR(2048) COLLATE DATABASE_DEFAULT
+    Detalle NVARCHAR(2048) COLLATE DATABASE_DEFAULT,
+    -- Aviso: la asistencia no se pudo cargar pero el gol si. No es un error.
+    Aviso NVARCHAR(300) COLLATE DATABASE_DEFAULT
 );
 
 INSERT #GolesStaging
     (Archivo, GameId, IdPartido, TipoEvento, Etapa, MinutoTexto, Minuto, Periodo,
-     Team, NombreAutor, Seleccion, Tipo, DetallePartido)
+     Team, NombreAutor, NombreAsistencia, Seleccion, Tipo, DetallePartido)
 SELECT a.Archivo, p.GameId, p.IdPartido, e.Type, JSON_VALUE(st.value, '$.name'),
        e.time,
        TRY_CONVERT(INT, CASE WHEN CHARINDEX(NCHAR(39), CONVERT(NVARCHAR(20), e.time)) > 0
@@ -99,7 +115,7 @@ SELECT a.Archivo, p.GameId, p.IdPartido, e.Type, JSON_VALUE(st.value, '$.name'),
                       THEN LEFT(CONVERT(NVARCHAR(20), e.time), CHARINDEX(NCHAR(39), CONVERT(NVARCHAR(20), e.time))-1)
                       ELSE CONVERT(NVARCHAR(20), e.time) END) <= 105 THEN 4 ELSE 5 END
             WHEN JSON_VALUE(st.value, '$.name')=N'Penales' THEN 6 END,
-       e.team, tx.Texto,
+       e.team, tx.Texto, tx.Texto2,
        -- En un gol en contra el equipo indicado es el beneficiario: el autor
        -- pertenece al equipo contrario.
        CASE WHEN e.type=2 THEN CASE WHEN e.team=1 THEN p.Eq2 ELSE p.Eq1 END
@@ -117,7 +133,9 @@ CROSS APPLY OPENJSON(r.Events) WITH (
     Team INT '$.team',
     Texts NVARCHAR(MAX) '$.texts' AS JSON
 ) AS e
-CROSS APPLY (SELECT MAX(CASE WHEN c.[key]=0 THEN c.value END) AS Texto
+CROSS APPLY (SELECT MAX(CASE WHEN c.[key]=0 THEN c.value END) AS Texto,
+                    -- texts[1] es el asistente; puede no venir.
+                    MAX(CASE WHEN c.[key]=1 THEN c.value END) AS Texto2
              FROM OPENJSON(e.Texts) AS c) AS tx
 WHERE e.type IN (1,2);
 
@@ -202,6 +220,51 @@ JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAutorBd, s.NombreAutor)
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
+-- ASISTENCIA (opcional). Se resuelve el asistente con la misma logica que el
+-- autor: coincidencia directa, sin acentos y, por ultimo, equivalencias.
+-- Si no se puede resolver, el gol se carga igual con Asistencia NULL.
+UPDATE #GolesStaging SET NombreAsistenciaBd = COALESCE(
+    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
+     WHERE pe.Nombre = #GolesStaging.NombreAsistencia AND j.Seleccion = #GolesStaging.Seleccion),
+    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
+     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #GolesStaging.NombreAsistencia COLLATE Latin1_General_100_CI_AI
+       AND j.Seleccion = #GolesStaging.Seleccion),
+    (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
+     WHERE al.NombrePromiedos = #GolesStaging.NombreAsistencia AND al.Habilitado='1'
+       AND al.Seleccion = #GolesStaging.SeleccionPais))
+WHERE Estado='Pendiente' AND NULLIF(LTRIM(RTRIM(NombreAsistencia)), N'') IS NOT NULL;
+
+-- Se resuelve el identificador del asistente (siempre del equipo del autor).
+UPDATE #GolesStaging SET IdAsistencia = j.IdJugador
+FROM #GolesStaging AS s
+JOIN equipos.Persona AS pe ON pe.Nombre = s.NombreAsistenciaBd
+JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
+WHERE s.Estado='Pendiente' AND s.NombreAsistenciaBd IS NOT NULL;
+
+-- A1: la fuente informa un asistente que no se pudo resolver en la base.
+-- NO invalida el gol: se carga sin asistencia y se deja el aviso.
+UPDATE #GolesStaging SET
+    Aviso=N'El asistente informado por la fuente no esta cargado (carga 10): el gol se carga sin asistencia.'
+WHERE Estado='Pendiente' AND IdAsistencia IS NULL
+  AND NULLIF(LTRIM(RTRIM(NombreAsistencia)), N'') IS NOT NULL;
+
+-- A2: el asistente informado es el propio autor (el SP lo rechazaria).
+UPDATE #GolesStaging SET IdAsistencia=NULL,
+    Aviso=N'El asistente informado coincide con el autor: el gol se carga sin asistencia.'
+WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL AND IdAsistencia = IdJugador;
+
+-- A3: el asistente no estaba en cancha en ese periodo (misma validacion del SP).
+UPDATE #GolesStaging SET IdAsistencia=NULL,
+    Aviso=N'El asistente no estaba en cancha en ese periodo (carga 13): el gol se carga sin asistencia.'
+WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL
+  AND partidos.fnJugadorEnCanchaPeriodo(IdPartido, IdAsistencia, ISNULL(Minuto,2147483647), Periodo) = 0;
+
+-- A4: un gol en contra no lleva asistencia (lo prohibe el SP y la fuente no la trae).
+UPDATE #GolesStaging SET IdAsistencia=NULL
+WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL AND Tipo='En contra';
+
 -- D8: el autor no estaba en la cancha (misma validacion del SP, aqui preventiva).
 UPDATE #GolesStaging SET Estado='Error',
     Detalle=N'El autor del gol no estaba en cancha: revise la carga 13.'
@@ -214,6 +277,13 @@ SELECT Estado, COUNT(*) AS Cantidad FROM #GolesStaging GROUP BY Estado ORDER BY 
 SELECT Fila, GameId, MinutoTexto, Periodo, NombreAutor, Seleccion, Tipo, Estado, Detalle
 FROM #GolesStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
 
+-- Avisos de asistencia: el gol es valido, pero se carga sin Asistencia.
+SELECT 'FASE 2 - Avisos de asistencia (el gol se carga igual)' AS Fase;
+SELECT COUNT(*) AS GolesConAsistencia FROM #GolesStaging WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL;
+SELECT COUNT(*) AS GolesSinAsistencia FROM #GolesStaging WHERE Estado='Pendiente' AND IdAsistencia IS NULL;
+SELECT Fila, GameId, MinutoTexto, NombreAutor, NombreAsistencia, Aviso
+FROM #GolesStaging WHERE Estado='Pendiente' AND Aviso IS NOT NULL ORDER BY Fila;
+
 ---------------------------------------------------------------------------------------
 -- FASE 3 - PERSISTENCIA
 -- Solo las filas que quedaron en 'Pendiente' llegan a la tabla real, siempre
@@ -221,12 +291,13 @@ FROM #GolesStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
 ---------------------------------------------------------------------------------------
 
 DECLARE @fila INT, @idPartido INT, @minuto INT, @periodo INT, @idJugador INT,
-        @tipo VARCHAR(20), @estado VARCHAR(20);
+        @idAsistencia INT, @tipo VARCHAR(20), @estado VARCHAR(20),
+        @asistenciaActual INT;
 DECLARE crsGoles CURSOR LOCAL FAST_FORWARD FOR
-    SELECT Fila, IdPartido, Minuto, Periodo, IdJugador, Tipo
+    SELECT Fila, IdPartido, Minuto, Periodo, IdJugador, IdAsistencia, Tipo
     FROM #GolesStaging WHERE Estado='Pendiente' ORDER BY Fila;
 OPEN crsGoles;
-FETCH NEXT FROM crsGoles INTO @fila, @idPartido, @minuto, @periodo, @idJugador, @tipo;
+FETCH NEXT FROM crsGoles INTO @fila, @idPartido, @minuto, @periodo, @idJugador, @idAsistencia, @tipo;
 WHILE @@FETCH_STATUS = 0
 BEGIN
     BEGIN TRY
@@ -238,11 +309,27 @@ BEGIN
                      AND e.Minuto = @minuto AND g.Autor = @idJugador AND g.Tipo = @tipo)
         BEGIN
             SET @estado='SinCambios';
+            -- No existe SP de modificacion de goles (solo alta y baja): si el gol
+            -- ya estaba cargado sin la asistencia de la fuente, se informa.
+            SET @asistenciaActual = (SELECT TOP (1) g.Asistencia
+                                     FROM partidos.Gol AS g
+                                     JOIN partidos.Evento AS e ON e.IdEvento = g.IdGol
+                                     WHERE e.Partido = @idPartido AND e.Periodo = @periodo
+                                       AND e.Minuto = @minuto AND g.Autor = @idJugador
+                                       AND g.Tipo = @tipo);
+            IF @idAsistencia IS NOT NULL AND ISNULL(@asistenciaActual, -1) <> @idAsistencia
+                UPDATE #GolesStaging SET Detalle=
+                    N'El gol ya estaba cargado sin esta asistencia. No hay SP de modificacion: para corregirla hay que dar de baja el gol y volver a ejecutar esta carga.'
+                WHERE Fila=@fila;
+            ELSE IF @idAsistencia IS NULL AND @asistenciaActual IS NOT NULL
+                UPDATE #GolesStaging SET Detalle=
+                    N'El gol ya estaba cargado con una asistencia que la fuente no informa. No hay SP de modificacion: revise la carga.'
+                WHERE Fila=@fila;
         END
         ELSE
         BEGIN
             EXEC SPTRANS.uspGol_Registrar @minuto=@minuto, @partido=@idPartido,
-                @periodo=@periodo, @autor=@idJugador, @asistencia=NULL, @tipo=@tipo;
+                @periodo=@periodo, @autor=@idJugador, @asistencia=@idAsistencia, @tipo=@tipo;
             SET @estado='Insertada';
         END;
     END TRY
@@ -252,7 +339,7 @@ BEGIN
     END CATCH;
     IF @estado <> 'Error'
         UPDATE #GolesStaging SET Estado=@estado WHERE Fila=@fila;
-    FETCH NEXT FROM crsGoles INTO @fila, @idPartido, @minuto, @periodo, @idJugador, @tipo;
+    FETCH NEXT FROM crsGoles INTO @fila, @idPartido, @minuto, @periodo, @idJugador, @idAsistencia, @tipo;
 END;
 CLOSE crsGoles;
 DEALLOCATE crsGoles;
@@ -260,8 +347,29 @@ DEALLOCATE crsGoles;
 -- Reporte final de la persistencia.
 SELECT 'FASE 3 - Persistencia de goles' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #GolesStaging GROUP BY Estado ORDER BY Estado;
-SELECT Fila, GameId, IdPartido, MinutoTexto, Minuto, Periodo, NombreAutor, IdJugador, Tipo, Estado, Detalle
+SELECT Fila, GameId, IdPartido, MinutoTexto, Minuto, Periodo, NombreAutor, IdJugador,
+       NombreAsistencia, IdAsistencia, Tipo, Estado, Detalle
 FROM #GolesStaging ORDER BY Fila;
+
+-- Control: goles cargados con asistencia contra los que la fuente informa.
+SELECT 'VERIFICACION - Asistencias cargadas contra la fuente' AS Fase;
+SELECT s.GolesEnLaFuente,
+       s.ConAsistenciaEnLaFuente,
+       (SELECT COUNT(*) FROM #GolesStaging AS x
+        JOIN partidos.Gol AS g ON g.Autor = x.IdJugador AND g.Tipo = x.Tipo
+        JOIN partidos.Evento AS e ON e.IdEvento = g.IdGol
+        WHERE e.Partido = x.IdPartido AND e.Periodo = x.Periodo
+          AND e.Minuto = x.Minuto AND g.Asistencia IS NOT NULL) AS ConAsistenciaEnLaTabla,
+       CASE WHEN s.ConAsistenciaEnLaFuente =
+                 (SELECT COUNT(*) FROM #GolesStaging AS x
+                  JOIN partidos.Gol AS g ON g.Autor = x.IdJugador AND g.Tipo = x.Tipo
+                  JOIN partidos.Evento AS e ON e.IdEvento = g.IdGol
+                  WHERE e.Partido = x.IdPartido AND e.Periodo = x.Periodo
+                    AND e.Minuto = x.Minuto AND g.Asistencia IS NOT NULL)
+            THEN 'OK' ELSE 'DIFERENCIA' END AS Control
+FROM (SELECT COUNT(*) AS GolesEnLaFuente,
+             SUM(CASE WHEN IdAsistencia IS NOT NULL THEN 1 ELSE 0 END) AS ConAsistenciaEnLaFuente
+      FROM #GolesStaging WHERE Estado IN ('Insertada','SinCambios')) AS s;
 
 DECLARE @fallos INT = (SELECT COUNT(*) FROM #GolesStaging WHERE Estado='Error');
 DROP TABLE #GolesStaging;

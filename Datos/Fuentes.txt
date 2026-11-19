@@ -4,8 +4,9 @@ Los nombres completos se obtienen de players.csv (Kaggle). Los demás datos depo
 2. Fuentes y datos
 - Kaggle — CSV: nombres completos de jugadores.
 - Promiedos — JSON: datos de partidos, selecciones y jugadores; alineaciones, eventos, tandas, DT, árbitro principal y estadio.
-- Wikipedia — scraping a XML: grupos, sedes y árbitros.
-- Dossier Mundial — scraping a XML: publicidad, anunciantes y campañas.
+- FIFA — API JSON: calendario oficial del Mundial 2026, con los ocho oficiales de cada partido (árbitro, asistentes, cuarto, VAR, AVAR, reserva y apoyo) y la asistencia de público.
+- Wikipedia — scraping a HTML: grupos, sedes y árbitros.
+- Dossier Mundial — scraping a HTML: publicidad, anunciantes y campañas.
 - Banco Mundial — API XML: países y PBI per cápita.
 - OpenTimezone — API JSON: conversión de horarios.
 3. Enlaces
@@ -13,6 +14,8 @@ Los nombres completos se obtienen de players.csv (Kaggle). Los demás datos depo
 - Promiedos, torneo: https://api.promiedos.com.ar/league/tables_and_fixtures/fjda    -(Archivo Json ya subido a carpeta Datos del repo)
 - Kaggle: archivo players.csv compartido por el repo.
 - Wikipedia: artículos del torneo y de sus árbitros.
+- FIFA: https://api.fifa.com/api/v3/seasons?idCompetition=17 (temporada 2026, IdSeason 285023) y https://api.fifa.com/api/v3/calendar/matches?idCompetition=17&idSeason=285023
+- openfootball (worldcup.json): control cruzado de la cantidad de partidos, del árbitro principal y de la asistencia; no se importa, solo se usa para validar.
 - Dossier Mundial: https://dossiermundial.netlify.app/
 - Banco Mundial: https://api.worldbank.org/v2/ — indicador NY.GDP.PCAP.CD.
 - OpenTimezone: https://opentimezone.com/
@@ -20,14 +23,16 @@ Los nombres completos se obtienen de players.csv (Kaggle). Los demás datos depo
 type(numero)
 - 1: gol.
 - 2: gol en contra; el equipo indicado es el beneficiado.
-- 3: penal convertido en la tanda.
+- 3: penal convertido. Aparece 28 veces: 16 en tiempo regular y 12 en la tanda.
 - 4: amarilla.
-- 6: segunda amarilla con expulsión.
+- 5: roja directa.
+- 6: segunda amarilla con expulsión; se carga como amarilla y el SP genera la roja.
 - 9: gol anulado; no suma al marcador.
 - 10: tiro al palo; no se importa.
 - 15: sustitución.
-- 17: penal no convertido en la tanda.
-La tanda se identifica con is_penalties_stage = true y se carga por separado del marcador. Se conserva el descuento de minutos como 90'+6 y se evita duplicar eventos presentes también en las alineaciones. Estos códigos corresponden a las muestras revisadas.
+- 16: penal convertido en la tanda; la fuente lo usa en lugar del 3 en dos de los cuatro partidos definidos por penales.
+- 17: penal no convertido en la tanda; el modelo no tiene tabla para penales fallados, por eso no se importa.
+La tanda se identifica con is_penalties_stage = true y se carga por separado del marcador. Se conserva el descuento de minutos como 90'+6 y se evita duplicar eventos presentes también en las alineaciones. Estos códigos corresponden a las 104 muestras revisadas (278 tipo 1, 274 tipo 4, 14 tipo 5 y 2 tipo 6, entre otros).
 
 
 Para conseguir los Json de todos los partidos hay que crear un script en python y que los descargue mediante los Id de los partidos del Json cargado en el repo, lo hago yo (Santiago).
@@ -41,3 +46,17 @@ Para conseguir los Json de todos los partidos hay que crear un script en python 
   06_Importacion_Carga_Pais.sql); los demás países del XML se saltean.
 - Equivalencia manual País_NOMBRE ↔ ISO3 en pais_iso3.csv, porque la API
   devuelve el código ISO3 de 3 letras y no el nombre usado en la base.
+
+8. FIFA — API JSON: oficiales de cada partido y asistencia.
+- Circuito: script_descargar_fifa_oficiales_API.py (en Datos\Datos_Partidos\)
+  → fifa_calendario_2026.json (respuesta cruda, sin modificar)
+  → fifa_oficiales.csv (104 partidos × 8 oficiales)
+  → asistencia_partidos.csv (una fila por partido)
+  → 24_Importacion_Carga_Arbitraje_FIFA.sql y 25_Importacion_Carga_Asistencia.sql.
+- OfficialType: 1 árbitro, 2 y 3 asistentes, 4 cuarto, 5 VAR, 6 reserva, 8 AVAR
+  y 9 apoyo. El modelo admite cuatro funciones, así que 6, 8 y 9 no se cargan.
+- Equivalencias en el propio script: nombre de equipo FIFA ↔ equipos.Pais.NOMBRE
+  e IdCountry ↔ ISO3. El partido se cruza por el par de selecciones porque el
+  MatchNumber de FIFA no sigue el orden de openfootball.
+- País del árbitro: si no existe en equipos.Pais se usa USA y el importador deja
+  el aviso en el reporte.

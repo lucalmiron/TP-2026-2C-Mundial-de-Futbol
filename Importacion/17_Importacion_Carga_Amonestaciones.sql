@@ -1,9 +1,10 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 13/11/2026.
--- Objetivo: cargar las amonestaciones de los 104 JSON de Promiedos con la
--- metodologia de tres fases. Tipos de evento de la fuente: 4 amarilla,
--- 6 segunda amarilla con expulsion.
+-- Objetivo: cargar las amonestaciones y expulsiones de los 104 JSON de Promiedos
+-- con la metodologia de tres fases. Tipos de evento de la fuente: 4 amarilla,
+-- 6 segunda amarilla con expulsion. La roja directa (tipo 5) la carga el
+-- importador 23 para no repetir filas entre los dos scripts.
 --   FASE 1 STAGING     : una fila por tarjeta.
 --   FASE 2 DEPURACION  : reglas de conjunto (UPDATE) sobre la staging.
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
@@ -58,6 +59,9 @@ IF OBJECT_ID(N'tempdb..#AmonestacionesStaging') IS NOT NULL DROP TABLE #Amonesta
 ---------------------------------------------------------------------------------------
 -- FASE 1 - STAGING
 -- Una fila por tarjeta (tipos 4 y 6 de la fuente).
+-- La segunda amarilla (tipo 6) se carga como Amarilla: uspAmonestacion_Registrar
+-- genera la roja automatica al detectar las dos amarillas del jugador en el
+-- partido. Si se cargara como Roja se perderia la segunda amarilla.
 ---------------------------------------------------------------------------------------
 
 CREATE TABLE #AmonestacionesStaging (
@@ -101,7 +105,7 @@ SELECT a.Archivo, p.GameId, p.IdPartido, e.Type, JSON_VALUE(st.value, '$.name'),
             WHEN JSON_VALUE(st.value, '$.name')=N'Penales' THEN 6 END,
        e.team, tx.Texto,
        CASE WHEN e.team=1 THEN p.Eq1 ELSE p.Eq2 END,
-       CASE WHEN e.type=6 THEN 'Roja' ELSE 'Amarilla' END,
+       'Amarilla',
        (SELECT MIN(g.value) FROM OPENJSON(a.Contenido,'$.game.game_info')
         WITH (name NVARCHAR(100) '$.name', value NVARCHAR(150) '$.value') AS g
         WHERE g.name=NCHAR(193)+'rbitro'), p.Detalle
@@ -134,6 +138,18 @@ IF NOT EXISTS (SELECT 1 FROM #AmonestacionesStaging)
 UPDATE #AmonestacionesStaging SET Estado='Error',
     Detalle=ISNULL(DetallePartido, N'El JSON del partido no se pudo resolver.')
 WHERE Estado='Pendiente' AND IdPartido IS NULL;
+
+-- D1b (aviso): segunda amarilla sin amarilla previa en el mismo partido. El SP
+-- solo genera la roja automatica si el jugador ya tenia una amarilla, asi que
+-- esta fila se registra como roja directa para no perder la expulsion.
+UPDATE a SET Tarjeta='Roja',
+    Detalle=N'Segunda amarilla sin amarilla previa en el partido: se registra como roja directa.'
+FROM #AmonestacionesStaging AS a
+WHERE a.Estado='Pendiente' AND a.TipoEvento=6
+  AND NOT EXISTS (
+        SELECT 1 FROM #AmonestacionesStaging AS b
+        WHERE b.IdPartido=a.IdPartido AND b.NombreAmonestado=a.NombreAmonestado
+          AND b.TipoEvento=4 AND b.Minuto <= a.Minuto);
 
 -- D2: falta el nombre del amonestado.
 UPDATE #AmonestacionesStaging SET Estado='Error',

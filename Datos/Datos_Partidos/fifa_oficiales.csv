@@ -1,0 +1,833 @@
+nro_partido_fifa,fecha,equipo_local,equipo_visitante,asistencia,tipo_codigo,rol,nombre,nombre_corto,pais_iso3,pais_bd,official_id
+1,2026-06-11,Mexico,South Africa,80824,1,Principal,Wilton SAMPAIO,Wilton SAMPAIO,BRA,Brazil,361561
+1,2026-06-11,Mexico,South Africa,80824,2,Asistente,Bruno PIRES,Bruno PIRES,BRA,Brazil,391903
+1,2026-06-11,Mexico,South Africa,80824,3,Asistente,Bruno Boschilia,Bruno BOSCHILIA,BRA,Brazil,374168
+1,2026-06-11,Mexico,South Africa,80824,4,4to,Juan Gabriel Benítez,Juan Gabriel BENITEZ,PAR,Paraguay,416159
+1,2026-06-11,Mexico,South Africa,80824,5,VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+1,2026-06-11,Mexico,South Africa,80824,6,Reserva,Eduardo Cardozo,Eduardo CARDOZO,PAR,Paraguay,360921
+1,2026-06-11,Mexico,South Africa,80824,8,Asistente VAR,Juan Lara,Juan LARA,CHI,,428539
+1,2026-06-11,Mexico,South Africa,80824,9,Support VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+2,2026-06-12,Korea Republic,Czechia,44985,1,Principal,Amin Mohamed Omar,Amin MOHAMED,EGY,Egypt,392013
+2,2026-06-12,Korea Republic,Czechia,44985,2,Asistente,Mahmoud ABOUELREGAL,Mahmoud ABOUELREGAL,EGY,Egypt,374527
+2,2026-06-12,Korea Republic,Czechia,44985,3,Asistente,HOSSAM ELDIN Ahmed,Ahmed HOSSAM TAHA,EGY,Egypt,374447
+2,2026-06-12,Korea Republic,Czechia,44985,4,4to,Juan Gabriel Calderón Perez,Juan CALDERON,CRC,,400250
+2,2026-06-12,Korea Republic,Czechia,44985,5,VAR,Mahmoud Mohamed Ashour,Mahmoud ASHOUR,EGY,Egypt,327641
+2,2026-06-12,Korea Republic,Czechia,44985,6,Reserva,Juan Carlos Mora,Juan Carlos MORA,CRC,,383469
+2,2026-06-12,Korea Republic,Czechia,44985,8,Asistente VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+2,2026-06-12,Korea Republic,Czechia,44985,9,Support VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+3,2026-06-12,Canada,Bosnia and Herzegovina,43002,1,Principal,Facundo TELLO,Facundo TELLO,ARG,Argentina,416165
+3,2026-06-12,Canada,Bosnia and Herzegovina,43002,2,Asistente,Juan Pablo Belatti,Juan Pablo BELATTI,ARG,Argentina,328260
+3,2026-06-12,Canada,Bosnia and Herzegovina,43002,3,Asistente,Gabriel CHADE,Gabriel CHADE,ARG,Argentina,391866
+3,2026-06-12,Canada,Bosnia and Herzegovina,43002,4,4to,Khalid Saleh Alturais,Khalid ALTURAIS,KSA,Saudi Arabia,392293
+3,2026-06-12,Canada,Bosnia and Herzegovina,43002,5,VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+3,2026-06-12,Canada,Bosnia and Herzegovina,43002,6,Reserva,Mohammed Maki Al Abakry,Mohammed ALABAKRY,KSA,Saudi Arabia,373831
+3,2026-06-12,Canada,Bosnia and Herzegovina,43002,8,Asistente VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+3,2026-06-12,Canada,Bosnia and Herzegovina,43002,9,Support VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+4,2026-06-13,USA,Paraguay,70492,1,Principal,Danny Desmond Makkelie,Danny MAKKELIE,NED,Netherlands,327159
+4,2026-06-13,USA,Paraguay,70492,2,Asistente,Hessel Steegstra,Hessel STEEGSTRA,NED,Netherlands,363986
+4,2026-06-13,USA,Paraguay,70492,3,Asistente,Jan de Vries,Jan DE VRIES,NED,Netherlands,400210
+4,2026-06-13,USA,Paraguay,70492,4,4to,Yusuke Araki,Yusuke ARAKI,JPN,Japan,400040
+4,2026-06-13,USA,Paraguay,70492,5,VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+4,2026-06-13,USA,Paraguay,70492,6,Reserva,Jun MIHARA,Jun MIHARA,JPN,Japan,400157
+4,2026-06-13,USA,Paraguay,70492,8,Asistente VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+4,2026-06-13,USA,Paraguay,70492,9,Support VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+8,2026-06-13,Qatar,Switzerland,67966,1,Principal,Said MARTINEZ,Said MARTINEZ,HON,,400191
+8,2026-06-13,Qatar,Switzerland,67966,2,Asistente,Walter LOPEZ,Walter LOPEZ,HON,,361341
+8,2026-06-13,Qatar,Switzerland,67966,3,Asistente,Christian RAMIREZ,Christian RAMIREZ,HON,,348332
+8,2026-06-13,Qatar,Switzerland,67966,4,4to,Oshane Nation,Oshane NATION,JAM,,408303
+8,2026-06-13,Qatar,Switzerland,67966,5,VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+8,2026-06-13,Qatar,Switzerland,67966,6,Reserva,Caleb Wales,Caleb WALES,TRI,,360677
+8,2026-06-13,Qatar,Switzerland,67966,8,Asistente VAR,Erick MIRANDA,Erick MIRANDA,MEX,Mexico,392188
+8,2026-06-13,Qatar,Switzerland,67966,9,Support VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+7,2026-06-13,Brazil,Morocco,80663,1,Principal,Slavko VINCIC,Slavko VINCIC,SVN,,315008
+7,2026-06-13,Brazil,Morocco,80663,2,Asistente,Tomaz KLANCNIK,Tomaz KLANCNIK,SVN,,374790
+7,2026-06-13,Brazil,Morocco,80663,3,Asistente,Andraz KOVACIC,Andraz KOVACIC,SVN,,383670
+7,2026-06-13,Brazil,Morocco,80663,4,4to,Sandro Schärer,Sandro SCHAERER,SUI,Switzerland,383265
+7,2026-06-13,Brazil,Morocco,80663,5,VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+7,2026-06-13,Brazil,Morocco,80663,6,Reserva,Stéphane De Almeida,Stephane DE ALMEIDA,SUI,Switzerland,383264
+7,2026-06-13,Brazil,Morocco,80663,8,Asistente VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+7,2026-06-13,Brazil,Morocco,80663,9,Support VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+5,2026-06-14,Haiti,Scotland,64146,1,Principal,Mustapha Ghorbal,Mustapha GHORBAL,ALG,Algeria,375306
+5,2026-06-14,Haiti,Scotland,64146,2,Asistente,Mokrane Gourari,Mokrane GOURARI,ALG,Algeria,375314
+5,2026-06-14,Haiti,Scotland,64146,3,Asistente,Abbes Zerhouni,Abbes Akram ZERHOUNI,ALG,Algeria,400115
+5,2026-06-14,Haiti,Scotland,64146,4,4to,Alejandro HERNANDEZ,Alejandro HERNANDEZ,ESP,Spain,373845
+5,2026-06-14,Haiti,Scotland,64146,5,VAR,Abdullah ALSHEHRI,Abdullah ALSHEHRI,KSA,Saudi Arabia,436278
+5,2026-06-14,Haiti,Scotland,64146,6,Reserva,José Enrique Naranjo Pérez,Jose Enrique NARANJO,ESP,Spain,425311
+5,2026-06-14,Haiti,Scotland,64146,8,Asistente VAR,Mohammed Obaid KHADIM,Mohammed Obaid KHADIM,UAE,,428512
+5,2026-06-14,Haiti,Scotland,64146,9,Support VAR,Fedayi San,Fedayi SAN,SUI,Switzerland,378759
+6,2026-06-14,Australia,Türkiye,52497,1,Principal,Jesús Valenzuela Sáez,Jesus VALENZUELA,VEN,,360305
+6,2026-06-14,Australia,Türkiye,52497,2,Asistente,Jorge Urrego Martínez,Jorge URREGO,VEN,,262055
+6,2026-06-14,Australia,Türkiye,52497,3,Asistente,Tulio Moreno,Tulio MORENO,VEN,,349171
+6,2026-06-14,Australia,Türkiye,52497,4,4to,Kevin Ortega,Kevin ORTEGA,PER,,416161
+6,2026-06-14,Australia,Türkiye,52497,5,VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+6,2026-06-14,Australia,Türkiye,52497,6,Reserva,Michael Orué,Michael ORUE,PER,,374831
+6,2026-06-14,Australia,Türkiye,52497,8,Asistente VAR,Juan SOTO,Juan SOTO,VEN,,221377
+6,2026-06-14,Australia,Türkiye,52497,9,Support VAR,Ming Fu,FU Ming,CHN,,374457
+10,2026-06-14,Germany,Curaçao,68021,1,Principal,Jalal Jayed,Jalal JAYED,MAR,Morocco,416524
+10,2026-06-14,Germany,Curaçao,68021,2,Asistente,Zakaria Brinsi,Zakaria BRINSI,MAR,Morocco,416532
+10,2026-06-14,Germany,Curaçao,68021,3,Asistente,Mostafa Akarkad,Mostafa AKARKAD,MAR,Morocco,408335
+10,2026-06-14,Germany,Curaçao,68021,4,4to,Abongile TOM,Abongile TOM,RSA,South Africa,425145
+10,2026-06-14,Germany,Curaçao,68021,5,VAR,Hamza EL FARIQ,Hamza EL FARIQ,MAR,Morocco,428822
+10,2026-06-14,Germany,Curaçao,68021,6,Reserva,Zakhele SIWELA,Zakhele SIWELA,RSA,South Africa,316321
+10,2026-06-14,Germany,Curaçao,68021,8,Asistente VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+10,2026-06-14,Germany,Curaçao,68021,9,Support VAR,Shaun EVANS,Shaun EVANS,AUS,Australia,400266
+11,2026-06-14,Netherlands,Japan,69285,1,Principal,Ismail Elfath,Ismail ELFATH,USA,USA,392406
+11,2026-06-14,Netherlands,Japan,69285,2,Asistente,Corey Parker,Corey PARKER,USA,USA,383462
+11,2026-06-14,Netherlands,Japan,69285,3,Asistente,Kyle Atkins,Kyle ATKINS,USA,USA,408396
+11,2026-06-14,Netherlands,Japan,69285,4,4to,Katia Itzel García,Katia GARCIA,MEX,Mexico,416317
+11,2026-06-14,Netherlands,Japan,69285,5,VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+11,2026-06-14,Netherlands,Japan,69285,6,Reserva,Sandra RAMIREZ,Sandra RAMIREZ,MEX,Mexico,416319
+11,2026-06-14,Netherlands,Japan,69285,8,Asistente VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+11,2026-06-14,Netherlands,Japan,69285,9,Support VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+9,2026-06-14,Ivory Coast,Ecuador,68274,1,Principal,François Letexier,Francois LETEXIER,FRA,France,399029
+9,2026-06-14,Ivory Coast,Ecuador,68274,2,Asistente,Cyril Mugnier,Cyril MUGNIER,FRA,France,401107
+9,2026-06-14,Ivory Coast,Ecuador,68274,3,Asistente,Mehdi Rahmouni,Mehdi RAHMOUNI,FRA,France,408615
+9,2026-06-14,Ivory Coast,Ecuador,68274,4,4to,Khalid Saleh Alturais,Khalid ALTURAIS,KSA,Saudi Arabia,392293
+9,2026-06-14,Ivory Coast,Ecuador,68274,5,VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+9,2026-06-14,Ivory Coast,Ecuador,68274,6,Reserva,Mohammed Maki Al Abakry,Mohammed ALABAKRY,KSA,Saudi Arabia,373831
+9,2026-06-14,Ivory Coast,Ecuador,68274,8,Asistente VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+9,2026-06-14,Ivory Coast,Ecuador,68274,9,Support VAR,Bram Van Driessche,Bram VAN DRIESSCHE,BEL,Belgium,417087
+12,2026-06-15,Sweden,Tunisia,50987,1,Principal,Yael Falcón Pérez,Yael FALCON PEREZ,ARG,Argentina,434995
+12,2026-06-15,Sweden,Tunisia,50987,2,Asistente,Maximiliano Del Yesso,Maximiliano DEL YESSO,ARG,Argentina,408238
+12,2026-06-15,Sweden,Tunisia,50987,3,Asistente,Facundo Rodríguez,Facundo RODRIGUEZ,ARG,Argentina,424966
+12,2026-06-15,Sweden,Tunisia,50987,4,4to,Juan Gabriel Calderón Perez,Juan CALDERON,CRC,,400250
+12,2026-06-15,Sweden,Tunisia,50987,5,VAR,Juan Lara,Juan LARA,CHI,,428539
+12,2026-06-15,Sweden,Tunisia,50987,6,Reserva,Juan Carlos Mora,Juan Carlos MORA,CRC,,383469
+12,2026-06-15,Sweden,Tunisia,50987,8,Asistente VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+12,2026-06-15,Sweden,Tunisia,50987,9,Support VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+14,2026-06-15,Spain,Cape Verde,67640,1,Principal,Adham Mohammad Tumah Makhadmeh,Adham MAKHADMEH,JOR,Jordan,361034
+14,2026-06-15,Spain,Cape Verde,67640,2,Asistente,Mohammad ALKALAF,Mohammad ALKALAF,JOR,Jordan,327165
+14,2026-06-15,Spain,Cape Verde,67640,3,Asistente,Ahmad ALROALLE,Ahmad ALROALLE,JOR,Jordan,314242
+14,2026-06-15,Spain,Cape Verde,67640,4,4to,Andrés José Rojas Noguera,Andres ROJAS,COL,Colombia,400324
+14,2026-06-15,Spain,Cape Verde,67640,5,VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+14,2026-06-15,Spain,Cape Verde,67640,6,Reserva,Alexander Guzmán Bonilla,Alexander GUZMAN,COL,Colombia,349161
+14,2026-06-15,Spain,Cape Verde,67640,8,Asistente VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+14,2026-06-15,Spain,Cape Verde,67640,9,Support VAR,Ming Fu,FU Ming,CHN,,374457
+16,2026-06-15,Belgium,Egypt,66775,1,Principal,Ramon ABATTI,Ramon ABATTI,BRA,Brazil,446932
+16,2026-06-15,Belgium,Egypt,66775,2,Asistente,Danilo SIMON,Danilo MANIS,BRA,Brazil,400042
+16,2026-06-15,Belgium,Egypt,66775,3,Asistente,Rafael da Silva Alves,Rafael ALVES,BRA,Brazil,424921
+16,2026-06-15,Belgium,Egypt,66775,4,4to,Kevin Ortega,Kevin ORTEGA,PER,,416161
+16,2026-06-15,Belgium,Egypt,66775,5,VAR,Juan SOTO,Juan SOTO,VEN,,221377
+16,2026-06-15,Belgium,Egypt,66775,6,Reserva,Michael Orué,Michael ORUE,PER,,374831
+16,2026-06-15,Belgium,Egypt,66775,8,Asistente VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+16,2026-06-15,Belgium,Egypt,66775,9,Support VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+13,2026-06-15,Saudi Arabia,Uruguay,62764,1,Principal,Maurizio Mariani,Maurizio MARIANI,ITA,,415965
+13,2026-06-15,Saudi Arabia,Uruguay,62764,2,Asistente,Daniele Bindoni,Daniele BINDONI,ITA,,428275
+13,2026-06-15,Saudi Arabia,Uruguay,62764,3,Asistente,Alberto Tegoni,Alberto TEGONI,ITA,,415969
+13,2026-06-15,Saudi Arabia,Uruguay,62764,4,4to,Drew Fischer,Drew FISCHER,CAN,Canada,372930
+13,2026-06-15,Saudi Arabia,Uruguay,62764,5,VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+13,2026-06-15,Saudi Arabia,Uruguay,62764,6,Reserva,Micheal BARWEGEN,Micheal BARWEGEN,CAN,Canada,408505
+13,2026-06-15,Saudi Arabia,Uruguay,62764,8,Asistente VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+13,2026-06-15,Saudi Arabia,Uruguay,62764,9,Support VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+15,2026-06-16,IR Iran,New Zealand,70108,1,Principal,César Arturo Ramos Palazuelos,Cesar RAMOS,MEX,Mexico,374810
+15,2026-06-16,IR Iran,New Zealand,70108,2,Asistente,Alberto Morín Méndez,Alberto MORIN,MEX,Mexico,280936
+15,2026-06-16,IR Iran,New Zealand,70108,3,Asistente,Marco BISGUERRA,Marco BISGUERRA,MEX,Mexico,446893
+15,2026-06-16,IR Iran,New Zealand,70108,4,4to,Yusuke Araki,Yusuke ARAKI,JPN,Japan,400040
+15,2026-06-16,IR Iran,New Zealand,70108,5,VAR,Erick MIRANDA,Erick MIRANDA,MEX,Mexico,392188
+15,2026-06-16,IR Iran,New Zealand,70108,6,Reserva,Jun MIHARA,Jun MIHARA,JPN,Japan,400157
+15,2026-06-16,IR Iran,New Zealand,70108,8,Asistente VAR,Fedayi San,Fedayi SAN,SUI,Switzerland,378759
+15,2026-06-16,IR Iran,New Zealand,70108,9,Support VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+17,2026-06-16,France,Senegal,80545,1,Principal,Alireza FAGHANI,Alireza FAGHANI,AUS,Australia,283448
+17,2026-06-16,France,Senegal,80545,2,Asistente,George Lakrindis,George LAKRINDIS,AUS,Australia,391848
+17,2026-06-16,France,Senegal,80545,3,Asistente,James Andrew LINDSAY,Andrew LINDSAY,AUS,Australia,416197
+17,2026-06-16,France,Senegal,80545,4,4to,Sandro Schärer,Sandro SCHAERER,SUI,Switzerland,383265
+17,2026-06-16,France,Senegal,80545,5,VAR,Abdullah ALSHEHRI,Abdullah ALSHEHRI,KSA,Saudi Arabia,436278
+17,2026-06-16,France,Senegal,80545,6,Reserva,Stéphane De Almeida,Stephane DE ALMEIDA,SUI,Switzerland,383264
+17,2026-06-16,France,Senegal,80545,8,Asistente VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+17,2026-06-16,France,Senegal,80545,9,Support VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+18,2026-06-16,Iraq,Norway,63106,1,Principal,Pierre Ghislain Atcho,Pierre ATCHO,GAB,,408417
+18,2026-06-16,Iraq,Norway,63106,2,Asistente,Boris Marlaise Ditsoga,Boris DITSOGA,GAB,,416564
+18,2026-06-16,Iraq,Norway,63106,3,Asistente,Amos ABEIGNE,Amos ABEIGNE,GAB,,447115
+18,2026-06-16,Iraq,Norway,63106,4,4to,Amin Mohamed Omar,Amin MOHAMED,EGY,Egypt,392013
+18,2026-06-16,Iraq,Norway,63106,5,VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+18,2026-06-16,Iraq,Norway,63106,6,Reserva,Mahmoud ABOUELREGAL,Mahmoud ABOUELREGAL,EGY,Egypt,374527
+18,2026-06-16,Iraq,Norway,63106,8,Asistente VAR,Hamza EL FARIQ,Hamza EL FARIQ,MAR,Morocco,428822
+18,2026-06-16,Iraq,Norway,63106,9,Support VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+19,2026-06-17,Argentina,Algeria,69045,1,Principal,Szymon MARCINIAK,Szymon MARCINIAK,POL,,327975
+19,2026-06-17,Argentina,Algeria,69045,2,Asistente,Tomasz LISTKIEWICZ,Tomasz LISTKIEWICZ,POL,,327977
+19,2026-06-17,Argentina,Algeria,69045,3,Asistente,Adam Kupsik,Adam KUPSIK,POL,,425192
+19,2026-06-17,Argentina,Algeria,69045,4,4to,Campbell-Kirk Waugh,Campbell-Kirk KAWANA-WAUGH,NZL,New Zealand,408438
+19,2026-06-17,Argentina,Algeria,69045,5,VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+19,2026-06-17,Argentina,Algeria,69045,6,Reserva,Isaac Trevis,Isaac TREVIS,NZL,New Zealand,400287
+19,2026-06-17,Argentina,Algeria,69045,8,Asistente VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+19,2026-06-17,Argentina,Algeria,69045,9,Support VAR,Mohammed Obaid KHADIM,Mohammed Obaid KHADIM,UAE,,428512
+20,2026-06-17,Austria,Jordan,68527,1,Principal,Dahane BEIDA,Dahane BEIDA,MTN,,408591
+20,2026-06-17,Austria,Jordan,68527,2,Asistente,Jerson DOS SANTOS,Jerson SANTOS,ANG,,302677
+20,2026-06-17,Austria,Jordan,68527,3,Asistente,Elvis NOUPUE,Elvis NOUPUE,CMR,,240345
+20,2026-06-17,Austria,Jordan,68527,4,4to,Oshane Nation,Oshane NATION,JAM,,408303
+20,2026-06-17,Austria,Jordan,68527,5,VAR,Mahmoud Mohamed Ashour,Mahmoud ASHOUR,EGY,Egypt,327641
+20,2026-06-17,Austria,Jordan,68527,6,Reserva,Caleb Wales,Caleb WALES,TRI,,360677
+20,2026-06-17,Austria,Jordan,68527,8,Asistente VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+20,2026-06-17,Austria,Jordan,68527,9,Support VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+23,2026-06-17,Portugal,Congo DR,68777,1,Principal,Abdulrahman AL JASSIM,Abdulrahman ALJASSIM,QAT,Qatar,361083
+23,2026-06-17,Portugal,Congo DR,68777,2,Asistente,Taleb AL MARRI,Taleb ALMARRI,QAT,Qatar,349025
+23,2026-06-17,Portugal,Congo DR,68777,3,Asistente,Saoud AL MAQALEH,Saoud ALMAQALEH,QAT,Qatar,374031
+23,2026-06-17,Portugal,Congo DR,68777,4,4to,Abongile TOM,Abongile TOM,RSA,South Africa,425145
+23,2026-06-17,Portugal,Congo DR,68777,5,VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+23,2026-06-17,Portugal,Congo DR,68777,6,Reserva,Zakhele SIWELA,Zakhele SIWELA,RSA,South Africa,316321
+23,2026-06-17,Portugal,Congo DR,68777,8,Asistente VAR,Juan SOTO,Juan SOTO,VEN,,221377
+23,2026-06-17,Portugal,Congo DR,68777,9,Support VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+22,2026-06-17,England,Croatia,70389,1,Principal,Clément Turpin,Clement TURPIN,FRA,France,314589
+22,2026-06-17,England,Croatia,70389,2,Asistente,Nicolas Danos,Nicolas DANOS,FRA,France,361836
+22,2026-06-17,England,Croatia,70389,3,Asistente,Benjamin Pages,Benjamin PAGES,FRA,France,408612
+22,2026-06-17,England,Croatia,70389,4,4to,Katia Itzel García,Katia GARCIA,MEX,Mexico,416317
+22,2026-06-17,England,Croatia,70389,5,VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+22,2026-06-17,England,Croatia,70389,6,Reserva,Sandra RAMIREZ,Sandra RAMIREZ,MEX,Mexico,416319
+22,2026-06-17,England,Croatia,70389,8,Asistente VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+22,2026-06-17,England,Croatia,70389,9,Support VAR,Fedayi San,Fedayi SAN,SUI,Switzerland,378759
+21,2026-06-17,Ghana,Panama,42942,1,Principal,Glenn Nyberg,Glenn NYBERG,SWE,Sweden,392336
+21,2026-06-17,Ghana,Panama,42942,2,Asistente,Mahbod Beigi,Mahbod BEIGI,SWE,Sweden,415979
+21,2026-06-17,Ghana,Panama,42942,3,Asistente,Andreas Söderkvist,Andreas SODERKVIST,SWE,Sweden,415978
+21,2026-06-17,Ghana,Panama,42942,4,4to,Khalid Saleh Alturais,Khalid ALTURAIS,KSA,Saudi Arabia,392293
+21,2026-06-17,Ghana,Panama,42942,5,VAR,Bram Van Driessche,Bram VAN DRIESSCHE,BEL,Belgium,417087
+21,2026-06-17,Ghana,Panama,42942,6,Reserva,Mohammed Maki Al Abakry,Mohammed ALABAKRY,KSA,Saudi Arabia,373831
+21,2026-06-17,Ghana,Panama,42942,8,Asistente VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+21,2026-06-17,Ghana,Panama,42942,9,Support VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+24,2026-06-18,Uzbekistan,Colombia,80824,1,Principal,Anthony Taylor,Anthony TAYLOR,ENG,England,360460
+24,2026-06-18,Uzbekistan,Colombia,80824,2,Asistente,Gary Beswick,Gary BESWICK,ENG,England,378788
+24,2026-06-18,Uzbekistan,Colombia,80824,3,Asistente,Adam Nunn,Adam NUNN,ENG,England,400069
+24,2026-06-18,Uzbekistan,Colombia,80824,4,4to,Juan Gabriel Calderón Perez,Juan CALDERON,CRC,,400250
+24,2026-06-18,Uzbekistan,Colombia,80824,5,VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+24,2026-06-18,Uzbekistan,Colombia,80824,6,Reserva,Juan Carlos Mora,Juan Carlos MORA,CRC,,383469
+24,2026-06-18,Uzbekistan,Colombia,80824,8,Asistente VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+24,2026-06-18,Uzbekistan,Colombia,80824,9,Support VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+25,2026-06-18,Czechia,South Africa,67442,1,Principal,Tori Penso,Tori PENSO,USA,USA,428431
+25,2026-06-18,Czechia,South Africa,67442,2,Asistente,Brooke Mayo,Brooke MAYO,USA,USA,408398
+25,2026-06-18,Czechia,South Africa,67442,3,Asistente,Katie Nesbitt,Kathryn NESBITT,USA,USA,392425
+25,2026-06-18,Czechia,South Africa,67442,4,4to,Campbell-Kirk Waugh,Campbell-Kirk KAWANA-WAUGH,NZL,New Zealand,408438
+25,2026-06-18,Czechia,South Africa,67442,5,VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+25,2026-06-18,Czechia,South Africa,67442,6,Reserva,Isaac Trevis,Isaac TREVIS,NZL,New Zealand,400287
+25,2026-06-18,Czechia,South Africa,67442,8,Asistente VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+25,2026-06-18,Czechia,South Africa,67442,9,Support VAR,Mohammed Obaid KHADIM,Mohammed Obaid KHADIM,UAE,,428512
+26,2026-06-18,Switzerland,Bosnia and Herzegovina,70026,1,Principal,João Pedro Silva Pinheiro,Joao PINHEIRO,POR,Portugal,392268
+26,2026-06-18,Switzerland,Bosnia and Herzegovina,70026,2,Asistente,Bruno Miguel Alves Jesus,Bruno JESUS,POR,Portugal,425445
+26,2026-06-18,Switzerland,Bosnia and Herzegovina,70026,3,Asistente,Luciano MAIA,Luciano MAIA,POR,Portugal,447216
+26,2026-06-18,Switzerland,Bosnia and Herzegovina,70026,4,4to,Yusuke Araki,Yusuke ARAKI,JPN,Japan,400040
+26,2026-06-18,Switzerland,Bosnia and Herzegovina,70026,5,VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+26,2026-06-18,Switzerland,Bosnia and Herzegovina,70026,6,Reserva,Jun MIHARA,Jun MIHARA,JPN,Japan,400157
+26,2026-06-18,Switzerland,Bosnia and Herzegovina,70026,8,Asistente VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+26,2026-06-18,Switzerland,Bosnia and Herzegovina,70026,9,Support VAR,Ming Fu,FU Ming,CHN,,374457
+27,2026-06-18,Canada,Qatar,52497,1,Principal,Cristián Marcelo Garay Reyes,Cristian GARAY,CHI,,416177
+27,2026-06-18,Canada,Qatar,52497,2,Asistente,José Francisco Retamal Silva,Jose RETAMAL,CHI,,383452
+27,2026-06-18,Canada,Qatar,52497,3,Asistente,Miguel ROCHA,Miguel ROCHA,CHI,,428533
+27,2026-06-18,Canada,Qatar,52497,4,4to,Kevin Ortega,Kevin ORTEGA,PER,,416161
+27,2026-06-18,Canada,Qatar,52497,5,VAR,Juan Lara,Juan LARA,CHI,,428539
+27,2026-06-18,Canada,Qatar,52497,6,Reserva,Michael Orué,Michael ORUE,PER,,374831
+27,2026-06-18,Canada,Qatar,52497,8,Asistente VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+27,2026-06-18,Canada,Qatar,52497,9,Support VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+28,2026-06-19,Mexico,Korea Republic,45522,1,Principal,Gustavo Tejera,Gustavo TEJERA,URU,Uruguay,408669
+28,2026-06-19,Mexico,Korea Republic,45522,2,Asistente,Carlos BARREIRO,Carlos BARREIRO,URU,Uruguay,408670
+28,2026-06-19,Mexico,Korea Republic,45522,3,Asistente,Nicolás Taran,Nicolas TARAN,URU,Uruguay,348552
+28,2026-06-19,Mexico,Korea Republic,45522,4,4to,Andrés José Rojas Noguera,Andres ROJAS,COL,Colombia,400324
+28,2026-06-19,Mexico,Korea Republic,45522,5,VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+28,2026-06-19,Mexico,Korea Republic,45522,6,Reserva,Alexander Guzmán Bonilla,Alexander GUZMAN,COL,Colombia,349161
+28,2026-06-19,Mexico,Korea Republic,45522,8,Asistente VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+28,2026-06-19,Mexico,Korea Republic,45522,9,Support VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+32,2026-06-19,USA,Australia,66925,1,Principal,Felix Zwayer,Felix ZWAYER,GER,Germany,348147
+32,2026-06-19,USA,Australia,66925,2,Asistente,Robert KEMPTER,Robert KEMPTER,GER,Germany,435941
+32,2026-06-19,USA,Australia,66925,3,Asistente,Christian Dietz,Christian DIETZ,GER,Germany,428266
+32,2026-06-19,USA,Australia,66925,4,4to,Katia Itzel García,Katia GARCIA,MEX,Mexico,416317
+32,2026-06-19,USA,Australia,66925,5,VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+32,2026-06-19,USA,Australia,66925,6,Reserva,Sandra RAMIREZ,Sandra RAMIREZ,MEX,Mexico,416319
+32,2026-06-19,USA,Australia,66925,8,Asistente VAR,Hamza EL FARIQ,Hamza EL FARIQ,MAR,Morocco,428822
+32,2026-06-19,USA,Australia,66925,9,Support VAR,Bram Van Driessche,Bram VAN DRIESSCHE,BEL,Belgium,417087
+30,2026-06-19,Scotland,Morocco,64146,1,Principal,Ilgiz Tantashev,Ilgiz TANTASHEV,UZB,Uzbekistan,360687
+30,2026-06-19,Scotland,Morocco,64146,2,Asistente,Andrey Tsapenko,Andrey TSAPENKO,UZB,Uzbekistan,348253
+30,2026-06-19,Scotland,Morocco,64146,3,Asistente,Timur Gaynulin,Timur GAYNULLIN,UZB,Uzbekistan,374281
+30,2026-06-19,Scotland,Morocco,64146,4,4to,Adham Mohammad Tumah Makhadmeh,Adham MAKHADMEH,JOR,Jordan,361034
+30,2026-06-19,Scotland,Morocco,64146,5,VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+30,2026-06-19,Scotland,Morocco,64146,6,Reserva,Mohammad ALKALAF,Mohammad ALKALAF,JOR,Jordan,327165
+30,2026-06-19,Scotland,Morocco,64146,8,Asistente VAR,Erick MIRANDA,Erick MIRANDA,MEX,Mexico,392188
+30,2026-06-19,Scotland,Morocco,64146,9,Support VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+29,2026-06-20,Brazil,Haiti,68324,1,Principal,Alejandro HERNANDEZ,Alejandro HERNANDEZ,ESP,Spain,373845
+29,2026-06-20,Brazil,Haiti,68324,2,Asistente,José Enrique Naranjo Pérez,Jose Enrique NARANJO,ESP,Spain,425311
+29,2026-06-20,Brazil,Haiti,68324,3,Asistente,Diego SANCHEZ,Diego SANCHEZ,ESP,Spain,447210
+29,2026-06-20,Brazil,Haiti,68324,4,4to,Sandro Schärer,Sandro SCHAERER,SUI,Switzerland,383265
+29,2026-06-20,Brazil,Haiti,68324,5,VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+29,2026-06-20,Brazil,Haiti,68324,6,Reserva,Stéphane De Almeida,Stephane DE ALMEIDA,SUI,Switzerland,383264
+29,2026-06-20,Brazil,Haiti,68324,8,Asistente VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+29,2026-06-20,Brazil,Haiti,68324,9,Support VAR,Mahmoud Mohamed Ashour,Mahmoud ASHOUR,EGY,Egypt,327641
+31,2026-06-20,Türkiye,Paraguay,68827,1,Principal,Ivan Arcides Barton Cisneros,Ivan BARTON,SLV,,408378
+31,2026-06-20,Türkiye,Paraguay,68827,2,Asistente,David Jonathan Morán Santos,David MORAN,SLV,,360681
+31,2026-06-20,Türkiye,Paraguay,68827,3,Asistente,Henri Antonio Pupiro Esquivel,Antonio PUPIRO,NCA,,373119
+31,2026-06-20,Türkiye,Paraguay,68827,4,4to,Oshane Nation,Oshane NATION,JAM,,408303
+31,2026-06-20,Türkiye,Paraguay,68827,5,VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+31,2026-06-20,Türkiye,Paraguay,68827,6,Reserva,Caleb Wales,Caleb WALES,TRI,,360677
+31,2026-06-20,Türkiye,Paraguay,68827,8,Asistente VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+31,2026-06-20,Türkiye,Paraguay,68827,9,Support VAR,Abdullah ALSHEHRI,Abdullah ALSHEHRI,KSA,Saudi Arabia,436278
+35,2026-06-20,Netherlands,Sweden,68777,1,Principal,Michael Oliver,Michael OLIVER,ENG,England,347710
+35,2026-06-20,Netherlands,Sweden,68777,2,Asistente,Stuart Burt,Stuart BURT,ENG,England,327555
+35,2026-06-20,Netherlands,Sweden,68777,3,Asistente,James MAINWARING,James MAINWARING,ENG,England,407736
+35,2026-06-20,Netherlands,Sweden,68777,4,4to,Abongile TOM,Abongile TOM,RSA,South Africa,425145
+35,2026-06-20,Netherlands,Sweden,68777,5,VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+35,2026-06-20,Netherlands,Sweden,68777,6,Reserva,Zakhele SIWELA,Zakhele SIWELA,RSA,South Africa,316321
+35,2026-06-20,Netherlands,Sweden,68777,8,Asistente VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+35,2026-06-20,Netherlands,Sweden,68777,9,Support VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+33,2026-06-20,Germany,Ivory Coast,43036,1,Principal,Juan Gabriel Benítez,Juan Gabriel BENITEZ,PAR,Paraguay,416159
+33,2026-06-20,Germany,Ivory Coast,43036,2,Asistente,Eduardo Cardozo,Eduardo CARDOZO,PAR,Paraguay,360921
+33,2026-06-20,Germany,Ivory Coast,43036,3,Asistente,Milcíades Saldívar,Milciades SALDIVAR,PAR,Paraguay,301816
+33,2026-06-20,Germany,Ivory Coast,43036,4,4to,Khalid Saleh Alturais,Khalid ALTURAIS,KSA,Saudi Arabia,392293
+33,2026-06-20,Germany,Ivory Coast,43036,5,VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+33,2026-06-20,Germany,Ivory Coast,43036,6,Reserva,Mohammed Maki Al Abakry,Mohammed ALABAKRY,KSA,Saudi Arabia,373831
+33,2026-06-20,Germany,Ivory Coast,43036,8,Asistente VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+33,2026-06-20,Germany,Ivory Coast,43036,9,Support VAR,Juan SOTO,Juan SOTO,VEN,,221377
+34,2026-06-21,Ecuador,Curaçao,68598,1,Principal,Ning Ma,MA Ning,CHN,,328495
+34,2026-06-21,Ecuador,Curaçao,68598,2,Asistente,Fei Zhou,ZHOU Fei,CHN,,383331
+34,2026-06-21,Ecuador,Curaçao,68598,3,Asistente,Saoud AL MAQALEH,Saoud ALMAQALEH,QAT,Qatar,374031
+34,2026-06-21,Ecuador,Curaçao,68598,4,4to,Campbell-Kirk Waugh,Campbell-Kirk KAWANA-WAUGH,NZL,New Zealand,408438
+34,2026-06-21,Ecuador,Curaçao,68598,5,VAR,Ming Fu,FU Ming,CHN,,374457
+34,2026-06-21,Ecuador,Curaçao,68598,6,Reserva,Isaac Trevis,Isaac TREVIS,NZL,New Zealand,400287
+34,2026-06-21,Ecuador,Curaçao,68598,8,Asistente VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+34,2026-06-21,Ecuador,Curaçao,68598,9,Support VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+36,2026-06-21,Tunisia,Japan,51243,1,Principal,Istvan Kovacs,Istvan KOVACS,ROU,,314605
+36,2026-06-21,Tunisia,Japan,51243,2,Asistente,Mihai MARICA,Mihai MARICA,ROU,,435713
+36,2026-06-21,Tunisia,Japan,51243,3,Asistente,Ferencz TUNYOGI,Ferencz TUNYOGI,ROU,,447272
+36,2026-06-21,Tunisia,Japan,51243,4,4to,Juan Gabriel Calderón Perez,Juan CALDERON,CRC,,400250
+36,2026-06-21,Tunisia,Japan,51243,5,VAR,Fedayi San,Fedayi SAN,SUI,Switzerland,378759
+36,2026-06-21,Tunisia,Japan,51243,6,Reserva,Juan Carlos Mora,Juan Carlos MORA,CRC,,383469
+36,2026-06-21,Tunisia,Japan,51243,8,Asistente VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+36,2026-06-21,Tunisia,Japan,51243,9,Support VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+38,2026-06-21,Spain,Saudi Arabia,68239,1,Principal,Raphael Claus,Raphael CLAUS,BRA,Brazil,383222
+38,2026-06-21,Spain,Saudi Arabia,68239,2,Asistente,Danilo SIMON,Danilo MANIS,BRA,Brazil,400042
+38,2026-06-21,Spain,Saudi Arabia,68239,3,Asistente,Rodrigo FIGUEIREDO,Rodrigo FIGUEIREDO,BRA,Brazil,361589
+38,2026-06-21,Spain,Saudi Arabia,68239,4,4to,Andrés José Rojas Noguera,Andres ROJAS,COL,Colombia,400324
+38,2026-06-21,Spain,Saudi Arabia,68239,5,VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+38,2026-06-21,Spain,Saudi Arabia,68239,6,Reserva,Alexander Guzmán Bonilla,Alexander GUZMAN,COL,Colombia,349161
+38,2026-06-21,Spain,Saudi Arabia,68239,8,Asistente VAR,Erick MIRANDA,Erick MIRANDA,MEX,Mexico,392188
+38,2026-06-21,Spain,Saudi Arabia,68239,9,Support VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+39,2026-06-21,Belgium,IR Iran,70317,1,Principal,Darío Herrera,Dario HERRERA,ARG,Argentina,383174
+39,2026-06-21,Belgium,IR Iran,70317,2,Asistente,Cristian Navarro,Cristian NAVARRO,ARG,Argentina,374187
+39,2026-06-21,Belgium,IR Iran,70317,3,Asistente,Gabriel CHADE,Gabriel CHADE,ARG,Argentina,391866
+39,2026-06-21,Belgium,IR Iran,70317,4,4to,Yusuke Araki,Yusuke ARAKI,JPN,Japan,400040
+39,2026-06-21,Belgium,IR Iran,70317,5,VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+39,2026-06-21,Belgium,IR Iran,70317,6,Reserva,Jun MIHARA,Jun MIHARA,JPN,Japan,400157
+39,2026-06-21,Belgium,IR Iran,70317,8,Asistente VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+39,2026-06-21,Belgium,IR Iran,70317,9,Support VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+37,2026-06-21,Uruguay,Cape Verde,64003,1,Principal,Espen Eskås,Espen ESKAS,NOR,Norway,400227
+37,2026-06-21,Uruguay,Cape Verde,64003,2,Asistente,Jan Erik Engan,Jan Erik ENGAN,NOR,Norway,348661
+37,2026-06-21,Uruguay,Cape Verde,64003,3,Asistente,Isaak Elias S. BASHEVKIN,Isaak BASHEVKIN,NOR,Norway,408225
+37,2026-06-21,Uruguay,Cape Verde,64003,4,4to,Tori Penso,Tori PENSO,USA,USA,428431
+37,2026-06-21,Uruguay,Cape Verde,64003,5,VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+37,2026-06-21,Uruguay,Cape Verde,64003,6,Reserva,Brooke Mayo,Brooke MAYO,USA,USA,408398
+37,2026-06-21,Uruguay,Cape Verde,64003,8,Asistente VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+37,2026-06-21,Uruguay,Cape Verde,64003,9,Support VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+40,2026-06-22,New Zealand,Egypt,52497,1,Principal,Omar Mohamed Al Ali,Omar ALALI,UAE,,383421
+40,2026-06-22,New Zealand,Egypt,52497,2,Asistente,Mohamed AL HAMMADI,Mohamed ALHAMMADI,UAE,,348536
+40,2026-06-22,New Zealand,Egypt,52497,3,Asistente,Taleb AL MARRI,Taleb ALMARRI,QAT,Qatar,349025
+40,2026-06-22,New Zealand,Egypt,52497,4,4to,Kevin Ortega,Kevin ORTEGA,PER,,416161
+40,2026-06-22,New Zealand,Egypt,52497,5,VAR,Mohammed Obaid KHADIM,Mohammed Obaid KHADIM,UAE,,428512
+40,2026-06-22,New Zealand,Egypt,52497,6,Reserva,Michael Orué,Michael ORUE,PER,,374831
+40,2026-06-22,New Zealand,Egypt,52497,8,Asistente VAR,Shaun EVANS,Shaun EVANS,AUS,Australia,400266
+40,2026-06-22,New Zealand,Egypt,52497,9,Support VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+43,2026-06-22,Argentina,Austria,70649,1,Principal,Amin Mohamed Omar,Amin MOHAMED,EGY,Egypt,392013
+43,2026-06-22,Argentina,Austria,70649,2,Asistente,Mahmoud ABOUELREGAL,Mahmoud ABOUELREGAL,EGY,Egypt,374527
+43,2026-06-22,Argentina,Austria,70649,3,Asistente,HOSSAM ELDIN Ahmed,Ahmed HOSSAM TAHA,EGY,Egypt,374447
+43,2026-06-22,Argentina,Austria,70649,4,4to,Alejandro HERNANDEZ,Alejandro HERNANDEZ,ESP,Spain,373845
+43,2026-06-22,Argentina,Austria,70649,5,VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+43,2026-06-22,Argentina,Austria,70649,6,Reserva,Diego SANCHEZ,Diego SANCHEZ,ESP,Spain,447210
+43,2026-06-22,Argentina,Austria,70649,8,Asistente VAR,Mahmoud Mohamed Ashour,Mahmoud ASHOUR,EGY,Egypt,327641
+43,2026-06-22,Argentina,Austria,70649,9,Support VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+42,2026-06-22,France,Iraq,68324,1,Principal,Drew Fischer,Drew FISCHER,CAN,Canada,372930
+42,2026-06-22,France,Iraq,68324,2,Asistente,Micheal BARWEGEN,Micheal BARWEGEN,CAN,Canada,408505
+42,2026-06-22,France,Iraq,68324,3,Asistente,Lyes ARFA,Lyes ARFA,CAN,Canada,425172
+42,2026-06-22,France,Iraq,68324,4,4to,Sandro Schärer,Sandro SCHAERER,SUI,Switzerland,383265
+42,2026-06-22,France,Iraq,68324,5,VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+42,2026-06-22,France,Iraq,68324,6,Reserva,Stéphane De Almeida,Stephane DE ALMEIDA,SUI,Switzerland,383264
+42,2026-06-22,France,Iraq,68324,8,Asistente VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+42,2026-06-22,France,Iraq,68324,9,Support VAR,Juan SOTO,Juan SOTO,VEN,,221377
+41,2026-06-23,Norway,Senegal,80663,1,Principal,Wilton SAMPAIO,Wilton SAMPAIO,BRA,Brazil,361561
+41,2026-06-23,Norway,Senegal,80663,2,Asistente,Bruno PIRES,Bruno PIRES,BRA,Brazil,391903
+41,2026-06-23,Norway,Senegal,80663,3,Asistente,Bruno Boschilia,Bruno BOSCHILIA,BRA,Brazil,374168
+41,2026-06-23,Norway,Senegal,80663,4,4to,Campbell-Kirk Waugh,Campbell-Kirk KAWANA-WAUGH,NZL,New Zealand,408438
+41,2026-06-23,Norway,Senegal,80663,5,VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+41,2026-06-23,Norway,Senegal,80663,6,Reserva,Isaac Trevis,Isaac TREVIS,NZL,New Zealand,400287
+41,2026-06-23,Norway,Senegal,80663,8,Asistente VAR,Juan Lara,Juan LARA,CHI,,428539
+41,2026-06-23,Norway,Senegal,80663,9,Support VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+44,2026-06-23,Jordan,Algeria,68371,1,Principal,Slavko VINCIC,Slavko VINCIC,SVN,,315008
+44,2026-06-23,Jordan,Algeria,68371,2,Asistente,Tomaz KLANCNIK,Tomaz KLANCNIK,SVN,,374790
+44,2026-06-23,Jordan,Algeria,68371,3,Asistente,Andraz KOVACIC,Andraz KOVACIC,SVN,,383670
+44,2026-06-23,Jordan,Algeria,68371,4,4to,Oshane Nation,Oshane NATION,JAM,,408303
+44,2026-06-23,Jordan,Algeria,68371,5,VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+44,2026-06-23,Jordan,Algeria,68371,6,Reserva,Caleb Wales,Caleb WALES,TRI,,360677
+44,2026-06-23,Jordan,Algeria,68371,8,Asistente VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+44,2026-06-23,Jordan,Algeria,68371,9,Support VAR,Bram Van Driessche,Bram VAN DRIESSCHE,BEL,Belgium,417087
+47,2026-06-23,Portugal,Uzbekistan,68777,1,Principal,Jalal Jayed,Jalal JAYED,MAR,Morocco,416524
+47,2026-06-23,Portugal,Uzbekistan,68777,2,Asistente,Zakaria Brinsi,Zakaria BRINSI,MAR,Morocco,416532
+47,2026-06-23,Portugal,Uzbekistan,68777,3,Asistente,Mostafa Akarkad,Mostafa AKARKAD,MAR,Morocco,408335
+47,2026-06-23,Portugal,Uzbekistan,68777,4,4to,Abongile TOM,Abongile TOM,RSA,South Africa,425145
+47,2026-06-23,Portugal,Uzbekistan,68777,5,VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+47,2026-06-23,Portugal,Uzbekistan,68777,6,Reserva,Zakhele SIWELA,Zakhele SIWELA,RSA,South Africa,316321
+47,2026-06-23,Portugal,Uzbekistan,68777,8,Asistente VAR,Hamza EL FARIQ,Hamza EL FARIQ,MAR,Morocco,428822
+47,2026-06-23,Portugal,Uzbekistan,68777,9,Support VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+45,2026-06-23,England,Ghana,63983,1,Principal,Said MARTINEZ,Said MARTINEZ,HON,,400191
+45,2026-06-23,England,Ghana,63983,2,Asistente,Walter LOPEZ,Walter LOPEZ,HON,,361341
+45,2026-06-23,England,Ghana,63983,3,Asistente,Christian RAMIREZ,Christian RAMIREZ,HON,,348332
+45,2026-06-23,England,Ghana,63983,4,4to,Ning Ma,MA Ning,CHN,,328495
+45,2026-06-23,England,Ghana,63983,5,VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+45,2026-06-23,England,Ghana,63983,6,Reserva,Fei Zhou,ZHOU Fei,CHN,,383331
+45,2026-06-23,England,Ghana,63983,8,Asistente VAR,Erick MIRANDA,Erick MIRANDA,MEX,Mexico,392188
+45,2026-06-23,England,Ghana,63983,9,Support VAR,Abdullah ALSHEHRI,Abdullah ALSHEHRI,KSA,Saudi Arabia,436278
+46,2026-06-23,Panama,Croatia,43036,1,Principal,Pierre Ghislain Atcho,Pierre ATCHO,GAB,,408417
+46,2026-06-23,Panama,Croatia,43036,2,Asistente,Boris Marlaise Ditsoga,Boris DITSOGA,GAB,,416564
+46,2026-06-23,Panama,Croatia,43036,3,Asistente,Amos ABEIGNE,Amos ABEIGNE,GAB,,447115
+46,2026-06-23,Panama,Croatia,43036,4,4to,Khalid Saleh Alturais,Khalid ALTURAIS,KSA,Saudi Arabia,392293
+46,2026-06-23,Panama,Croatia,43036,5,VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+46,2026-06-23,Panama,Croatia,43036,6,Reserva,Mohammed Maki Al Abakry,Mohammed ALABAKRY,KSA,Saudi Arabia,373831
+46,2026-06-23,Panama,Croatia,43036,8,Asistente VAR,Ming Fu,FU Ming,CHN,,374457
+46,2026-06-23,Panama,Croatia,43036,9,Support VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+48,2026-06-24,Colombia,Congo DR,45358,1,Principal,Maurizio Mariani,Maurizio MARIANI,ITA,,415965
+48,2026-06-24,Colombia,Congo DR,45358,2,Asistente,Daniele Bindoni,Daniele BINDONI,ITA,,428275
+48,2026-06-24,Colombia,Congo DR,45358,3,Asistente,Alberto Tegoni,Alberto TEGONI,ITA,,415969
+48,2026-06-24,Colombia,Congo DR,45358,4,4to,Juan Gabriel Calderón Perez,Juan CALDERON,CRC,,400250
+48,2026-06-24,Colombia,Congo DR,45358,5,VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+48,2026-06-24,Colombia,Congo DR,45358,6,Reserva,Juan Carlos Mora,Juan Carlos MORA,CRC,,383469
+48,2026-06-24,Colombia,Congo DR,45358,8,Asistente VAR,Mohammed Obaid KHADIM,Mohammed Obaid KHADIM,UAE,,428512
+48,2026-06-24,Colombia,Congo DR,45358,9,Support VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+52,2026-06-24,Bosnia and Herzegovina,Qatar,66925,1,Principal,Jesús Valenzuela Sáez,Jesus VALENZUELA,VEN,,360305
+52,2026-06-24,Bosnia and Herzegovina,Qatar,66925,2,Asistente,Jorge Urrego Martínez,Jorge URREGO,VEN,,262055
+52,2026-06-24,Bosnia and Herzegovina,Qatar,66925,3,Asistente,Tulio Moreno,Tulio MORENO,VEN,,349171
+52,2026-06-24,Bosnia and Herzegovina,Qatar,66925,4,4to,Yusuke Araki,Yusuke ARAKI,JPN,Japan,400040
+52,2026-06-24,Bosnia and Herzegovina,Qatar,66925,5,VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+52,2026-06-24,Bosnia and Herzegovina,Qatar,66925,6,Reserva,Jun MIHARA,Jun MIHARA,JPN,Japan,400157
+52,2026-06-24,Bosnia and Herzegovina,Qatar,66925,8,Asistente VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+52,2026-06-24,Bosnia and Herzegovina,Qatar,66925,9,Support VAR,Shaun EVANS,Shaun EVANS,AUS,Australia,400266
+51,2026-06-24,Switzerland,Canada,52497,1,Principal,Ramon ABATTI,Ramon ABATTI,BRA,Brazil,446932
+51,2026-06-24,Switzerland,Canada,52497,2,Asistente,Danilo SIMON,Danilo MANIS,BRA,Brazil,400042
+51,2026-06-24,Switzerland,Canada,52497,3,Asistente,Rafael da Silva Alves,Rafael ALVES,BRA,Brazil,424921
+51,2026-06-24,Switzerland,Canada,52497,4,4to,Kevin Ortega,Kevin ORTEGA,PER,,416161
+51,2026-06-24,Switzerland,Canada,52497,5,VAR,Juan SOTO,Juan SOTO,VEN,,221377
+51,2026-06-24,Switzerland,Canada,52497,6,Reserva,Michael Orué,Michael ORUE,PER,,374831
+51,2026-06-24,Switzerland,Canada,52497,8,Asistente VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+51,2026-06-24,Switzerland,Canada,52497,9,Support VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+50,2026-06-24,Morocco,Haiti,68239,1,Principal,Danny Desmond Makkelie,Danny MAKKELIE,NED,Netherlands,327159
+50,2026-06-24,Morocco,Haiti,68239,2,Asistente,Hessel Steegstra,Hessel STEEGSTRA,NED,Netherlands,363986
+50,2026-06-24,Morocco,Haiti,68239,3,Asistente,Jan de Vries,Jan DE VRIES,NED,Netherlands,400210
+50,2026-06-24,Morocco,Haiti,68239,4,4to,João Pedro Silva Pinheiro,Joao PINHEIRO,POR,Portugal,392268
+50,2026-06-24,Morocco,Haiti,68239,5,VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+50,2026-06-24,Morocco,Haiti,68239,6,Reserva,Bruno Miguel Alves Jesus,Bruno JESUS,POR,Portugal,425445
+50,2026-06-24,Morocco,Haiti,68239,8,Asistente VAR,Fedayi San,Fedayi SAN,SUI,Switzerland,378759
+50,2026-06-24,Morocco,Haiti,68239,9,Support VAR,Bram Van Driessche,Bram VAN DRIESSCHE,BEL,Belgium,417087
+49,2026-06-24,Scotland,Brazil,64478,1,Principal,César Arturo Ramos Palazuelos,Cesar RAMOS,MEX,Mexico,374810
+49,2026-06-24,Scotland,Brazil,64478,2,Asistente,Alberto Morín Méndez,Alberto MORIN,MEX,Mexico,280936
+49,2026-06-24,Scotland,Brazil,64478,3,Asistente,Marco BISGUERRA,Marco BISGUERRA,MEX,Mexico,446893
+49,2026-06-24,Scotland,Brazil,64478,4,4to,Espen Eskås,Espen ESKAS,NOR,Norway,400227
+49,2026-06-24,Scotland,Brazil,64478,5,VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+49,2026-06-24,Scotland,Brazil,64478,6,Reserva,Jan Erik Engan,Jan Erik ENGAN,NOR,Norway,348661
+49,2026-06-24,Scotland,Brazil,64478,8,Asistente VAR,Abdullah ALSHEHRI,Abdullah ALSHEHRI,KSA,Saudi Arabia,436278
+49,2026-06-24,Scotland,Brazil,64478,9,Support VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+54,2026-06-25,South Africa,Korea Republic,51243,1,Principal,Facundo TELLO,Facundo TELLO,ARG,Argentina,416165
+54,2026-06-25,South Africa,Korea Republic,51243,2,Asistente,Juan Pablo Belatti,Juan Pablo BELATTI,ARG,Argentina,328260
+54,2026-06-25,South Africa,Korea Republic,51243,3,Asistente,Gabriel CHADE,Gabriel CHADE,ARG,Argentina,391866
+54,2026-06-25,South Africa,Korea Republic,51243,4,4to,Andrés José Rojas Noguera,Andres ROJAS,COL,Colombia,400324
+54,2026-06-25,South Africa,Korea Republic,51243,5,VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+54,2026-06-25,South Africa,Korea Republic,51243,6,Reserva,Alexander Guzmán Bonilla,Alexander GUZMAN,COL,Colombia,349161
+54,2026-06-25,South Africa,Korea Republic,51243,8,Asistente VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+54,2026-06-25,South Africa,Korea Republic,51243,9,Support VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+53,2026-06-25,Czechia,Mexico,80824,1,Principal,Yael Falcón Pérez,Yael FALCON PEREZ,ARG,Argentina,434995
+53,2026-06-25,Czechia,Mexico,80824,2,Asistente,Maximiliano Del Yesso,Maximiliano DEL YESSO,ARG,Argentina,408238
+53,2026-06-25,Czechia,Mexico,80824,3,Asistente,Facundo Rodríguez,Facundo RODRIGUEZ,ARG,Argentina,424966
+53,2026-06-25,Czechia,Mexico,80824,4,4to,Cristián Marcelo Garay Reyes,Cristian GARAY,CHI,,416177
+53,2026-06-25,Czechia,Mexico,80824,5,VAR,Juan Lara,Juan LARA,CHI,,428539
+53,2026-06-25,Czechia,Mexico,80824,6,Reserva,José Francisco Retamal Silva,Jose RETAMAL,CHI,,383452
+53,2026-06-25,Czechia,Mexico,80824,8,Asistente VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+53,2026-06-25,Czechia,Mexico,80824,9,Support VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+55,2026-06-25,Curaçao,Ivory Coast,68324,1,Principal,Glenn Nyberg,Glenn NYBERG,SWE,Sweden,392336
+55,2026-06-25,Curaçao,Ivory Coast,68324,2,Asistente,Mahbod Beigi,Mahbod BEIGI,SWE,Sweden,415979
+55,2026-06-25,Curaçao,Ivory Coast,68324,3,Asistente,Andreas Söderkvist,Andreas SODERKVIST,SWE,Sweden,415978
+55,2026-06-25,Curaçao,Ivory Coast,68324,4,4to,Sandro Schärer,Sandro SCHAERER,SUI,Switzerland,383265
+55,2026-06-25,Curaçao,Ivory Coast,68324,5,VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+55,2026-06-25,Curaçao,Ivory Coast,68324,6,Reserva,Stéphane De Almeida,Stephane DE ALMEIDA,SUI,Switzerland,383264
+55,2026-06-25,Curaçao,Ivory Coast,68324,8,Asistente VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+55,2026-06-25,Curaçao,Ivory Coast,68324,9,Support VAR,Juan SOTO,Juan SOTO,VEN,,221377
+56,2026-06-25,Ecuador,Germany,80663,1,Principal,Tori Penso,Tori PENSO,USA,USA,428431
+56,2026-06-25,Ecuador,Germany,80663,2,Asistente,Brooke Mayo,Brooke MAYO,USA,USA,408398
+56,2026-06-25,Ecuador,Germany,80663,3,Asistente,Katie Nesbitt,Kathryn NESBITT,USA,USA,392425
+56,2026-06-25,Ecuador,Germany,80663,4,4to,Campbell-Kirk Waugh,Campbell-Kirk KAWANA-WAUGH,NZL,New Zealand,408438
+56,2026-06-25,Ecuador,Germany,80663,5,VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+56,2026-06-25,Ecuador,Germany,80663,6,Reserva,Isaac Trevis,Isaac TREVIS,NZL,New Zealand,400287
+56,2026-06-25,Ecuador,Germany,80663,8,Asistente VAR,Ming Fu,FU Ming,CHN,,374457
+56,2026-06-25,Ecuador,Germany,80663,9,Support VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+58,2026-06-25,Tunisia,Netherlands,68391,1,Principal,Katia Itzel García,Katia GARCIA,MEX,Mexico,416317
+58,2026-06-25,Tunisia,Netherlands,68391,2,Asistente,Sandra RAMIREZ,Sandra RAMIREZ,MEX,Mexico,416319
+58,2026-06-25,Tunisia,Netherlands,68391,3,Asistente,José Enrique Naranjo Pérez,Jose Enrique NARANJO,ESP,Spain,425311
+58,2026-06-25,Tunisia,Netherlands,68391,4,4to,Juan Gabriel Benítez,Juan Gabriel BENITEZ,PAR,Paraguay,416159
+58,2026-06-25,Tunisia,Netherlands,68391,5,VAR,Erick MIRANDA,Erick MIRANDA,MEX,Mexico,392188
+58,2026-06-25,Tunisia,Netherlands,68391,6,Reserva,Milcíades Saldívar,Milciades SALDIVAR,PAR,Paraguay,301816
+58,2026-06-25,Tunisia,Netherlands,68391,8,Asistente VAR,Mohammed Obaid KHADIM,Mohammed Obaid KHADIM,UAE,,428512
+58,2026-06-25,Tunisia,Netherlands,68391,9,Support VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+57,2026-06-25,Japan,Sweden,70137,1,Principal,Ivan Arcides Barton Cisneros,Ivan BARTON,SLV,,408378
+57,2026-06-25,Japan,Sweden,70137,2,Asistente,David Jonathan Morán Santos,David MORAN,SLV,,360681
+57,2026-06-25,Japan,Sweden,70137,3,Asistente,Henri Antonio Pupiro Esquivel,Antonio PUPIRO,NCA,,373119
+57,2026-06-25,Japan,Sweden,70137,4,4to,Dahane BEIDA,Dahane BEIDA,MTN,,408591
+57,2026-06-25,Japan,Sweden,70137,5,VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+57,2026-06-25,Japan,Sweden,70137,6,Reserva,Jerson DOS SANTOS,Jerson SANTOS,ANG,,302677
+57,2026-06-25,Japan,Sweden,70137,8,Asistente VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+57,2026-06-25,Japan,Sweden,70137,9,Support VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+60,2026-06-26,Paraguay,Australia,68827,1,Principal,Clément Turpin,Clement TURPIN,FRA,France,314589
+60,2026-06-26,Paraguay,Australia,68827,2,Asistente,Nicolas Danos,Nicolas DANOS,FRA,France,361836
+60,2026-06-26,Paraguay,Australia,68827,3,Asistente,Benjamin Pages,Benjamin PAGES,FRA,France,408612
+60,2026-06-26,Paraguay,Australia,68827,4,4to,Oshane Nation,Oshane NATION,JAM,,408303
+60,2026-06-26,Paraguay,Australia,68827,5,VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+60,2026-06-26,Paraguay,Australia,68827,6,Reserva,Caleb Wales,Caleb WALES,TRI,,360677
+60,2026-06-26,Paraguay,Australia,68827,8,Asistente VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+60,2026-06-26,Paraguay,Australia,68827,9,Support VAR,Hamza EL FARIQ,Hamza EL FARIQ,MAR,Morocco,428822
+59,2026-06-26,Türkiye,USA,70492,1,Principal,Mustapha Ghorbal,Mustapha GHORBAL,ALG,Algeria,375306
+59,2026-06-26,Türkiye,USA,70492,2,Asistente,Mokrane Gourari,Mokrane GOURARI,ALG,Algeria,375314
+59,2026-06-26,Türkiye,USA,70492,3,Asistente,Abbes Zerhouni,Abbes Akram ZERHOUNI,ALG,Algeria,400115
+59,2026-06-26,Türkiye,USA,70492,4,4to,Omar Mohamed Al Ali,Omar ALALI,UAE,,383421
+59,2026-06-26,Türkiye,USA,70492,5,VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+59,2026-06-26,Türkiye,USA,70492,6,Reserva,Mohamed AL HAMMADI,Mohamed ALHAMMADI,UAE,,348536
+59,2026-06-26,Türkiye,USA,70492,8,Asistente VAR,Mahmoud Mohamed Ashour,Mahmoud ASHOUR,EGY,Egypt,327641
+59,2026-06-26,Türkiye,USA,70492,9,Support VAR,Juan Lara,Juan LARA,CHI,,428539
+62,2026-06-26,Senegal,Iraq,43036,1,Principal,Anthony Taylor,Anthony TAYLOR,ENG,England,360460
+62,2026-06-26,Senegal,Iraq,43036,2,Asistente,Gary Beswick,Gary BESWICK,ENG,England,378788
+62,2026-06-26,Senegal,Iraq,43036,3,Asistente,Adam Nunn,Adam NUNN,ENG,England,400069
+62,2026-06-26,Senegal,Iraq,43036,4,4to,Khalid Saleh Alturais,Khalid ALTURAIS,KSA,Saudi Arabia,392293
+62,2026-06-26,Senegal,Iraq,43036,5,VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+62,2026-06-26,Senegal,Iraq,43036,6,Reserva,Mohammed Maki Al Abakry,Mohammed ALABAKRY,KSA,Saudi Arabia,373831
+62,2026-06-26,Senegal,Iraq,43036,8,Asistente VAR,Fedayi San,Fedayi SAN,SUI,Switzerland,378759
+62,2026-06-26,Senegal,Iraq,43036,9,Support VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+61,2026-06-26,Norway,France,64146,1,Principal,Michael Oliver,Michael OLIVER,ENG,England,347710
+61,2026-06-26,Norway,France,64146,2,Asistente,Stuart Burt,Stuart BURT,ENG,England,327555
+61,2026-06-26,Norway,France,64146,3,Asistente,James MAINWARING,James MAINWARING,ENG,England,407736
+61,2026-06-26,Norway,France,64146,4,4to,Ning Ma,MA Ning,CHN,,328495
+61,2026-06-26,Norway,France,64146,5,VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+61,2026-06-26,Norway,France,64146,6,Reserva,Fei Zhou,ZHOU Fei,CHN,,383331
+61,2026-06-26,Norway,France,64146,8,Asistente VAR,Bram Van Driessche,Bram VAN DRIESSCHE,BEL,Belgium,417087
+61,2026-06-26,Norway,France,64146,9,Support VAR,Abdullah ALSHEHRI,Abdullah ALSHEHRI,KSA,Saudi Arabia,436278
+66,2026-06-27,Uruguay,Spain,45065,1,Principal,Ismail Elfath,Ismail ELFATH,USA,USA,392406
+66,2026-06-27,Uruguay,Spain,45065,2,Asistente,Corey Parker,Corey PARKER,USA,USA,383462
+66,2026-06-27,Uruguay,Spain,45065,3,Asistente,Kyle Atkins,Kyle ATKINS,USA,USA,408396
+66,2026-06-27,Uruguay,Spain,45065,4,4to,Juan Gabriel Calderón Perez,Juan CALDERON,CRC,,400250
+66,2026-06-27,Uruguay,Spain,45065,5,VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+66,2026-06-27,Uruguay,Spain,45065,6,Reserva,Juan Carlos Mora,Juan Carlos MORA,CRC,,383469
+66,2026-06-27,Uruguay,Spain,45065,8,Asistente VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+66,2026-06-27,Uruguay,Spain,45065,9,Support VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+65,2026-06-27,Cape Verde,Saudi Arabia,68278,1,Principal,François Letexier,Francois LETEXIER,FRA,France,399029
+65,2026-06-27,Cape Verde,Saudi Arabia,68278,2,Asistente,Cyril Mugnier,Cyril MUGNIER,FRA,France,401107
+65,2026-06-27,Cape Verde,Saudi Arabia,68278,3,Asistente,Mehdi Rahmouni,Mehdi RAHMOUNI,FRA,France,408615
+65,2026-06-27,Cape Verde,Saudi Arabia,68278,4,4to,Abongile TOM,Abongile TOM,RSA,South Africa,425145
+65,2026-06-27,Cape Verde,Saudi Arabia,68278,5,VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+65,2026-06-27,Cape Verde,Saudi Arabia,68278,6,Reserva,Zakhele SIWELA,Zakhele SIWELA,RSA,South Africa,316321
+65,2026-06-27,Cape Verde,Saudi Arabia,68278,8,Asistente VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+65,2026-06-27,Cape Verde,Saudi Arabia,68278,9,Support VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+64,2026-06-27,New Zealand,Belgium,52497,1,Principal,Adham Mohammad Tumah Makhadmeh,Adham MAKHADMEH,JOR,Jordan,361034
+64,2026-06-27,New Zealand,Belgium,52497,2,Asistente,Mohammad ALKALAF,Mohammad ALKALAF,JOR,Jordan,327165
+64,2026-06-27,New Zealand,Belgium,52497,3,Asistente,Ahmad ALROALLE,Ahmad ALROALLE,JOR,Jordan,314242
+64,2026-06-27,New Zealand,Belgium,52497,4,4to,Kevin Ortega,Kevin ORTEGA,PER,,416161
+64,2026-06-27,New Zealand,Belgium,52497,5,VAR,Juan SOTO,Juan SOTO,VEN,,221377
+64,2026-06-27,New Zealand,Belgium,52497,6,Reserva,Michael Orué,Michael ORUE,PER,,374831
+64,2026-06-27,New Zealand,Belgium,52497,8,Asistente VAR,Erick MIRANDA,Erick MIRANDA,MEX,Mexico,392188
+64,2026-06-27,New Zealand,Belgium,52497,9,Support VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+63,2026-06-27,Egypt,IR Iran,66925,1,Principal,Szymon MARCINIAK,Szymon MARCINIAK,POL,,327975
+63,2026-06-27,Egypt,IR Iran,66925,2,Asistente,Tomasz LISTKIEWICZ,Tomasz LISTKIEWICZ,POL,,327977
+63,2026-06-27,Egypt,IR Iran,66925,3,Asistente,Adam Kupsik,Adam KUPSIK,POL,,425192
+63,2026-06-27,Egypt,IR Iran,66925,4,4to,Yusuke Araki,Yusuke ARAKI,JPN,Japan,400040
+63,2026-06-27,Egypt,IR Iran,66925,5,VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+63,2026-06-27,Egypt,IR Iran,66925,6,Reserva,Jun MIHARA,Jun MIHARA,JPN,Japan,400157
+63,2026-06-27,Egypt,IR Iran,66925,8,Asistente VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+63,2026-06-27,Egypt,IR Iran,66925,9,Support VAR,Shaun EVANS,Shaun EVANS,AUS,Australia,400266
+67,2026-06-27,Panama,England,80663,1,Principal,Abdulrahman AL JASSIM,Abdulrahman ALJASSIM,QAT,Qatar,361083
+67,2026-06-27,Panama,England,80663,2,Asistente,Taleb AL MARRI,Taleb ALMARRI,QAT,Qatar,349025
+67,2026-06-27,Panama,England,80663,3,Asistente,Saoud AL MAQALEH,Saoud ALMAQALEH,QAT,Qatar,374031
+67,2026-06-27,Panama,England,80663,4,4to,Sandro Schärer,Sandro SCHAERER,SUI,Switzerland,383265
+67,2026-06-27,Panama,England,80663,5,VAR,Juan Lara,Juan LARA,CHI,,428539
+67,2026-06-27,Panama,England,80663,6,Reserva,Stéphane De Almeida,Stephane DE ALMEIDA,SUI,Switzerland,383264
+67,2026-06-27,Panama,England,80663,8,Asistente VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+67,2026-06-27,Panama,England,80663,9,Support VAR,Abdullah ALSHEHRI,Abdullah ALSHEHRI,KSA,Saudi Arabia,436278
+68,2026-06-27,Croatia,Ghana,68324,1,Principal,Drew Fischer,Drew FISCHER,CAN,Canada,372930
+68,2026-06-27,Croatia,Ghana,68324,2,Asistente,Micheal BARWEGEN,Micheal BARWEGEN,CAN,Canada,408505
+68,2026-06-27,Croatia,Ghana,68324,3,Asistente,Lyes ARFA,Lyes ARFA,CAN,Canada,425172
+68,2026-06-27,Croatia,Ghana,68324,4,4to,Campbell-Kirk Waugh,Campbell-Kirk KAWANA-WAUGH,NZL,New Zealand,408438
+68,2026-06-27,Croatia,Ghana,68324,5,VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+68,2026-06-27,Croatia,Ghana,68324,6,Reserva,Isaac Trevis,Isaac TREVIS,NZL,New Zealand,400287
+68,2026-06-27,Croatia,Ghana,68324,8,Asistente VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+68,2026-06-27,Croatia,Ghana,68324,9,Support VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+72,2026-06-27,Congo DR,Uzbekistan,68239,1,Principal,Felix Zwayer,Felix ZWAYER,GER,Germany,348147
+72,2026-06-27,Congo DR,Uzbekistan,68239,2,Asistente,Robert KEMPTER,Robert KEMPTER,GER,Germany,435941
+72,2026-06-27,Congo DR,Uzbekistan,68239,3,Asistente,Christian Dietz,Christian DIETZ,GER,Germany,428266
+72,2026-06-27,Congo DR,Uzbekistan,68239,4,4to,Alejandro HERNANDEZ,Alejandro HERNANDEZ,ESP,Spain,373845
+72,2026-06-27,Congo DR,Uzbekistan,68239,5,VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+72,2026-06-27,Congo DR,Uzbekistan,68239,6,Reserva,Diego SANCHEZ,Diego SANCHEZ,ESP,Spain,447210
+72,2026-06-27,Congo DR,Uzbekistan,68239,8,Asistente VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+72,2026-06-27,Congo DR,Uzbekistan,68239,9,Support VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+71,2026-06-27,Colombia,Portugal,64478,1,Principal,Alireza FAGHANI,Alireza FAGHANI,AUS,Australia,283448
+71,2026-06-27,Colombia,Portugal,64478,2,Asistente,George Lakrindis,George LAKRINDIS,AUS,Australia,391848
+71,2026-06-27,Colombia,Portugal,64478,3,Asistente,James Andrew LINDSAY,Andrew LINDSAY,AUS,Australia,416197
+71,2026-06-27,Colombia,Portugal,64478,4,4to,Said MARTINEZ,Said MARTINEZ,HON,,400191
+71,2026-06-27,Colombia,Portugal,64478,5,VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+71,2026-06-27,Colombia,Portugal,64478,6,Reserva,Walter LOPEZ,Walter LOPEZ,HON,,361341
+71,2026-06-27,Colombia,Portugal,64478,8,Asistente VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+71,2026-06-27,Colombia,Portugal,64478,9,Support VAR,Mahmoud Mohamed Ashour,Mahmoud ASHOUR,EGY,Egypt,327641
+69,2026-06-28,Algeria,Austria,69045,1,Principal,Ilgiz Tantashev,Ilgiz TANTASHEV,UZB,Uzbekistan,360687
+69,2026-06-28,Algeria,Austria,69045,2,Asistente,Andrey Tsapenko,Andrey TSAPENKO,UZB,Uzbekistan,348253
+69,2026-06-28,Algeria,Austria,69045,3,Asistente,Timur Gaynulin,Timur GAYNULLIN,UZB,Uzbekistan,374281
+69,2026-06-28,Algeria,Austria,69045,4,4to,Katia Itzel García,Katia GARCIA,MEX,Mexico,416317
+69,2026-06-28,Algeria,Austria,69045,5,VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+69,2026-06-28,Algeria,Austria,69045,6,Reserva,Sandra RAMIREZ,Sandra RAMIREZ,MEX,Mexico,416319
+69,2026-06-28,Algeria,Austria,69045,8,Asistente VAR,Shaun EVANS,Shaun EVANS,AUS,Australia,400266
+69,2026-06-28,Algeria,Austria,69045,9,Support VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+70,2026-06-28,Jordan,Argentina,70649,1,Principal,Istvan Kovacs,Istvan KOVACS,ROU,,314605
+70,2026-06-28,Jordan,Argentina,70649,2,Asistente,Mihai MARICA,Mihai MARICA,ROU,,435713
+70,2026-06-28,Jordan,Argentina,70649,3,Asistente,Ferencz TUNYOGI,Ferencz TUNYOGI,ROU,,447272
+70,2026-06-28,Jordan,Argentina,70649,4,4to,Dahane BEIDA,Dahane BEIDA,MTN,,408591
+70,2026-06-28,Jordan,Argentina,70649,5,VAR,Bram Van Driessche,Bram VAN DRIESSCHE,BEL,Belgium,417087
+70,2026-06-28,Jordan,Argentina,70649,6,Reserva,Jerson DOS SANTOS,Jerson SANTOS,ANG,,302677
+70,2026-06-28,Jordan,Argentina,70649,8,Asistente VAR,Fedayi San,Fedayi SAN,SUI,Switzerland,378759
+70,2026-06-28,Jordan,Argentina,70649,9,Support VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+73,2026-06-28,South Africa,Canada,69237,1,Principal,João Pedro Silva Pinheiro,Joao PINHEIRO,POR,Portugal,392268
+73,2026-06-28,South Africa,Canada,69237,2,Asistente,Bruno Miguel Alves Jesus,Bruno JESUS,POR,Portugal,425445
+73,2026-06-28,South Africa,Canada,69237,3,Asistente,Luciano MAIA,Luciano MAIA,POR,Portugal,447216
+73,2026-06-28,South Africa,Canada,69237,4,4to,Omar Mohamed Al Ali,Omar ALALI,UAE,,383421
+73,2026-06-28,South Africa,Canada,69237,5,VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+73,2026-06-28,South Africa,Canada,69237,6,Reserva,Mohamed AL HAMMADI,Mohamed ALHAMMADI,UAE,,348536
+73,2026-06-28,South Africa,Canada,69237,8,Asistente VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+73,2026-06-28,South Africa,Canada,69237,9,Support VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+76,2026-06-29,Brazil,Japan,68777,1,Principal,Maurizio Mariani,Maurizio MARIANI,ITA,,415965
+76,2026-06-29,Brazil,Japan,68777,2,Asistente,Daniele Bindoni,Daniele BINDONI,ITA,,428275
+76,2026-06-29,Brazil,Japan,68777,3,Asistente,Alberto Tegoni,Alberto TEGONI,ITA,,415969
+76,2026-06-29,Brazil,Japan,68777,4,4to,Sandro Schärer,Sandro SCHAERER,SUI,Switzerland,383265
+76,2026-06-29,Brazil,Japan,68777,5,VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+76,2026-06-29,Brazil,Japan,68777,6,Reserva,Stéphane De Almeida,Stephane DE ALMEIDA,SUI,Switzerland,383264
+76,2026-06-29,Brazil,Japan,68777,8,Asistente VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+76,2026-06-29,Brazil,Japan,68777,9,Support VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+74,2026-06-29,Germany,Paraguay,63945,1,Principal,Jalal Jayed,Jalal JAYED,MAR,Morocco,416524
+74,2026-06-29,Germany,Paraguay,63945,2,Asistente,Zakaria Brinsi,Zakaria BRINSI,MAR,Morocco,416532
+74,2026-06-29,Germany,Paraguay,63945,3,Asistente,Mostafa Akarkad,Mostafa AKARKAD,MAR,Morocco,408335
+74,2026-06-29,Germany,Paraguay,63945,4,4to,Ning Ma,MA Ning,CHN,,328495
+74,2026-06-29,Germany,Paraguay,63945,5,VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+74,2026-06-29,Germany,Paraguay,63945,6,Reserva,Fei Zhou,ZHOU Fei,CHN,,383331
+74,2026-06-29,Germany,Paraguay,63945,8,Asistente VAR,Hamza EL FARIQ,Hamza EL FARIQ,MAR,Morocco,428822
+74,2026-06-29,Germany,Paraguay,63945,9,Support VAR,Abdullah ALSHEHRI,Abdullah ALSHEHRI,KSA,Saudi Arabia,436278
+75,2026-06-30,Netherlands,Morocco,51243,1,Principal,Wilton SAMPAIO,Wilton SAMPAIO,BRA,Brazil,361561
+75,2026-06-30,Netherlands,Morocco,51243,2,Asistente,Bruno PIRES,Bruno PIRES,BRA,Brazil,391903
+75,2026-06-30,Netherlands,Morocco,51243,3,Asistente,Bruno Boschilia,Bruno BOSCHILIA,BRA,Brazil,374168
+75,2026-06-30,Netherlands,Morocco,51243,4,4to,Cristián Marcelo Garay Reyes,Cristian GARAY,CHI,,416177
+75,2026-06-30,Netherlands,Morocco,51243,5,VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+75,2026-06-30,Netherlands,Morocco,51243,6,Reserva,José Francisco Retamal Silva,Jose RETAMAL,CHI,,383452
+75,2026-06-30,Netherlands,Morocco,51243,8,Asistente VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+75,2026-06-30,Netherlands,Morocco,51243,9,Support VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+78,2026-06-30,Ivory Coast,Norway,69665,1,Principal,Jesús Valenzuela Sáez,Jesus VALENZUELA,VEN,,360305
+78,2026-06-30,Ivory Coast,Norway,69665,2,Asistente,Jorge Urrego Martínez,Jorge URREGO,VEN,,262055
+78,2026-06-30,Ivory Coast,Norway,69665,3,Asistente,Tulio Moreno,Tulio MORENO,VEN,,349171
+78,2026-06-30,Ivory Coast,Norway,69665,4,4to,Juan Gabriel Benítez,Juan Gabriel BENITEZ,PAR,Paraguay,416159
+78,2026-06-30,Ivory Coast,Norway,69665,5,VAR,Juan Lara,Juan LARA,CHI,,428539
+78,2026-06-30,Ivory Coast,Norway,69665,6,Reserva,Eduardo Cardozo,Eduardo CARDOZO,PAR,Paraguay,360921
+78,2026-06-30,Ivory Coast,Norway,69665,8,Asistente VAR,Juan SOTO,Juan SOTO,VEN,,221377
+78,2026-06-30,Ivory Coast,Norway,69665,9,Support VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+77,2026-06-30,France,Sweden,80663,1,Principal,Danny Desmond Makkelie,Danny MAKKELIE,NED,Netherlands,327159
+77,2026-06-30,France,Sweden,80663,2,Asistente,Hessel Steegstra,Hessel STEEGSTRA,NED,Netherlands,363986
+77,2026-06-30,France,Sweden,80663,3,Asistente,Jan de Vries,Jan DE VRIES,NED,Netherlands,400210
+77,2026-06-30,France,Sweden,80663,4,4to,Tori Penso,Tori PENSO,USA,USA,428431
+77,2026-06-30,France,Sweden,80663,5,VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+77,2026-06-30,France,Sweden,80663,6,Reserva,Brooke Mayo,Brooke MAYO,USA,USA,408398
+77,2026-06-30,France,Sweden,80663,8,Asistente VAR,Bram Van Driessche,Bram VAN DRIESSCHE,BEL,Belgium,417087
+77,2026-06-30,France,Sweden,80663,9,Support VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+79,2026-07-01,Mexico,Ecuador,80824,1,Principal,Slavko VINCIC,Slavko VINCIC,SVN,,315008
+79,2026-07-01,Mexico,Ecuador,80824,2,Asistente,Tomaz KLANCNIK,Tomaz KLANCNIK,SVN,,374790
+79,2026-07-01,Mexico,Ecuador,80824,3,Asistente,Andraz KOVACIC,Andraz KOVACIC,SVN,,383670
+79,2026-07-01,Mexico,Ecuador,80824,4,4to,Mustapha Ghorbal,Mustapha GHORBAL,ALG,Algeria,375306
+79,2026-07-01,Mexico,Ecuador,80824,5,VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+79,2026-07-01,Mexico,Ecuador,80824,6,Reserva,Mokrane Gourari,Mokrane GOURARI,ALG,Algeria,375314
+79,2026-07-01,Mexico,Ecuador,80824,8,Asistente VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+79,2026-07-01,Mexico,Ecuador,80824,9,Support VAR,Mahmoud Mohamed Ashour,Mahmoud ASHOUR,EGY,Egypt,327641
+80,2026-07-01,England,Congo DR,68239,1,Principal,Adham Mohammad Tumah Makhadmeh,Adham MAKHADMEH,JOR,Jordan,361034
+80,2026-07-01,England,Congo DR,68239,2,Asistente,Mohammad ALKALAF,Mohammad ALKALAF,JOR,Jordan,327165
+80,2026-07-01,England,Congo DR,68239,3,Asistente,Ahmad ALROALLE,Ahmad ALROALLE,JOR,Jordan,314242
+80,2026-07-01,England,Congo DR,68239,4,4to,Khalid Saleh Alturais,Khalid ALTURAIS,KSA,Saudi Arabia,392293
+80,2026-07-01,England,Congo DR,68239,5,VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+80,2026-07-01,England,Congo DR,68239,6,Reserva,Mohammed Maki Al Abakry,Mohammed ALABAKRY,KSA,Saudi Arabia,373831
+80,2026-07-01,England,Congo DR,68239,8,Asistente VAR,Mohammed Obaid KHADIM,Mohammed Obaid KHADIM,UAE,,428512
+80,2026-07-01,England,Congo DR,68239,9,Support VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+82,2026-07-01,Belgium,Senegal,66925,1,Principal,Said MARTINEZ,Said MARTINEZ,HON,,400191
+82,2026-07-01,Belgium,Senegal,66925,2,Asistente,Walter LOPEZ,Walter LOPEZ,HON,,361341
+82,2026-07-01,Belgium,Senegal,66925,3,Asistente,Christian RAMIREZ,Christian RAMIREZ,HON,,348332
+82,2026-07-01,Belgium,Senegal,66925,4,4to,Andrés José Rojas Noguera,Andres ROJAS,COL,Colombia,400324
+82,2026-07-01,Belgium,Senegal,66925,5,VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+82,2026-07-01,Belgium,Senegal,66925,6,Reserva,Alexander Guzmán Bonilla,Alexander GUZMAN,COL,Colombia,349161
+82,2026-07-01,Belgium,Senegal,66925,8,Asistente VAR,Rodolpho Toski Marques,Rodolpho TOSKI,BRA,Brazil,400013
+82,2026-07-01,Belgium,Senegal,66925,9,Support VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+81,2026-07-02,USA,Bosnia and Herzegovina,68827,1,Principal,Raphael Claus,Raphael CLAUS,BRA,Brazil,383222
+81,2026-07-02,USA,Bosnia and Herzegovina,68827,2,Asistente,Danilo SIMON,Danilo MANIS,BRA,Brazil,400042
+81,2026-07-02,USA,Bosnia and Herzegovina,68827,3,Asistente,Rodrigo FIGUEIREDO,Rodrigo FIGUEIREDO,BRA,Brazil,361589
+81,2026-07-02,USA,Bosnia and Herzegovina,68827,4,4to,Darío Herrera,Dario HERRERA,ARG,Argentina,383174
+81,2026-07-02,USA,Bosnia and Herzegovina,68827,5,VAR,Juan SOTO,Juan SOTO,VEN,,221377
+81,2026-07-02,USA,Bosnia and Herzegovina,68827,6,Reserva,Cristian Navarro,Cristian NAVARRO,ARG,Argentina,374187
+81,2026-07-02,USA,Bosnia and Herzegovina,68827,8,Asistente VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+81,2026-07-02,USA,Bosnia and Herzegovina,68827,9,Support VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+84,2026-07-02,Spain,Austria,70492,1,Principal,Glenn Nyberg,Glenn NYBERG,SWE,Sweden,392336
+84,2026-07-02,Spain,Austria,70492,2,Asistente,Mahbod Beigi,Mahbod BEIGI,SWE,Sweden,415979
+84,2026-07-02,Spain,Austria,70492,3,Asistente,Andreas Söderkvist,Andreas SODERKVIST,SWE,Sweden,415978
+84,2026-07-02,Spain,Austria,70492,4,4to,Dahane BEIDA,Dahane BEIDA,MTN,,408591
+84,2026-07-02,Spain,Austria,70492,5,VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+84,2026-07-02,Spain,Austria,70492,6,Reserva,Elvis NOUPUE,Elvis NOUPUE,CMR,,240345
+84,2026-07-02,Spain,Austria,70492,8,Asistente VAR,Fedayi San,Fedayi SAN,SUI,Switzerland,378759
+84,2026-07-02,Spain,Austria,70492,9,Support VAR,Shaun EVANS,Shaun EVANS,AUS,Australia,400266
+83,2026-07-02,Portugal,Croatia,43036,1,Principal,Espen Eskås,Espen ESKAS,NOR,Norway,400227
+83,2026-07-02,Portugal,Croatia,43036,2,Asistente,Jan Erik Engan,Jan Erik ENGAN,NOR,Norway,348661
+83,2026-07-02,Portugal,Croatia,43036,3,Asistente,Isaak Elias S. BASHEVKIN,Isaak BASHEVKIN,NOR,Norway,408225
+83,2026-07-02,Portugal,Croatia,43036,4,4to,Abongile TOM,Abongile TOM,RSA,South Africa,425145
+83,2026-07-02,Portugal,Croatia,43036,5,VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+83,2026-07-02,Portugal,Croatia,43036,6,Reserva,Zakhele SIWELA,Zakhele SIWELA,RSA,South Africa,316321
+83,2026-07-02,Portugal,Croatia,43036,8,Asistente VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+83,2026-07-02,Portugal,Croatia,43036,9,Support VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+85,2026-07-03,Switzerland,Algeria,52497,1,Principal,Yael Falcón Pérez,Yael FALCON PEREZ,ARG,Argentina,434995
+85,2026-07-03,Switzerland,Algeria,52497,2,Asistente,Maximiliano Del Yesso,Maximiliano DEL YESSO,ARG,Argentina,408238
+85,2026-07-03,Switzerland,Algeria,52497,3,Asistente,Facundo Rodríguez,Facundo RODRIGUEZ,ARG,Argentina,424966
+85,2026-07-03,Switzerland,Algeria,52497,4,4to,Kevin Ortega,Kevin ORTEGA,PER,,416161
+85,2026-07-03,Switzerland,Algeria,52497,5,VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+85,2026-07-03,Switzerland,Algeria,52497,6,Reserva,Michael Orué,Michael ORUE,PER,,374831
+85,2026-07-03,Switzerland,Algeria,52497,8,Asistente VAR,Erick MIRANDA,Erick MIRANDA,MEX,Mexico,392188
+85,2026-07-03,Switzerland,Algeria,52497,9,Support VAR,Juan Lara,Juan LARA,CHI,,428539
+88,2026-07-03,Australia,Egypt,70244,1,Principal,Gustavo Tejera,Gustavo TEJERA,URU,Uruguay,408669
+88,2026-07-03,Australia,Egypt,70244,2,Asistente,Carlos BARREIRO,Carlos BARREIRO,URU,Uruguay,408670
+88,2026-07-03,Australia,Egypt,70244,3,Asistente,Nicolás Taran,Nicolas TARAN,URU,Uruguay,348552
+88,2026-07-03,Australia,Egypt,70244,4,4to,Sandro Schärer,Sandro SCHAERER,SUI,Switzerland,383265
+88,2026-07-03,Australia,Egypt,70244,5,VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+88,2026-07-03,Australia,Egypt,70244,6,Reserva,Stéphane De Almeida,Stephane DE ALMEIDA,SUI,Switzerland,383264
+88,2026-07-03,Australia,Egypt,70244,8,Asistente VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+88,2026-07-03,Australia,Egypt,70244,9,Support VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+86,2026-07-03,Argentina,Cape Verde,64478,1,Principal,Drew Fischer,Drew FISCHER,CAN,Canada,372930
+86,2026-07-03,Argentina,Cape Verde,64478,2,Asistente,Micheal BARWEGEN,Micheal BARWEGEN,CAN,Canada,408505
+86,2026-07-03,Argentina,Cape Verde,64478,3,Asistente,Lyes ARFA,Lyes ARFA,CAN,Canada,425172
+86,2026-07-03,Argentina,Cape Verde,64478,4,4to,Katia Itzel García,Katia GARCIA,MEX,Mexico,416317
+86,2026-07-03,Argentina,Cape Verde,64478,5,VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+86,2026-07-03,Argentina,Cape Verde,64478,6,Reserva,Sandra RAMIREZ,Sandra RAMIREZ,MEX,Mexico,416319
+86,2026-07-03,Argentina,Cape Verde,64478,8,Asistente VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+86,2026-07-03,Argentina,Cape Verde,64478,9,Support VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+87,2026-07-04,Colombia,Ghana,69045,1,Principal,Clément Turpin,Clement TURPIN,FRA,France,314589
+87,2026-07-04,Colombia,Ghana,69045,2,Asistente,Nicolas Danos,Nicolas DANOS,FRA,France,361836
+87,2026-07-04,Colombia,Ghana,69045,3,Asistente,Benjamin Pages,Benjamin PAGES,FRA,France,408612
+87,2026-07-04,Colombia,Ghana,69045,4,4to,Alejandro HERNANDEZ,Alejandro HERNANDEZ,ESP,Spain,373845
+87,2026-07-04,Colombia,Ghana,69045,5,VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+87,2026-07-04,Colombia,Ghana,69045,6,Reserva,José Enrique Naranjo Pérez,Jose Enrique NARANJO,ESP,Spain,425311
+87,2026-07-04,Colombia,Ghana,69045,8,Asistente VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+87,2026-07-04,Colombia,Ghana,69045,9,Support VAR,Ming Fu,FU Ming,CHN,,374457
+90,2026-07-04,Canada,Morocco,68777,1,Principal,Michael Oliver,Michael OLIVER,ENG,England,347710
+90,2026-07-04,Canada,Morocco,68777,2,Asistente,Stuart Burt,Stuart BURT,ENG,England,327555
+90,2026-07-04,Canada,Morocco,68777,3,Asistente,James MAINWARING,James MAINWARING,ENG,England,407736
+90,2026-07-04,Canada,Morocco,68777,4,4to,Danny Desmond Makkelie,Danny MAKKELIE,NED,Netherlands,327159
+90,2026-07-04,Canada,Morocco,68777,5,VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+90,2026-07-04,Canada,Morocco,68777,6,Reserva,Hessel Steegstra,Hessel STEEGSTRA,NED,Netherlands,363986
+90,2026-07-04,Canada,Morocco,68777,8,Asistente VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+90,2026-07-04,Canada,Morocco,68777,9,Support VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+89,2026-07-04,Paraguay,France,68324,1,Principal,Ilgiz Tantashev,Ilgiz TANTASHEV,UZB,Uzbekistan,360687
+89,2026-07-04,Paraguay,France,68324,2,Asistente,Andrey Tsapenko,Andrey TSAPENKO,UZB,Uzbekistan,348253
+89,2026-07-04,Paraguay,France,68324,3,Asistente,Timur Gaynulin,Timur GAYNULLIN,UZB,Uzbekistan,374281
+89,2026-07-04,Paraguay,France,68324,4,4to,Abdulrahman AL JASSIM,Abdulrahman ALJASSIM,QAT,Qatar,361083
+89,2026-07-04,Paraguay,France,68324,5,VAR,Juan Lara,Juan LARA,CHI,,428539
+89,2026-07-04,Paraguay,France,68324,6,Reserva,Taleb AL MARRI,Taleb ALMARRI,QAT,Qatar,349025
+89,2026-07-04,Paraguay,France,68324,8,Asistente VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+89,2026-07-04,Paraguay,France,68324,9,Support VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+91,2026-07-05,Brazil,Norway,80663,1,Principal,Ismail Elfath,Ismail ELFATH,USA,USA,392406
+91,2026-07-05,Brazil,Norway,80663,2,Asistente,Corey Parker,Corey PARKER,USA,USA,383462
+91,2026-07-05,Brazil,Norway,80663,3,Asistente,Kyle Atkins,Kyle ATKINS,USA,USA,408396
+91,2026-07-05,Brazil,Norway,80663,4,4to,Said MARTINEZ,Said MARTINEZ,HON,,400191
+91,2026-07-05,Brazil,Norway,80663,5,VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+91,2026-07-05,Brazil,Norway,80663,6,Reserva,Walter LOPEZ,Walter LOPEZ,HON,,361341
+91,2026-07-05,Brazil,Norway,80663,8,Asistente VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+91,2026-07-05,Brazil,Norway,80663,9,Support VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+92,2026-07-06,Mexico,England,80824,1,Principal,Alireza FAGHANI,Alireza FAGHANI,AUS,Australia,283448
+92,2026-07-06,Mexico,England,80824,2,Asistente,George Lakrindis,George LAKRINDIS,AUS,Australia,391848
+92,2026-07-06,Mexico,England,80824,3,Asistente,James Andrew LINDSAY,Andrew LINDSAY,AUS,Australia,416197
+92,2026-07-06,Mexico,England,80824,4,4to,Jalal Jayed,Jalal JAYED,MAR,Morocco,416524
+92,2026-07-06,Mexico,England,80824,5,VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+92,2026-07-06,Mexico,England,80824,6,Reserva,Zakaria Brinsi,Zakaria BRINSI,MAR,Morocco,416532
+92,2026-07-06,Mexico,England,80824,8,Asistente VAR,Juan Lara,Juan LARA,CHI,,428539
+92,2026-07-06,Mexico,England,80824,9,Support VAR,Juan SOTO,Juan SOTO,VEN,,221377
+93,2026-07-06,Portugal,Spain,70649,1,Principal,Anthony Taylor,Anthony TAYLOR,ENG,England,360460
+93,2026-07-06,Portugal,Spain,70649,2,Asistente,Gary Beswick,Gary BESWICK,ENG,England,378788
+93,2026-07-06,Portugal,Spain,70649,3,Asistente,Adam Nunn,Adam NUNN,ENG,England,400069
+93,2026-07-06,Portugal,Spain,70649,4,4to,Felix Zwayer,Felix ZWAYER,GER,Germany,348147
+93,2026-07-06,Portugal,Spain,70649,5,VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+93,2026-07-06,Portugal,Spain,70649,6,Reserva,Robert KEMPTER,Robert KEMPTER,GER,Germany,435941
+93,2026-07-06,Portugal,Spain,70649,8,Asistente VAR,Antonio GARCIA,Antonio GARCIA,URU,Uruguay,446925
+93,2026-07-06,Portugal,Spain,70649,9,Support VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+94,2026-07-07,USA,Belgium,66925,1,Principal,Adham Mohammad Tumah Makhadmeh,Adham MAKHADMEH,JOR,Jordan,361034
+94,2026-07-07,USA,Belgium,66925,2,Asistente,Mohammad ALKALAF,Mohammad ALKALAF,JOR,Jordan,327165
+94,2026-07-07,USA,Belgium,66925,3,Asistente,Ahmad ALROALLE,Ahmad ALROALLE,JOR,Jordan,314242
+94,2026-07-07,USA,Belgium,66925,4,4to,Pierre Ghislain Atcho,Pierre ATCHO,GAB,,408417
+94,2026-07-07,USA,Belgium,66925,5,VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190
+94,2026-07-07,USA,Belgium,66925,6,Reserva,Boris Marlaise Ditsoga,Boris DITSOGA,GAB,,416564
+94,2026-07-07,USA,Belgium,66925,8,Asistente VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+94,2026-07-07,USA,Belgium,66925,9,Support VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+95,2026-07-07,Argentina,Egypt,68239,1,Principal,François Letexier,Francois LETEXIER,FRA,France,399029
+95,2026-07-07,Argentina,Egypt,68239,2,Asistente,Cyril Mugnier,Cyril MUGNIER,FRA,France,401107
+95,2026-07-07,Argentina,Egypt,68239,3,Asistente,Mehdi Rahmouni,Mehdi RAHMOUNI,FRA,France,408615
+95,2026-07-07,Argentina,Egypt,68239,4,4to,Espen Eskås,Espen ESKAS,NOR,Norway,400227
+95,2026-07-07,Argentina,Egypt,68239,5,VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+95,2026-07-07,Argentina,Egypt,68239,6,Reserva,Isaak Elias S. BASHEVKIN,Isaak BASHEVKIN,NOR,Norway,408225
+95,2026-07-07,Argentina,Egypt,68239,8,Asistente VAR,Willy DELAJOD,Willy DELAJOD,FRA,France,425061
+95,2026-07-07,Argentina,Egypt,68239,9,Support VAR,Bram Van Driessche,Bram VAN DRIESSCHE,BEL,Belgium,417087
+96,2026-07-07,Switzerland,Colombia,52497,1,Principal,Ivan Arcides Barton Cisneros,Ivan BARTON,SLV,,408378
+96,2026-07-07,Switzerland,Colombia,52497,2,Asistente,David Jonathan Morán Santos,David MORAN,SLV,,360681
+96,2026-07-07,Switzerland,Colombia,52497,3,Asistente,Henri Antonio Pupiro Esquivel,Antonio PUPIRO,NCA,,373119
+96,2026-07-07,Switzerland,Colombia,52497,4,4to,Katia Itzel García,Katia GARCIA,MEX,Mexico,416317
+96,2026-07-07,Switzerland,Colombia,52497,5,VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+96,2026-07-07,Switzerland,Colombia,52497,6,Reserva,Sandra RAMIREZ,Sandra RAMIREZ,MEX,Mexico,416319
+96,2026-07-07,Switzerland,Colombia,52497,8,Asistente VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+96,2026-07-07,Switzerland,Colombia,52497,9,Support VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+97,2026-07-09,France,Morocco,63811,1,Principal,Facundo TELLO,Facundo TELLO,ARG,Argentina,416165
+97,2026-07-09,France,Morocco,63811,2,Asistente,Juan Pablo Belatti,Juan Pablo BELATTI,ARG,Argentina,328260
+97,2026-07-09,France,Morocco,63811,3,Asistente,Gabriel CHADE,Gabriel CHADE,ARG,Argentina,391866
+97,2026-07-09,France,Morocco,63811,4,4to,Darío Herrera,Dario HERRERA,ARG,Argentina,383174
+97,2026-07-09,France,Morocco,63811,5,VAR,Hernán Mastrángelo,Hernan MASTRANGELO,ARG,Argentina,434969
+97,2026-07-09,France,Morocco,63811,6,Reserva,Cristian Navarro,Cristian NAVARRO,ARG,Argentina,374187
+97,2026-07-09,France,Morocco,63811,8,Asistente VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+97,2026-07-09,France,Morocco,63811,9,Support VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+98,2026-07-10,Spain,Belgium,70492,1,Principal,Michael Oliver,Michael OLIVER,ENG,England,347710
+98,2026-07-10,Spain,Belgium,70492,2,Asistente,Stuart Burt,Stuart BURT,ENG,England,327555
+98,2026-07-10,Spain,Belgium,70492,3,Asistente,James MAINWARING,James MAINWARING,ENG,England,407736
+98,2026-07-10,Spain,Belgium,70492,4,4to,Ramon ABATTI,Ramon ABATTI,BRA,Brazil,446932
+98,2026-07-10,Spain,Belgium,70492,5,VAR,Jarred Gillett,Jarred GILLETT,ENG,England,359472
+98,2026-07-10,Spain,Belgium,70492,6,Reserva,Rafael da Silva Alves,Rafael ALVES,BRA,Brazil,424921
+98,2026-07-10,Spain,Belgium,70492,8,Asistente VAR,Ivan Bebek,Ivan BEBEK,CRO,Croatia,196025
+98,2026-07-10,Spain,Belgium,70492,9,Support VAR,Joseph Dickerson,Joe DICKERSON,USA,USA,434155
+99,2026-07-11,Norway,England,64478,1,Principal,Clément Turpin,Clement TURPIN,FRA,France,314589
+99,2026-07-11,Norway,England,64478,2,Asistente,Nicolas Danos,Nicolas DANOS,FRA,France,361836
+99,2026-07-11,Norway,England,64478,3,Asistente,Benjamin Pages,Benjamin PAGES,FRA,France,408612
+99,2026-07-11,Norway,England,64478,4,4to,Alejandro HERNANDEZ,Alejandro HERNANDEZ,ESP,Spain,373845
+99,2026-07-11,Norway,England,64478,5,VAR,Jerome BRISARD,Jerome BRISARD,FRA,France,408611
+99,2026-07-11,Norway,England,64478,6,Reserva,José Enrique Naranjo Pérez,Jose Enrique NARANJO,ESP,Spain,425311
+99,2026-07-11,Norway,England,64478,8,Asistente VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+99,2026-07-11,Norway,England,64478,9,Support VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+100,2026-07-12,Argentina,Switzerland,69045,1,Principal,João Pedro Silva Pinheiro,Joao PINHEIRO,POR,Portugal,392268
+100,2026-07-12,Argentina,Switzerland,69045,2,Asistente,Bruno Miguel Alves Jesus,Bruno JESUS,POR,Portugal,425445
+100,2026-07-12,Argentina,Switzerland,69045,3,Asistente,Luciano MAIA,Luciano MAIA,POR,Portugal,447216
+100,2026-07-12,Argentina,Switzerland,69045,4,4to,Drew Fischer,Drew FISCHER,CAN,Canada,372930
+100,2026-07-12,Argentina,Switzerland,69045,5,VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+100,2026-07-12,Argentina,Switzerland,69045,6,Reserva,Micheal BARWEGEN,Micheal BARWEGEN,CAN,Canada,408505
+100,2026-07-12,Argentina,Switzerland,69045,8,Asistente VAR,Juan Lara,Juan LARA,CHI,,428539
+100,2026-07-12,Argentina,Switzerland,69045,9,Support VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+101,2026-07-14,France,Spain,70176,1,Principal,Ivan Arcides Barton Cisneros,Ivan BARTON,SLV,,408378
+101,2026-07-14,France,Spain,70176,2,Asistente,David Jonathan Morán Santos,David MORAN,SLV,,360681
+101,2026-07-14,France,Spain,70176,3,Asistente,Henri Antonio Pupiro Esquivel,Antonio PUPIRO,NCA,,373119
+101,2026-07-14,France,Spain,70176,4,4to,Glenn Nyberg,Glenn NYBERG,SWE,Sweden,392336
+101,2026-07-14,France,Spain,70176,5,VAR,Tomasz KWIATKOWSKI,Tomasz KWIATKOWSKI,POL,,428417
+101,2026-07-14,France,Spain,70176,6,Reserva,Mahbod Beigi,Mahbod BEIGI,SWE,Sweden,415979
+101,2026-07-14,France,Spain,70176,8,Asistente VAR,Dennis Johan Higler,Dennis HIGLER,NED,Netherlands,400325
+101,2026-07-14,France,Spain,70176,9,Support VAR,Guillermo PACHECO,Guillermo PACHECO,MEX,Mexico,446883
+102,2026-07-15,England,Argentina,68239,1,Principal,Ismail Elfath,Ismail ELFATH,USA,USA,392406
+102,2026-07-15,England,Argentina,68239,2,Asistente,Corey Parker,Corey PARKER,USA,USA,383462
+102,2026-07-15,England,Argentina,68239,3,Asistente,Kyle Atkins,Kyle ATKINS,USA,USA,408396
+102,2026-07-15,England,Argentina,68239,4,4to,Maurizio Mariani,Maurizio MARIANI,ITA,,415965
+102,2026-07-15,England,Argentina,68239,5,VAR,Marco Di Bello,Marco DI BELLO,ITA,,408210
+102,2026-07-15,England,Argentina,68239,6,Reserva,Daniele Bindoni,Daniele BINDONI,ITA,,428275
+102,2026-07-15,England,Argentina,68239,8,Asistente VAR,Juan Lara,Juan LARA,CHI,,428539
+102,2026-07-15,England,Argentina,68239,9,Support VAR,Tatiana GUZMAN,Tatiana GUZMAN,NCA,,373123
+103,2026-07-18,France,England,64478,1,Principal,Jesús Valenzuela Sáez,Jesus VALENZUELA,VEN,,360305
+103,2026-07-18,France,England,64478,2,Asistente,Jorge Urrego Martínez,Jorge URREGO,VEN,,262055
+103,2026-07-18,France,England,64478,3,Asistente,Tulio Moreno,Tulio MORENO,VEN,,349171
+103,2026-07-18,France,England,64478,4,4to,Jalal Jayed,Jalal JAYED,MAR,Morocco,416524
+103,2026-07-18,France,England,64478,5,VAR,Leodan GONZALEZ,Leodan GONZALEZ,URU,Uruguay,394562
+103,2026-07-18,France,England,64478,6,Reserva,Zakaria Brinsi,Zakaria BRINSI,MAR,Morocco,416532
+103,2026-07-18,France,England,64478,8,Asistente VAR,Armando Villarreal,Armando VILLARREAL,USA,USA,383463
+103,2026-07-18,France,England,64478,9,Support VAR,Carlos del Cerro Grande,Carlos DEL CERRO GRANDE,ESP,Spain,360808
+104,2026-07-19,Spain,Argentina,80663,1,Principal,Slavko VINCIC,Slavko VINCIC,SVN,,315008
+104,2026-07-19,Spain,Argentina,80663,2,Asistente,Tomaz KLANCNIK,Tomaz KLANCNIK,SVN,,374790
+104,2026-07-19,Spain,Argentina,80663,3,Asistente,Andraz KOVACIC,Andraz KOVACIC,SVN,,383670
+104,2026-07-19,Spain,Argentina,80663,4,4to,Adham Mohammad Tumah Makhadmeh,Adham MAKHADMEH,JOR,Jordan,361034
+104,2026-07-19,Spain,Argentina,80663,5,VAR,Bastian Dankert,Bastian DANKERT,GER,Germany,373388
+104,2026-07-19,Spain,Argentina,80663,6,Reserva,Mohammad ALKALAF,Mohammad ALKALAF,JOR,Jordan,327165
+104,2026-07-19,Spain,Argentina,80663,8,Asistente VAR,Nicolás Gallo Barragán,Nicolas GALLO,COL,Colombia,408580
+104,2026-07-19,Spain,Argentina,80663,9,Support VAR,Khamis AL MARRI,Khamis ALMARRI,QAT,Qatar,315190

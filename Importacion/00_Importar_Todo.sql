@@ -1,56 +1,76 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba Leandro.
--- Fecha: 13/11/2026.
+-- Fecha: 18/11/2026.
 -- Objetivo: Script maestro de importacion de la Entrega 6.
--- Ejecuta en orden: instalacion de la Entrega 5 + todos los importadores (01-19).
+-- Ejecuta en orden: instalacion de la Entrega 5 + todos los importadores (01-25).
 -- SSMS: activar Modo SQLCMD (Consulta -> Modo SQLCMD).
 -- Cada integrante debe revisar y ajustar las rutas de archivo en cada importador
 -- individual si su ruta de proyecto es diferente.
+--
+-- Orden de las cargas que dependen entre si:
+--   16 y 22 antes de 21 -> la tanda solo se carga si el marcador quedo empatado.
+--   15 antes de 24      -> el arbitraje FIFA completa la planilla sin duplicar al
+--                          arbitro principal que ya cargo la 15.
+--   11 antes de 25      -> la asistencia actualiza un partido del fixture.
+--   03 y 10 antes de 21 -> periodos y jugadores de la tanda.
 
-:setvar ScriptPath "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
+:setvar RutaTablas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
+:setvar RutaImportacion "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion"
 :ON ERROR EXIT
 
-:r $(ScriptPath)\00_Ejecutar_Todo.sql
+:r $(RutaTablas)\00_Ejecutar_Todo.sql
 GO
-:r $(ScriptPath)\01_Importacion_Carga_Grupos.sql
+:r $(RutaImportacion)\01_Importacion_Carga_Grupos.sql
 GO
-:r $(ScriptPath)\02_Importacion_Carga_Fases.sql
+:r $(RutaImportacion)\02_Importacion_Carga_Fases.sql
 GO
-:r $(ScriptPath)\03_Importacion_Carga_Periodos.sql
+:r $(RutaImportacion)\03_Importacion_Carga_Periodos.sql
 GO
-:r $(ScriptPath)\04_Importacion_Carga_Husos.sql
+:r $(RutaImportacion)\04_Importacion_Carga_Husos.sql
 GO
-:r $(ScriptPath)\05_Importacion_Carga_Idioma.sql
+:r $(RutaImportacion)\05_Importacion_Carga_Idioma.sql
 GO
-:r $(ScriptPath)\06_Importacion_Carga_Pais.sql
+:r $(RutaImportacion)\06_Importacion_Carga_Pais.sql
 GO
-:r $(ScriptPath)\06b_Importacion_Carga_Mundial.sql
+:r $(RutaImportacion)\06b_Importacion_Carga_Mundial.sql
 GO
-:r $(ScriptPath)\07_Importacion_Carga_Selecciones.sql
+:r $(RutaImportacion)\07_Importacion_Carga_Selecciones.sql
 GO
-:r $(ScriptPath)\08_Importacion_Carga_Sedes.sql
+:r $(RutaImportacion)\08_Importacion_Carga_Sedes.sql
 GO
-:r $(ScriptPath)\09_Importacion_Carga_Clubes.sql
+:r $(RutaImportacion)\09_Importacion_Carga_Clubes.sql
 GO
-:r $(ScriptPath)\10_Importacion_Carga_Jugadores.sql
+:r $(RutaImportacion)\10_Importacion_Carga_Jugadores.sql
 GO
-:r $(ScriptPath)\11_Importacion_Carga_Partidos.sql
+:r $(RutaImportacion)\11_Importacion_Carga_Partidos.sql
 GO
-:r $(ScriptPath)\12_Importacion_Carga_PBI_Pais.sql
+:r $(RutaImportacion)\12_Importacion_Carga_PBI_Pais.sql
 GO
-:r $(ScriptPath)\13_Importacion_Carga_Motivos.sql
+:r $(RutaImportacion)\13_Importacion_Carga_Motivos.sql
 GO
-:r $(ScriptPath)\14_Importacion_Carga_Alineaciones.sql
+:r $(RutaImportacion)\14_Importacion_Carga_Alineaciones.sql
 GO
-:r $(ScriptPath)\15_Importacion_Carga_Arbitrajes.sql
+:r $(RutaImportacion)\15_Importacion_Carga_Arbitrajes.sql
 GO
-:r $(ScriptPath)\16_Importacion_Carga_Goles.sql
+:r $(RutaImportacion)\16_Importacion_Carga_Goles.sql
 GO
-:r $(ScriptPath)\17_Importacion_Carga_Amonestaciones.sql
+:r $(RutaImportacion)\17_Importacion_Carga_Amonestaciones.sql
 GO
-:r $(ScriptPath)\18_Importacion_Carga_Sustituciones.sql
+:r $(RutaImportacion)\18_Importacion_Carga_Sustituciones.sql
 GO
-:r $(ScriptPath)\19_Importacion_Carga_Tecnicos.sql
+:r $(RutaImportacion)\19_Importacion_Carga_Tecnicos.sql
+GO
+:r $(RutaImportacion)\20_Importacion_Carga_Publicidad.sql
+GO
+:r $(RutaImportacion)\22_Importacion_Carga_Goles_Penal.sql
+GO
+:r $(RutaImportacion)\23_Importacion_Carga_Rojas_Directas.sql
+GO
+:r $(RutaImportacion)\21_Importacion_Carga_Tanda_Penales.sql
+GO
+:r $(RutaImportacion)\24_Importacion_Carga_Arbitraje_FIFA.sql
+GO
+:r $(RutaImportacion)\25_Importacion_Carga_Asistencia.sql
 GO
 
 PRINT 'Importacion de la Entrega 6 finalizada.';
