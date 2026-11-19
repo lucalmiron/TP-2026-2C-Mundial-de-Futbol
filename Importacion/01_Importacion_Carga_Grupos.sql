@@ -3,7 +3,7 @@
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 28/10/2026
 -- Objetivo: cargar los grupos A a L mediante el SP de la entrega 5.
--- Ejecutar despues de instalar las tablas y SP, seleccionando MUNDIAL en SSMS.
+-- Ejecutar despues de instalar las tablas y SP (el script fija MUNDIALtesting).
 -- Puede repetirse: solo registra grupos que todavia no existen.
 -- Los IdGrupo los genera SQL Server; no se presupone que A tenga ID 1.
 

@@ -10,7 +10,7 @@
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
 --                         SPTRANS.uspAmonestacion_Registrar.
 -- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos),
--- 13 (alineaciones) y 18 (arbitros: el arbitro del partido es obligatorio).
+-- 14 (alineaciones) y 15 (arbitrajes: el arbitro del partido es obligatorio).
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
 -- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
 -- :setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"

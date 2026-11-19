@@ -60,3 +60,19 @@ Para conseguir los Json de todos los partidos hay que crear un script en python 
   MatchNumber de FIFA no sigue el orden de openfootball.
 - País del árbitro: si no existe en equipos.Pais se usa USA y el importador deja
   el aviso en el reporte.
+
+9. Datos que las fuentes no traen
+- Motivo de cada sustitución: Promiedos da el minuto y los jugadores, no el
+  motivo. La carga 18 registra 'Lesión' en los cambios anteriores al minuto 20
+  (hay 5 en el torneo) y 'Táctica' en el resto, y lo deja anotado en el reporte.
+- Espacios publicitarios, costos por franja e histórico por partido
+  (publicidad.EspacioPublicitario, CostoFranja, HistorialPublicidad): el dossier
+  no publica precios ni espacios contratados. Como el modelo los exige, se
+  generan datos de ejemplo con
+  Datos\Publicidad\script_generar_publicidad_seed.py (4 espacios y 3 franjas por
+  sede, y un historial por partido). Las cargas 26, 27 y 28 leen los .csv de esa
+  carpeta (los .xlsx son la planilla de entrega). No son datos oficiales.
+- Altas y bajas de última hora en la convocatoria (equipos.CambioConvocatoria,
+  con fecha y motivo): no hay fuente que las publique, la tabla queda vacía.
+- Fecha de nacimiento de árbitros y jugadores: no está en ninguna fuente, se usa
+  1900-01-01 como valor por defecto.

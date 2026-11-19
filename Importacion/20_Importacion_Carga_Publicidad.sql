@@ -20,7 +20,7 @@
 
 :setvar RutaPublicidad "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\publicidad.xml"
 
-USE [MUNDIAL];
+USE [MUNDIALtesting];
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

@@ -5,14 +5,15 @@
 -- metodologia de tres fases. Tipo de evento de la fuente: 15.
 -- En la fuente, texts[0] es el jugador que entra (estaba en el banco) y
 -- texts[1] el que sale (estaba en la titular).
--- La fuente no indica el motivo del cambio: se usa el motivo 'Tactica' del
--- catalogo de la carga 19 y queda anotado en el reporte.
+-- La fuente no indica el motivo del cambio: los cambios antes del minuto 20 se
+-- registran como 'Lesion' y el resto como 'Tactica' (catalogo de la carga 13),
+-- con el detalle anotado en el reporte.
 --   FASE 1 STAGING     : una fila por sustitucion.
 --   FASE 2 DEPURACION  : reglas de conjunto (UPDATE) sobre la staging.
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
 --                         SPTRANS.uspSustitucion_Registrar.
 -- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos),
--- 13 (alineaciones) y 19 (motivos).
+-- 13 (motivos) y 14 (alineaciones).
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
 -- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
 -- :setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
@@ -156,9 +157,9 @@ UPDATE #SustitucionesStaging SET Estado='Error',
     Detalle=N'No se pudo determinar la seleccion del equipo.'
 WHERE Estado='Pendiente' AND Seleccion IS NULL;
 
--- D6: el catalogo de motivos no esta cargado (carga 19).
+-- D6: el catalogo de motivos no esta cargado (carga 13).
 UPDATE #SustitucionesStaging SET Estado='Error',
-    Detalle=N'El catalogo de motivos no esta cargado: ejecute la carga 19.'
+    Detalle=N'El catalogo de motivos no esta cargado: ejecute la carga 13.'
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM publicidad.Motivo WHERE Descripcion=N'T'+NCHAR(225)+'ctica') <> 1;
 
@@ -250,10 +251,27 @@ JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreEgresoBd, s.NombreEgres
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
+-- Motivo: la fuente no lo trae. Los cambios antes del minuto 20 se registran
+-- como 'Lesion' (un cambio tan temprano responde a una lesion) y el resto como
+-- 'Tactica'. Queda documentado en el detalle de las filas afectadas.
 UPDATE #SustitucionesStaging SET IdMotivo = m.IdMotivo
 FROM #SustitucionesStaging AS s
 JOIN publicidad.Motivo AS m ON m.Descripcion = N'T'+NCHAR(225)+'ctica'
-WHERE s.Estado='Pendiente';
+WHERE s.Estado='Pendiente' AND ISNULL(s.Minuto, 99) >= 20;
+
+UPDATE #SustitucionesStaging SET IdMotivo = m.IdMotivo,
+    Detalle = N'La fuente no indica el motivo: cambio antes del minuto 20, se registra como Lesion.'
+FROM #SustitucionesStaging AS s
+JOIN publicidad.Motivo AS m ON m.Descripcion = N'Lesi'+NCHAR(243)+N'n'
+WHERE s.Estado='Pendiente' AND s.Minuto < 20;
+
+-- D6b: si el catalogo no tiene 'Lesion', los cambios tempranos caen a 'Tactica'
+--      para no perder la fila.
+UPDATE #SustitucionesStaging SET IdMotivo = m.IdMotivo,
+    Detalle = N'La fuente no indica el motivo y no hay Lesion en el catalogo: se registra como Tactica.'
+FROM #SustitucionesStaging AS s
+JOIN publicidad.Motivo AS m ON m.Descripcion = N'T'+NCHAR(225)+'ctica'
+WHERE s.Estado='Pendiente' AND s.IdMotivo IS NULL;
 
 -- Reporte de la depuracion: se informa ANTES de escribir en la tabla real.
 SELECT 'FASE 2 - Depuracion de sustituciones (antes de la persistencia)' AS Fase;

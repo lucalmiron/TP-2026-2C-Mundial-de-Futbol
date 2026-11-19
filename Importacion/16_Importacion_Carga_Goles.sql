@@ -16,7 +16,7 @@
 --                         SPTRANS.uspGol_Registrar, que crea el Evento y el Gol
 --                         y actualiza el marcador del partido.
 -- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos) y
--- 13 (alineaciones): el SP exige que el autor y el asistente esten en cancha.
+-- 14 (alineaciones): el SP exige que el autor y el asistente esten en cancha.
 -- La tanda de penales (tipos 3, 16 y 17) no se carga aqui: la tanda se registra
 -- con SP.uspPartido_Tanda (carga 21) y los penales de tiempo regular con la
 -- carga 22.

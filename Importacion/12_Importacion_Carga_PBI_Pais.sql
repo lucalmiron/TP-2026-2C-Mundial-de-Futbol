@@ -18,7 +18,7 @@
 --:setvar RutaPBI "C:\\Users\\Usuario\\Documents\\proyecto BDDA\\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
 --:setvar RutaEquiv "C:\\Users\\Usuario\\Documents\\proyecto BDDA\\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
 
-USE [MUNDIAL];
+USE [MUNDIALtesting];
 GO
 
 SET NOCOUNT ON;

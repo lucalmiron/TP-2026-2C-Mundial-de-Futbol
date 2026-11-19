@@ -29,8 +29,8 @@ GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
---IF UPPER(DB_NAME()) <> N'MUNDIAL'
---   THROW 51000, 'Seleccione la base MUNDIAL.', 1;
+--IF UPPER(DB_NAME()) <> N'MUNDIALTESTING'
+--   THROW 51000, 'Seleccione la base MUNDIALtesting.', 1;
 IF OBJECT_ID(N'arbitros.Idioma', N'U') IS NULL
    OR OBJECT_ID(N'SP.uspIdioma_Registrar', N'P') IS NULL
     THROW 51000, 'Ejecute primero el instalador 00: faltan Idioma o su SP.', 1;

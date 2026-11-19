@@ -251,6 +251,7 @@ El orden **no es libre**: los SP validan el estado del modelo.
 11  Partidos         →  12  PBI
 19  Motivos          →  13  Alineaciones →  16  Sustituciones
 18  Arbitrajes       →  14  Goles        →  15  Amonestaciones →  17  Técnicos
+20  Publicidad       →  26  Espacios     →  27  Franjas        →  28  Historial
 ```
 
 Reglas que impone el modelo:
@@ -266,6 +267,25 @@ Reglas que impone el modelo:
   esté en cancha.
 - Dentro del `16`, el cursor ordena por `IdPartido, Minuto, Periodo`: el SP
   exige registrar los cambios en orden cronológico.
+
+### 4.7 Publicidad (20 y 26 a 28)
+
+Las campañas salen del scraping del dossier (`publicidad.xml`, carga 20). El
+dossier **no publica** los espacios contratados, las tarifas por franja ni el
+detalle por partido, así que esas tres tablas se cargan con un juego de datos de
+ejemplo generado por `Datos/Publicidad/script_generar_publicidad_seed.py`
+(documentado en `Datos/Fuentes.txt`, sección 9). Los valores **no son oficiales**.
+
+| # | Importador | Fuente | Tablas destino |
+|---|---|---|---|
+| 26 | Espacios publicitarios | `espacios_publicitarios.csv` (4 por sede) | `publicidad.EspacioPublicitario` |
+| 27 | Costos por franja | `costo_franja.csv` (3 por sede) | `publicidad.CostoFranja` |
+| 28 | Historial por partido | `historial_publicidad.csv` (2 o 3 espacios por partido) | `publicidad.HistorialPublicidad` |
+
+Los `.csv` son los archivos que se importan; los `.xlsx` de la misma carpeta son
+la planilla de entrega, porque `BULK INSERT` no lee `.xlsx` sin el proveedor ACE.
+El historial se resuelve por nombres (equipos, sede, número de espacio, franja y
+título de campaña), no por identificadores.
 
 ---
 
@@ -376,14 +396,17 @@ SELECT @id = IdMotivo FROM ... WHERE ...;
 
 Sin ese `SET`, un `IdMotivo` de una iteración se reutiliza en la siguiente.
 
-### 6.10 `UPDATE` no admite alias
+### 6.10 `UPDATE` con alias: el alias tiene que estar declarado en el `FROM`
 
-`UPDATE s SET ...` es inválido; el objetivo es la tabla:
+`UPDATE s SET ...` es válido **si** `s` es un alias declarado en el `FROM`:
 
 ```sql
-UPDATE #GolesStaging SET NombreAutorBd = ...
-FROM #GolesStaging AS s JOIN ...        -- ok
+UPDATE s SET ... FROM #GolesStaging AS s JOIN ...            -- ok
+UPDATE #GolesStaging SET ... FROM #GolesStaging AS s JOIN ... -- ok
 ```
+
+Sin `FROM` (o con un alias que no está declarado) el motor no sabe a qué tabla
+apunta y devuelve el error 4104.
 
 ### 6.11 Apóstrofos en literales
 
