@@ -20,7 +20,15 @@ import json
 import os
 import sys
 
-from comun import get
+import requests
+
+UA = {"User-Agent": "TP-BDDA-Mundial/1.0 (trabajo practico universitario)"}
+
+
+def get(url, **kw):
+    r = requests.get(url, headers=UA, timeout=60, **kw)
+    r.raise_for_status()
+    return r
 
 BASE = "https://api.fifa.com/api/v3"
 ID_COMPETICION = 17
