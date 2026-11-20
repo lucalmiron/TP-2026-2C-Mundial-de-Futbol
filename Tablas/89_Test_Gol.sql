@@ -117,21 +117,21 @@ GO
 DECLARE @gJugPais1 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1');
 DECLARE @gJugSel1  INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF G1');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Gol Test A1')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A1')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Gol Test A1', @fnac = '2003-01-01', @pais = @gJugPais1, @posicion = 'DEL', @numero = 7, @seleccion = @gJugSel1;
 GO
 
 DECLARE @gJugPais2 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G2');
 DECLARE @gJugSel2  INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF G2');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Gol Test A2')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A2')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Gol Test A2', @fnac = '2003-01-02', @pais = @gJugPais2, @posicion = 'DEL', @numero = 9, @seleccion = @gJugSel2;
 GO
 
 DECLARE @gJugPais3 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G3');
 DECLARE @gJugSel3  INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF G3');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Gol Test A3')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A3')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Gol Test A3', @fnac = '2003-01-03', @pais = @gJugPais3, @posicion = 'DEL', @numero = 11, @seleccion = @gJugSel3;
 GO
 
@@ -139,7 +139,7 @@ GO
 DECLARE @gJugPais4 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test G1');
 DECLARE @gJugSel4  INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF G1');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Gol Test A4')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A4')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Gol Test A4', @fnac = '2003-01-04', @pais = @gJugPais4, @posicion = 'MED', @numero = 8, @seleccion = @gJugSel4;
 GO
 
@@ -152,7 +152,7 @@ IF @gPartA IS NULL
 DECLARE goles_titulares CURSOR LOCAL FAST_FORWARD FOR
     SELECT J.IdJugador
     FROM equipos.Jugador J INNER JOIN equipos.Persona P ON P.IdPersona = J.IdJugador
-    WHERE P.Nombre IN ('Gol Test A1', 'Gol Test A2', 'Gol Test A4');
+    WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', P.Nombre)) IN (N'Gol Test A1', N'Gol Test A2', N'Gol Test A4');
 OPEN goles_titulares;
 FETCH NEXT FROM goles_titulares INTO @gTitular;
 WHILE @@FETCH_STATUS = 0
@@ -165,7 +165,7 @@ CLOSE goles_titulares;
 DEALLOCATE goles_titulares;
 -- Esperado: los tres jugadores estan en cancha antes del primer gol.
 IF (SELECT COUNT(*) FROM equipos.Jugador J INNER JOIN equipos.Persona P ON P.IdPersona = J.IdJugador
-    WHERE P.Nombre IN ('Gol Test A1', 'Gol Test A2', 'Gol Test A4')
+    WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', P.Nombre)) IN (N'Gol Test A1', N'Gol Test A2', N'Gol Test A4')
       AND partidos.fnJugadorEnCancha(@gPartA, J.IdJugador, 23) = 1) <> 3
     THROW 51998, 'Fallo la preparacion de las alineaciones del test de goles.', 1;
 SELECT A.* FROM partidos.Alineacion A WHERE A.IdPartido = @gPartA;
@@ -175,8 +175,8 @@ GO
 
 -- Esperado: gol de jugada con asistencia, 1 fila en Evento y Gol, GolesEq1 = 1 (autor de CONF G1)
 DECLARE @gP1 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA1 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
-DECLARE @gA4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A4');
+DECLARE @gA1 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A1');
+DECLARE @gA4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A4');
 EXEC SPTRANS.uspGol_Registrar @minuto = 23, @partido = @gP1, @periodo = 901, @autor = @gA1, @asistencia = @gA4, @tipo = 'Jugada';
 IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @gP1 AND GolesEq1 = 1 AND GolesEq2 = 0)
     THROW 51998, 'El gol valido no dejo el marcador esperado.', 1;
@@ -190,7 +190,7 @@ GO
 
 -- Esperado: autor y asistencia iguales, 0 filas nuevas, marcador sin cambios
 DECLARE @gP2 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA1b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
+DECLARE @gA1b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A1');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 30, @partido = @gP2, @periodo = 901, @autor = @gA1b, @asistencia = @gA1b, @tipo = 'Jugada'
 END TRY
@@ -203,8 +203,8 @@ GO
 
 -- Esperado: el gol en contra no lleva asistencia, 0 filas nuevas, marcador sin cambios
 DECLARE @gP3 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA1c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
-DECLARE @gA2b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A2');
+DECLARE @gA1c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A1');
+DECLARE @gA2b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A2');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 40, @partido = @gP3, @periodo = 901, @autor = @gA1c, @asistencia = @gA2b, @tipo = 'En contra'
 END TRY
@@ -217,8 +217,8 @@ GO
 
 -- Esperado: el autor no participo del encuentro (A3 es de CONF G3), 0 filas nuevas
 DECLARE @gP4 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA1d INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
-DECLARE @gA3  INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A3');
+DECLARE @gA1d INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A1');
+DECLARE @gA3  INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A3');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 42, @partido = @gP4, @periodo = 901, @autor = @gA3, @asistencia = NULL, @tipo = 'Jugada'
 END TRY
@@ -231,8 +231,8 @@ GO
 
 -- Esperado: la asistencia no participo del encuentro (A3 es de CONF G3), 0 filas nuevas
 DECLARE @gP5 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA1e INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
-DECLARE @gA3b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A3');
+DECLARE @gA1e INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A1');
+DECLARE @gA3b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A3');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 43, @partido = @gP5, @periodo = 901, @autor = @gA1e, @asistencia = @gA3b, @tipo = 'Jugada'
 END TRY
@@ -245,7 +245,7 @@ GO
 
 -- Esperado: inexistente Autor (999999), 0 filas nuevas, marcador sin cambios
 DECLARE @gP6 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA2c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A2');
+DECLARE @gA2c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A2');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 45, @partido = @gP6, @periodo = 901, @autor = 999999, @asistencia = @gA2c, @tipo = 'Penal'
 END TRY
@@ -258,7 +258,7 @@ GO
 
 -- Esperado: inexistente Asistencia (999999), 0 filas nuevas, marcador sin cambios
 DECLARE @gP7 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA1f INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
+DECLARE @gA1f INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A1');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 45, @partido = @gP7, @periodo = 901, @autor = @gA1f, @asistencia = 999999, @tipo = 'Penal'
 END TRY
@@ -271,7 +271,7 @@ GO
 
 -- Esperado: tipo invalido (Chilena es tecnica, no situacion), 0 filas nuevas, marcador sin cambios
 DECLARE @gP8 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA1g INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
+DECLARE @gA1g INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A1');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 50, @partido = @gP8, @periodo = 901, @autor = @gA1g, @asistencia = NULL, @tipo = 'Chilena'
 END TRY
@@ -284,7 +284,7 @@ GO
 
 -- Esperado: periodo inexistente (999999), 0 filas nuevas, marcador sin cambios
 DECLARE @gP9 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA1h INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A1');
+DECLARE @gA1h INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A1');
 BEGIN TRY
 EXEC SPTRANS.uspGol_Registrar @minuto = 55, @partido = @gP9, @periodo = 999999, @autor = @gA1h, @asistencia = NULL, @tipo = 'Penal'
 END TRY
@@ -297,7 +297,7 @@ GO
 
 -- Esperado: gol en contra sin asistencia del autor de CONF G2, GolesEq1 = 2 (suma al rival)
 DECLARE @gP10 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test G' AND P.Fecha = '2026-06-15');
-DECLARE @gA2d INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Gol Test A2');
+DECLARE @gA2d INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Gol Test A2');
 EXEC SPTRANS.uspGol_Registrar @minuto = 45, @partido = @gP10, @periodo = 901, @autor = @gA2d, @asistencia = NULL, @tipo = 'En contra';
 IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdPartido = @gP10 AND GolesEq1 = 2 AND GolesEq2 = 0)
     THROW 51998, 'El gol valido no dejo el marcador esperado.', 1;
@@ -311,7 +311,7 @@ GO
 
 -- Esperado: borra el gol en contra y descuenta 1 del rival, GolesEq1 = 1
 DECLARE @gCont INT = (SELECT MIN(G.IdGol) FROM partidos.Gol G INNER JOIN equipos.Jugador J ON G.Autor = J.IdJugador
-					 INNER JOIN equipos.Persona P ON P.IdPersona = J.IdJugador WHERE P.Nombre = 'Gol Test A2');
+					 INNER JOIN equipos.Persona P ON P.IdPersona = J.IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', P.Nombre)) = N'Gol Test A2');
 EXEC SPTRANS.uspGol_Bajar @id = @gCont
 GO
 SELECT * FROM partidos.Gol
@@ -321,7 +321,7 @@ GO
 
 -- Esperado: borra el gol de jugada y su evento y descuenta 1, GolesEq1 = 0
 DECLARE @gJug INT = (SELECT MIN(G.IdGol) FROM partidos.Gol G INNER JOIN equipos.Jugador J ON G.Autor = J.IdJugador
-					 INNER JOIN equipos.Persona P ON P.IdPersona = J.IdJugador WHERE P.Nombre = 'Gol Test A1');
+					 INNER JOIN equipos.Persona P ON P.IdPersona = J.IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', P.Nombre)) = N'Gol Test A1');
 EXEC SPTRANS.uspGol_Bajar @id = @gJug
 GO
 SELECT * FROM partidos.Gol
@@ -361,7 +361,7 @@ DECLARE @gPartL INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOI
 DECLARE goles_alineaciones CURSOR LOCAL FAST_FORWARD FOR
     SELECT A.IdJugador FROM partidos.Alineacion A
     INNER JOIN equipos.Persona P ON P.IdPersona = A.IdJugador
-    WHERE A.IdPartido = @gPartL AND P.Nombre IN ('Gol Test A1', 'Gol Test A2', 'Gol Test A4');
+    WHERE A.IdPartido = @gPartL AND CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', P.Nombre)) IN (N'Gol Test A1', N'Gol Test A2', N'Gol Test A4');
 OPEN goles_alineaciones;
 FETCH NEXT FROM goles_alineaciones INTO @gJugadorL;
 WHILE @@FETCH_STATUS = 0
@@ -377,8 +377,8 @@ DECLARE @jugadoresPrueba TABLE (IdJugador INT PRIMARY KEY);
 INSERT INTO @jugadoresPrueba (IdJugador)
 SELECT J.IdJugador FROM equipos.Jugador AS J
 JOIN equipos.Persona AS P ON P.IdPersona = J.IdJugador
-WHERE P.Nombre IN (
-    'Gol Test A1', 'Gol Test A2', 'Gol Test A3', 'Gol Test A4');
+WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', P.Nombre)) IN (
+    N'Gol Test A1', N'Gol Test A2', N'Gol Test A3', N'Gol Test A4');
 
 DELETE FROM equipos.Jugador WHERE IdJugador IN (SELECT IdJugador FROM @jugadoresPrueba);
 DELETE FROM equipos.Persona WHERE IdPersona IN (SELECT IdJugador FROM @jugadoresPrueba);
@@ -391,9 +391,7 @@ IF @gPartB IS NOT NULL
 IF EXISTS (SELECT 1 FROM partidos.Periodo WHERE IdPeriodo = 901)
 	EXEC partidos.Periodo_Baja @idPeriodo = 901;
 
-DECLARE @gFaseB INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Grupos');
-IF @gFaseB IS NOT NULL
-	EXEC SP.uspFase_Bajar @Id = @gFaseB;
+-- La fase 'Grupos' es compartida con importadores y otros tests: no se elimina.
 
 --4) La sede, el huso horario, las selecciones, el grupo, el mundial y los paises.
 DECLARE @gSedeB INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test G');
