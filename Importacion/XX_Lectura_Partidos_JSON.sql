@@ -84,10 +84,10 @@ BEGIN TRY
     BULK INSERT #SedesPartidos FROM '$(RutaSedes)'
     WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
           ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    -- El CSV de equivalencias de jugadores usa fin de linea CRLF.
+    -- El CSV de equivalencias de jugadores usa fin de linea LF.
     BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
     WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-          ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
+          ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY
 BEGIN CATCH
     DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudieron leer las tablas de equivalencias. '

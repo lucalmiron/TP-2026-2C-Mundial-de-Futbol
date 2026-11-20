@@ -21,9 +21,11 @@
 --:setvar RutaHusos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
 
 --Fidel
-:setvar RutaHusos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
 
-USE MUNDIALtesting
+--Santutu
+:setvar RutaHusos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
+
+USE MUNDIAL
 GO
 
 SET NOCOUNT ON;

@@ -21,9 +21,12 @@
 --:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
 --Fidel
-:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+--:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
-USE MUNDIALtesting;
+--Santutu
+:setvar RutaJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -50,7 +53,7 @@ CREATE TABLE #ClubesCrudo (
 
 -- 1.b) Lectura del CSV con el orden original de sus 72 columnas. Se recibe
 --      texto para no exigir conversiones numericas de campos que no usamos.
---      ROWTERMINATOR = 0x0d0a porque el archivo usa fin de linea CRLF.
+--      ROWTERMINATOR = 0x0a porque el archivo usa fin de linea LF (no CRLF).
 CREATE TABLE #JugadoresCsv (
     [player] NVARCHAR(100) COLLATE DATABASE_DEFAULT NULL,
     [team] NVARCHAR(60) COLLATE DATABASE_DEFAULT NULL,
@@ -143,7 +146,7 @@ BEGIN TRY
     FROM OPENROWSET(BULK '$(RutaJugadores)', SINGLE_BLOB) AS archivo;
 
     BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
-    WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',', ROWTERMINATOR='0x0d0a',
+    WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',', ROWTERMINATOR='0x0a',
           CODEPAGE='65001', MAXERRORS=0);
 END TRY
 BEGIN CATCH

@@ -6,7 +6,7 @@
 -- Ejecutar en MUNDIALtesting despues de instalar tablas y procedimientos.
 -- Puede repetirse sin duplicar registros por descripcion.
 
-USE MUNDIALtesting
+USE MUNDIAL
 GO
 
 SET NOCOUNT ON;

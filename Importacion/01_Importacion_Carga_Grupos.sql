@@ -7,7 +7,7 @@
 -- Puede repetirse: solo registra grupos que todavia no existen.
 -- Los IdGrupo los genera SQL Server; no se presupone que A tenga ID 1.
 
-USE MUNDIALtesting
+USE MUNDIAL
 GO
 
 SET NOCOUNT ON;
