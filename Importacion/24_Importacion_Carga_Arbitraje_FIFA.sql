@@ -300,7 +300,7 @@ BEGIN
             SELECT @idArbitro = ar.IdArbitro
             FROM equipos.Persona AS pe
             JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
-            WHERE pe.Nombre = @nombre;
+            WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
         END;
 
         IF @idArbitro IS NULL
@@ -312,7 +312,7 @@ BEGIN
             SELECT @idArbitro = ar.IdArbitro
             FROM arbitros.Arbitro AS ar
             JOIN equipos.Persona AS pe ON pe.IdPersona = ar.IdArbitro
-            WHERE pe.Nombre = @nombre;
+            WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
             SET @estadoArbitro = 'Insertado';
         END
         ELSE SET @estadoArbitro = 'SinCambios';

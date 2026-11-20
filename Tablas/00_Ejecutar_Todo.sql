@@ -7,9 +7,9 @@
 -- Mantener las comillas si la ruta contiene espacios.
 
 --L
---:setvar ScriptPath "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
+:setvar ScriptPath "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
 --F
-:setvar ScriptPath "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
+--:setvar ScriptPath "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
 --Santutu
 --:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
 
@@ -154,6 +154,12 @@ GO
 :r $(ScriptPath)\68_Sp_Evento.sql
 GO
 :r $(ScriptPath)\69_Sp_CambioConvocatoria.sql
+GO
+-- Entrega 8: Crear claves de cifrado y aplicar cifrado a datos sensibles (MUNDIAL)
+:r $(ScriptPath)\97_Seguridad_Cifrado_Claves.sql
+GO
+:r $(ScriptPath)\98_Seguridad_Cifrado_Aplicar.sql
+GO
 
 USE [MUNDIALtesting];
 GO
@@ -224,6 +230,11 @@ GO
 :r $(ScriptPath)\67_Sp_Sustitucion.sql
 :r $(ScriptPath)\68_Sp_Evento.sql
 :r $(ScriptPath)\69_Sp_CambioConvocatoria.sql
+GO
+-- Entrega 8: Crear claves de cifrado y aplicar cifrado a datos sensibles (MUNDIALtesting)
+:r $(ScriptPath)\97_Seguridad_Cifrado_Claves.sql
+GO
+:r $(ScriptPath)\98_Seguridad_Cifrado_Aplicar.sql
 GO
 PRINT 'Instalacion de entrega 5 finalizada en MUNDIALtesting.';
 GO

@@ -195,7 +195,7 @@ BEGIN
         SELECT @idTecnico = te.IdTecnico
         FROM equipos.Persona AS pe
         JOIN equipos.Tecnico AS te ON te.IdTecnico = pe.IdPersona
-        WHERE pe.Nombre = @nombre;
+        WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
         IF @idTecnico IS NULL
         BEGIN
             EXEC SPTRANS.uspTecnico_Registrar @nombre=@nombre,
@@ -205,7 +205,7 @@ BEGIN
             SELECT @idTecnico = te.IdTecnico
             FROM equipos.Persona AS pe
             JOIN equipos.Tecnico AS te ON te.IdTecnico = pe.IdPersona
-            WHERE pe.Nombre = @nombre;
+            WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
             SET @estado='Insertada';
         END
         ELSE SET @estado='SinCambios';

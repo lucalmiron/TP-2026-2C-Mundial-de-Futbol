@@ -280,15 +280,16 @@ BEGIN
             SELECT @idArbitro = ar.IdArbitro
             FROM equipos.Persona AS pe
             JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
-            WHERE pe.Nombre = @nombre;
+            WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
             -- Cargas anteriores guardaban el nombre con el "(Pais)": se
             -- reutiliza ese arbitro y se corrige su nombre.
             IF @idArbitro IS NULL
             BEGIN
+                -- Busqueda por hash (Nombre esta cifrado, no se puede usar LIKE)
                 SELECT @idArbitro = MIN(ar.IdArbitro)
                 FROM equipos.Persona AS pe
                 JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
-                WHERE pe.Nombre LIKE @nombre + N' (%)';
+                WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
                 IF @idArbitro IS NOT NULL
                     EXEC SPTRANS.uspArbitro_Update @id=@idArbitro, @nombre=@nombre;
             END;

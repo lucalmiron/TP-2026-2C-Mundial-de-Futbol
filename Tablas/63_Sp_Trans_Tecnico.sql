@@ -30,8 +30,15 @@ BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @idPersona INT;
 	DECLARE @nuevo TABLE(ID INT);
+	DECLARE @claveAbierta BIT = 0;
 
 	BEGIN TRY
+		-- Abrir clave simetrica para cifrado de Nombre (Entrega 8)
+		OPEN SYMMETRIC KEY ClaveSimetrica_AES128_Mundial
+		DECRYPTION BY CERTIFICATE CertificadoCifradoMundial
+		WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
+		SET @claveAbierta = 1;
+
 		--Chequeo validez
 		IF(@nombre IS NULL)
 			SET @errores += '- Valor invalido: Nombre.' + N' ';
@@ -55,8 +62,8 @@ BEGIN
 		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
 			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
-		--chequeo dup
-		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre)
+		--chequeo dup (busca por hash, Nombre esta cifrado)
+		IF EXISTS(SELECT 1 FROM equipos.Persona WHERE NombreHash = HASHBYTES('SHA2_256', @nombre))
 			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 
 		BEGIN TRANSACTION;
@@ -64,7 +71,7 @@ BEGIN
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			INSERT INTO equipos.Persona(Nombre, Fnac, Pais, Rol)
 			OUTPUT INSERTED.IdPersona INTO @nuevo(ID)
-			VALUES (@nombre, @fnac, @pais, 'Tecnico');
+			VALUES (ENCRYPTBYKEY(KEY_GUID('ClaveSimetrica_AES128_Mundial'), @nombre), @fnac, @pais, 'Tecnico');
 
 			SELECT TOP 1 @idPersona = ID FROM @nuevo;
 
@@ -72,10 +79,14 @@ BEGIN
 			VALUES(@idPersona, @funcion, @seleccion, 0, 'Activo');
 
 		COMMIT TRANSACTION;
+
+		CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 	END TRY
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0
 			ROLLBACK TRANSACTION;
+		IF @claveAbierta = 1
+			CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 		THROW;
 	END CATCH
 END
@@ -94,7 +105,14 @@ CREATE PROCEDURE SPTRANS.uspTecnico_Update
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
+	DECLARE @claveAbierta BIT = 0;
 	BEGIN TRY
+		-- Abrir clave simetrica para cifrado de Nombre (Entrega 8)
+		OPEN SYMMETRIC KEY ClaveSimetrica_AES128_Mundial
+		DECRYPTION BY CERTIFICATE CertificadoCifradoMundial
+		WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
+		SET @claveAbierta = 1;
+
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
 			SET @errores += '- Valor invalido: ID Tecnico.' + N' ';
@@ -118,8 +136,8 @@ BEGIN
 		IF (@seleccion IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
 			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
-		--chequeo dup
-		IF (@nombre IS NOT NULL) AND EXISTS(SELECT 1 FROM equipos.Persona WHERE Nombre = @nombre AND IdPersona <> @id)
+		--chequeo dup (busca por hash, Nombre esta cifrado)
+		IF (@nombre IS NOT NULL) AND EXISTS(SELECT 1 FROM equipos.Persona WHERE NombreHash = HASHBYTES('SHA2_256', @nombre) AND IdPersona <> @id)
 			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 
 		BEGIN TRANSACTION;
@@ -127,7 +145,7 @@ BEGIN
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			UPDATE equipos.Persona
 			SET
-			Nombre = COALESCE(@nombre, Nombre),
+			Nombre = COALESCE(ENCRYPTBYKEY(KEY_GUID('ClaveSimetrica_AES128_Mundial'), @nombre), Nombre),
 			Fnac = COALESCE(@fnac, Fnac),
 			Pais = COALESCE(@pais, Pais)
 			WHERE IdPersona = @id;
@@ -139,10 +157,14 @@ BEGIN
 			WHERE IdTecnico = @id;
 
 		COMMIT TRANSACTION;
+
+		CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 	END TRY
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0
 			ROLLBACK TRANSACTION;
+		IF @claveAbierta = 1
+			CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 		THROW;
 	END CATCH
 END

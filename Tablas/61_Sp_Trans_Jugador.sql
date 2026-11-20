@@ -34,8 +34,15 @@ BEGIN
 	DECLARE @cantJugadores INT;
 	DECLARE @idPersona INT;
 	DECLARE @nuevo TABLE(ID INT);
+	DECLARE @claveAbierta BIT = 0;
 
 	BEGIN TRY
+		-- Abrir clave simetrica para cifrado de Nombre (Entrega 8)
+		OPEN SYMMETRIC KEY ClaveSimetrica_AES128_Mundial
+		DECRYPTION BY CERTIFICATE CertificadoCifradoMundial
+		WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
+		SET @claveAbierta = 1;
+
 		--Chequeo validez
 		IF(@nombre IS NULL)
 			SET @errores += '- Valor invalido: Nombre.' + N' ';
@@ -76,10 +83,10 @@ BEGIN
 		IF @estado = 'Activo' AND ( (@cantJugadores + 1) > (SELECT TAMANIO_SELECCION_MAXIMO FROM sedes.Mundial WHERE IdMundial = (SELECT IdMundial FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)) )
 			SET @errores += '- Cupo maximo de jugadores excedido.' + N' ';
 
-		--chequeo dup: el mismo nombre en otra seleccion es otra persona.
+		--chequeo dup: el mismo nombre en otra seleccion es otra persona. (busca por hash, Nombre esta cifrado)
 		IF EXISTS(SELECT 1 FROM equipos.Persona p
 		          JOIN equipos.Jugador j ON j.IdJugador = p.IdPersona
-		          WHERE p.Nombre = @nombre AND j.Seleccion = @seleccion)
+		          WHERE p.NombreHash = HASHBYTES('SHA2_256', @nombre) AND j.Seleccion = @seleccion)
 			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 		
 		--El dorsal es unico por seleccion (UQ_Jugador_Dorsal), no globalmente.
@@ -91,7 +98,7 @@ BEGIN
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			INSERT INTO equipos.Persona(Nombre, Fnac, Pais, Rol)
 			OUTPUT INSERTED.IdPersona INTO @nuevo(ID)
-			VALUES (@nombre, @fnac, @pais, 'Jugador');
+			VALUES (ENCRYPTBYKEY(KEY_GUID('ClaveSimetrica_AES128_Mundial'), @nombre), @fnac, @pais, 'Jugador');
 
 			SELECT TOP 1 @idPersona = ID FROM @nuevo;
 
@@ -99,10 +106,14 @@ BEGIN
 			VALUES(@idPersona, @estado, @posicion, @numero, 0, @club, @seleccion);
 
 		COMMIT TRANSACTION;
+
+		CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 	END TRY
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0
 			ROLLBACK TRANSACTION;
+		IF @claveAbierta = 1
+			CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 		THROW;
 	END CATCH
 END
@@ -123,8 +134,15 @@ AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
 	DECLARE @selDestino INT;
+	DECLARE @claveAbierta BIT = 0;
 
 	BEGIN TRY
+		-- Abrir clave simetrica para cifrado de Nombre (Entrega 8)
+		OPEN SYMMETRIC KEY ClaveSimetrica_AES128_Mundial
+		DECRYPTION BY CERTIFICATE CertificadoCifradoMundial
+		WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
+		SET @claveAbierta = 1;
+
 		--Chequeo validez
 		IF(@id IS NULL) OR (@id <= 0)
 			SET @errores += '- Valor invalido: ID Jugador.' + N' ';
@@ -151,11 +169,11 @@ BEGIN
 		IF (@seleccion IS NOT NULL) AND NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
 			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
-		--chequeo dup: el mismo nombre en otra seleccion es otra persona.
+		--chequeo dup: el mismo nombre en otra seleccion es otra persona. (busca por hash, Nombre esta cifrado)
 		IF (@nombre IS NOT NULL) AND EXISTS(
 			SELECT 1 FROM equipos.Persona p
 			JOIN equipos.Jugador j ON j.IdJugador = p.IdPersona
-			WHERE p.Nombre = @nombre AND j.IdJugador <> @id
+			WHERE p.NombreHash = HASHBYTES('SHA2_256', @nombre) AND j.IdJugador <> @id
 			  AND j.Seleccion = COALESCE(@seleccion,(SELECT Seleccion FROM equipos.Jugador WHERE IdJugador = @id)))
 			SET @errores += '- Valor duplicado: Nombre.' + N' ';
 
@@ -192,7 +210,7 @@ BEGIN
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 			UPDATE equipos.Persona
 			SET
-			Nombre = COALESCE(@nombre, Nombre),
+			Nombre = COALESCE(ENCRYPTBYKEY(KEY_GUID('ClaveSimetrica_AES128_Mundial'), @nombre), Nombre),
 			Fnac = COALESCE(@fnac, Fnac),
 			Pais = COALESCE(@pais, Pais)
 			WHERE IdPersona = @id;
@@ -205,10 +223,14 @@ BEGIN
 			WHERE IdJugador = @id;
 
 		COMMIT TRANSACTION;
+
+		CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 	END TRY
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0
 			ROLLBACK TRANSACTION;
+		IF @claveAbierta = 1
+			CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 		THROW;
 	END CATCH
 END

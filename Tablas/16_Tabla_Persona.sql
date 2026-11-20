@@ -14,12 +14,14 @@
 -- Ejecutar en la base seleccionada por el instalador.
 GO
 
+-- Entrega 8: Nombre se almacena cifrado (VARBINARY) y se agrega NombreHash para búsquedas.
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'equipos' AND TABLE_NAME = 'Persona')
 BEGIN
 	CREATE TABLE equipos.Persona
 	(
 		IdPersona INT IDENTITY(1, 1),
-		Nombre NVARCHAR(30) NOT NULL,
+		Nombre VARBINARY(256) NOT NULL,      -- Cifrado con AES_128 (ver 97_Seguridad_Cifrado_Claves.sql)
+		NombreHash VARBINARY(32) NULL,        -- HASHBYTES('SHA2_256', Nombre) para busquedas sin descifrar
 		Fnac DATE NOT NULL,
 		Rol VARCHAR(10) NOT NULL,
 		Pais INT NOT NULL,
@@ -29,15 +31,9 @@ BEGIN
 END;
 GO
 
--- Bases creadas con la version anterior tenian VARCHAR(30): se migra a NVARCHAR(30).
--- El ALTER es idempotente: si ya es NVARCHAR(30) no hace nada.
-IF EXISTS (
-	SELECT 1
-	FROM sys.columns c
-	JOIN sys.types t ON t.user_type_id = c.user_type_id
-	WHERE c.object_id = OBJECT_ID(N'equipos.Persona')
-	  AND c.name = N'Nombre'
-	  AND (t.name <> N'nvarchar' OR c.max_length <> 60)
-)
-	ALTER TABLE equipos.Persona ALTER COLUMN Nombre NVARCHAR(30) NOT NULL;
+-- Si la tabla ya existia pero no tiene NombreHash (bases creadas antes de la E8), se agrega.
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('equipos.Persona') AND name = 'NombreHash')
+BEGIN
+	ALTER TABLE equipos.Persona ADD NombreHash VARBINARY(32) NULL;
+END
 GO
