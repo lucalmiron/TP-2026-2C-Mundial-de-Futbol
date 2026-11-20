@@ -18,13 +18,16 @@
 -- SQL Server lee los archivos desde el disco local del servidor.
 -- :setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
 
+--Santutu
+:setvar RutaIdiomas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+
 --L
 --:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 
 --Fidel
-:setvar RutaIdiomas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
+--:setvar RutaIdiomas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

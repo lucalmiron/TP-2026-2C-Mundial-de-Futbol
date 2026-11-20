@@ -17,9 +17,12 @@
 --:setvar RutaMotivos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
 
 --Fidel
-:setvar RutaMotivos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
+--:setvar RutaMotivos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
 
-USE [MUNDIALtesting];
+--Santutu
+:setvar RutaMotivos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
+
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

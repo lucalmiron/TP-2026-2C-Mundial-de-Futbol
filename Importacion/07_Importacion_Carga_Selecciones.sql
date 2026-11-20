@@ -31,11 +31,16 @@
  --:setvar RutaEquivalencias "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
 
 --Fidel
-:setvar RutaGrupos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
-:setvar RutaSelecciones "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
-:setvar RutaEquivalencias "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
+--:setvar RutaGrupos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
+--:setvar RutaSelecciones "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+--:setvar RutaEquivalencias "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
 
-USE [MUNDIALtesting];
+--Santutu
+:setvar RutaGrupos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
+:setvar RutaSelecciones "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
+:setvar RutaEquivalencias "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
+
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

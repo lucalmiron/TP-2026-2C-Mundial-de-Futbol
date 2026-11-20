@@ -5,7 +5,7 @@
 -- Requiere ejecutar despues del script 06 (paises) y antes del script 07 (selecciones).
 -- Re-ejecutable: si el Mundial ya existe, no falla.
 
-USE MUNDIALtesting;
+USE MUNDIAL;
 GO
 
 SET NOCOUNT ON;
