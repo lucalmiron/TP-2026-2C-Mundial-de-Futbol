@@ -380,10 +380,14 @@ WHERE Estado='Pendiente' AND NULLIF(Posicion,N'') IS NULL;
 
 -- D8: el dorsal no puede estar asociado a otro nombre en Promiedos.
 --     Se comparan inicial y apellido para no confundir al mismo jugador con otro.
+--     Solo se aplica a los cruces por equivalencia manual: si el nombre del CSV
+--     coincide de forma directa con Promiedos la identidad ya esta resuelta, y
+--     que otro jugador haya vestido el mismo dorsal en otro partido (ej. el 10
+--     de Uzbekistan) se resuelve en D13 sin marcar error.
 UPDATE s SET Estado='Error',
     Detalle=N'El dorsal aparece asociado a otro nombre en Promiedos. Revisar identidad.'
 FROM #JugadoresStaging AS s
-WHERE s.Estado='Pendiente' AND s.Numero IS NOT NULL AND EXISTS (
+WHERE s.Estado='Pendiente' AND s.TipoCruce='Equivalencia' AND s.Numero IS NOT NULL AND EXISTS (
     SELECT 1 FROM #Dorsales AS d
     WHERE d.Slug=s.Slug AND d.Numero=s.Numero
       AND NOT (
@@ -427,11 +431,23 @@ WHERE s.Estado='Pendiente' AND EXISTS (
     SELECT 1 FROM #JugadoresStaging o
     WHERE o.Fila<>s.Fila AND o.IdSeleccion=s.IdSeleccion AND o.Nombre=s.Nombre);
 
+-- D13: dorsal compartido dentro de la seleccion (equipos.Jugador tiene
+--      UNIQUE (Seleccion, Numero)). Si varios jugadores del CSV resuelven al
+--      mismo dorsal, se conserva solo el primero que aparece (menor Fila) y
+--      los demas quedan 'Omitida': no es un error, se informa en el reporte.
+UPDATE s SET Estado='Omitida',
+    Detalle=N'Dorsal compartido en la seleccion: se tomo el primer jugador que aparece y este se omite.'
+FROM #JugadoresStaging AS s
+WHERE s.Estado='Pendiente' AND s.Numero IS NOT NULL AND EXISTS (
+    SELECT 1 FROM #JugadoresStaging o
+    WHERE o.Fila<s.Fila AND o.IdSeleccion=s.IdSeleccion AND o.Numero=s.Numero
+      AND o.Estado='Pendiente');
+
 -- Reporte de la depuracion: se informa ANTES de escribir en la tabla real.
 SELECT 'FASE 2 - Depuracion de jugadores (antes de la persistencia)' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #JugadoresStaging GROUP BY Estado ORDER BY Estado;
 SELECT Fila, Nombre, Equipo, Anio, Club, NombrePromiedos, TipoCruce, Numero, Posicion, Estado, Detalle
-FROM #JugadoresStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
+FROM #JugadoresStaging WHERE Estado IN ('Error','Duplicada','Omitida') ORDER BY Fila;
 
 ---------------------------------------------------------------------------------------
 -- FASE 3 - PERSISTENCIA

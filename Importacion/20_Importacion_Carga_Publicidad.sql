@@ -18,6 +18,7 @@
 -- IMPORTANTE: cada integrante debe poner la ruta de su propia PC.
 -- :setvar RutaPublicidad "C:\ruta\proyecto\Datos\Publicidad\publicidad.xml"
 
+--F
 :setvar RutaPublicidad "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\publicidad.xml"
 
 USE [MUNDIALtesting];

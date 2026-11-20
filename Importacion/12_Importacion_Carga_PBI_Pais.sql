@@ -11,6 +11,8 @@
 -- En SSMS: Consulta -> Modo SQLCMD. Cambiar estas dos rutas.
 
 --Santutu
+
+--fidel
  :setvar RutaPBI "C:\\Users\\Usuario\\Documents\\proyecto BDDA\\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
  :setvar RutaEquiv "C:\\Users\\Usuario\\Documents\\proyecto BDDA\\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
 

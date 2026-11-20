@@ -18,9 +18,12 @@
 --   08 antes de 26 y 27 -> los espacios y las franjas se cargan por sede.
 --   26 y 27 antes de 28 -> el historial usa el espacio y la franja de la sede,
 --                          y la 20 le da el nombre de la campania.
-
-:setvar RutaTablas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
-:setvar RutaImportacion "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion"
+--L
+--:setvar RutaTablas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
+--:setvar RutaImportacion "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion"
+--F
+--:setvar RutaTablas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
+--:setvar RutaImportacion "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion"
 :ON ERROR EXIT
 
 :r $(RutaTablas)\00_Ejecutar_Todo.sql

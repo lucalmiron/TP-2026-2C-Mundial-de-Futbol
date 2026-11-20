@@ -22,22 +22,22 @@
 -- :setvar RutaAliasJugadores "C:\ruta\proyecto\Datos\Jugadores\equivalencias_jugadores.csv"
 
 --L
-:setvar CarpetaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLecturaJSON "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
-:setvar RutaLecturaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
-:setvar RutaEquipos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
-:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--:setvar CarpetaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLecturaJSON "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+--:setvar RutaLecturaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+--:setvar RutaEquipos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar RutaSedes "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+--:setvar RutaFases "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+--:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 --Fidel
---:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
---:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
---:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
---:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
---:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
---:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
---:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 
 USE [MUNDIALtesting];
@@ -176,6 +176,29 @@ WHERE Estado='Pendiente'
        WHERE Numero = #AlineacionesStaging.Numero
          AND Seleccion = #AlineacionesStaging.Seleccion) > 1;
 
+-- D8b: dorsal compartido por dos jugadores distintos de la misma seleccion en
+--      los JSON (ej. el 10 de Uzbekistan). La carga 10 conserva solo el primero
+--      que aparece (equipos.Jugador tiene UNIQUE (Seleccion, Numero)); aca se
+--      omite la fila del otro jugador para no atribuirle su alineacion al
+--      jugador cargado. Se compara el nombre del JSON con el jugador registrado
+--      (directo o por equivalencia habilitada). No es un error: queda 'Omitida'.
+UPDATE s SET Estado='Omitida',
+    Detalle=N'Dorsal compartido en la seleccion: se tomo el primer jugador que aparece y este se omite.'
+FROM #AlineacionesStaging AS s
+WHERE s.Estado='Pendiente'
+  AND EXISTS (SELECT 1 FROM #AlineacionesStaging o
+              WHERE o.Seleccion=s.Seleccion AND o.Numero=s.Numero
+                AND o.Nombre COLLATE Latin1_General_100_CI_AI <> s.Nombre COLLATE Latin1_General_100_CI_AI)
+  AND NOT EXISTS (
+      SELECT 1 FROM equipos.Jugador AS j
+      JOIN equipos.Persona AS p ON p.IdPersona=j.IdJugador
+      WHERE j.Seleccion=s.Seleccion AND j.Numero=s.Numero
+        AND (p.Nombre COLLATE Latin1_General_100_CI_AI = s.Nombre COLLATE Latin1_General_100_CI_AI
+             OR EXISTS (SELECT 1 FROM #AliasJugadores AS a
+                        WHERE a.Habilitado='1'
+                          AND a.NombreCsv COLLATE Latin1_General_100_CI_AI = p.Nombre COLLATE Latin1_General_100_CI_AI
+                          AND a.NombrePromiedos COLLATE Latin1_General_100_CI_AI = s.Nombre COLLATE Latin1_General_100_CI_AI)));
+
 -- D9: el mismo jugador aparece dos veces en el mismo partido.
 UPDATE f SET Estado='Duplicada', Detalle=N'El jugador ya aparece en este partido.'
 FROM #AlineacionesStaging AS f
@@ -196,7 +219,7 @@ WHERE s.Estado='Pendiente';
 SELECT 'FASE 2 - Depuracion de alineaciones (antes de la persistencia)' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #AlineacionesStaging GROUP BY Estado ORDER BY Estado;
 SELECT Fila, GameId, Rol, Nombre, Numero, PosicionCancha, Esquema, Estado, Detalle
-FROM #AlineacionesStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
+FROM #AlineacionesStaging WHERE Estado IN ('Error','Duplicada','Omitida') ORDER BY Fila;
 
 ---------------------------------------------------------------------------------------
 -- FASE 3 - PERSISTENCIA

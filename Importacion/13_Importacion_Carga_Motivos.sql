@@ -14,10 +14,10 @@
 -- :setvar RutaMotivos "C:\ruta\proyecto\Datos\motivos_sustitucion.csv"
 
 --L
-:setvar RutaMotivos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
+--:setvar RutaMotivos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
 
 --Fidel
---:setvar RutaMotivos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
+:setvar RutaMotivos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
 
 USE [MUNDIALtesting];
 GO
