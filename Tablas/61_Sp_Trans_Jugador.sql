@@ -28,6 +28,7 @@ CREATE PROCEDURE SPTRANS.uspJugador_Registrar
 @club INT = NULL,
 @seleccion INT,
 @estado VARCHAR(10) = 'Activo'
+WITH EXECUTE AS OWNER
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
@@ -130,6 +131,7 @@ CREATE PROCEDURE SPTRANS.uspJugador_Update
 @posicion NVARCHAR(20) = NULL,
 @numero INT = NULL,
 @seleccion INT = NULL
+WITH EXECUTE AS OWNER
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';

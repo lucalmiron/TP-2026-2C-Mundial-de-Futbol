@@ -24,6 +24,7 @@ CREATE PROCEDURE SPTRANS.uspArbitro_Registrar
 @fnac DATE,
 @pais INT,
 @categoria VARCHAR(13)
+WITH EXECUTE AS OWNER
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
@@ -94,6 +95,7 @@ CREATE PROCEDURE SPTRANS.uspArbitro_Update
 @fnac DATE = NULL,
 @pais INT = NULL,
 @categoria VARCHAR(13) = NULL
+WITH EXECUTE AS OWNER
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';

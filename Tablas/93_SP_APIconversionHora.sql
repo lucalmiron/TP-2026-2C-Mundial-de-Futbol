@@ -11,10 +11,8 @@
 
 --Creacion de SP para utilizacion de API para convertir horario
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+-- El instalador 00_Ejecutar_Todo.sql ya selecciona la base activa
+-- (MUNDIAL o MUNDIALtesting), asi que no se fuerza el USE MUNDIAL aqui.
 GO
 
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspAPIconversionHora'))

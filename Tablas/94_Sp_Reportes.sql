@@ -11,10 +11,8 @@
 
 --Creacion de Stored Procedures para generacion de Reportes (entrega 7)
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
-BEGIN
-	USE MUNDIAL
-END;
+-- El instalador 00_Ejecutar_Todo.sql ya selecciona la base activa
+-- (MUNDIAL o MUNDIALtesting), asi que no se fuerza el USE MUNDIAL aqui.
 GO
 
 --Goleadores por seleccion, fase y torneo
@@ -24,6 +22,7 @@ GO
 CREATE PROCEDURE SP.uspReporte_Goleadores
 @categoria VARCHAR(9),
 @mundial INT
+WITH EXECUTE AS OWNER
 AS
 BEGIN
 	-- Abrir clave simetrica para descifrado de nombres (Entrega 8)
@@ -197,6 +196,7 @@ BEGIN
 			ON infoT.IdMundial = Mundial.IdMundial
 		END
 	END
+	CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 END;
 GO
 
@@ -206,8 +206,14 @@ IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspRepor
 GO
 CREATE PROCEDURE SP.uspReporte_Tarjetas
 @mundial INT
+WITH EXECUTE AS OWNER
 AS
 BEGIN
+	-- Abrir clave simetrica para descifrado de nombres (Entrega 8)
+	OPEN SYMMETRIC KEY ClaveSimetrica_AES128_Mundial
+	DECRYPTION BY CERTIFICATE CertificadoCifradoMundial
+	WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
+
 	DECLARE @errorCount INT
 
 	SET @errorCount = 0
@@ -303,6 +309,7 @@ IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspRepor
 GO
 CREATE PROCEDURE SP.uspReporte_Arbitraje
 @mundial INT
+WITH EXECUTE AS OWNER
 AS
 BEGIN
 	-- Abrir clave simetrica para descifrado de nombres (Entrega 8)
@@ -426,6 +433,7 @@ BEGIN
 		sedes.Mundial AS Mundial
 		ON infoT.IdMundial = Mundial.IdMundial
 	END
+	CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 END;
 GO
 
@@ -553,8 +561,6 @@ BEGIN
 		ON infoT.IdMundial = Mundial.IdMundial
 		FOR XML RAW ('Publicidad'), ROOT('ReportePublicidad'), ELEMENTS
 	END
-
-	CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 END;
 GO
 
@@ -565,6 +571,7 @@ IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspRepor
 GO
 CREATE PROCEDURE SP.uspReporte_Convocados
 @mundial INT
+WITH EXECUTE AS OWNER
 AS
 BEGIN
 	-- Abrir clave simetrica para descifrado de nombres (Entrega 8)

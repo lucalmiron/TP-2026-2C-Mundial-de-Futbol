@@ -2,7 +2,8 @@
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 26/10/26.
 -- Objetivo: instalar la base, tablas y procedimientos de la entrega 5.
--- Orden: 01-02 bases y esquemas; 03-36 tablas y restricciones; 37-69 SP.
+-- Orden: 01-02 bases y esquemas; 03-36 tablas y restricciones; 37-69 SP;
+-- 70-96 entregas 6/7; 97-100 seguridad y cifrado.
 -- En SSMS, activar modo SQLCMD y cambiar ScriptPath por la ruta de Tablas.
 -- Mantener las comillas si la ruta contiene espacios.
 
@@ -155,10 +156,22 @@ GO
 GO
 :r $(ScriptPath)\69_Sp_CambioConvocatoria.sql
 GO
+-- Entrega 7: SP de conversion horaria y reportes (necesarios para los permisos de roles)
+:r $(ScriptPath)\93_SP_APIconversionHora.sql
+GO
+:r $(ScriptPath)\94_Sp_Reportes.sql
+GO
 -- Entrega 8: Crear claves de cifrado y aplicar cifrado a datos sensibles (MUNDIAL)
 :r $(ScriptPath)\97_Seguridad_Cifrado_Claves.sql
 GO
 :r $(ScriptPath)\98_Seguridad_Cifrado_Aplicar.sql
+GO
+USE MUNDIAL;
+GO
+-- Entrega 8: Roles de seguridad y usuarios (MUNDIAL)
+:r $(ScriptPath)\99_Seguridad_Roles.sql
+GO
+:r $(ScriptPath)\100_Seguridad_Usuarios.sql
 GO
 
 USE [MUNDIALtesting];
@@ -231,10 +244,22 @@ GO
 :r $(ScriptPath)\68_Sp_Evento.sql
 :r $(ScriptPath)\69_Sp_CambioConvocatoria.sql
 GO
+-- Entrega 7: SP de conversion horaria y reportes (necesarios para los permisos de roles)
+:r $(ScriptPath)\93_SP_APIconversionHora.sql
+GO
+:r $(ScriptPath)\94_Sp_Reportes.sql
+GO
 -- Entrega 8: Crear claves de cifrado y aplicar cifrado a datos sensibles (MUNDIALtesting)
 :r $(ScriptPath)\97_Seguridad_Cifrado_Claves.sql
 GO
 :r $(ScriptPath)\98_Seguridad_Cifrado_Aplicar.sql
+GO
+USE MUNDIALtesting;
+GO
+-- Entrega 8: Roles de seguridad y usuarios (MUNDIALtesting)
+:r $(ScriptPath)\99_Seguridad_Roles.sql
+GO
+:r $(ScriptPath)\100_Seguridad_Usuarios.sql
 GO
 PRINT 'Instalacion de entrega 5 finalizada en MUNDIALtesting.';
 GO

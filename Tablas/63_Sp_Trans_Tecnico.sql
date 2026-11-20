@@ -25,6 +25,7 @@ CREATE PROCEDURE SPTRANS.uspTecnico_Registrar
 @pais INT,
 @funcion VARCHAR(40),
 @seleccion INT
+WITH EXECUTE AS OWNER
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
@@ -102,6 +103,7 @@ CREATE PROCEDURE SPTRANS.uspTecnico_Update
 @pais INT = NULL,
 @funcion VARCHAR(40) = NULL,
 @seleccion INT = NULL
+WITH EXECUTE AS OWNER
 AS
 BEGIN
 	DECLARE @errores NVARCHAR(2048) = N'';
