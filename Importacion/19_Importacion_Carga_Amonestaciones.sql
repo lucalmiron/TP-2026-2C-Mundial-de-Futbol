@@ -5,12 +5,17 @@
 -- con la metodologia de tres fases. Tipos de evento de la fuente: 4 amarilla,
 -- 6 segunda amarilla con expulsion. La roja directa (tipo 5) la carga el
 -- importador 23 para no repetir filas entre los dos scripts.
+-- El amonestado puede ser un jugador o un tecnico: la fuente tambien amonesta
+-- entrenadores (Scaloni, Alfaro, Nagelsmann, etc.) y el SP de la entrega 5
+-- admite amonestar tecnicos. Si el nombre no es jugador de esa seleccion, se
+-- busca en equipos.Tecnico.
 --   FASE 1 STAGING     : una fila por tarjeta.
 --   FASE 2 DEPURACION  : reglas de conjunto (UPDATE) sobre la staging.
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
 --                         SPTRANS.uspAmonestacion_Registrar.
 -- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos),
--- 14 (alineaciones) y 15 (arbitrajes: el arbitro del partido es obligatorio).
+-- 14 (alineaciones), 15 (arbitrajes: el arbitro del partido es obligatorio) y
+-- 18 (tecnicos: sin ella los entrenadores amonestados quedarian sin resolver).
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
 -- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
 -- :setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
@@ -82,6 +87,7 @@ CREATE TABLE #AmonestacionesStaging (
     Tarjeta VARCHAR(8) COLLATE DATABASE_DEFAULT,
     NombreArbitro NVARCHAR(60) COLLATE DATABASE_DEFAULT,
     IdJugador INT,
+    IdTecnico INT,
     IdArbitro INT,
     DetallePartido NVARCHAR(2048) COLLATE DATABASE_DEFAULT,
     Estado VARCHAR(20) COLLATE DATABASE_DEFAULT NOT NULL DEFAULT 'Pendiente',
@@ -127,6 +133,26 @@ WHERE e.type IN (4,6);
 
 IF NOT EXISTS (SELECT 1 FROM #AmonestacionesStaging)
     THROW 51901, 'No se encontraron amonestaciones en los JSON; revise la lectura de archivos.', 1;
+
+-- Normaliza el nombre del arbitro igual que el 15: la fuente lo escribe a veces
+-- como "Nombre (Pais)" y con variantes (inicial, sin tilde). El 19 necesita el
+-- nombre canonico para encontrar el arbitro que cargo el 15.
+UPDATE #AmonestacionesStaging SET
+    NombreArbitro = NULLIF(LTRIM(RTRIM(CASE WHEN CHARINDEX(N'(', NombreArbitro) > 0
+                                           THEN LEFT(NombreArbitro, CHARINDEX(N'(', NombreArbitro) - 1)
+                                           ELSE NombreArbitro END)), N'');
+
+CREATE TABLE #EquivalenciaArbitros (
+    Variante NVARCHAR(60) COLLATE Latin1_General_100_CI_AI,
+    Canonico NVARCHAR(60) COLLATE Latin1_General_100_CI_AS
+);
+INSERT #EquivalenciaArbitros (Variante, Canonico) VALUES
+    (N'I. Barton', N'Iván Barton'),
+    (N'Clement Turpin', N'Clément Turpin');
+UPDATE s SET NombreArbitro = e.Canonico
+FROM #AmonestacionesStaging AS s
+JOIN #EquivalenciaArbitros AS e ON e.Variante = s.NombreArbitro COLLATE Latin1_General_100_CI_AI;
+DROP TABLE #EquivalenciaArbitros;
 
 ---------------------------------------------------------------------------------------
 -- FASE 2 - DEPURACION
@@ -190,30 +216,49 @@ UPDATE #AmonestacionesStaging SET NombreAmonestadoBd = COALESCE(
        AND j.Seleccion = #AmonestacionesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #AmonestacionesStaging.NombreAmonestado AND al.Habilitado='1'
-       AND al.Seleccion = #AmonestacionesStaging.SeleccionPais))
+       AND (al.Seleccion = #AmonestacionesStaging.SeleccionPais
+            OR EXISTS (SELECT 1 FROM #EquiposPartidos AS eq
+                       WHERE eq.Pais = #AmonestacionesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))),
+    -- Si no es jugador, puede ser un entrenador (equipos.Tecnico).
+    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
+     WHERE pe.Nombre = #AmonestacionesStaging.NombreAmonestado AND t.Seleccion = #AmonestacionesStaging.Seleccion),
+    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
+     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #AmonestacionesStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI
+       AND t.Seleccion = #AmonestacionesStaging.Seleccion))
 WHERE Estado='Pendiente';
 
--- D6: el amonestado no esta cargado para esa seleccion (carga 10).
+-- D6: el amonestado no esta cargado para esa seleccion, ni como jugador ni como
+--     tecnico (cargas 10 y 18).
 UPDATE #AmonestacionesStaging SET Estado='Error',
-    Detalle=N'El amonestado no esta cargado para esa seleccion: ejecute la carga 10.'
+    Detalle=N'El amonestado no esta cargado para esa seleccion: ejecute la carga 10 (jugadores) o la 18 (tecnicos).'
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
        WHERE pe.Nombre = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
-         AND j.Seleccion = #AmonestacionesStaging.Seleccion) = 0;
-
--- D7: el amonestado es ambiguo dentro de la seleccion.
-UPDATE #AmonestacionesStaging SET Estado='Error',
-    Detalle=N'El amonestado es ambiguo en la seleccion: revise la carga 10.'
-WHERE Estado='Pendiente'
+         AND j.Seleccion = #AmonestacionesStaging.Seleccion) = 0
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
-       JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
+       JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
        WHERE pe.Nombre = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
-         AND j.Seleccion = #AmonestacionesStaging.Seleccion) > 1;
+         AND t.Seleccion = #AmonestacionesStaging.Seleccion) = 0;
 
--- D8: el arbitro del partido no esta cargado (carga 18).
+-- D7: el amonestado es ambiguo dentro de la seleccion (jugador o tecnico).
 UPDATE #AmonestacionesStaging SET Estado='Error',
-    Detalle=N'El arbitro del partido no esta cargado: ejecute la carga 18.'
+    Detalle=N'El amonestado es ambiguo en la seleccion: revise las cargas 10 y 18.'
+WHERE Estado='Pendiente'
+  AND ((SELECT COUNT(*) FROM equipos.Persona AS pe
+        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
+        WHERE pe.Nombre = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
+          AND j.Seleccion = #AmonestacionesStaging.Seleccion) > 1
+    OR (SELECT COUNT(*) FROM equipos.Persona AS pe
+        JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
+        WHERE pe.Nombre = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
+          AND t.Seleccion = #AmonestacionesStaging.Seleccion) > 1);
+
+-- D8: el arbitro del partido no esta cargado (carga 15).
+UPDATE #AmonestacionesStaging SET Estado='Error',
+    Detalle=N'El arbitro del partido no esta cargado: ejecute la carga 15.'
 WHERE Estado='Pendiente'
   AND (NULLIF(NombreArbitro,N'') IS NULL
     OR (SELECT COUNT(*) FROM arbitros.Arbitro AS ar
@@ -225,6 +270,13 @@ UPDATE #AmonestacionesStaging SET IdJugador = j.IdJugador
 FROM #AmonestacionesStaging AS s
 JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado)
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
+WHERE s.Estado='Pendiente';
+
+-- El mismo nombre podria ser tecnico (si no fue jugador): se resuelve aparte.
+UPDATE #AmonestacionesStaging SET IdTecnico = t.IdTecnico
+FROM #AmonestacionesStaging AS s
+JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado)
+JOIN equipos.Tecnico AS t ON t.IdTecnico = pe.IdPersona AND t.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
 UPDATE #AmonestacionesStaging SET IdArbitro = ar.IdArbitro
@@ -246,21 +298,24 @@ FROM #AmonestacionesStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
 ---------------------------------------------------------------------------------------
 
 DECLARE @fila INT, @idPartido INT, @minuto INT, @periodo INT, @idJugador INT,
-        @idArbitro INT, @tarjeta VARCHAR(8), @estado VARCHAR(20);
+        @idTecnico INT, @idArbitro INT, @tarjeta VARCHAR(8), @amonestado INT,
+        @estado VARCHAR(20);
 DECLARE crsAmonestaciones CURSOR LOCAL FAST_FORWARD FOR
-    SELECT Fila, IdPartido, Minuto, Periodo, IdJugador, IdArbitro, Tarjeta
+    SELECT Fila, IdPartido, Minuto, Periodo, IdJugador, IdTecnico, IdArbitro, Tarjeta
     FROM #AmonestacionesStaging WHERE Estado='Pendiente' ORDER BY Fila;
 OPEN crsAmonestaciones;
-FETCH NEXT FROM crsAmonestaciones INTO @fila, @idPartido, @minuto, @periodo, @idJugador, @idArbitro, @tarjeta;
+FETCH NEXT FROM crsAmonestaciones INTO @fila, @idPartido, @minuto, @periodo, @idJugador, @idTecnico, @idArbitro, @tarjeta;
 WHILE @@FETCH_STATUS = 0
 BEGIN
     BEGIN TRY
+        -- El amonestado es el jugador si existia; si no, el tecnico.
+        SET @amonestado = COALESCE(@idJugador, @idTecnico);
         -- El SP de alta de amonestaciones no valida duplicados: se verifica si
         -- la tarjeta ya esta cargada para que la carga sea idempotente.
         IF EXISTS (SELECT 1 FROM partidos.Amonestacion AS a
                    JOIN partidos.Evento AS e ON e.IdEvento = a.IdAmonestacion
                    WHERE e.Partido = @idPartido AND e.Periodo = @periodo
-                     AND e.Minuto = @minuto AND a.Amonestado = @idJugador
+                     AND e.Minuto = @minuto AND a.Amonestado = @amonestado
                      AND a.Tarjeta = @tarjeta)
         BEGIN
             SET @estado='SinCambios';
@@ -268,7 +323,7 @@ BEGIN
         ELSE
         BEGIN
             EXEC SPTRANS.uspAmonestacion_Registrar @minuto=@minuto, @partido=@idPartido,
-                @periodo=@periodo, @amonestado=@idJugador, @arbitro=@idArbitro,
+                @periodo=@periodo, @amonestado=@amonestado, @arbitro=@idArbitro,
                 @tarjeta=@tarjeta, @motivo=N'Amonestacion registrada en la fuente del torneo.';
             SET @estado='Insertada';
         END;
@@ -279,7 +334,7 @@ BEGIN
     END CATCH;
     IF @estado <> 'Error'
         UPDATE #AmonestacionesStaging SET Estado=@estado WHERE Fila=@fila;
-    FETCH NEXT FROM crsAmonestaciones INTO @fila, @idPartido, @minuto, @periodo, @idJugador, @idArbitro, @tarjeta;
+    FETCH NEXT FROM crsAmonestaciones INTO @fila, @idPartido, @minuto, @periodo, @idJugador, @idTecnico, @idArbitro, @tarjeta;
 END;
 CLOSE crsAmonestaciones;
 DEALLOCATE crsAmonestaciones;
@@ -288,7 +343,7 @@ DEALLOCATE crsAmonestaciones;
 SELECT 'FASE 3 - Persistencia de amonestaciones' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #AmonestacionesStaging GROUP BY Estado ORDER BY Estado;
 SELECT Fila, GameId, IdPartido, MinutoTexto, Minuto, Periodo, NombreAmonestado, IdJugador,
-       Tarjeta, NombreArbitro, IdArbitro, Estado, Detalle
+       IdTecnico, Tarjeta, NombreArbitro, IdArbitro, Estado, Detalle
 FROM #AmonestacionesStaging ORDER BY Fila;
 
 DECLARE @fallos INT = (SELECT COUNT(*) FROM #AmonestacionesStaging WHERE Estado='Error');

@@ -1,6 +1,8 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 18/11/2026.
+-- ORDEN: ejecutar despues de la carga 18 (sustituciones): el SP valida que el autor
+-- este en cancha y un suplente solo esta en cancha si su ingreso ya fue cargado.
 -- Objetivo: cargar los goles de los 104 JSON de Promiedos con la metodologia
 -- de tres fases. Tipos de evento de la fuente: 1 gol, 2 gol en contra.
 -- La ASISTENCIA del gol viene en el mismo evento, en texts[1] (texts[0] es el
@@ -192,7 +194,9 @@ UPDATE #GolesStaging SET NombreAutorBd = COALESCE(
        AND j.Seleccion = #GolesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #GolesStaging.NombreAutor AND al.Habilitado='1'
-       AND al.Seleccion = #GolesStaging.SeleccionPais))
+       AND (al.Seleccion = #GolesStaging.SeleccionPais
+            OR EXISTS (SELECT 1 FROM #EquiposPartidos AS eq
+                       WHERE eq.Pais = #GolesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))))
 WHERE Estado='Pendiente';
 
 -- D6: el autor no esta cargado para esa seleccion (carga 10).
@@ -233,7 +237,9 @@ UPDATE #GolesStaging SET NombreAsistenciaBd = COALESCE(
        AND j.Seleccion = #GolesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #GolesStaging.NombreAsistencia AND al.Habilitado='1'
-       AND al.Seleccion = #GolesStaging.SeleccionPais))
+       AND (al.Seleccion = #GolesStaging.SeleccionPais
+            OR EXISTS (SELECT 1 FROM #EquiposPartidos AS eq
+                       WHERE eq.Pais = #GolesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))))
 WHERE Estado='Pendiente' AND NULLIF(LTRIM(RTRIM(NombreAsistencia)), N'') IS NOT NULL;
 
 -- Se resuelve el identificador del asistente (siempre del equipo del autor).
@@ -257,7 +263,7 @@ WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL AND IdAsistencia = IdJugad
 
 -- A3: el asistente no estaba en cancha en ese periodo (misma validacion del SP).
 UPDATE #GolesStaging SET IdAsistencia=NULL,
-    Aviso=N'El asistente no estaba en cancha en ese periodo (carga 13): el gol se carga sin asistencia.'
+    Aviso=N'El asistente no estaba en cancha en ese periodo (cargas 14 y 18): el gol se carga sin asistencia.'
 WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL
   AND partidos.fnJugadorEnCanchaPeriodo(IdPartido, IdAsistencia, ISNULL(Minuto,2147483647), Periodo) = 0;
 
@@ -267,7 +273,7 @@ WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL AND Tipo='En contra';
 
 -- D8: el autor no estaba en la cancha (misma validacion del SP, aqui preventiva).
 UPDATE #GolesStaging SET Estado='Error',
-    Detalle=N'El autor del gol no estaba en cancha: revise la carga 13.'
+    Detalle=N'El autor del gol no estaba en cancha: ejecute antes la carga 18 (sustituciones) y la 14 (alineaciones).'
 WHERE Estado='Pendiente' AND IdJugador IS NOT NULL
   AND partidos.fnJugadorEnCanchaPeriodo(IdPartido, IdJugador, ISNULL(Minuto,2147483647), Periodo) = 0;
 

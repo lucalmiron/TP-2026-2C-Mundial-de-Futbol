@@ -182,7 +182,18 @@ UPDATE #SustitucionesStaging SET NombreIngresoBd = COALESCE(
        AND j.Seleccion = #SustitucionesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #SustitucionesStaging.NombreIngreso AND al.Habilitado='1'
-       AND al.Seleccion = #SustitucionesStaging.SeleccionPais))
+       AND (al.Seleccion = #SustitucionesStaging.SeleccionPais
+            OR EXISTS (SELECT 1 FROM #EquiposPartidos AS eq
+                       WHERE eq.Pais = #SustitucionesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))),
+    -- Nombre abreviado de la fuente ("A. Witsel"): inicial + apellido, solo si hay un unico
+    -- jugador de esa seleccion que coincide (si hay dudas queda sin resolver y se informa).
+    (SELECT MIN(pe.Nombre) FROM equipos.Persona AS pe
+     JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
+     WHERE j.Seleccion = #SustitucionesStaging.Seleccion
+       AND #SustitucionesStaging.NombreIngreso LIKE N'_. %'
+       AND LEFT(pe.Nombre COLLATE Latin1_General_100_CI_AI, 1) = LEFT(#SustitucionesStaging.NombreIngreso COLLATE Latin1_General_100_CI_AI, 1)
+       AND pe.Nombre COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(#SustitucionesStaging.NombreIngreso, 4, 100) COLLATE Latin1_General_100_CI_AI
+     HAVING COUNT(*) = 1))
 WHERE Estado='Pendiente';
 
 UPDATE #SustitucionesStaging SET NombreEgresoBd = COALESCE(
@@ -195,7 +206,18 @@ UPDATE #SustitucionesStaging SET NombreEgresoBd = COALESCE(
        AND j.Seleccion = #SustitucionesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #SustitucionesStaging.NombreEgreso AND al.Habilitado='1'
-       AND al.Seleccion = #SustitucionesStaging.SeleccionPais))
+       AND (al.Seleccion = #SustitucionesStaging.SeleccionPais
+            OR EXISTS (SELECT 1 FROM #EquiposPartidos AS eq
+                       WHERE eq.Pais = #SustitucionesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))),
+    -- Nombre abreviado de la fuente ("A. Witsel"): inicial + apellido, solo si hay un unico
+    -- jugador de esa seleccion que coincide (si hay dudas queda sin resolver y se informa).
+    (SELECT MIN(pe.Nombre) FROM equipos.Persona AS pe
+     JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
+     WHERE j.Seleccion = #SustitucionesStaging.Seleccion
+       AND #SustitucionesStaging.NombreEgreso LIKE N'_. %'
+       AND LEFT(pe.Nombre COLLATE Latin1_General_100_CI_AI, 1) = LEFT(#SustitucionesStaging.NombreEgreso COLLATE Latin1_General_100_CI_AI, 1)
+       AND pe.Nombre COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(#SustitucionesStaging.NombreEgreso, 4, 100) COLLATE Latin1_General_100_CI_AI
+     HAVING COUNT(*) = 1))
 WHERE Estado='Pendiente';
 
 -- D7: el jugador que entra no esta cargado para esa seleccion (carga 10).
