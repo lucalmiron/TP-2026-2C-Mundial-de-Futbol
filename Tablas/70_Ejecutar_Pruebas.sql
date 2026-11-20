@@ -1,7 +1,7 @@
 -- Modo SQLCMD. Las cuatro pruebas usan tablas distintas en una base nueva.
 --:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
 --L
-:setvar ScriptPath "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
+:setvar ScriptPath "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
 :ON ERROR EXIT
 USE master;
 GO

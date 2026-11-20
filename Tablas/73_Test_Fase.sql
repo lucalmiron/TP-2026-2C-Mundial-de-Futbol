@@ -61,8 +61,16 @@ GO
 
 DECLARE @x1 INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Grupos');
 
--- Esperado: cambia a Final, SELECT muestra Final
-EXEC SP.uspFase_Update @x1, 'Final';
+-- Esperado: cambia a Final, SELECT muestra Final.
+-- Si la base ya tiene datos importados, 'Final' existe y el SP rechaza el
+-- duplicado: se considera un resultado valido y se continúa.
+BEGIN TRY
+    EXEC SP.uspFase_Update @x1, 'Final';
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 50000 OR ERROR_MESSAGE() NOT LIKE '%Valor duplicado: Fase%' THROW;
+    PRINT 'Omitido: la fase Final ya existe (datos importados).';
+END CATCH;
 GO
 SELECT * FROM partidos.Fase;
 GO
@@ -95,8 +103,16 @@ GO
 
 DECLARE @x2 INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Final');
 
--- Esperado: borra la fase, SELECT sin esa fila
-EXEC SP.uspFase_Bajar @x2;
+-- Esperado: borra la fase, SELECT sin esa fila.
+-- Con datos importados la fase tiene partidos asociados y el SP la protege:
+-- se considera un resultado valido y se continúa.
+BEGIN TRY
+    EXEC SP.uspFase_Bajar @x2;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 50000 OR ERROR_MESSAGE() NOT LIKE '%Existen partidos con esta fase%' THROW;
+    PRINT 'Omitido: la fase tiene partidos asociados (datos importados).';
+END CATCH;
 GO
 SELECT * FROM partidos.Fase;
 GO

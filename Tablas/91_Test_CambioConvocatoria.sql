@@ -61,7 +61,7 @@ DECLARE @ccSel1 INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONF
 DECLARE @ccP3   INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 86');
 
 -- Esperado: se registra el jugador que saldria (egreso).
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Jug Test 86 E')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 E')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Jug Test 86 E', @fnac = '2003-02-01', @pais = @ccP3, @posicion = 'DEL', @numero = 4, @seleccion = @ccSel1;
 GO
 
@@ -69,15 +69,15 @@ DECLARE @ccSel2 INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONF
 DECLARE @ccP4   INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test 86');
 
 -- Esperado: se registra el jugador que entraria (ingreso).
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Jug Test 86 I')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 I')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Jug Test 86 I', @fnac = '2003-02-02', @pais = @ccP4, @posicion = 'MED', @numero = 5, @seleccion = @ccSel2;
 GO
 
 --/ALTA
 
 DECLARE @ccSel3 INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF 86');
-DECLARE @ccE INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 E');
-DECLARE @ccI INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
+DECLARE @ccE INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 E');
+DECLARE @ccI INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 I');
 
 -- Esperado: egreso e ingreso iguales, 0 filas nuevas
 BEGIN TRY
@@ -92,8 +92,8 @@ SELECT * FROM equipos.CambioConvocatoria
 GO
 
 DECLARE @ccSel4 INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF 86');
-DECLARE @ccE2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 E');
-DECLARE @ccI2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
+DECLARE @ccE2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 E');
+DECLARE @ccI2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 I');
 
 -- Esperado: motivo nulo, 0 filas nuevas
 BEGIN TRY
@@ -108,8 +108,8 @@ SELECT * FROM equipos.CambioConvocatoria
 GO
 
 DECLARE @ccSel5 INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF 86');
-DECLARE @ccE3 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 E');
-DECLARE @ccI3 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
+DECLARE @ccE3 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 E');
+DECLARE @ccI3 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 I');
 
 -- Esperado: el ingreso ya es un convocado activo, 0 filas nuevas
 BEGIN TRY
@@ -124,8 +124,8 @@ SELECT * FROM equipos.CambioConvocatoria
 GO
 
 DECLARE @ccSel6 INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF 86');
-DECLARE @ccE4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 E');
-DECLARE @ccI4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
+DECLARE @ccE4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 E');
+DECLARE @ccI4 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 I');
 
 -- Esperado: seleccion inexistente (99), 0 filas nuevas
 BEGIN TRY
@@ -140,7 +140,7 @@ SELECT * FROM equipos.CambioConvocatoria
 GO
 
 DECLARE @ccSel7 INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF 86');
-DECLARE @ccI5 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Jug Test 86 I');
+DECLARE @ccI5 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Jug Test 86 I');
 
 -- Esperado: el egreso no es un convocado activo (99), 0 filas nuevas
 BEGIN TRY
@@ -174,8 +174,8 @@ DECLARE @jugadoresPrueba TABLE (IdJugador INT PRIMARY KEY);
 INSERT INTO @jugadoresPrueba (IdJugador)
 SELECT J.IdJugador FROM equipos.Jugador AS J
 JOIN equipos.Persona AS P ON P.IdPersona = J.IdJugador
-WHERE P.Nombre IN (
-    'Jug Test 86 E', 'Jug Test 86 I');
+WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', P.Nombre)) IN (
+    N'Jug Test 86 E', N'Jug Test 86 I');
 
 DELETE FROM equipos.Jugador WHERE IdJugador IN (SELECT IdJugador FROM @jugadoresPrueba);
 DELETE FROM equipos.Persona WHERE IdPersona IN (SELECT IdJugador FROM @jugadoresPrueba);
