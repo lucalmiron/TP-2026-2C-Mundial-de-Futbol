@@ -1,0 +1,9 @@
+tipo_oficial_fifa,nombre_fifa,funcion_modelo,cupo_modelo,cargar_al_modelo
+1,Árbitro Principal,Principal,1,Sí
+2,Asistente 1,Asistente,2,Sí
+3,Asistente 2,Asistente,2,Sí (compartido cupo 2)
+4,Cuarto árbitro,4to,1,Sí
+5,VAR,VAR,1,Sí
+6,Reserva,Reserva,0,No (omite modelo)
+8,AVAR,Asistente VAR,0,No (omite modelo)
+9,Support VAR,Support VAR,0,No (omite modelo)

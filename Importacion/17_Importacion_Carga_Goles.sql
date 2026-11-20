@@ -57,8 +57,10 @@
 :setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
+-- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
+-- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -188,12 +190,12 @@ JOIN equipos.Pais AS p ON p.IdPais = se.IdPais
 WHERE s.Estado='Pendiente';
 
 UPDATE #GolesStaging SET NombreAutorBd = COALESCE(
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #GolesStaging.NombreAutor AND j.Seleccion = #GolesStaging.Seleccion),
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #GolesStaging.NombreAutor AND j.Seleccion = #GolesStaging.Seleccion),
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #GolesStaging.NombreAutor COLLATE Latin1_General_100_CI_AI
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI = #GolesStaging.NombreAutor COLLATE Latin1_General_100_CI_AI
        AND j.Seleccion = #GolesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #GolesStaging.NombreAutor AND al.Habilitado='1'
@@ -208,7 +210,7 @@ UPDATE #GolesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor)
          AND j.Seleccion = #GolesStaging.Seleccion) = 0;
 
 -- D7: el autor es ambiguo dentro de la seleccion.
@@ -217,13 +219,13 @@ UPDATE #GolesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor)
          AND j.Seleccion = #GolesStaging.Seleccion) > 1;
 
 -- Se resuelve el identificador del autor.
 UPDATE #GolesStaging SET IdJugador = j.IdJugador
 FROM #GolesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAutorBd, s.NombreAutor)
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(s.NombreAutorBd, s.NombreAutor)
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
@@ -231,12 +233,12 @@ WHERE s.Estado='Pendiente';
 -- autor: coincidencia directa, sin acentos y, por ultimo, equivalencias.
 -- Si no se puede resolver, el gol se carga igual con Asistencia NULL.
 UPDATE #GolesStaging SET NombreAsistenciaBd = COALESCE(
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #GolesStaging.NombreAsistencia AND j.Seleccion = #GolesStaging.Seleccion),
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #GolesStaging.NombreAsistencia AND j.Seleccion = #GolesStaging.Seleccion),
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #GolesStaging.NombreAsistencia COLLATE Latin1_General_100_CI_AI
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI = #GolesStaging.NombreAsistencia COLLATE Latin1_General_100_CI_AI
        AND j.Seleccion = #GolesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #GolesStaging.NombreAsistencia AND al.Habilitado='1'
@@ -248,7 +250,7 @@ WHERE Estado='Pendiente' AND NULLIF(LTRIM(RTRIM(NombreAsistencia)), N'') IS NOT 
 -- Se resuelve el identificador del asistente (siempre del equipo del autor).
 UPDATE #GolesStaging SET IdAsistencia = j.IdJugador
 FROM #GolesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = s.NombreAsistenciaBd
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = s.NombreAsistenciaBd
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente' AND s.NombreAsistenciaBd IS NOT NULL;
 

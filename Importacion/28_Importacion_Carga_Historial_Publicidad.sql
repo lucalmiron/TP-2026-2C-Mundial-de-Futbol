@@ -32,12 +32,12 @@
 -- :setvar RutaHistorial "C:\ruta\proyecto\Datos\Publicidad\historial_publicidad.csv"
 
 --L
-:setvar RutaHistorial "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\historial_publicidad.csv"
+--:setvar RutaHistorial "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\historial_publicidad.csv"
 
 --Fidel
---:setvar RutaHistorial "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\historial_publicidad.csv"
+:setvar RutaHistorial "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\historial_publicidad.csv"
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

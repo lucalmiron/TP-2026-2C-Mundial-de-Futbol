@@ -86,21 +86,19 @@ BEGIN TRY
           ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
     -- El CSV de equivalencias de jugadores tiene campos entre comillas (la
     -- columna criterio lleva comas). Con FORMAT='CSV' el terminador de fila
-    -- debe coincidir con el fin de linea real del archivo, y eso depende de la
-    -- configuracion de Git de cada PC (core.autocrlf deja CRLF en el working
-    -- tree aunque el repositorio guarde LF). Se intenta con LF y, si falla, se
-    -- reintenta con CRLF; asi el importador corre en cualquier clon.
-    BEGIN TRY
-        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    END TRY
-    BEGIN CATCH
-        TRUNCATE TABLE #AliasJugadores;
+    -- debe coincidir con el fin de linea real del archivo: LF o CRLF segun la
+    -- configuracion de Git de cada PC. Se detecta leyendo el archivo y se elige
+    -- el terminador correcto, sin reintentos a ciegas.
+    DECLARE @aliasBytes VARBINARY(MAX) =
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaAliasJugadores)', SINGLE_BLOB) AS f);
+    IF CHARINDEX(0x0D0A, @aliasBytes) > 0
         BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
-    END CATCH;
+    ELSE
+        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY
 BEGIN CATCH
     DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudieron leer las tablas de equivalencias. '

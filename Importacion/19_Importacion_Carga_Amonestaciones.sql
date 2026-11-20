@@ -45,8 +45,10 @@
 :setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
+-- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
+-- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -207,12 +209,12 @@ JOIN equipos.Pais AS p ON p.IdPais = se.IdPais
 WHERE s.Estado='Pendiente';
 
 UPDATE #AmonestacionesStaging SET NombreAmonestadoBd = COALESCE(
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #AmonestacionesStaging.NombreAmonestado AND j.Seleccion = #AmonestacionesStaging.Seleccion),
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #AmonestacionesStaging.NombreAmonestado AND j.Seleccion = #AmonestacionesStaging.Seleccion),
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #AmonestacionesStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI = #AmonestacionesStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI
        AND j.Seleccion = #AmonestacionesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #AmonestacionesStaging.NombreAmonestado AND al.Habilitado='1'
@@ -220,12 +222,12 @@ UPDATE #AmonestacionesStaging SET NombreAmonestadoBd = COALESCE(
             OR EXISTS (SELECT 1 FROM #EquiposPartidos AS eq
                        WHERE eq.Pais = #AmonestacionesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))),
     -- Si no es jugador, puede ser un entrenador (equipos.Tecnico).
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
-     WHERE pe.Nombre = #AmonestacionesStaging.NombreAmonestado AND t.Seleccion = #AmonestacionesStaging.Seleccion),
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #AmonestacionesStaging.NombreAmonestado AND t.Seleccion = #AmonestacionesStaging.Seleccion),
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
-     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #AmonestacionesStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI = #AmonestacionesStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI
        AND t.Seleccion = #AmonestacionesStaging.Seleccion))
 WHERE Estado='Pendiente';
 
@@ -236,11 +238,11 @@ UPDATE #AmonestacionesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
          AND j.Seleccion = #AmonestacionesStaging.Seleccion) = 0
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
          AND t.Seleccion = #AmonestacionesStaging.Seleccion) = 0;
 
 -- D7: el amonestado es ambiguo dentro de la seleccion (jugador o tecnico).
@@ -249,11 +251,11 @@ UPDATE #AmonestacionesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND ((SELECT COUNT(*) FROM equipos.Persona AS pe
         JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-        WHERE pe.Nombre = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
+        WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
           AND j.Seleccion = #AmonestacionesStaging.Seleccion) > 1
     OR (SELECT COUNT(*) FROM equipos.Persona AS pe
         JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
-        WHERE pe.Nombre = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
+        WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#AmonestacionesStaging.NombreAmonestadoBd, #AmonestacionesStaging.NombreAmonestado)
           AND t.Seleccion = #AmonestacionesStaging.Seleccion) > 1);
 
 -- D8: el arbitro del partido no esta cargado (carga 15).
@@ -263,25 +265,25 @@ WHERE Estado='Pendiente'
   AND (NULLIF(NombreArbitro,N'') IS NULL
     OR (SELECT COUNT(*) FROM arbitros.Arbitro AS ar
         JOIN equipos.Persona AS pe ON pe.IdPersona=ar.IdArbitro
-        WHERE pe.Nombre = #AmonestacionesStaging.NombreArbitro) <> 1);
+        WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #AmonestacionesStaging.NombreArbitro) <> 1);
 
 -- Se resuelven los identificadores.
 UPDATE #AmonestacionesStaging SET IdJugador = j.IdJugador
 FROM #AmonestacionesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado)
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado)
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
 -- El mismo nombre podria ser tecnico (si no fue jugador): se resuelve aparte.
 UPDATE #AmonestacionesStaging SET IdTecnico = t.IdTecnico
 FROM #AmonestacionesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado)
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado)
 JOIN equipos.Tecnico AS t ON t.IdTecnico = pe.IdPersona AND t.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
 UPDATE #AmonestacionesStaging SET IdArbitro = ar.IdArbitro
 FROM #AmonestacionesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = s.NombreArbitro
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = s.NombreArbitro
 JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
 WHERE s.Estado='Pendiente';
 

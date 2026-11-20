@@ -21,7 +21,7 @@
 --F
 :setvar RutaPublicidad "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\publicidad.xml"
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -198,11 +198,15 @@ CLOSE crsAnunciante;
 DEALLOCATE crsAnunciante;
 
 DECLARE crsCampania CURSOR LOCAL FAST_FORWARD FOR
-    SELECT Fila, Anunciante, Titulo, Descripcion FROM #PublicidadStaging WHERE Estado='Pendiente' ORDER BY Fila;
+    SELECT Fila, Anunciante, Titulo, Descripcion, IdIdioma
+    FROM #PublicidadStaging WHERE Estado='Pendiente' ORDER BY Fila;
 OPEN crsCampania;
-FETCH NEXT FROM crsCampania INTO @fila, @anunciante, @titulo, @descripcion;
+FETCH NEXT FROM crsCampania INTO @fila, @anunciante, @titulo, @descripcion, @idIdioma;
 WHILE @@FETCH_STATUS = 0
 BEGIN
+    -- Las variables no se revierten con ROLLBACK: se reinician en cada fila.
+    SET @idCampania = NULL;
+    SET @idPublicidad = NULL;
     BEGIN TRY
         BEGIN TRANSACTION;
         SELECT @idCampania = IdCampania FROM publicidad.Campania WITH (UPDLOCK, HOLDLOCK)
@@ -234,7 +238,7 @@ BEGIN
         IF XACT_STATE()<>0 ROLLBACK TRANSACTION;
         UPDATE #PublicidadStaging SET Estado='Error', Detalle=ERROR_MESSAGE() WHERE Fila=@fila;
     END CATCH;
-    FETCH NEXT FROM crsCampania INTO @fila, @anunciante, @titulo, @descripcion;
+    FETCH NEXT FROM crsCampania INTO @fila, @anunciante, @titulo, @descripcion, @idIdioma;
 END;
 CLOSE crsCampania;
 DEALLOCATE crsCampania;

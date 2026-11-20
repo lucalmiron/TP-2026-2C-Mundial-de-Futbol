@@ -37,13 +37,15 @@
 -- :setvar RutaFifaOficiales "C:\ruta\proyecto\Datos\Datos_Partidos\fifa_oficiales.csv"
 
 --L
-:setvar RutaFifaOficiales "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
+--:setvar RutaFifaOficiales "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
 
 --Fidel
---:setvar RutaFifaOficiales "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
+:setvar RutaFifaOficiales "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
+-- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
+-- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -188,7 +190,7 @@ UPDATE #OficialesStaging SET Estado='Error',
     Detalle=N'Ya existe una persona con ese nombre y no es arbitro: revise las cargas 10 y 15.'
 WHERE Estado='Pendiente'
   AND EXISTS (SELECT 1 FROM equipos.Persona AS pe
-              WHERE pe.Nombre = #OficialesStaging.Nombre
+              WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #OficialesStaging.Nombre
                 AND NOT EXISTS (SELECT 1 FROM arbitros.Arbitro AS ar
                                 WHERE ar.IdArbitro = pe.IdPersona));
 
@@ -240,14 +242,14 @@ WHERE s.Estado='Pendiente'
   AND EXISTS (SELECT 1
               FROM arbitros.Arbitraje AS a
               JOIN equipos.Persona AS pe ON pe.IdPersona = a.Arbitro
-              WHERE a.Partido = s.IdPartido AND a.Funcion = s.Rol AND pe.Nombre = s.Nombre);
+              WHERE a.Partido = s.IdPartido AND a.Funcion = s.Rol AND CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = s.Nombre);
 
 -- D9: ya hay una designacion para esa funcion en ese partido.
 --     Puede venir de la carga 15 (Principal) o de una ejecucion anterior.
 --     Se informa si el designado es otra persona: es una divergencia de fuentes.
 UPDATE s SET Estado='Omitida',
     Detalle = N'Ya hay un '+Rol+N' designado en el partido: '
-            + ISNULL((SELECT MIN(pe.Nombre)
+            + ISNULL((SELECT MIN(CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)))
                       FROM arbitros.Arbitraje AS a
                       JOIN equipos.Persona AS pe ON pe.IdPersona = a.Arbitro
                       WHERE a.Partido = s.IdPartido AND a.Funcion = s.Rol), N'(sin dato)')
@@ -261,7 +263,7 @@ WHERE s.Estado='Pendiente'
 -- Se resuelve el arbitro si ya estaba cargado (idempotencia entre partidos).
 UPDATE s SET IdArbitro = ar.IdArbitro
 FROM #OficialesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = s.Nombre
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = s.Nombre
 JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
 WHERE s.Estado='Pendiente';
 
@@ -320,7 +322,7 @@ BEGIN
         -- Cupo de la funcion: se vuelve a controlar porque el cursor procesa el
         -- partido completo y el SP rechaza el exceso.
         SET @existente = NULL;
-        SELECT @existente = MIN(pe.Nombre)
+        SELECT @existente = MIN(CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)))
         FROM arbitros.Arbitraje AS a
         JOIN equipos.Persona AS pe ON pe.IdPersona = a.Arbitro
         WHERE a.Partido = @idPartido AND a.Funcion = @funcion;
@@ -386,13 +388,13 @@ FROM (
 -- Divergencias con la carga 15: Principal de Promiedos vs Principal de FIFA.
 SELECT 'Divergencias de arbitro principal (carga 15 vs FIFA)' AS Fase,
        s.IdPartido, s.Nombre AS PrincipalFifa,
-       (SELECT MIN(pe.Nombre)
+       (SELECT MIN(CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)))
         FROM arbitros.Arbitraje AS a
         JOIN equipos.Persona AS pe ON pe.IdPersona = a.Arbitro
         WHERE a.Partido = s.IdPartido AND a.Funcion = 'Principal') AS PrincipalCargado
 FROM #OficialesStaging AS s
 WHERE s.Rol='Principal' AND s.Estado IN ('Omitida','Insertada')
-  AND s.Nombre <> ISNULL((SELECT MIN(pe.Nombre)
+  AND s.Nombre <> ISNULL((SELECT MIN(CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)))
                           FROM arbitros.Arbitraje AS a
                           JOIN equipos.Persona AS pe ON pe.IdPersona = a.Arbitro
                           WHERE a.Partido = s.IdPartido AND a.Funcion = 'Principal'), N'')

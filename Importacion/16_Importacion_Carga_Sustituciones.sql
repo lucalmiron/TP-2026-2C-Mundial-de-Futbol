@@ -47,8 +47,10 @@
 :setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
+-- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
+-- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -177,12 +179,12 @@ JOIN equipos.Pais AS p ON p.IdPais = se.IdPais
 WHERE s.Estado='Pendiente';
 
 UPDATE #SustitucionesStaging SET NombreIngresoBd = COALESCE(
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #SustitucionesStaging.NombreIngreso AND j.Seleccion = #SustitucionesStaging.Seleccion),
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #SustitucionesStaging.NombreIngreso AND j.Seleccion = #SustitucionesStaging.Seleccion),
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #SustitucionesStaging.NombreIngreso COLLATE Latin1_General_100_CI_AI
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI = #SustitucionesStaging.NombreIngreso COLLATE Latin1_General_100_CI_AI
        AND j.Seleccion = #SustitucionesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #SustitucionesStaging.NombreIngreso AND al.Habilitado='1'
@@ -191,22 +193,22 @@ UPDATE #SustitucionesStaging SET NombreIngresoBd = COALESCE(
                        WHERE eq.Pais = #SustitucionesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))),
     -- Nombre abreviado de la fuente ("A. Witsel"): inicial + apellido, solo si hay un unico
     -- jugador de esa seleccion que coincide (si hay dudas queda sin resolver y se informa).
-    (SELECT MIN(pe.Nombre) FROM equipos.Persona AS pe
+    (SELECT MIN(CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre))) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
      WHERE j.Seleccion = #SustitucionesStaging.Seleccion
        AND #SustitucionesStaging.NombreIngreso LIKE N'_. %'
-       AND LEFT(pe.Nombre COLLATE Latin1_General_100_CI_AI, 1) = LEFT(#SustitucionesStaging.NombreIngreso COLLATE Latin1_General_100_CI_AI, 1)
-       AND pe.Nombre COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(#SustitucionesStaging.NombreIngreso, 4, 100) COLLATE Latin1_General_100_CI_AI
+       AND LEFT(CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI, 1) = LEFT(#SustitucionesStaging.NombreIngreso COLLATE Latin1_General_100_CI_AI, 1)
+       AND CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(#SustitucionesStaging.NombreIngreso, 4, 100) COLLATE Latin1_General_100_CI_AI
      HAVING COUNT(*) = 1))
 WHERE Estado='Pendiente';
 
 UPDATE #SustitucionesStaging SET NombreEgresoBd = COALESCE(
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #SustitucionesStaging.NombreEgreso AND j.Seleccion = #SustitucionesStaging.Seleccion),
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #SustitucionesStaging.NombreEgreso AND j.Seleccion = #SustitucionesStaging.Seleccion),
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #SustitucionesStaging.NombreEgreso COLLATE Latin1_General_100_CI_AI
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI = #SustitucionesStaging.NombreEgreso COLLATE Latin1_General_100_CI_AI
        AND j.Seleccion = #SustitucionesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #SustitucionesStaging.NombreEgreso AND al.Habilitado='1'
@@ -215,12 +217,12 @@ UPDATE #SustitucionesStaging SET NombreEgresoBd = COALESCE(
                        WHERE eq.Pais = #SustitucionesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))),
     -- Nombre abreviado de la fuente ("A. Witsel"): inicial + apellido, solo si hay un unico
     -- jugador de esa seleccion que coincide (si hay dudas queda sin resolver y se informa).
-    (SELECT MIN(pe.Nombre) FROM equipos.Persona AS pe
+    (SELECT MIN(CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre))) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
      WHERE j.Seleccion = #SustitucionesStaging.Seleccion
        AND #SustitucionesStaging.NombreEgreso LIKE N'_. %'
-       AND LEFT(pe.Nombre COLLATE Latin1_General_100_CI_AI, 1) = LEFT(#SustitucionesStaging.NombreEgreso COLLATE Latin1_General_100_CI_AI, 1)
-       AND pe.Nombre COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(#SustitucionesStaging.NombreEgreso, 4, 100) COLLATE Latin1_General_100_CI_AI
+       AND LEFT(CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI, 1) = LEFT(#SustitucionesStaging.NombreEgreso COLLATE Latin1_General_100_CI_AI, 1)
+       AND CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(#SustitucionesStaging.NombreEgreso, 4, 100) COLLATE Latin1_General_100_CI_AI
      HAVING COUNT(*) = 1))
 WHERE Estado='Pendiente';
 
@@ -230,7 +232,7 @@ UPDATE #SustitucionesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#SustitucionesStaging.NombreIngresoBd, #SustitucionesStaging.NombreIngreso)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#SustitucionesStaging.NombreIngresoBd, #SustitucionesStaging.NombreIngreso)
          AND j.Seleccion = #SustitucionesStaging.Seleccion) = 0;
 
 -- D8: el jugador que sale no esta cargado para esa seleccion.
@@ -239,7 +241,7 @@ UPDATE #SustitucionesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso)
          AND j.Seleccion = #SustitucionesStaging.Seleccion) = 0;
 
 -- D9: alguno de los dos jugadores es ambiguo en la seleccion.
@@ -248,11 +250,11 @@ UPDATE #SustitucionesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND ((SELECT COUNT(*) FROM equipos.Persona AS pe
         JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-        WHERE pe.Nombre = ISNULL(#SustitucionesStaging.NombreIngresoBd, #SustitucionesStaging.NombreIngreso)
+        WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#SustitucionesStaging.NombreIngresoBd, #SustitucionesStaging.NombreIngreso)
           AND j.Seleccion = #SustitucionesStaging.Seleccion) > 1
     OR (SELECT COUNT(*) FROM equipos.Persona AS pe
         JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-        WHERE pe.Nombre = ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso)
+        WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso)
           AND j.Seleccion = #SustitucionesStaging.Seleccion) > 1);
 
 -- D10: el mismo cambio aparece dos veces en el partido.
@@ -267,13 +269,13 @@ WHERE f.Estado='Pendiente' AND EXISTS (
 -- Se resuelven los identificadores.
 UPDATE #SustitucionesStaging SET IdIngreso = j.IdJugador
 FROM #SustitucionesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreIngresoBd, s.NombreIngreso)
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(s.NombreIngresoBd, s.NombreIngreso)
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
 UPDATE #SustitucionesStaging SET IdEgreso = j.IdJugador
 FROM #SustitucionesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreEgresoBd, s.NombreEgreso)
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(s.NombreEgresoBd, s.NombreEgreso)
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 

@@ -35,20 +35,22 @@
 --:setvar RutaLectura "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
 
 --Fidel
---:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
---:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
---:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
---:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
---:setvar RutaLectura "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
+:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLectura "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
 --Santutu
-:setvar RutaJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
-:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
-:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLectura "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
+--:setvar RutaJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+--:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLectura "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
 
 USE MUNDIAL;
 GO
+-- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
+-- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 DECLARE @idMundial INT = 1;
@@ -210,15 +212,45 @@ BEGIN TRY
     SELECT N'jugadores.csv', BulkColumn
     FROM OPENROWSET(BULK '$(RutaJugadores)', SINGLE_BLOB) AS archivo;
 
-    BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
-    WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-          ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
-    WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-          ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    BULK INSERT #EquiposCsv FROM '$(RutaEquipos)'
-    WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-          ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
+    -- Con FORMAT='CSV' el terminador de fila debe coincidir con el fin de linea
+    -- real del archivo. Git guarda estos CSV en LF, pero con core.autocrlf=true
+    -- quedan en CRLF en el working tree. Se intenta con LF y, si falla, se
+    -- reintenta con CRLF para que el importador corra en cualquier clon.
+    BEGIN TRY
+        BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
+    END TRY
+    BEGIN CATCH
+        TRUNCATE TABLE #JugadoresCsv;
+        BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
+    END CATCH;
+
+    BEGIN TRY
+        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
+    END TRY
+    BEGIN CATCH
+        TRUNCATE TABLE #AliasJugadores;
+        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
+    END CATCH;
+
+    BEGIN TRY
+        BULK INSERT #EquiposCsv FROM '$(RutaEquipos)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
+    END TRY
+    BEGIN CATCH
+        TRUNCATE TABLE #EquiposCsv;
+        BULK INSERT #EquiposCsv FROM '$(RutaEquipos)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
+    END CATCH;
 END TRY
 BEGIN CATCH
     DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudieron leer los archivos de jugadores. '
@@ -483,7 +515,8 @@ BEGIN
         SELECT @cantidad=COUNT(*), @idJugador=MIN(j.IdJugador)
         FROM equipos.Jugador j WITH (UPDLOCK, HOLDLOCK)
         JOIN equipos.Persona p ON p.IdPersona=j.IdJugador
-        WHERE j.Seleccion=@idSeleccion AND p.Nombre=@nombreSp;
+        WHERE j.Seleccion=@idSeleccion
+          AND CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', p.Nombre))=@nombreSp;
         IF @cantidad>1 THROW 51602,'Identidad ambigua: varios jugadores con ese nombre en la seleccion.',1;
         IF @cantidad=0
         BEGIN
