@@ -12,6 +12,10 @@
 --   FASE 2 DEPURACION  : reglas de conjunto (UPDATE) sobre la staging.
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
 --                         SPTRANS.uspSustitucion_Registrar.
+-- Reglamento: el SP de la entrega 5 aplica el tope de cambios y de ventanas
+-- del torneo (sedes.Mundial). La fuente de Promiedos supera ese tope en varios
+-- partidos. Esos cambios son un rechazo legitimo: quedan 'Omitida' con el
+-- detalle y se informan en el reporte, no son errores de datos.
 -- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos),
 -- 13 (motivos) y 14 (alineaciones).
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
@@ -182,7 +186,18 @@ UPDATE #SustitucionesStaging SET NombreIngresoBd = COALESCE(
        AND j.Seleccion = #SustitucionesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #SustitucionesStaging.NombreIngreso AND al.Habilitado='1'
-       AND al.Seleccion = #SustitucionesStaging.SeleccionPais))
+       AND (al.Seleccion = #SustitucionesStaging.SeleccionPais
+            OR EXISTS (SELECT 1 FROM #EquiposPartidos AS eq
+                       WHERE eq.Pais = #SustitucionesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))),
+    -- Nombre abreviado de la fuente ("A. Witsel"): inicial + apellido, solo si hay un unico
+    -- jugador de esa seleccion que coincide (si hay dudas queda sin resolver y se informa).
+    (SELECT MIN(pe.Nombre) FROM equipos.Persona AS pe
+     JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
+     WHERE j.Seleccion = #SustitucionesStaging.Seleccion
+       AND #SustitucionesStaging.NombreIngreso LIKE N'_. %'
+       AND LEFT(pe.Nombre COLLATE Latin1_General_100_CI_AI, 1) = LEFT(#SustitucionesStaging.NombreIngreso COLLATE Latin1_General_100_CI_AI, 1)
+       AND pe.Nombre COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(#SustitucionesStaging.NombreIngreso, 4, 100) COLLATE Latin1_General_100_CI_AI
+     HAVING COUNT(*) = 1))
 WHERE Estado='Pendiente';
 
 UPDATE #SustitucionesStaging SET NombreEgresoBd = COALESCE(
@@ -195,7 +210,18 @@ UPDATE #SustitucionesStaging SET NombreEgresoBd = COALESCE(
        AND j.Seleccion = #SustitucionesStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #SustitucionesStaging.NombreEgreso AND al.Habilitado='1'
-       AND al.Seleccion = #SustitucionesStaging.SeleccionPais))
+       AND (al.Seleccion = #SustitucionesStaging.SeleccionPais
+            OR EXISTS (SELECT 1 FROM #EquiposPartidos AS eq
+                       WHERE eq.Pais = #SustitucionesStaging.SeleccionPais AND eq.SeleccionCsv = al.Seleccion))),
+    -- Nombre abreviado de la fuente ("A. Witsel"): inicial + apellido, solo si hay un unico
+    -- jugador de esa seleccion que coincide (si hay dudas queda sin resolver y se informa).
+    (SELECT MIN(pe.Nombre) FROM equipos.Persona AS pe
+     JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
+     WHERE j.Seleccion = #SustitucionesStaging.Seleccion
+       AND #SustitucionesStaging.NombreEgreso LIKE N'_. %'
+       AND LEFT(pe.Nombre COLLATE Latin1_General_100_CI_AI, 1) = LEFT(#SustitucionesStaging.NombreEgreso COLLATE Latin1_General_100_CI_AI, 1)
+       AND pe.Nombre COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(#SustitucionesStaging.NombreEgreso, 4, 100) COLLATE Latin1_General_100_CI_AI
+     HAVING COUNT(*) = 1))
 WHERE Estado='Pendiente';
 
 -- D7: el jugador que entra no esta cargado para esa seleccion (carga 10).
@@ -316,8 +342,32 @@ BEGIN
         END;
     END TRY
     BEGIN CATCH
-        SET @estado='Error';
-        UPDATE #SustitucionesStaging SET Estado='Error', Detalle=ERROR_MESSAGE() WHERE Fila=@fila;
+        -- El SP rechaza el cambio por el tope del reglamento: la fuente trae
+        -- mas cambios que los que permite el torneo. Es un rechazo legitimo,
+        -- no un error de datos: se marca 'Omitida' y se informa.
+        IF ERROR_MESSAGE() LIKE N'%Tope de ventanas del reglamento%'
+           OR ERROR_MESSAGE() LIKE N'%Tope de cambios del reglamento%'
+        BEGIN
+            SET @estado='Omitida';
+            UPDATE #SustitucionesStaging SET Estado='Omitida',
+                Detalle=N'Rechazo del reglamento: el equipo supera el tope de cambios o de ventanas del torneo (sedes.Mundial). El cambio no se carga.'
+            WHERE Fila=@fila;
+        END
+        -- El SP exige cargar los cambios antes que los eventos posteriores del
+        -- partido. Si ya habia goles o amonestaciones cargados (cargas 17/19),
+        -- la fila no se puede persistir en esta corrida: se informa el orden.
+        ELSE IF ERROR_MESSAGE() LIKE N'%Registrar los cambios en orden%'
+        BEGIN
+            SET @estado='Omitida';
+            UPDATE #SustitucionesStaging SET Estado='Omitida',
+                Detalle=N'El partido ya tenia eventos posteriores cargados (cargas 17/19). Reejecute la importacion en el orden del maestro: 14, 16, 17, 18, 19.'
+            WHERE Fila=@fila;
+        END
+        ELSE
+        BEGIN
+            SET @estado='Error';
+            UPDATE #SustitucionesStaging SET Estado='Error', Detalle=ERROR_MESSAGE() WHERE Fila=@fila;
+        END;
     END CATCH;
     IF @estado <> 'Error'
         UPDATE #SustitucionesStaging SET Estado=@estado WHERE Fila=@fila;
