@@ -1,7 +1,7 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 18/11/2026.
--- ORDEN: ejecutar despues de la carga 16 (sustituciones): el SP valida que el autor
+-- ORDEN: ejecutar despues de la carga 18 (sustituciones): el SP valida que el autor
 -- este en cancha y un suplente solo esta en cancha si su ingreso ya fue cargado.
 -- Objetivo: cargar los goles de los 104 JSON de Promiedos con la metodologia
 -- de tres fases. Tipos de evento de la fuente: 1 gol, 2 gol en contra.
@@ -17,11 +17,8 @@
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
 --                         SPTRANS.uspGol_Registrar, que crea el Evento y el Gol
 --                         y actualiza el marcador del partido.
--- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos), 14
--- (alineaciones) y 16 (sustituciones): el SP exige que el autor y el asistente
--- esten en cancha. Si el autor estaba en el banco y su ingreso no se cargo
--- (por ejemplo, un cambio rechazado por el tope del reglamento en la carga 16),
--- el gol queda 'Omitida' y se informa; no se cuenta como error.
+-- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos) y
+-- 14 (alineaciones): el SP exige que el autor y el asistente esten en cancha.
 -- La tanda de penales (tipos 3, 16 y 17) no se carga aqui: la tanda se registra
 -- con SP.uspPartido_Tanda (carga 21) y los penales de tiempo regular con la
 -- carga 22.
@@ -266,7 +263,7 @@ WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL AND IdAsistencia = IdJugad
 
 -- A3: el asistente no estaba en cancha en ese periodo (misma validacion del SP).
 UPDATE #GolesStaging SET IdAsistencia=NULL,
-    Aviso=N'El asistente no estaba en cancha en ese periodo (cargas 14 y 16): el gol se carga sin asistencia.'
+    Aviso=N'El asistente no estaba en cancha en ese periodo (cargas 14 y 18): el gol se carga sin asistencia.'
 WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL
   AND partidos.fnJugadorEnCanchaPeriodo(IdPartido, IdAsistencia, ISNULL(Minuto,2147483647), Periodo) = 0;
 
@@ -274,22 +271,9 @@ WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL
 UPDATE #GolesStaging SET IdAsistencia=NULL
 WHERE Estado='Pendiente' AND IdAsistencia IS NOT NULL AND Tipo='En contra';
 
--- D8a: el autor estaba en el banco y su ingreso no figura en la carga 16 (por
--- ejemplo, un cambio rechazado por el tope del reglamento). El gol no se puede
--- registrar: queda 'Omitida' con el detalle; no es un error de datos.
-UPDATE #GolesStaging SET Estado='Omitida',
-    Detalle=N'El autor estaba en el banco y su ingreso no figura en la carga 16: el gol se omite (revise el reporte de sustituciones).'
-WHERE Estado='Pendiente' AND IdJugador IS NOT NULL
-  AND partidos.fnJugadorEnCanchaPeriodo(IdPartido, IdJugador, ISNULL(Minuto,2147483647), Periodo) = 0
-  AND EXISTS (SELECT 1 FROM partidos.Alineacion AS a
-              WHERE a.IdPartido = #GolesStaging.IdPartido
-                AND a.IdJugador = #GolesStaging.IdJugador
-                AND a.Rol = 'Suplente');
-
--- D8b: el autor no estaba en la cancha por un problema de datos (no figura ni
--- siquiera como suplente): es un error que hay que revisar.
+-- D8: el autor no estaba en la cancha (misma validacion del SP, aqui preventiva).
 UPDATE #GolesStaging SET Estado='Error',
-    Detalle=N'El autor del gol no estaba en cancha: ejecute antes la carga 16 (sustituciones) y la 14 (alineaciones).'
+    Detalle=N'El autor del gol no estaba en cancha: ejecute antes la carga 18 (sustituciones) y la 14 (alineaciones).'
 WHERE Estado='Pendiente' AND IdJugador IS NOT NULL
   AND partidos.fnJugadorEnCanchaPeriodo(IdPartido, IdJugador, ISNULL(Minuto,2147483647), Periodo) = 0;
 
@@ -297,7 +281,7 @@ WHERE Estado='Pendiente' AND IdJugador IS NOT NULL
 SELECT 'FASE 2 - Depuracion de goles (antes de la persistencia)' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #GolesStaging GROUP BY Estado ORDER BY Estado;
 SELECT Fila, GameId, MinutoTexto, Periodo, NombreAutor, Seleccion, Tipo, Estado, Detalle
-FROM #GolesStaging WHERE Estado IN ('Error','Duplicada','Omitida') ORDER BY Fila;
+FROM #GolesStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
 
 -- Avisos de asistencia: el gol es valido, pero se carga sin Asistencia.
 SELECT 'FASE 2 - Avisos de asistencia (el gol se carga igual)' AS Fase;

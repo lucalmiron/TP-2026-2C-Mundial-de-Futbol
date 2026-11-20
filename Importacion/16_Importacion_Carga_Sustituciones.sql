@@ -12,10 +12,6 @@
 --   FASE 2 DEPURACION  : reglas de conjunto (UPDATE) sobre la staging.
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
 --                         SPTRANS.uspSustitucion_Registrar.
--- Reglamento: el SP de la entrega 5 aplica el tope de cambios y de ventanas
--- del torneo (sedes.Mundial). La fuente de Promiedos supera ese tope en varios
--- partidos. Esos cambios son un rechazo legitimo: quedan 'Omitida' con el
--- detalle y se informan en el reporte, no son errores de datos.
 -- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos),
 -- 13 (motivos) y 14 (alineaciones).
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
@@ -342,32 +338,8 @@ BEGIN
         END;
     END TRY
     BEGIN CATCH
-        -- El SP rechaza el cambio por el tope del reglamento: la fuente trae
-        -- mas cambios que los que permite el torneo. Es un rechazo legitimo,
-        -- no un error de datos: se marca 'Omitida' y se informa.
-        IF ERROR_MESSAGE() LIKE N'%Tope de ventanas del reglamento%'
-           OR ERROR_MESSAGE() LIKE N'%Tope de cambios del reglamento%'
-        BEGIN
-            SET @estado='Omitida';
-            UPDATE #SustitucionesStaging SET Estado='Omitida',
-                Detalle=N'Rechazo del reglamento: el equipo supera el tope de cambios o de ventanas del torneo (sedes.Mundial). El cambio no se carga.'
-            WHERE Fila=@fila;
-        END
-        -- El SP exige cargar los cambios antes que los eventos posteriores del
-        -- partido. Si ya habia goles o amonestaciones cargados (cargas 17/19),
-        -- la fila no se puede persistir en esta corrida: se informa el orden.
-        ELSE IF ERROR_MESSAGE() LIKE N'%Registrar los cambios en orden%'
-        BEGIN
-            SET @estado='Omitida';
-            UPDATE #SustitucionesStaging SET Estado='Omitida',
-                Detalle=N'El partido ya tenia eventos posteriores cargados (cargas 17/19). Reejecute la importacion en el orden del maestro: 14, 16, 17, 18, 19.'
-            WHERE Fila=@fila;
-        END
-        ELSE
-        BEGIN
-            SET @estado='Error';
-            UPDATE #SustitucionesStaging SET Estado='Error', Detalle=ERROR_MESSAGE() WHERE Fila=@fila;
-        END;
+        SET @estado='Error';
+        UPDATE #SustitucionesStaging SET Estado='Error', Detalle=ERROR_MESSAGE() WHERE Fila=@fila;
     END CATCH;
     IF @estado <> 'Error'
         UPDATE #SustitucionesStaging SET Estado=@estado WHERE Fila=@fila;
