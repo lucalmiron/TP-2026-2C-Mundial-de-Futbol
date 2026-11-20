@@ -40,7 +40,7 @@
 :setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
 :setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -168,7 +168,10 @@ WHERE s.Estado='Pendiente';
 UPDATE #RojasStaging SET NombreAmonestadoBd = COALESCE(
     (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #RojasStaging.NombreAmonestado AND j.Seleccion = #RojasStaging.Seleccion),
+     WHERE (pe.Nombre = #RojasStaging.NombreAmonestado)
+   OR (pe.Nombre = #RojasStaging.NombreAmonestado
+   OR (pe.Nombre = #RojasStaging.NombreAmonestado))
+      AND j.Seleccion = #RojasStaging.Seleccion),
     (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
      WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #RojasStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI
@@ -208,7 +211,8 @@ WHERE Estado='Pendiente'
 -- Se resuelven los identificadores.
 UPDATE s SET IdJugador = j.IdJugador
 FROM #RojasStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado)
+JOIN equipos.Persona AS pe ON (pe.Nombre = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado))
+   OR (pe.Nombre = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado))
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 

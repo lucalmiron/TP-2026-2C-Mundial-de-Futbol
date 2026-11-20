@@ -37,12 +37,15 @@
 -- :setvar RutaFifaOficiales "C:\ruta\proyecto\Datos\Datos_Partidos\fifa_oficiales.csv"
 
 --L
-:setvar RutaFifaOficiales "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
+--:setvar RutaFifaOficiales "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
 
 --Fidel
 --:setvar RutaFifaOficiales "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
 
-USE [MUNDIALtesting];
+--santutu
+:setvar RutaFifaOficiales "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
+
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -300,7 +303,7 @@ BEGIN
             SELECT @idArbitro = ar.IdArbitro
             FROM equipos.Persona AS pe
             JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
-            WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
+            WHERE pe.Nombre = @nombre;
         END;
 
         IF @idArbitro IS NULL
@@ -312,7 +315,7 @@ BEGIN
             SELECT @idArbitro = ar.IdArbitro
             FROM arbitros.Arbitro AS ar
             JOIN equipos.Persona AS pe ON pe.IdPersona = ar.IdArbitro
-            WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
+            WHERE pe.Nombre = @nombre;
             SET @estadoArbitro = 'Insertado';
         END
         ELSE SET @estadoArbitro = 'SinCambios';

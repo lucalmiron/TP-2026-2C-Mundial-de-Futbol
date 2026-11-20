@@ -33,16 +33,26 @@
 
 
 --Fidel
-:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
-:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
-:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
-:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+--:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+--:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+--:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+--:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 
-USE [MUNDIALtesting];
+--Santutu
+:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+
+
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -135,7 +145,7 @@ WHERE Estado='Pendiente' AND Funcion IS NOT NULL
     OR CONVERT(NVARCHAR(MAX),CONVERT(VARCHAR(MAX),Funcion)) COLLATE Latin1_General_100_BIN2
          <> Funcion COLLATE Latin1_General_100_BIN2);
 
--- D5: ya existe una persona con ese nombre y no es tecnico (el SP lo rechazaria).
+-- D5: ya existe una persona con ese nombre y no es tecnico (el SP lo rechaza).
 UPDATE #TecnicosStaging SET Estado='Error',
     Detalle=N'Ya existe una persona con ese nombre y no es tecnico: revise la carga 10.'
 WHERE Estado='Pendiente'
@@ -195,7 +205,7 @@ BEGIN
         SELECT @idTecnico = te.IdTecnico
         FROM equipos.Persona AS pe
         JOIN equipos.Tecnico AS te ON te.IdTecnico = pe.IdPersona
-        WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
+        WHERE pe.Nombre = @nombre;
         IF @idTecnico IS NULL
         BEGIN
             EXEC SPTRANS.uspTecnico_Registrar @nombre=@nombre,
@@ -205,7 +215,7 @@ BEGIN
             SELECT @idTecnico = te.IdTecnico
             FROM equipos.Persona AS pe
             JOIN equipos.Tecnico AS te ON te.IdTecnico = pe.IdPersona
-            WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
+            WHERE pe.Nombre = @nombre;
             SET @estado='Insertada';
         END
         ELSE SET @estado='SinCambios';

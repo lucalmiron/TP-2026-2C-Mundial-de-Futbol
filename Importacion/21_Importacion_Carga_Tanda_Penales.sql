@@ -43,7 +43,7 @@
 :setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
 :setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

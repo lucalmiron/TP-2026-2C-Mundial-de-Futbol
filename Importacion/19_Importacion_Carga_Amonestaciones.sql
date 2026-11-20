@@ -36,16 +36,25 @@
 --:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 --Fidel
-:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
-:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
-:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
-:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+--:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+--:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+--:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+--:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+
+--santutu
+:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -209,7 +218,9 @@ WHERE s.Estado='Pendiente';
 UPDATE #AmonestacionesStaging SET NombreAmonestadoBd = COALESCE(
     (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #AmonestacionesStaging.NombreAmonestado AND j.Seleccion = #AmonestacionesStaging.Seleccion),
+     WHERE pe.Nombre = #AmonestacionesStaging.NombreAmonestado
+   OR (pe.Nombre = #AmonestacionesStaging.NombreAmonestado)
+      AND j.Seleccion = #AmonestacionesStaging.Seleccion),
     (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
      WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #AmonestacionesStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI
@@ -222,7 +233,8 @@ UPDATE #AmonestacionesStaging SET NombreAmonestadoBd = COALESCE(
     -- Si no es jugador, puede ser un entrenador (equipos.Tecnico).
     (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
-     WHERE pe.Nombre = #AmonestacionesStaging.NombreAmonestado AND t.Seleccion = #AmonestacionesStaging.Seleccion),
+     WHERE pe.Nombre = #AmonestacionesStaging.NombreAmonestado
+   OR (pe.Nombre = #AmonestacionesStaging.NombreAmonestado) AND t.Seleccion = #AmonestacionesStaging.Seleccion),
     (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Tecnico AS t ON t.IdTecnico=pe.IdPersona
      WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #AmonestacionesStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI

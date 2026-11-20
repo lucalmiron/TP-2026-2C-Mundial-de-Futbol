@@ -34,16 +34,25 @@
 --:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 --Fidel
-:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
-:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
-:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
-:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+--:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+--:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+--:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+--:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+
+--santutu
+:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -226,7 +235,8 @@ UPDATE #SustitucionesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#SustitucionesStaging.NombreIngresoBd, #SustitucionesStaging.NombreIngreso)
+       WHERE (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', ISNULL(#SustitucionesStaging.NombreIngresoBd, #SustitucionesStaging.NombreIngreso)))
+          OR (pe.NombreHash IS NULL AND pe.Nombre = ISNULL(#SustitucionesStaging.NombreIngresoBd, #SustitucionesStaging.NombreIngreso))
          AND j.Seleccion = #SustitucionesStaging.Seleccion) = 0;
 
 -- D8: el jugador que sale no esta cargado para esa seleccion.
@@ -235,7 +245,8 @@ UPDATE #SustitucionesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso)
+       WHERE (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso)))
+   OR (pe.NombreHash IS NULL AND pe.Nombre = ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso))
          AND j.Seleccion = #SustitucionesStaging.Seleccion) = 0;
 
 -- D9: alguno de los dos jugadores es ambiguo en la seleccion.
@@ -248,7 +259,8 @@ WHERE Estado='Pendiente'
           AND j.Seleccion = #SustitucionesStaging.Seleccion) > 1
     OR (SELECT COUNT(*) FROM equipos.Persona AS pe
         JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-        WHERE pe.Nombre = ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso)
+        WHERE (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso)))
+   OR (pe.NombreHash IS NULL AND pe.Nombre = ISNULL(#SustitucionesStaging.NombreEgresoBd, #SustitucionesStaging.NombreEgreso))
           AND j.Seleccion = #SustitucionesStaging.Seleccion) > 1);
 
 -- D10: el mismo cambio aparece dos veces en el partido.
@@ -263,13 +275,15 @@ WHERE f.Estado='Pendiente' AND EXISTS (
 -- Se resuelven los identificadores.
 UPDATE #SustitucionesStaging SET IdIngreso = j.IdJugador
 FROM #SustitucionesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreIngresoBd, s.NombreIngreso)
+JOIN equipos.Persona AS pe ON (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', ISNULL(s.NombreIngresoBd, s.NombreIngreso)))
+   OR (pe.NombreHash IS NULL AND pe.Nombre = ISNULL(s.NombreIngresoBd, s.NombreIngreso))
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
 UPDATE #SustitucionesStaging SET IdEgreso = j.IdJugador
 FROM #SustitucionesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreEgresoBd, s.NombreEgreso)
+JOIN equipos.Persona AS pe ON (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', ISNULL(s.NombreEgresoBd, s.NombreEgreso)))
+   OR (pe.NombreHash IS NULL AND pe.Nombre = ISNULL(s.NombreEgresoBd, s.NombreEgreso))
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 

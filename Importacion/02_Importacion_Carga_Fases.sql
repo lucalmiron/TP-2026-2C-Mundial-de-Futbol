@@ -3,7 +3,7 @@
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 28/10/2026
 -- Objetivo: carga inicial de Fase usando el SP existente.
--- Ejecutar en MUNDIALtesting despues de instalar tablas y procedimientos.
+-- Ejecutar en MUNDIAL despues de instalar tablas y procedimientos.
 -- Puede repetirse sin duplicar registros por descripcion.
 
 USE MUNDIAL

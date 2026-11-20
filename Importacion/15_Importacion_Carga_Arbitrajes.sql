@@ -223,11 +223,13 @@ UPDATE #ArbitrajesStaging SET Estado='Error',
 WHERE Estado='Pendiente' AND IdPaisAnfitrion IS NULL;
 
 -- D5: ya existe una persona con ese nombre que no es arbitro.
+-- Usa NombreHash si fue generado (Entrega 8: seguridad), sino usa Nombre directamente.
 UPDATE #ArbitrajesStaging SET Estado='Error',
     Detalle=N'Ya existe una persona con ese nombre y no es arbitro: revise la carga 10.'
 WHERE Estado='Pendiente'
   AND EXISTS (SELECT 1 FROM equipos.Persona AS pe
-              WHERE pe.Nombre = #ArbitrajesStaging.NombreArbitro
+              WHERE (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', #ArbitrajesStaging.NombreArbitro))
+                 OR (pe.NombreHash IS NULL AND pe.Nombre = #ArbitrajesStaging.NombreArbitro)
                 AND NOT EXISTS (SELECT 1 FROM arbitros.Arbitro AS ar WHERE ar.IdArbitro=pe.IdPersona));
 
 -- D6: el arbitro ya fue designado en ese partido.
@@ -241,7 +243,8 @@ WHERE f.Estado='Pendiente' AND EXISTS (
 -- Se resuelve el arbitro si ya estaba cargado.
 UPDATE s SET IdArbitro = ar.IdArbitro
 FROM #ArbitrajesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = s.NombreArbitro
+JOIN equipos.Persona AS pe ON (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', s.NombreArbitro))
+                 OR (pe.NombreHash IS NULL AND pe.Nombre = s.NombreArbitro)
 JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
 WHERE s.Estado='Pendiente';
 

@@ -25,12 +25,15 @@
 -- :setvar RutaEspacios "C:\ruta\proyecto\Datos\Publicidad\espacios_publicitarios.csv"
 
 --L
-:setvar RutaEspacios "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
+--:setvar RutaEspacios "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
 
 --Fidel
 --:setvar RutaEspacios "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
 
-USE [MUNDIALtesting];
+--santutu
+:setvar RutaEspacios "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
+
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

@@ -45,16 +45,25 @@
 --:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 --Fidel
-:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
-:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
-:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
-:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+--:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+--:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+--:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+--:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+
+--santutu
+:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -205,7 +214,8 @@ UPDATE #GolesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor)
+       WHERE (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor)))
+   OR (pe.NombreHash IS NULL AND pe.Nombre = ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor))
          AND j.Seleccion = #GolesStaging.Seleccion) = 0;
 
 -- D7: el autor es ambiguo dentro de la seleccion.
@@ -214,13 +224,15 @@ UPDATE #GolesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor)
+       WHERE (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor)))
+   OR (pe.NombreHash IS NULL AND pe.Nombre = ISNULL(#GolesStaging.NombreAutorBd, #GolesStaging.NombreAutor))
          AND j.Seleccion = #GolesStaging.Seleccion) > 1;
 
 -- Se resuelve el identificador del autor.
 UPDATE #GolesStaging SET IdJugador = j.IdJugador
 FROM #GolesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAutorBd, s.NombreAutor)
+JOIN equipos.Persona AS pe ON (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', ISNULL(s.NombreAutorBd, s.NombreAutor)))
+   OR (pe.NombreHash IS NULL AND pe.Nombre = ISNULL(s.NombreAutorBd, s.NombreAutor))
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
@@ -230,7 +242,9 @@ WHERE s.Estado='Pendiente';
 UPDATE #GolesStaging SET NombreAsistenciaBd = COALESCE(
     (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #GolesStaging.NombreAsistencia AND j.Seleccion = #GolesStaging.Seleccion),
+     WHERE (pe.NombreHash IS NOT NULL AND pe.NombreHash = HASHBYTES('SHA2_256', #GolesStaging.NombreAsistencia))
+   OR (pe.NombreHash IS NULL AND pe.Nombre = #GolesStaging.NombreAsistencia)
+      AND j.Seleccion = #GolesStaging.Seleccion),
     (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
      WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #GolesStaging.NombreAsistencia COLLATE Latin1_General_100_CI_AI

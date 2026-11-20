@@ -19,9 +19,12 @@
 -- :setvar RutaPublicidad "C:\ruta\proyecto\Datos\Publicidad\publicidad.xml"
 
 --F
-:setvar RutaPublicidad "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\publicidad.xml"
+--:setvar RutaPublicidad "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\publicidad.xml"
 
-USE [MUNDIALtesting];
+--santutu
+:setvar RutaPublicidad "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\publicidad.xml"
+
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

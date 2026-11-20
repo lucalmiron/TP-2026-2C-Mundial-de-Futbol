@@ -24,12 +24,15 @@
 -- :setvar RutaCostoFranja "C:\ruta\proyecto\Datos\Publicidad\costo_franja.csv"
 
 --L
-:setvar RutaCostoFranja "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
+--:setvar RutaCostoFranja "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
 
 --Fidel
 --:setvar RutaCostoFranja "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
 
-USE [MUNDIALtesting];
+--santutu
+:setvar RutaCostoFranja "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
+
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

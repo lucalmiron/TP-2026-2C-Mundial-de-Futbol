@@ -41,7 +41,7 @@
 :setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
 :setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
@@ -184,7 +184,6 @@ WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
        WHERE pe.Nombre = ISNULL(#PenalesStaging.NombreAutorBd, #PenalesStaging.NombreAutor)
-         AND j.Seleccion = #PenalesStaging.Seleccion) = 0;
 
 -- D7: el autor es ambiguo dentro de la seleccion.
 UPDATE #PenalesStaging SET Estado='Error',
@@ -193,7 +192,6 @@ WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
        WHERE pe.Nombre = ISNULL(#PenalesStaging.NombreAutorBd, #PenalesStaging.NombreAutor)
-         AND j.Seleccion = #PenalesStaging.Seleccion) > 1;
 
 -- Se resuelve el identificador del autor.
 UPDATE s SET IdJugador = j.IdJugador
