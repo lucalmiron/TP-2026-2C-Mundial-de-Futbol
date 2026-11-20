@@ -89,19 +89,23 @@ GO
 
 -- Esperado: no imprime nada, se insertan 4 filas (los 4 tipos de espacio del torneo).
 DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
-EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = 5000, @idSede = @testSedeId, @numero = 1;
+IF NOT EXISTS (SELECT 1 FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Panel Perimetral' AND S.Nombre = 'Sede Test')
+    EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = 5000, @idSede = @testSedeId, @numero = 1;
 GO
 
 DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
-EXEC SP.EspacioPublicitario_Registrar @tipo = 'Cubo LED', @costo = 7000, @idSede = @testSedeId, @numero = 2;
+IF NOT EXISTS (SELECT 1 FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test')
+    EXEC SP.EspacioPublicitario_Registrar @tipo = 'Cubo LED', @costo = 7000, @idSede = @testSedeId, @numero = 2;
 GO
 
 DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
-EXEC SP.EspacioPublicitario_Registrar @tipo = 'Tunnel de Acceso', @costo = 6500, @idSede = @testSedeId, @numero = 3;
+IF NOT EXISTS (SELECT 1 FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Tunnel de Acceso' AND S.Nombre = 'Sede Test')
+    EXEC SP.EspacioPublicitario_Registrar @tipo = 'Tunnel de Acceso', @costo = 6500, @idSede = @testSedeId, @numero = 3;
 GO
 
 DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
-EXEC SP.EspacioPublicitario_Registrar @tipo = 'Pantalla Principal', @costo = 9000, @idSede = @testSedeId, @numero = 4;
+IF NOT EXISTS (SELECT 1 FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Pantalla Principal' AND S.Nombre = 'Sede Test')
+    EXEC SP.EspacioPublicitario_Registrar @tipo = 'Pantalla Principal', @costo = 9000, @idSede = @testSedeId, @numero = 4;
 GO
 
 -- Esperado: 4 filas.
@@ -123,7 +127,7 @@ GO
 --Los ids se resuelven por nombre para que el test se pueda ejecutar mas de una vez.
 
 -- Esperado: el Cubo LED pasa a Costo = 7500.
-DECLARE @idCubo INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED');
+DECLARE @idCubo INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test');
 EXEC SP.EspacioPublicitario_Update @idEP = @idCubo, @costo = 7500;
 GO
 
@@ -142,7 +146,7 @@ END CATCH
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Costo.'
-DECLARE @idCubo2 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED');
+DECLARE @idCubo2 INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test');
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Update @idEP = @idCubo2, @costo = -1;
     THROW 51999, 'Se esperaba un rechazo.', 1;
@@ -153,7 +157,7 @@ END CATCH
 GO
 
 -- Esperado: rechaza el tipo vacio.
-DECLARE @idCubo3 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED');
+DECLARE @idCubo3 INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test');
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Update @idEP = @idCubo3, @tipo = '';
     THROW 51999, 'Se esperaba un rechazo.', 1;
@@ -176,7 +180,7 @@ END CATCH
 GO
 
 -- Esperado: se borra la fila, quedan 3 filas.
-DECLARE @idCubo4 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED');
+DECLARE @idCubo4 INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test');
 EXEC SP.EspacioPublicitario_Bajar @idEP = @idCubo4;
 GO
 
@@ -251,19 +255,20 @@ IF NOT EXISTS (SELECT 1 FROM publicidad.Publicidad WHERE Nombre = 'Publicidad Te
 GO
 
 DECLARE @epPub     INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Publicidad Test EP');
-DECLARE @epPartido INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @epEspacio INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Panel Perimetral');
+DECLARE @epPartido INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test' AND P.Fecha = '2026-06-15');
+DECLARE @epEspacio INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Panel Perimetral' AND S.Nombre = 'Sede Test');
 
 -- Esperado: se crea el historial de exhibicion de esa publicidad en el Panel Perimetral.
 DECLARE @sedeEspacio INT = (SELECT IdSede FROM publicidad.EspacioPublicitario WHERE IdEP = @epEspacio);
-EXEC SP.CostoFranja_Registrar @tipoFranja = 'General', @costo = 100, @idSede = @sedeEspacio;
-DECLARE @tarifa INT = (SELECT IdCF FROM publicidad.CostoFranja WHERE IdSede = @sedeEspacio);
+IF NOT EXISTS (SELECT 1 FROM publicidad.CostoFranja WHERE IdSede = @sedeEspacio AND TipoFranja = 'General')
+    EXEC SP.CostoFranja_Registrar @tipoFranja = 'General', @costo = 100, @idSede = @sedeEspacio;
+DECLARE @tarifa INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE IdSede = @sedeEspacio AND TipoFranja = 'General');
 IF NOT EXISTS (SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPublicidad = @epPub AND IdEP = @epEspacio)
 	EXEC SP.uspHistorialPublicidad_Registrar @idPublicidad = @epPub, @idPartido = @epPartido, @idEP = @epEspacio, @costoFinal = 5000, @idCF = @tarifa;
 GO
 
 -- Esperado: imprime 'Error/es: - Existen 1 o mas registros relacionados: Historial Publicidad. Elimine dichos registros para continuar.'
-DECLARE @epEspacio2 INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario WHERE Tipo = 'Panel Perimetral');
+DECLARE @epEspacio2 INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Panel Perimetral' AND S.Nombre = 'Sede Test');
 BEGIN TRY
 EXEC SP.EspacioPublicitario_Bajar @idEP = @epEspacio2;
     THROW 51999, 'Se esperaba un rechazo.', 1;
@@ -285,7 +290,7 @@ DECLARE @epId INT, @i INT = 0;
 
 WHILE @i < 5
 BEGIN
-	SET @epId = (SELECT MIN(IdHistorial) FROM publicidad.HistorialPublicidad WHERE IdEP IN (SELECT IdEP FROM publicidad.EspacioPublicitario WHERE Tipo IN ('Panel Perimetral','Cubo LED','Tunnel de Acceso','Pantalla Principal')));
+	SET @epId = (SELECT MIN(H.IdHistorial) FROM publicidad.HistorialPublicidad H INNER JOIN publicidad.EspacioPublicitario E ON E.IdEP = H.IdEP INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE S.Nombre = 'Sede Test' AND E.Tipo IN ('Panel Perimetral','Cubo LED','Tunnel de Acceso','Pantalla Principal'));
 	IF @epId IS NULL BREAK;
 	EXEC SP.uspHistorialPublicidad_Bajar @id = @epId;
 	SET @i = @i + 1;
@@ -310,13 +315,21 @@ BEGIN
 END
 
 --2) El partido, la fase y la sede.
-DECLARE @epPartidoB INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @epPartidoB INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test' AND P.Fecha = '2026-06-15');
 IF @epPartidoB IS NOT NULL
 	EXEC SP.uspPartido_Bajar @Id = @epPartidoB;
 
 DECLARE @epFaseB INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Grupos');
 IF @epFaseB IS NOT NULL
-	EXEC SP.uspFase_Bajar @Id = @epFaseB;
+BEGIN
+    BEGIN TRY
+        EXEC SP.uspFase_Bajar @Id = @epFaseB;
+    END TRY
+    BEGIN CATCH
+        IF ERROR_NUMBER() <> 50000 OR ERROR_MESSAGE() NOT LIKE '%Existen partidos con esta fase%' THROW;
+        PRINT 'Omitido: la fase Grupos tiene partidos asociados (datos importados).';
+    END CATCH;
+END
 
 DECLARE @epSedeB INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test');
 DELETE publicidad.EspacioPublicitario WHERE IdSede = @epSedeB;

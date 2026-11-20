@@ -1,6 +1,6 @@
 -- Pruebas de una tabla y luego multitabla, en una base exclusiva por corrida.
 --L
-:setvar ScriptPath "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
+:setvar ScriptPath "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
 --Santutu
 --:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
 :ON ERROR EXIT
@@ -93,6 +93,9 @@ GO
 :r $(ScriptPath)\69_Sp_CambioConvocatoria.sql
 
 -- Entre pruebas se vacian las tablas hijas antes que sus padres.
+IF OBJECT_ID('SP.uspLimpiarDatosDePrueba', 'P') IS NOT NULL
+    DROP PROCEDURE SP.uspLimpiarDatosDePrueba;
+GO
 CREATE PROCEDURE SP.uspLimpiarDatosDePrueba AS
 BEGIN
     SET NOCOUNT ON;

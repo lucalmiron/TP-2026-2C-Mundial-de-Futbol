@@ -111,37 +111,37 @@ GO
 DECLARE @aJugPais1 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test A1');
 DECLARE @aJugSel1  INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF A1');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Ali Test T1')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test T1')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Ali Test T1', @fnac = '2003-01-01', @pais = @aJugPais1, @posicion = 'DEL', @numero = 8, @seleccion = @aJugSel1;
 GO
 
 DECLARE @aJugPais1b INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test A1');
 DECLARE @aJugSel1b  INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF A1');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Ali Test T2')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test T2')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Ali Test T2', @fnac = '2003-01-02', @pais = @aJugPais1b, @posicion = 'MED', @numero = 10, @seleccion = @aJugSel1b;
 GO
 
 DECLARE @aJugPais3 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test A3');
 DECLARE @aJugSel3  INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF A3');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Ali Test NA')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test NA')
 	EXEC SPTRANS.uspJugador_Registrar @nombre = 'Ali Test NA', @fnac = '2003-01-03', @pais = @aJugPais3, @posicion = 'DEL', @numero = 11, @seleccion = @aJugSel3;
 GO
 
 --/ALTA
 
 -- Esperado: alinea a T1 como titular, 1 fila en Alineacion
-DECLARE @aP1 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @aT1 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test T1');
+DECLARE @aP1 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
+DECLARE @aT1 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test T1');
 EXEC SP.uspAlineacion_Registrar @IdPartido = @aP1, @IdJugador = @aT1, @Rol = 'Titular', @PosicionCancha = 'DEL', @Esquema = '4-3-3'
 GO
 SELECT * FROM partidos.Alineacion
 GO
 
 -- Esperado: ya cargo el jugador en ese partido, 0 filas nuevas
-DECLARE @aP2 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @aT1b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test T1');
+DECLARE @aP2 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
+DECLARE @aT1b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test T1');
 BEGIN TRY
     EXEC SP.uspAlineacion_Registrar @IdPartido = @aP2, @IdJugador = @aT1b, @Rol = 'Titular';
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -154,8 +154,8 @@ SELECT * FROM partidos.Alineacion
 GO
 
 -- Esperado: rol invalido (solo Titular o Suplente), 0 filas nuevas
-DECLARE @aP3 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @aT2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test T2');
+DECLARE @aP3 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
+DECLARE @aT2 INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test T2');
 BEGIN TRY
     EXEC SP.uspAlineacion_Registrar @IdPartido = @aP3, @IdJugador = @aT2, @Rol = 'Arquero';
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -168,7 +168,7 @@ SELECT * FROM partidos.Alineacion
 GO
 
 -- Esperado: partido inexistente (99), 0 filas nuevas
-DECLARE @aT2b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test T2');
+DECLARE @aT2b INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test T2');
 BEGIN TRY
     EXEC SP.uspAlineacion_Registrar @IdPartido = 99, @IdJugador = @aT2b, @Rol = 'Suplente';
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -181,7 +181,7 @@ SELECT * FROM partidos.Alineacion
 GO
 
 -- Esperado: jugador inexistente (99), 0 filas nuevas
-DECLARE @aP4 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @aP4 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 BEGIN TRY
     EXEC SP.uspAlineacion_Registrar @IdPartido = @aP4, @IdJugador = 99, @Rol = 'Suplente';
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -194,8 +194,8 @@ SELECT * FROM partidos.Alineacion
 GO
 
 -- Esperado: la seleccion del jugador (CONF A3) no juega este partido, 0 filas nuevas
-DECLARE @aP5 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @aNA INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test NA');
+DECLARE @aP5 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
+DECLARE @aNA INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test NA');
 BEGIN TRY
     EXEC SP.uspAlineacion_Registrar @IdPartido = @aP5, @IdJugador = @aNA, @Rol = 'Suplente';
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -208,8 +208,8 @@ SELECT * FROM partidos.Alineacion
 GO
 
 -- Esperado: alinea a T2 como suplente, 2 filas
-DECLARE @aP6 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @aT2c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test T2');
+DECLARE @aP6 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
+DECLARE @aT2c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test T2');
 EXEC SP.uspAlineacion_Registrar @IdPartido = @aP6, @IdJugador = @aT2c, @Rol = 'Suplente'
 GO
 SELECT * FROM partidos.Alineacion
@@ -218,15 +218,15 @@ GO
 --/BAJA
 
 -- Esperado: borra la alineacion de T1, queda 1 fila
-DECLARE @aPb INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @aT1c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE Nombre = 'Ali Test T1');
+DECLARE @aPb INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
+DECLARE @aT1c INT = (SELECT MIN(IdJugador) FROM equipos.Jugador INNER JOIN equipos.Persona ON IdPersona = IdJugador WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Ali Test T1');
 EXEC SP.uspAlineacion_Bajar @IdPartido = @aPb, @IdJugador = @aT1c
 GO
 SELECT * FROM partidos.Alineacion
 GO
 
 -- Esperado: inexistente, 0 borradas
-DECLARE @aPc INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @aPc INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 BEGIN TRY
     EXEC SP.uspAlineacion_Bajar @IdPartido = @aPc, @IdJugador = 99;
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -249,7 +249,7 @@ BEGIN
 	SELECT TOP (1) @aAux1 = A.IdPartido, @aAux2 = A.IdJugador
 		FROM partidos.Alineacion A
 		INNER JOIN equipos.Persona P ON P.IdPersona = A.IdJugador
-		WHERE P.Nombre LIKE 'Ali Test%';
+		WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', P.Nombre)) LIKE N'Ali Test%';
 	IF @@ROWCOUNT = 0 BREAK;
 	EXEC SP.uspAlineacion_Bajar @IdPartido = @aAux1, @IdJugador = @aAux2;
 	SET @i = @i + 1;
@@ -262,19 +262,18 @@ INSERT INTO @jugadoresPrueba (IdJugador)
 SELECT J.IdJugador
 FROM equipos.Jugador AS J
 JOIN equipos.Persona AS P ON P.IdPersona = J.IdJugador
-WHERE P.Nombre IN ('Ali Test T1', 'Ali Test T2', 'Ali Test NA');
+WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', P.Nombre)) IN (N'Ali Test T1', N'Ali Test T2', N'Ali Test NA');
 
 DELETE FROM equipos.Jugador WHERE IdJugador IN (SELECT IdJugador FROM @jugadoresPrueba);
 DELETE FROM equipos.Persona WHERE IdPersona IN (SELECT IdJugador FROM @jugadoresPrueba);
 
 --3) El partido y la fase.
-DECLARE @aPartB INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @aPartB INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 IF @aPartB IS NOT NULL
 	EXEC SP.uspPartido_Bajar @Id = @aPartB;
 
-DECLARE @aFaseB INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Grupos');
-IF @aFaseB IS NOT NULL
-	EXEC SP.uspFase_Bajar @Id = @aFaseB;
+-- La fase 'Grupos' es un dato compartido (la usan los importadores y otros tests),
+-- por eso NO se elimina: uspFase_Bajar fallaria con "Existen partidos con esta fase".
 
 --4) La sede, el huso horario, las selecciones, el grupo, el mundial y los paises.
 DECLARE @aSedeB INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test A');

@@ -100,19 +100,19 @@ GO
 -- Esperado: no imprime nada, se registran 3 arbitros (2 neutros y 1 del pais que juega).
 DECLARE @idPaisA3b INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test A3');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Arbitro Test Neutral 1')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 1')
 	EXEC SPTRANS.uspArbitro_Registrar @nombre = 'Arbitro Test Neutral 1', @fnac = '1980-01-01', @pais = @idPaisA3b, @categoria = 'FIFA';
 GO
 
 DECLARE @idPaisA3c INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test A3');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Arbitro Test Neutral 2')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 2')
 	EXEC SPTRANS.uspArbitro_Registrar @nombre = 'Arbitro Test Neutral 2', @fnac = '1985-02-02', @pais = @idPaisA3c, @categoria = 'FIFA';
 GO
 
 DECLARE @idPaisA1f INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test A1');
 
-IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE Nombre = 'Arbitro Test Local')
+IF NOT EXISTS (SELECT 1 FROM equipos.Persona WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Local')
 	EXEC SPTRANS.uspArbitro_Registrar @nombre = 'Arbitro Test Local', @fnac = '1975-03-03', @pais = @idPaisA1f, @categoria = 'FIFA';
 GO
 
@@ -121,16 +121,16 @@ GO
 
 --/ALTA
 
-DECLARE @idArbNeutro1 INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 1');
-DECLARE @idArbNeutro2 INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 2');
-DECLARE @idArbLocal   INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Local');
-DECLARE @idPartidoA   INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idArbNeutro1 INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 1');
+DECLARE @idArbNeutro2 INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 2');
+DECLARE @idArbLocal   INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Local');
+DECLARE @idPartidoA   INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 SELECT @idArbNeutro1 AS Neutro1, @idArbNeutro2 AS Neutro2, @idArbLocal AS Local, @idPartidoA AS Partido;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor invalido: Funcion.'
-DECLARE @idArbN1 INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 1');
-DECLARE @idPartA1 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idArbN1 INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 1');
+DECLARE @idPartA1 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 BEGIN TRY
     EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1, @funcion = 'Cuarto Arbitro', @partido = @idPartA1;
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -141,7 +141,7 @@ END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: ID Arbitro.'
-DECLARE @idPartA2 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idPartA2 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 BEGIN TRY
     EXEC SPTRANS.uspArbitraje_Registrar @arbitro = 999999, @funcion = 'Principal', @partido = @idPartA2;
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -152,7 +152,7 @@ END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor inexistente: ID Partido.'
-DECLARE @idArbN1c INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 1');
+DECLARE @idArbN1c INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 1');
 BEGIN TRY
     EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1c, @funcion = 'Principal', @partido = 999999;
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -163,8 +163,8 @@ END CATCH;
 GO
 
 -- Esperado: imprime 'Error/es: - No se puede asignar este arbitro, el pais al que pertenece disputa este partido.'
-DECLARE @idArbLoc INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Local');
-DECLARE @idPartA3 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idArbLoc INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Local');
+DECLARE @idPartA3 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 BEGIN TRY
     EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbLoc, @funcion = 'VAR', @partido = @idPartA3;
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -175,8 +175,8 @@ END CATCH;
 GO
 
 -- Esperado: no imprime nada, se asigna el Principal.
-DECLARE @idArbN1d INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 1');
-DECLARE @idPartA4 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idArbN1d INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 1');
+DECLARE @idPartA4 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1d, @funcion = 'Principal', @partido = @idPartA4;
 GO
 
@@ -185,8 +185,8 @@ SELECT * FROM arbitros.Arbitraje;
 GO
 
 -- Esperado: imprime 'Error/es: - Valor duplicado: Arbitro. Se encuentra ya asignado a alguna funcion de ese partido.'
-DECLARE @idArbN1e INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 1');
-DECLARE @idPartA5 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idArbN1e INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 1');
+DECLARE @idPartA5 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 BEGIN TRY
     EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN1e, @funcion = 'VAR', @partido = @idPartA5;
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -199,8 +199,8 @@ GO
 --/Cupo por funcion
 
 -- Esperado: imprime 'Error/es: - Cupo excedido para esa funcion.' (ya hay 1 Principal)
-DECLARE @idArbN2a INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 2');
-DECLARE @idPartA6 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idArbN2a INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 2');
+DECLARE @idPartA6 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 BEGIN TRY
     EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN2a, @funcion = 'Principal', @partido = @idPartA6;
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -211,8 +211,8 @@ END CATCH;
 GO
 
 -- Esperado: no imprime nada, se asigna el Asistente.
-DECLARE @idArbN2b INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 2');
-DECLARE @idPartA7 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idArbN2b INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 2');
+DECLARE @idPartA7 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 EXEC SPTRANS.uspArbitraje_Registrar @arbitro = @idArbN2b, @funcion = 'Asistente', @partido = @idPartA7;
 GO
 
@@ -223,8 +223,8 @@ GO
 --/UPDATE
 
 -- Esperado: el Principal pasa a Asistente.
-DECLARE @idArbN1f INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 1');
-DECLARE @idPartA8 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idArbN1f INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 1');
+DECLARE @idPartA8 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 EXEC SPTRANS.uspArbitraje_Update @arbitro = @idArbN1f, @funcion = 'Asistente', @partido = @idPartA8;
 GO
 
@@ -235,7 +235,7 @@ GO
 --/BAJA
 
 -- Esperado: imprime 'Error/es: - Registro inexistente.'
-DECLARE @idPartA9 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idPartA9 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 BEGIN TRY
     EXEC SPTRANS.uspArbitraje_Bajar @arbitro = 999999, @partido = @idPartA9;
     THROW 51999, 'Se esperaba que el procedimiento rechazara los datos.', 1;
@@ -246,8 +246,8 @@ END CATCH;
 GO
 
 -- Esperado: se borra la fila del arbitro neutral 2.
-DECLARE @idArbN2c INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre = 'Arbitro Test Neutral 2');
-DECLARE @idPartA10 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @idArbN2c INT = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) = N'Arbitro Test Neutral 2');
+DECLARE @idPartA10 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 EXEC SPTRANS.uspArbitraje_Bajar @arbitro = @idArbN2c, @partido = @idPartA10;
 GO
 
@@ -264,7 +264,7 @@ DECLARE @vArb INT, @vPart INT, @i INT = 0;
 WHILE @i < 10
 BEGIN
 	SET @vArb = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro
-		WHERE Nombre LIKE 'Arbitro Test%' AND EXISTS (SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = IdArbitro));
+		WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) LIKE N'Arbitro Test%' AND EXISTS (SELECT 1 FROM arbitros.Arbitraje WHERE Arbitro = IdArbitro));
 	IF @vArb IS NULL BREAK;
 
 	SET @vPart = (SELECT MIN(Partido) FROM arbitros.Arbitraje WHERE Arbitro = @vArb);
@@ -276,20 +276,18 @@ END
 SET @i = 0;
 WHILE @i < 5
 BEGIN
-	SET @vArb = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE Nombre LIKE 'Arbitro Test%');
+	SET @vArb = (SELECT MIN(IdArbitro) FROM arbitros.Arbitro INNER JOIN equipos.Persona ON IdPersona = IdArbitro WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', Nombre)) LIKE N'Arbitro Test%');
 	IF @vArb IS NULL BREAK;
 	EXEC SPTRANS.uspArbitro_Bajar @id = @vArb;
 	SET @i = @i + 1;
 END
 
 --3) El partido, la fase y la sede.
-DECLARE @vPartido INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
+DECLARE @vPartido INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test A' AND P.Fecha = '2026-06-15');
 IF @vPartido IS NOT NULL
 	EXEC SP.uspPartido_Bajar @Id = @vPartido;
 
-DECLARE @vFase INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Grupos');
-IF @vFase IS NOT NULL
-	EXEC SP.uspFase_Bajar @Id = @vFase;
+-- La fase 'Grupos' es compartida con importadores y otros tests: no se elimina.
 
 DECLARE @vSede INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test A');
 IF @vSede IS NOT NULL

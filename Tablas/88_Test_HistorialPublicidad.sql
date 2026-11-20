@@ -161,8 +161,8 @@ GO
 --/ALTA
 
 DECLARE @qPub  INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 83');
-DECLARE @qPart INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @qEP   INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario);
+DECLARE @qPart INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test 83' AND P.Fecha = '2026-06-15');
+DECLARE @qEP   INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE S.Nombre = 'Sede Test 83');
 DECLARE @qCF1 INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE TipoFranja = 'Prime Time T83');
 
 -- Esperado: inserta 1 fila
@@ -178,8 +178,8 @@ SELECT * FROM publicidad.HistorialPublicidad
 GO
 
 DECLARE @qPub2  INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 83');
-DECLARE @qPart2 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @qEP2   INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario);
+DECLARE @qPart2 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test 83' AND P.Fecha = '2026-06-15');
+DECLARE @qEP2   INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE S.Nombre = 'Sede Test 83');
 DECLARE @qCF2 INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE TipoFranja = 'Prime Time T83');
 
 -- Esperado: costo invalido (0), 0 filas nuevas
@@ -194,8 +194,8 @@ SELECT * FROM publicidad.HistorialPublicidad
 GO
 
 DECLARE @qPub3  INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 83');
-DECLARE @qPart3 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @qEP3   INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario);
+DECLARE @qPart3 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test 83' AND P.Fecha = '2026-06-15');
+DECLARE @qEP3   INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE S.Nombre = 'Sede Test 83');
 DECLARE @qCF3 INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE TipoFranja = 'Prime Time T83');
 
 -- Esperado: duplicada (misma publicidad, partido y espacio), 0 filas nuevas
@@ -209,8 +209,8 @@ GO
 SELECT * FROM publicidad.HistorialPublicidad
 GO
 
-DECLARE @qPart4 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @qEP4   INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario);
+DECLARE @qPart4 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test 83' AND P.Fecha = '2026-06-15');
+DECLARE @qEP4   INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE S.Nombre = 'Sede Test 83');
 DECLARE @qCF4 INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE TipoFranja = 'Prime Time T83');
 
 -- Esperado: publicidad inexistente (99), 0 filas nuevas
@@ -225,7 +225,7 @@ SELECT * FROM publicidad.HistorialPublicidad
 GO
 
 DECLARE @qPub4  INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 83');
-DECLARE @qEP5   INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario);
+DECLARE @qEP5   INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE S.Nombre = 'Sede Test 83');
 DECLARE @qCF5 INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE TipoFranja = 'Prime Time T83');
 
 -- Esperado: partido inexistente (99), 0 filas nuevas
@@ -241,10 +241,10 @@ GO
 
 --/UPDATE
 
-DECLARE @qId    INT = (SELECT MIN(IdHistorial) FROM publicidad.HistorialPublicidad);
+DECLARE @qId    INT = (SELECT MIN(H.IdHistorial) FROM publicidad.HistorialPublicidad H WHERE H.IdPublicidad = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 83'));
 DECLARE @qPub5  INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 83');
-DECLARE @qPart5 INT = (SELECT MIN(IdPartido) FROM partidos.Partido);
-DECLARE @qEP6   INT = (SELECT MIN(IdEP) FROM publicidad.EspacioPublicitario);
+DECLARE @qPart5 INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test 83' AND P.Fecha = '2026-06-15');
+DECLARE @qEP6   INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE S.Nombre = 'Sede Test 83');
 DECLARE @qCF6 INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE TipoFranja = 'Prime Time T83');
 
 -- Esperado: update del costo, SELECT muestra 1500.00
@@ -260,8 +260,8 @@ GO
 
 --/BAJA
 
-DECLARE @qId2    INT = (SELECT MIN(IdHistorial) FROM publicidad.HistorialPublicidad);
-DECLARE @qId3    INT = (SELECT MIN(IdHistorial) FROM publicidad.HistorialPublicidad WHERE IdHistorial > (SELECT MIN(IdHistorial) FROM publicidad.HistorialPublicidad));
+DECLARE @qId2    INT = (SELECT MIN(H.IdHistorial) FROM publicidad.HistorialPublicidad H WHERE H.IdPublicidad = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 83'));
+DECLARE @qId3    INT = (SELECT MIN(H.IdHistorial) FROM publicidad.HistorialPublicidad H WHERE H.IdPublicidad = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Pub Test 83') AND H.IdHistorial > @qId2);
 
 -- Esperado: baja exitosa de la primera fila
 BEGIN TRY
