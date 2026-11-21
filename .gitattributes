@@ -1,0 +1,8 @@
+# Datos: siempre LF, sin importar la PC
+Datos/** text eol=lf
+*.csv  text eol=lf
+*.json text eol=lf
+*.xml  text eol=lf
+
+# Scripts SQL: CRLF (lo normal en Windows/SSMS)
+*.sql  text eol=crlf
