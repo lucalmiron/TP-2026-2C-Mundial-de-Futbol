@@ -17,18 +17,11 @@
 --   FASE 3 PERSISTENCIA: solo las filas validas pasan por SP.uspPartido_Update.
 --
 -- Requiere ejecutar antes las cargas 06 (paises) y 11 (partidos).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
--- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
--- :setvar RutaAsistencia "C:\ruta\proyecto\Datos\Datos_Partidos\asistencia_partidos.csv"
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 
---L
---:setvar RutaAsistencia "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
 
---Fidel
---:setvar RutaAsistencia "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
 
---Santutu
-:setvar RutaAsistencia "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
 
 USE MUNDIAL;
 GO
@@ -63,13 +56,13 @@ BEGIN TRY
     -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
     -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
     DECLARE @asistenciaBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaAsistencia)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\asistencia_partidos.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @asistenciaBytes) > 0
-        BULK INSERT #AsistenciaCrudo FROM '$(RutaAsistencia)'
+        BULK INSERT #AsistenciaCrudo FROM '$(TP_BDDA)\Datos\Datos_Partidos\asistencia_partidos.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #AsistenciaCrudo FROM '$(RutaAsistencia)'
+        BULK INSERT #AsistenciaCrudo FROM '$(TP_BDDA)\Datos\Datos_Partidos\asistencia_partidos.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY

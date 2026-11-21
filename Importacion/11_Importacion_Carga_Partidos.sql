@@ -18,35 +18,12 @@
 --
 -- Requiere las cargas 02 (fases), 04 (husos), 06 (paises), 07 (selecciones)
 -- y 08 (sedes).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
--- IMPORTANTE: cada integrante debe poner las rutas de su propia PC, porque
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- SQL Server lee los archivos desde el disco local del servidor.
--- :setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
--- :setvar RutaLectura "C:\ruta\proyecto\Importacion\11_Lectura_JSON_Partidos.sql"
--- :setvar RutaEquipos "C:\ruta\proyecto\Datos\equivalencias_equipos_jugadores.csv"
--- :setvar RutaSedes "C:\ruta\proyecto\Datos\equivalencias_sedes_partidos.csv"
--- :setvar RutaFases "C:\ruta\proyecto\Datos\equivalencias_fases_partidos.csv"
 
---L
---:setvar CarpetaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
---:setvar RutaLectura "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
---:setvar RutaEquipos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
---:setvar RutaSedes "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
---:setvar RutaFases "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
 
---Fidel
---:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
---:setvar RutaLectura "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
---:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
---:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
---:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
 
---Santutu
-:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLectura "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
-:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
 
 USE MUNDIAL;
 GO
@@ -133,35 +110,35 @@ BEGIN TRY
     -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
     -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
     DECLARE @equiposPartBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaEquipos)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\equivalencias_equipos_jugadores.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @equiposPartBytes) > 0
-        BULK INSERT #EquiposPartidos FROM '$(RutaEquipos)'
+        BULK INSERT #EquiposPartidos FROM '$(TP_BDDA)\Datos\equivalencias_equipos_jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #EquiposPartidos FROM '$(RutaEquipos)'
+        BULK INSERT #EquiposPartidos FROM '$(TP_BDDA)\Datos\equivalencias_equipos_jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
     -- Idem: se detecta el fin de linea real antes de cargar.
     DECLARE @sedesPartBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaSedes)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\equivalencias_sedes_partidos.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @sedesPartBytes) > 0
-        BULK INSERT #SedesPartidos FROM '$(RutaSedes)'
+        BULK INSERT #SedesPartidos FROM '$(TP_BDDA)\Datos\equivalencias_sedes_partidos.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #SedesPartidos FROM '$(RutaSedes)'
+        BULK INSERT #SedesPartidos FROM '$(TP_BDDA)\Datos\equivalencias_sedes_partidos.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
     -- Idem: se detecta el fin de linea real antes de cargar.
     DECLARE @fasesPartBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaFases)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\equivalencias_fases_partidos.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @fasesPartBytes) > 0
-        BULK INSERT #FasesPartidos FROM '$(RutaFases)'
+        BULK INSERT #FasesPartidos FROM '$(TP_BDDA)\Datos\equivalencias_fases_partidos.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #FasesPartidos FROM '$(RutaFases)'
+        BULK INSERT #FasesPartidos FROM '$(TP_BDDA)\Datos\equivalencias_fases_partidos.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY
@@ -191,7 +168,7 @@ CREATE TABLE #ErroresArchivos (
 );
 
 -- Los 104 JSON originales se leen con el lector de esta carga.
-:r $(RutaLectura)
+:r $(TP_BDDA)\Importacion\11_Lectura_JSON_Partidos.sql
 
 -- JSON_VALUE solo se aplica a documentos validos; los invalidos se informan aparte.
 INSERT #ErroresArchivos

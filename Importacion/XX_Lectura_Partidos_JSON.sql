@@ -14,8 +14,8 @@
 --   #SedesPartidos    : equivalencias nombre_json -> sede de la base.
 --   #PartidosJson     : una fila por JSON con el partido resuelto.
 --
--- El importador que lo incluye debe definir antes estas variables y usar
--- :r $(RutaLecturaPartidos) dentro del mismo lote (sin GO):
+-- El importador que lo incluye solo debe tener la variable TP_BDDA definida en Windows;
+-- las demas rutas son fijas dentro del proyecto.
 --   CarpetaPartidos, RutaLecturaJSON, RutaEquipos, RutaSedes, RutaFases
 
 IF OBJECT_ID(N'tempdb..#ArchivosPartidos') IS NOT NULL DROP TABLE #ArchivosPartidos;
@@ -89,16 +89,16 @@ BEGIN TRY
     );
     INSERT #EquivalenciasCrudo (Archivo, Contenido)
     SELECT N'fases', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaFases)', SINGLE_BLOB) AS f
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\equivalencias_fases_partidos.csv', SINGLE_BLOB) AS f
     UNION ALL
     SELECT N'equipos', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaEquipos)', SINGLE_BLOB) AS f
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\equivalencias_equipos_jugadores.csv', SINGLE_BLOB) AS f
     UNION ALL
     SELECT N'sedes', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaSedes)', SINGLE_BLOB) AS f
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\equivalencias_sedes_partidos.csv', SINGLE_BLOB) AS f
     UNION ALL
     SELECT N'jugadores', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaAliasJugadores)', SINGLE_BLOB) AS f;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Jugadores\equivalencias_jugadores.csv', SINGLE_BLOB) AS f;
 END TRY
 BEGIN CATCH
     DECLARE @msgEquiv NVARCHAR(2048) = LEFT(N'No se pudieron leer las tablas de equivalencias. '
@@ -205,7 +205,7 @@ UPDATE #AliasJugadores SET Seleccion=LTRIM(RTRIM(Seleccion)), NombreCsv=LTRIM(RT
     Criterio=LTRIM(RTRIM(REPLACE(Criterio,NCHAR(13),N'')));
 
 -- Los 104 JSON originales se leen con el lector de la carga 11.
-:r $(RutaLecturaJSON)
+:r $(TP_BDDA)\Importacion\11_Lectura_JSON_Partidos.sql
 
 -- JSON_VALUE solo se aplica a documentos validos; los invalidos se informan aparte.
 INSERT #ErroresArchivos

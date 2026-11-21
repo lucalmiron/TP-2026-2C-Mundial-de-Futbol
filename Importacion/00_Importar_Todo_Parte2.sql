@@ -3,10 +3,8 @@
 -- Fecha: 21/11/2026.
 -- Objetivo: importacion por partes - PARTE 2 de 3.
 --   Cargas deportivas 13 a 20 y publicidad 26 a 28.
---   Es el segundo bloque de 00_Importar_Todo.sql, ejecutable por separado.
---   Requiere haber corrido antes la Parte 1 (base instalada y catalogos).
--- SSMS: activar Modo SQLCMD (Consulta -> Modo SQLCMD).
--- Cada integrante debe ajustar el bloque :setvar de abajo a su ruta de proyecto.
+--   Se ejecuta por separado; requiere haber corrido antes la Parte 1 (base instalada y catalogos).
+-- SSMS: activar Modo SQLCMD (Consulta -> Modo SQLCMD). La ruta raiz se define mas abajo, en este archivo.
 --
 -- Incluye: 13 Motivos, 14 Alineaciones, 15 Arbitrajes, 16 Sustituciones,
 --          17 Goles, 18 Tecnicos, 19 Amonestaciones, 20 Publicidad,
@@ -24,12 +22,13 @@
 -- Cada importador esta precedido por un PRINT con la hora: si algo falla, el
 -- ultimo ">>>" que aparece en la pestania Mensajes es el importador culpable.
 
---Santutu
-:setvar RutaImportacion "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion"
+-- UNICO LUGAR A EDITAR: cada integrante pone aqui la ruta de su carpeta del proyecto.
+-- No hay que definir variables de Windows ni tocar ningun otro archivo.
+-- santutu
+:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
+-- fidel
+
 --L
---:setvar RutaImportacion "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion"
---Fidel
---:setvar RutaImportacion "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion"
 
 -- IGNORE: sigue ejecutando aunque un importador marque errores permisibles.
 -- Para cortar ante el primer error, cambiar por :ON ERROR EXIT
@@ -49,57 +48,57 @@ GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 13_Carga_Motivos';
 GO
-:r $(RutaImportacion)\13_Importacion_Carga_Motivos.sql
+:r $(TP_BDDA)\Importacion\13_Importacion_Carga_Motivos.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 14_Carga_Alineaciones';
 GO
-:r $(RutaImportacion)\14_Importacion_Carga_Alineaciones.sql
+:r $(TP_BDDA)\Importacion\14_Importacion_Carga_Alineaciones.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 15_Carga_Arbitrajes';
 GO
-:r $(RutaImportacion)\15_Importacion_Carga_Arbitrajes.sql
+:r $(TP_BDDA)\Importacion\15_Importacion_Carga_Arbitrajes.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 16_Carga_Sustituciones';
 GO
-:r $(RutaImportacion)\16_Importacion_Carga_Sustituciones.sql
+:r $(TP_BDDA)\Importacion\16_Importacion_Carga_Sustituciones.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 17_Carga_Goles';
 GO
-:r $(RutaImportacion)\17_Importacion_Carga_Goles.sql
+:r $(TP_BDDA)\Importacion\17_Importacion_Carga_Goles.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 18_Carga_Tecnicos';
 GO
-:r $(RutaImportacion)\18_Importacion_Carga_Tecnicos.sql
+:r $(TP_BDDA)\Importacion\18_Importacion_Carga_Tecnicos.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 19_Carga_Amonestaciones';
 GO
-:r $(RutaImportacion)\19_Importacion_Carga_Amonestaciones.sql
+:r $(TP_BDDA)\Importacion\19_Importacion_Carga_Amonestaciones.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 20_Carga_Publicidad';
 GO
-:r $(RutaImportacion)\20_Importacion_Carga_Publicidad.sql
+:r $(TP_BDDA)\Importacion\20_Importacion_Carga_Publicidad.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 26_Carga_Espacios_Publicitarios';
 GO
-:r $(RutaImportacion)\26_Importacion_Carga_Espacios_Publicitarios.sql
+:r $(TP_BDDA)\Importacion\26_Importacion_Carga_Espacios_Publicitarios.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 27_Carga_Costo_Franja';
 GO
-:r $(RutaImportacion)\27_Importacion_Carga_Costo_Franja.sql
+:r $(TP_BDDA)\Importacion\27_Importacion_Carga_Costo_Franja.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 28_Carga_Historial_Publicidad';
 GO
-:r $(RutaImportacion)\28_Importacion_Carga_Historial_Publicidad.sql
+:r $(TP_BDDA)\Importacion\28_Importacion_Carga_Historial_Publicidad.sql
 GO
 
 PRINT '=====================================================';

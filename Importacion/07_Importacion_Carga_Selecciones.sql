@@ -18,27 +18,12 @@
 --   FASE 3 PERSISTENCIA : solo las selecciones validas pasan por los SP de
 --                         ABM (SP.uspSeleccion_Registrar / uspSeleccion_Update).
 -- Requiere paises (06), grupos (01) y el Mundial con IdMundial = 1 cargados.
--- SSMS: Consulta > Modo SQLCMD. Ajustar las tres rutas del servidor SQL.
--- IMPORTANTE: cada integrante debe poner las rutas de su propia PC, porque
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- SQL Server lee los archivos desde el disco local del servidor.
--- :setvar RutaGrupos "C:\ruta\proyecto\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
--- :setvar RutaSelecciones "C:\ruta\proyecto\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
--- :setvar RutaEquivalencias "C:\ruta\proyecto\Datos\equivalencias_selecciones.csv"
 
---L
- --:setvar RutaGrupos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
- --:setvar RutaSelecciones "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
- --:setvar RutaEquivalencias "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
 
---Fidel
---:setvar RutaGrupos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
---:setvar RutaSelecciones "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
---:setvar RutaEquivalencias "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
 
---Santutu
-:setvar RutaGrupos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv"
-:setvar RutaSelecciones "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
-:setvar RutaEquivalencias "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_selecciones.csv"
 
 -- Los metodos XML (.nodes/.value) requieren QUOTED_IDENTIFIER ON y SQLCMD lo
 -- deja en OFF por defecto; se activa antes de usar el XML de selecciones.
@@ -128,15 +113,15 @@ BEGIN TRY
     -- SQLCMD sustituye las rutas antes de enviar el lote a SQL Server.
     INSERT #SeleccionesCrudo (Archivo, Contenido)
     SELECT N'selecciones_grupos.csv', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaGrupos)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Selecciones_grupos_scrapping\selecciones_grupos.csv', SINGLE_BLOB) AS archivo;
 
     INSERT #SeleccionesCrudo (Archivo, Contenido)
     SELECT N'equivalencias_selecciones.csv', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaEquivalencias)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\equivalencias_selecciones.csv', SINGLE_BLOB) AS archivo;
 
     INSERT #SeleccionesCrudo (Archivo, Contenido)
     SELECT N'selecciones_confederaciones.xml', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaSelecciones)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml', SINGLE_BLOB) AS archivo;
 
     -- Copia byte a byte a VARCHAR con collation UTF-8 para leer los CSV.
     INSERT #SeleccionesTexto (Archivo, Contenido)

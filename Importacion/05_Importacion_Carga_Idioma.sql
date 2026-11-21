@@ -13,19 +13,12 @@
 --                         informa el resultado antes de tocar la base.
 --   FASE 3 PERSISTENCIA : solo los idiomas validos pasan por el SP de ABM
 --                         (SP.uspIdioma_Registrar).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar la ruta del servidor SQL.
--- IMPORTANTE: cada integrante debe poner la ruta de su propia PC, porque
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- SQL Server lee los archivos desde el disco local del servidor.
--- :setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
 
---Santutu
-:setvar RutaIdiomas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 
---L
---:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 
---Fidel
---:setvar RutaIdiomas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 
 USE MUNDIAL;
 GO
@@ -73,7 +66,7 @@ BEGIN TRY
     INSERT #IdiomasCrudo (Archivo, Contenido)
     SELECT N'pais_idioma.csv', BulkColumn
     FROM OPENROWSET(
-        BULK '$(RutaIdiomas)', SINGLE_BLOB
+        BULK '$(TP_BDDA)\Datos\pais_idioma.csv', SINGLE_BLOB
     ) AS archivo;
 END TRY
 BEGIN CATCH

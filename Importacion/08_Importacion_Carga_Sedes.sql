@@ -14,23 +14,12 @@
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por los SP de ABM
 --                         (SP.uspSede_Registrar / SP.uspSede_Update).
 -- Requiere las cargas 04 (husos) y 06 (paises).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar ambas rutas del servidor SQL.
--- IMPORTANTE: cada integrante debe poner las rutas de su propia PC, porque
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- SQL Server lee los archivos desde el disco local del servidor.
--- :setvar RutaSedes "C:\ruta\proyecto\Datos\Sedes\sedes.csv"
--- :setvar RutaEquivalencias "C:\ruta\proyecto\Datos\equivalencias_ubicacion_sedes.csv"
 
---L
---:setvar RutaSedes "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
---:setvar RutaEquivalencias "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
 
---Fidel
---:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
---:setvar RutaEquivalencias "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
 
---Santutu
-:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Sedes\sedes.csv"
-:setvar RutaEquivalencias "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_ubicacion_sedes.csv"
 
 USE MUNDIAL;
 GO
@@ -102,11 +91,11 @@ CREATE TABLE #EquivalenciasStaging (
 BEGIN TRY
     INSERT #SedesCrudo (Archivo, Contenido)
     SELECT N'sedes.csv', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaSedes)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Sedes\sedes.csv', SINGLE_BLOB) AS archivo;
 
     INSERT #EquivalenciasCrudo (Archivo, Contenido)
     SELECT N'equivalencias_ubicacion_sedes.csv', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaEquivalencias)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\equivalencias_ubicacion_sedes.csv', SINGLE_BLOB) AS archivo;
 END TRY
 BEGIN CATCH
     DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudieron leer los CSV; no se modificaron sedes. '

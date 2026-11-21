@@ -10,17 +10,8 @@
 
 -- En SSMS: Consulta -> Modo SQLCMD. Cambiar estas dos rutas.
 
---Santutu
-:setvar RutaPBI "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
-:setvar RutaEquiv "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
 
---Fidel
---:setvar RutaPBI "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
---:setvar RutaEquiv "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
 
---L
---:setvar RutaPBI "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
---:setvar RutaEquiv "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
 
 -- Los metodos XML (.nodes/.value) requieren QUOTED_IDENTIFIER ON y SQLCMD lo
 -- deja en OFF por defecto; se activa antes de leer el XML del Banco Mundial.
@@ -69,12 +60,12 @@ BEGIN TRY
     -- SINGLE_BLOB respeta la declaracion UTF-8 del XML original.
     SELECT @xml = CONVERT(XML, BulkColumn)
     FROM OPENROWSET(
-        BULK '$(RutaPBI)',
+        BULK '$(TP_BDDA)\Datos\BancoMundial\pbi_por_pais.xml',
         SINGLE_BLOB
     ) AS archivo;
 
     BULK INSERT #Equiv
-    FROM '$(RutaEquiv)'
+    FROM '$(TP_BDDA)\Datos\BancoMundial\pais_iso3.csv'
     WITH (FORMAT = 'CSV', FIRSTROW = 2, FIELDTERMINATOR = ',',
           ROWTERMINATOR = '0x0a', CODEPAGE = '65001', MAXERRORS = 0);
 END TRY

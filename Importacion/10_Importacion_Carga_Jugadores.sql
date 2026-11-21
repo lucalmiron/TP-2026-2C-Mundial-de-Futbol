@@ -20,32 +20,9 @@
 -- No se inventan dorsales.
 -- Dependencias: paises, selecciones del Mundial 1, clubes y SP de entrega 5.
 -- SSMS: activar Consulta > Modo SQLCMD y ejecutar el archivo completo.
--- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
--- :setvar RutaJugadores "C:\ruta\proyecto\Datos\Jugadores\jugadores.csv"
--- :setvar RutaAliasJugadores "C:\ruta\proyecto\Datos\Jugadores\equivalencias_jugadores.csv"
--- :setvar RutaEquipos "C:\ruta\proyecto\Datos\equivalencias_equipos_jugadores.csv"
--- :setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
--- :setvar RutaLectura "C:\ruta\proyecto\Importacion\10_Lectura_JSON_Jugadores.sql"
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 
---L
---:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
---:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
---:setvar RutaEquipos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
---:setvar CarpetaPartidos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
---:setvar RutaLectura "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
 
---Fidel
---:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
---:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
---:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
---:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
---:setvar RutaLectura "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
---Santutu
-:setvar RutaJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
-:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
-:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLectura "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\10_Lectura_JSON_Jugadores.sql"
 
 USE MUNDIAL;
 GO
@@ -210,7 +187,7 @@ CREATE TABLE #JugadoresStaging (
 BEGIN TRY
     INSERT #JugadoresCrudo (Archivo, Contenido)
     SELECT N'jugadores.csv', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaJugadores)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Jugadores\jugadores.csv', SINGLE_BLOB) AS archivo;
 
     -- Con FORMAT='CSV' el terminador de fila debe coincidir con el fin de linea
     -- real del archivo: LF o CRLF segun como quedo el CSV en el disco (con
@@ -218,37 +195,37 @@ BEGIN TRY
     -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
     -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
     DECLARE @jugadoresBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaJugadores)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Jugadores\jugadores.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @jugadoresBytes) > 0
-        BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
+        BULK INSERT #JugadoresCsv FROM '$(TP_BDDA)\Datos\Jugadores\jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
+        BULK INSERT #JugadoresCsv FROM '$(TP_BDDA)\Datos\Jugadores\jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 
     -- Idem: se detecta el fin de linea real antes de cargar.
     DECLARE @aliasJugBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaAliasJugadores)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Jugadores\equivalencias_jugadores.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @aliasJugBytes) > 0
-        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
+        BULK INSERT #AliasJugadores FROM '$(TP_BDDA)\Datos\Jugadores\equivalencias_jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
+        BULK INSERT #AliasJugadores FROM '$(TP_BDDA)\Datos\Jugadores\equivalencias_jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 
     -- Idem: se detecta el fin de linea real antes de cargar.
     DECLARE @equiposJugBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaEquipos)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\equivalencias_equipos_jugadores.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @equiposJugBytes) > 0
-        BULK INSERT #EquiposCsv FROM '$(RutaEquipos)'
+        BULK INSERT #EquiposCsv FROM '$(TP_BDDA)\Datos\equivalencias_equipos_jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #EquiposCsv FROM '$(RutaEquipos)'
+        BULK INSERT #EquiposCsv FROM '$(TP_BDDA)\Datos\equivalencias_equipos_jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY
@@ -289,7 +266,7 @@ IF EXISTS (
     THROW 51602, 'Una equivalencia habilitada pisa un nombre que ya coincide directamente.', 1;
 
 -- Lecturas estaticas. Para incorporar archivos nuevos, agregar bloques al auxiliar.
-:r $(RutaLectura)
+:r $(TP_BDDA)\Importacion\10_Lectura_JSON_Jugadores.sql
 
 -- 1.b) Dorsales y posiciones desde los JSON de Promiedos.
 DECLARE @archivo NVARCHAR(100), @json NVARCHAR(MAX);

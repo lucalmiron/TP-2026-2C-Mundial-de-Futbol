@@ -4,10 +4,8 @@
 -- Objetivo: importacion por partes - PARTE 3 de 3.
 --   Cargas finales: goles de penal, rojas directas, tanda de penales,
 --   arbitraje FIFA y asistencia.
---   Es el ultimo bloque de 00_Importar_Todo.sql, ejecutable por separado.
---   Requiere haber corrido antes la Parte 1 y la Parte 2.
--- SSMS: activar Modo SQLCMD (Consulta -> Modo SQLCMD).
--- Cada integrante debe ajustar el bloque :setvar de abajo a su ruta de proyecto.
+--   Se ejecuta por separado; requiere haber corrido antes la Parte 1 y la Parte 2.
+-- SSMS: activar Modo SQLCMD (Consulta -> Modo SQLCMD). La ruta raiz se define mas abajo, en este archivo.
 --
 -- Incluye (en este orden): 22 Goles_Penal, 23 Rojas_Directas,
 --                          21 Tanda_Penales, 24 Arbitraje_FIFA,
@@ -24,12 +22,13 @@
 -- Cada importador esta precedido por un PRINT con la hora: si algo falla, el
 -- ultimo ">>>" que aparece en la pestania Mensajes es el importador culpable.
 
---Santutu
-:setvar RutaImportacion "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion"
+-- UNICO LUGAR A EDITAR: cada integrante pone aqui la ruta de su carpeta del proyecto.
+-- No hay que definir variables de Windows ni tocar ningun otro archivo.
+-- santutu
+:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
+-- fidel
+
 --L
---:setvar RutaImportacion "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion"
---Fidel
---:setvar RutaImportacion "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion"
 
 -- IGNORE: sigue ejecutando aunque un importador marque errores permisibles.
 -- Para cortar ante el primer error, cambiar por :ON ERROR EXIT
@@ -49,27 +48,27 @@ GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 22_Carga_Goles_Penal';
 GO
-:r $(RutaImportacion)\22_Importacion_Carga_Goles_Penal.sql
+:r $(TP_BDDA)\Importacion\22_Importacion_Carga_Goles_Penal.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 23_Carga_Rojas_Directas';
 GO
-:r $(RutaImportacion)\23_Importacion_Carga_Rojas_Directas.sql
+:r $(TP_BDDA)\Importacion\23_Importacion_Carga_Rojas_Directas.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 21_Carga_Tanda_Penales';
 GO
-:r $(RutaImportacion)\21_Importacion_Carga_Tanda_Penales.sql
+:r $(TP_BDDA)\Importacion\21_Importacion_Carga_Tanda_Penales.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 24_Carga_Arbitraje_FIFA';
 GO
-:r $(RutaImportacion)\24_Importacion_Carga_Arbitraje_FIFA.sql
+:r $(TP_BDDA)\Importacion\24_Importacion_Carga_Arbitraje_FIFA.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 25_Carga_Asistencia';
 GO
-:r $(RutaImportacion)\25_Importacion_Carga_Asistencia.sql
+:r $(TP_BDDA)\Importacion\25_Importacion_Carga_Asistencia.sql
 GO
 
 PRINT '=====================================================';

@@ -9,18 +9,11 @@
 --   FASE 2 DEPURACION  : reglas de conjunto sobre la staging.
 --   FASE 3 PERSISTENCIA : solo los motivos validos pasan por
 --                         SP.uspMotivo_Registrar.
--- SSMS: Consulta -> Modo SQLCMD. Ajustar la ruta del servidor SQL.
--- IMPORTANTE: cada integrante debe poner la ruta de su propia PC.
--- :setvar RutaMotivos "C:\ruta\proyecto\Datos\motivos_sustitucion.csv"
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 
---L
---:setvar RutaMotivos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
 
---Fidel
---:setvar RutaMotivos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
 
---Santutu
-:setvar RutaMotivos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\motivos_sustitucion.csv"
 
 USE MUNDIAL;
 GO
@@ -59,7 +52,7 @@ CREATE TABLE #MotivosStaging (
 BEGIN TRY
     INSERT #MotivosCrudo (Archivo, Contenido)
     SELECT N'motivos_sustitucion.csv', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaMotivos)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\motivos_sustitucion.csv', SINGLE_BLOB) AS archivo;
 END TRY
 BEGIN CATCH
     DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudo leer el CSV de motivos: ' + ERROR_MESSAGE(), 2048);

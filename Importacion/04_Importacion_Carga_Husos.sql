@@ -12,19 +12,12 @@
 --                         informa el resultado antes de tocar la base.
 --   FASE 3 PERSISTENCIA : solo los elementos validos pasan por el SP de ABM
 --                         (SP.uspHusoHorario_Registrar).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar la ruta del servidor SQL.
--- IMPORTANTE: cada integrante debe poner la ruta de su propia PC, porque
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- SQL Server lee los archivos desde el disco local del servidor.
--- :setvar RutaHusos "C:\ruta\proyecto\Datos\Husos_horarios\husos_horarios.json"
 
---L
---:setvar RutaHusos "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
 
---Fidel
---:setvar RutaHusos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
 
---Santutu
-:setvar RutaHusos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\husos_horarios.json"
 
 USE MUNDIAL
 GO
@@ -37,7 +30,7 @@ IF @@TRANCOUNT <> 0
     THROW 51000, 'Ejecute el importador fuera de una transaccion externa.', 1;
 IF (2 & @@OPTIONS) = 2
     THROW 51000, 'Desactive IMPLICIT_TRANSACTIONS antes de importar.', 1;
-IF NULLIF(LTRIM(RTRIM(N'$(RutaHusos)')), N'') IS NULL
+IF NULLIF(LTRIM(RTRIM(N'$(TP_BDDA)\Datos\Husos_horarios\husos_horarios.json')), N'') IS NULL
     THROW 51000, 'Debe indicar la ruta del JSON en el servidor SQL.', 1;
 IF OBJECT_ID(N'sedes.HusoHorario', N'U') IS NULL
    OR OBJECT_ID(N'SP.uspHusoHorario_Registrar', N'P') IS NULL
@@ -81,7 +74,7 @@ BEGIN TRY
     INSERT #HusosCrudo (Archivo, Contenido)
     SELECT N'husos_horarios.json', BulkColumn
     FROM OPENROWSET(
-        BULK '$(RutaHusos)', SINGLE_BLOB
+        BULK '$(TP_BDDA)\Datos\Husos_horarios\husos_horarios.json', SINGLE_BLOB
     ) AS archivo;
 END TRY
 BEGIN CATCH

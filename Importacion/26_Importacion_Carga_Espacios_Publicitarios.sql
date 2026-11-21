@@ -1,4 +1,4 @@
-﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
+-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 19/11/2026.
 -- Objetivo: cargar los espacios publicitarios de cada sede con la metodologia de
@@ -20,18 +20,11 @@
 -- y el numero identifican la fila y no se mueven).
 --
 -- Requiere ejecutar antes la carga 08 (sedes).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
--- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
--- :setvar RutaEspacios "C:\ruta\proyecto\Datos\Publicidad\espacios_publicitarios.csv"
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 
---L
---:setvar RutaEspacios "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
 
---Fidel
---:setvar RutaEspacios "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
 
---Santutu
-:setvar RutaEspacios "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
 
 USE MUNDIAL;
 GO
@@ -67,13 +60,13 @@ BEGIN TRY
     -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
     -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
     DECLARE @espaciosBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaEspacios)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Publicidad\espacios_publicitarios.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @espaciosBytes) > 0
-        BULK INSERT #EspacioCrudo FROM '$(RutaEspacios)'
+        BULK INSERT #EspacioCrudo FROM '$(TP_BDDA)\Datos\Publicidad\espacios_publicitarios.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #EspacioCrudo FROM '$(RutaEspacios)'
+        BULK INSERT #EspacioCrudo FROM '$(TP_BDDA)\Datos\Publicidad\espacios_publicitarios.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY

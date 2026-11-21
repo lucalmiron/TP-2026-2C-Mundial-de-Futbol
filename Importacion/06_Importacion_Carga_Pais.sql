@@ -17,27 +17,12 @@
 --   FASE 3 PERSISTENCIA : solo los paises validos pasan por los SP de ABM
 --                         (SP.uspPais_Registrar / SP.uspPais_Update).
 -- Requiere ejecutar antes las cargas 04 (husos) y 05 (idiomas).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar las tres rutas del servidor SQL.
--- IMPORTANTE: cada integrante debe poner las rutas de su propia PC, porque
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- SQL Server lee los archivos desde el disco local del servidor.
--- :setvar RutaSelecciones "C:\ruta\proyecto\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
--- :setvar RutaIdiomas "C:\ruta\proyecto\Datos\pais_idioma.csv"
--- :setvar RutaZonas "C:\ruta\proyecto\Datos\Husos_horarios\pais_zona.csv"
 
---L
---:setvar RutaSelecciones "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
---:setvar RutaIdiomas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
---:setvar RutaZonas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\pais_zona.csv"
 
---Fidel
---:setvar RutaSelecciones "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
---:setvar RutaIdiomas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
---:setvar RutaZonas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\pais_zona.csv"
 
---Santutu
-:setvar RutaSelecciones "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml"
-:setvar RutaIdiomas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
-:setvar RutaZonas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\pais_zona.csv"
 
 -- Los metodos XML (.nodes/.value) requieren QUOTED_IDENTIFIER ON y SQLCMD lo
 -- deja en OFF por defecto; se activa antes de usar el XML de selecciones.
@@ -129,15 +114,15 @@ BEGIN TRY
     -- SQLCMD sustituye las rutas antes de enviar el lote a SQL Server.
     INSERT #PaisesCrudo (Archivo, Contenido)
     SELECT N'selecciones_confederaciones.xml', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaSelecciones)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Selecciones_confederaciones_scrapping\selecciones_confederaciones.xml', SINGLE_BLOB) AS archivo;
 
     INSERT #PaisesCrudo (Archivo, Contenido)
     SELECT N'pais_idioma.csv', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaIdiomas)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\pais_idioma.csv', SINGLE_BLOB) AS archivo;
 
     INSERT #PaisesCrudo (Archivo, Contenido)
     SELECT N'pais_zona.csv', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaZonas)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Husos_horarios\pais_zona.csv', SINGLE_BLOB) AS archivo;
 
     -- Copia byte a byte a VARCHAR con collation UTF-8 para leer los CSV.
     INSERT #PaisesTexto (Archivo, Contenido)

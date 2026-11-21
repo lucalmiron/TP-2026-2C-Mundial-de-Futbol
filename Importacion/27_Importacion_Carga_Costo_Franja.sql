@@ -1,4 +1,4 @@
-﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
+-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 19/11/2026.
 -- Objetivo: cargar el costo de cada franja horaria por sede (Manana, Tarde y
@@ -19,18 +19,11 @@
 -- Ojo: _Update rechaza renombrar una franja ya usada en HistorialPublicidad.
 --
 -- Requiere ejecutar antes la carga 08 (sedes).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
--- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
--- :setvar RutaCostoFranja "C:\ruta\proyecto\Datos\Publicidad\costo_franja.csv"
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 
---L
---:setvar RutaCostoFranja "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
 
---Fidel
---:setvar RutaCostoFranja "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
 
---Santutu
-:setvar RutaCostoFranja "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
 
 USE MUNDIAL;
 GO
@@ -66,13 +59,13 @@ BEGIN TRY
     -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
     -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
     DECLARE @franjaBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaCostoFranja)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Publicidad\costo_franja.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @franjaBytes) > 0
-        BULK INSERT #FranjaCrudo FROM '$(RutaCostoFranja)'
+        BULK INSERT #FranjaCrudo FROM '$(TP_BDDA)\Datos\Publicidad\costo_franja.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #FranjaCrudo FROM '$(RutaCostoFranja)'
+        BULK INSERT #FranjaCrudo FROM '$(TP_BDDA)\Datos\Publicidad\costo_franja.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY

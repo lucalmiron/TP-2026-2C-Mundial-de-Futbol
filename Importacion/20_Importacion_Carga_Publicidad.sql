@@ -14,15 +14,11 @@
 -- marcas argentinas que pautaron en el torneo: por eso Anunciante.IdPais es
 -- Argentina. PublicidadPais toma Argentina y USA (anfitriona) como mercados.
 -- Requiere las cargas 05 (idiomas), 06 (paises) y 07 (selecciones).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar la ruta del servidor SQL.
--- IMPORTANTE: cada integrante debe poner la ruta de su propia PC.
--- :setvar RutaPublicidad "C:\ruta\proyecto\Datos\Publicidad\publicidad.xml"
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 
 --F
---:setvar RutaPublicidad "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\publicidad.xml"
 
---Santutu
-:setvar RutaPublicidad "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\publicidad.xml"
 
 -- Los metodos XML (.nodes/.value) requieren QUOTED_IDENTIFIER ON y SQLCMD lo
 -- deja en OFF por defecto; se activa antes de leer el XML de publicidad.
@@ -86,7 +82,7 @@ CREATE TABLE #PublicidadStaging (
 DECLARE @xml XML;
 BEGIN TRY
     SELECT @xml = CONVERT(XML, BulkColumn)
-    FROM OPENROWSET(BULK '$(RutaPublicidad)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Publicidad\publicidad.xml', SINGLE_BLOB) AS archivo;
 END TRY
 BEGIN CATCH
     DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudo leer el XML de publicidad. '

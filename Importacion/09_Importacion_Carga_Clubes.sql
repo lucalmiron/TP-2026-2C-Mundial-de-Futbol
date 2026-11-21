@@ -12,19 +12,12 @@
 --                         SP.uspClub_Registrar.
 -- Debe ejecutarse antes de la carga 10 (jugadores), que busca el club por
 -- nombre: si el club no esta cargado, el jugador se rechaza.
--- SSMS: Consulta > Modo SQLCMD. Ajustar la ruta del servidor SQL.
--- IMPORTANTE: cada integrante debe poner la ruta de su propia PC, porque
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- SQL Server lee los archivos desde el disco local del servidor.
--- :setvar RutaJugadores "C:\ruta\proyecto\Datos\Jugadores\jugadores.csv"
 
---L
---:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
---Fidel
---:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
---Santutu
-:setvar RutaJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
 USE MUNDIAL;
 GO
@@ -143,7 +136,7 @@ BEGIN TRY
     -- Copia del archivo original sin modificar.
     INSERT #ClubesCrudo (Archivo, Contenido)
     SELECT N'jugadores.csv', BulkColumn
-    FROM OPENROWSET(BULK '$(RutaJugadores)', SINGLE_BLOB) AS archivo;
+    FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Jugadores\jugadores.csv', SINGLE_BLOB) AS archivo;
 
     -- Con FORMAT='CSV' el terminador de fila debe coincidir con el fin de linea
     -- real del archivo: LF o CRLF segun como quedo el CSV en el disco (con
@@ -151,13 +144,13 @@ BEGIN TRY
     -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
     -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
     DECLARE @jugadoresBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaJugadores)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Jugadores\jugadores.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @jugadoresBytes) > 0
-        BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
+        BULK INSERT #JugadoresCsv FROM '$(TP_BDDA)\Datos\Jugadores\jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
+        BULK INSERT #JugadoresCsv FROM '$(TP_BDDA)\Datos\Jugadores\jugadores.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY

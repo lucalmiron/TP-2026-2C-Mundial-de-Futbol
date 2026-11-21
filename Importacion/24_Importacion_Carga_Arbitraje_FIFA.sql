@@ -32,18 +32,11 @@
 --
 -- Requiere ejecutar antes las cargas 06 (paises), 10 (jugadores), 11 (partidos)
 -- y, para el flujo normal, 15 (arbitro principal de Promiedos).
--- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
--- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
--- :setvar RutaFifaOficiales "C:\ruta\proyecto\Datos\Datos_Partidos\fifa_oficiales.csv"
+-- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
+-- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 
---L
---:setvar RutaFifaOficiales "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
 
---Fidel
---:setvar RutaFifaOficiales "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
 
---Santutu
-:setvar RutaFifaOficiales "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
 
 USE MUNDIAL;
 GO
@@ -93,13 +86,13 @@ BEGIN TRY
     -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
     -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
     DECLARE @oficialesBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaFifaOficiales)', SINGLE_BLOB) AS f);
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\fifa_oficiales.csv', SINGLE_BLOB) AS f);
     IF CHARINDEX(0x0D0A, @oficialesBytes) > 0
-        BULK INSERT #OficialesCrudo FROM '$(RutaFifaOficiales)'
+        BULK INSERT #OficialesCrudo FROM '$(TP_BDDA)\Datos\Datos_Partidos\fifa_oficiales.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
     ELSE
-        BULK INSERT #OficialesCrudo FROM '$(RutaFifaOficiales)'
+        BULK INSERT #OficialesCrudo FROM '$(TP_BDDA)\Datos\Datos_Partidos\fifa_oficiales.csv'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY
