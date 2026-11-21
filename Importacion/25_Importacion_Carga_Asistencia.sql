@@ -25,7 +25,10 @@
 --:setvar RutaAsistencia "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
 
 --Fidel
-:setvar RutaAsistencia "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
+--:setvar RutaAsistencia "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
+
+--Santutu
+:setvar RutaAsistencia "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
 
 USE MUNDIAL;
 GO

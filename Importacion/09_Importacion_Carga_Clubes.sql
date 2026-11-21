@@ -21,10 +21,10 @@
 --:setvar RutaJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
 --Fidel
-:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+--:setvar RutaJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
 --Santutu
---:setvar RutaJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
+:setvar RutaJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\jugadores.csv"
 
 USE MUNDIAL;
 GO

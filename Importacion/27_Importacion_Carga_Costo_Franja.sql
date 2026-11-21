@@ -27,7 +27,10 @@
 --:setvar RutaCostoFranja "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
 
 --Fidel
-:setvar RutaCostoFranja "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
+--:setvar RutaCostoFranja "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
+
+--Santutu
+:setvar RutaCostoFranja "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\costo_franja.csv"
 
 USE MUNDIAL;
 GO

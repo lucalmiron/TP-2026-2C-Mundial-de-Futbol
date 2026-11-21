@@ -40,7 +40,10 @@
 --:setvar RutaFifaOficiales "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
 
 --Fidel
-:setvar RutaFifaOficiales "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
+--:setvar RutaFifaOficiales "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
+
+--Santutu
+:setvar RutaFifaOficiales "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\fifa_oficiales.csv"
 
 USE MUNDIAL;
 GO

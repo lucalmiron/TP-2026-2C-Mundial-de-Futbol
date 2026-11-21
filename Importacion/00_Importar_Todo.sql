@@ -18,10 +18,13 @@
 --   08 antes de 26 y 27 -> los espacios y las franjas se cargan por sede.
 --   26 y 27 antes de 28 -> el historial usa el espacio y la franja de la sede,
 --                          y la 20 le da el nombre de la campania.
+--Santutu
+:setvar RutaTablas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
+:setvar RutaImportacion "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion"
 --L
 --:setvar RutaTablas "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
 --:setvar RutaImportacion "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Importacion"
---F
+--Fidel
 --:setvar RutaTablas "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
 --:setvar RutaImportacion "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion"
 :ON ERROR EXIT
@@ -60,13 +63,13 @@ GO
 GO
 :r $(RutaImportacion)\15_Importacion_Carga_Arbitrajes.sql
 GO
-:r $(RutaImportacion)\16_Importacion_Carga_Goles.sql
+:r $(RutaImportacion)\16_Importacion_Carga_Sustituciones.sql
 GO
-:r $(RutaImportacion)\17_Importacion_Carga_Amonestaciones.sql
+:r $(RutaImportacion)\17_Importacion_Carga_Goles.sql
 GO
-:r $(RutaImportacion)\18_Importacion_Carga_Sustituciones.sql
+:r $(RutaImportacion)\18_Importacion_Carga_Tecnicos.sql
 GO
-:r $(RutaImportacion)\19_Importacion_Carga_Tecnicos.sql
+:r $(RutaImportacion)\19_Importacion_Carga_Amonestaciones.sql
 GO
 :r $(RutaImportacion)\20_Importacion_Carga_Publicidad.sql
 GO

@@ -28,7 +28,10 @@
 --:setvar RutaEspacios "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
 
 --Fidel
-:setvar RutaEspacios "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
+--:setvar RutaEspacios "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
+
+--Santutu
+:setvar RutaEspacios "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\espacios_publicitarios.csv"
 
 USE MUNDIAL;
 GO

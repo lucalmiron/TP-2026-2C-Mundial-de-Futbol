@@ -7,12 +7,12 @@
 -- En SSMS, activar modo SQLCMD y cambiar ScriptPath por la ruta de Tablas.
 -- Mantener las comillas si la ruta contiene espacios.
 
+--Santutu
+:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
+--Fidel
+--:setvar ScriptPath "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
 --L
 --:setvar ScriptPath "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Tablas"
---F
-:setvar ScriptPath "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Tablas"
---Santutu
---:setvar ScriptPath "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Tablas"
 
 :ON ERROR EXIT
 
