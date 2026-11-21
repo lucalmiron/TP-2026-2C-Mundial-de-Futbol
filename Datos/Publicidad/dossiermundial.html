@@ -472,7 +472,62 @@ const db = getFirestore(app);
 (function(){
 
 const ADMIN_PASS = 'coco490304';
+
+// Sistema de roles: mapeo de roles a funcionalidades
+// Cada rol determina qué botones y acciones están disponibles en el panel admin
+const USER_ROLES = {
+  // admin_full: acceso total (password principal)
+  admin_full: {
+    name: 'Administrador',
+    canDelete: true,
+    canReorder: true,
+    canEdit: true,
+    canManageVideos: true,
+    canManagePremios: true,
+    canManageCreditos: true,
+    canSaveOrder: true,
+    toastMsg: '✓ Acceso de Administrador activado'
+  },
+  // publicidad_mgr: gestor de publicidad - puede crear/editar pero no borrar/reordenar
+  publicidad_mgr: {
+    name: 'Gestor de Publicidad',
+    canDelete: false,
+    canReorder: false,
+    canEdit: true,
+    canManageVideos: true,
+    canManagePremios: true,
+    canManageCreditos: true,
+    canSaveOrder: false,
+    toastMsg: '✓ Acceso de Gestor de Publicidad activado'
+  },
+  // cargador: solo lectura/consulta
+  cargador: {
+    name: 'Cargador de Resultados',
+    canDelete: false,
+    canReorder: false,
+    canEdit: false,
+    canManageVideos: false,
+    canManagePremios: false,
+    canManageCreditos: false,
+    canSaveOrder: false,
+    toastMsg: '✓ Acceso de Cargador de Resultados activado'
+  },
+  // consulta: solo vista pública
+  consulta: {
+    name: 'Consulta',
+    canDelete: false,
+    canReorder: false,
+    canEdit: false,
+    canManageVideos: false,
+    canManagePremios: false,
+    canManageCreditos: false,
+    canSaveOrder: false,
+    toastMsg: '✓ Modo Consulta activado'
+  }
+};
+
 let adminLoggedIn = false;
+let currentRole = 'consulta'; // rol por defecto si no hay login
 
 /* ══════════════════════════════════════════════
    CAMPAÑAS — Firestore como fuente de verdad
@@ -752,10 +807,39 @@ document.getElementById('adminPassword').addEventListener('keydown',e=>{if(e.key
 function tryLogin(){
   if(document.getElementById('adminPassword').value===ADMIN_PASS){
     adminLoggedIn=true;loginOverlay.classList.remove('open');
+    // Por defecto, password correcta → rol admin_full
+    currentRole = 'admin_full';
     document.getElementById('adminFab').classList.add('visible');
-    toast('✓ Acceso admin activado','success');
-  }else{document.getElementById('adminLoginError').style.display='block';document.getElementById('adminPassword').value='';}
+    toast(USER_ROLES[currentRole].toastMsg,'success');
+    renderAdminRoleUI();
+  }else{document.getElementById('adminLoginError').style.display='block';document.getElementById('adminPassword').value='';
 }
+}
+
+renderAdminRoleUI = function(){
+  const r = USER_ROLES[currentRole];
+  // Mostrar u ocultar botón eliminar en la lista de campañas
+  const deleteBtns = document.querySelectorAll('.btn-delete');
+  deleteBtns.forEach(b=>{b.style.display = r.canDelete ? 'inline-block' : 'none'});
+  // Mostrar u ocultar hint y botón de guardar orden
+  const ordenHint = document.getElementById('ordenHint');
+  const guardarOrdenBtn = document.getElementById('btnGuardarOrden');
+  if(r.canReorder){
+    ordenHint.classList.add('visible');
+    guardarOrdenBtn.classList.remove('visible');
+  }else{
+    ordenHint.classList.remove('visible');
+    guardarOrdenBtn.classList.add('visible');
+  }
+  // Habilitar/deshabilitar arrastre (drag & drop)
+  const lista = document.getElementById('adminLista');
+  if(lista){
+    lista.querySelectorAll('.admin-lista-item').forEach(row=>{
+      row.draggable = r.canReorder;
+      row.classList.toggle('can-drag', r.canReorder);
+    });
+  }
+};
 
 /* ══════════════════════════════════════════════
    ADMIN — PANEL
@@ -984,6 +1068,7 @@ async function init(){
   await loadCampanas();
   populateFilters();
   applyFilters();
+  renderAdminRoleUI();
 
   // Abrir campaña si la URL tiene un hash (ej: dossiermundial.netlify.app/#quilmes-latas-edicion-limitada)
   const hashId = window.location.hash.replace('#', '');

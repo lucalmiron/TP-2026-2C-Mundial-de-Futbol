@@ -87,9 +87,21 @@ CREATE TABLE #OficialesCrudo (
 );
 
 BEGIN TRY
-    BULK INSERT #OficialesCrudo FROM '$(RutaFifaOficiales)'
-    WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-          ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
+    -- Con FORMAT='CSV' el terminador de fila debe coincidir con el fin de linea
+    -- real del archivo: LF o CRLF segun como quedo el CSV en el disco (con
+    -- core.autocrlf=true, Git lo deja en CRLF). Un terminador equivocado falla
+    -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
+    -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
+    DECLARE @oficialesBytes VARBINARY(MAX) =
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaFifaOficiales)', SINGLE_BLOB) AS f);
+    IF CHARINDEX(0x0D0A, @oficialesBytes) > 0
+        BULK INSERT #OficialesCrudo FROM '$(RutaFifaOficiales)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
+    ELSE
+        BULK INSERT #OficialesCrudo FROM '$(RutaFifaOficiales)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY
 BEGIN CATCH
     DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudo leer fifa_oficiales.csv. '

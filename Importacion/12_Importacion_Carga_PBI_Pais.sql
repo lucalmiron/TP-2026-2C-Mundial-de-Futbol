@@ -22,6 +22,12 @@
 --:setvar RutaPBI "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pbi_por_pais.xml"
 --:setvar RutaEquiv "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\BancoMundial\pais_iso3.csv"
 
+-- Los metodos XML (.nodes/.value) requieren QUOTED_IDENTIFIER ON y SQLCMD lo
+-- deja en OFF por defecto; se activa antes de leer el XML del Banco Mundial.
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
 USE MUNDIAL;
 GO
 

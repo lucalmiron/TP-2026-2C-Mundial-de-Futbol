@@ -24,6 +24,12 @@
 --Santutu
 :setvar RutaPublicidad "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Publicidad\publicidad.xml"
 
+-- Los metodos XML (.nodes/.value) requieren QUOTED_IDENTIFIER ON y SQLCMD lo
+-- deja en OFF por defecto; se activa antes de leer el XML de publicidad.
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
 USE MUNDIAL;
 GO
 SET NOCOUNT ON;

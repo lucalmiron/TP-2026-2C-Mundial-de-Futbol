@@ -39,6 +39,12 @@
 :setvar RutaIdiomas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\pais_idioma.csv"
 :setvar RutaZonas "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Husos_horarios\pais_zona.csv"
 
+-- Los metodos XML (.nodes/.value) requieren QUOTED_IDENTIFIER ON y SQLCMD lo
+-- deja en OFF por defecto; se activa antes de usar el XML de selecciones.
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+GO
+
 USE MUNDIAL;
 GO
 

@@ -213,44 +213,44 @@ BEGIN TRY
     FROM OPENROWSET(BULK '$(RutaJugadores)', SINGLE_BLOB) AS archivo;
 
     -- Con FORMAT='CSV' el terminador de fila debe coincidir con el fin de linea
-    -- real del archivo. Git guarda estos CSV en LF, pero con core.autocrlf=true
-    -- quedan en CRLF en el working tree. Se intenta con LF y, si falla, se
-    -- reintenta con CRLF para que el importador corra en cualquier clon.
-    BEGIN TRY
-        BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    END TRY
-    BEGIN CATCH
-        TRUNCATE TABLE #JugadoresCsv;
+    -- real del archivo: LF o CRLF segun como quedo el CSV en el disco (con
+    -- core.autocrlf=true, Git lo deja en CRLF). Un terminador equivocado falla
+    -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
+    -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
+    DECLARE @jugadoresBytes VARBINARY(MAX) =
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaJugadores)', SINGLE_BLOB) AS f);
+    IF CHARINDEX(0x0D0A, @jugadoresBytes) > 0
         BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
-    END CATCH;
-
-    BEGIN TRY
-        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
+    ELSE
+        BULK INSERT #JugadoresCsv FROM '$(RutaJugadores)'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    END TRY
-    BEGIN CATCH
-        TRUNCATE TABLE #AliasJugadores;
+
+    -- Idem: se detecta el fin de linea real antes de cargar.
+    DECLARE @aliasJugBytes VARBINARY(MAX) =
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaAliasJugadores)', SINGLE_BLOB) AS f);
+    IF CHARINDEX(0x0D0A, @aliasJugBytes) > 0
         BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
-    END CATCH;
-
-    BEGIN TRY
-        BULK INSERT #EquiposCsv FROM '$(RutaEquipos)'
+    ELSE
+        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    END TRY
-    BEGIN CATCH
-        TRUNCATE TABLE #EquiposCsv;
+
+    -- Idem: se detecta el fin de linea real antes de cargar.
+    DECLARE @equiposJugBytes VARBINARY(MAX) =
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaEquipos)', SINGLE_BLOB) AS f);
+    IF CHARINDEX(0x0D0A, @equiposJugBytes) > 0
         BULK INSERT #EquiposCsv FROM '$(RutaEquipos)'
         WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
               ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
-    END CATCH;
+    ELSE
+        BULK INSERT #EquiposCsv FROM '$(RutaEquipos)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY
 BEGIN CATCH
     DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudieron leer los archivos de jugadores. '

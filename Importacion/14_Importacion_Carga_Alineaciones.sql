@@ -9,6 +9,10 @@
 --   FASE 2 DEPURACION  : reglas de conjunto (UPDATE) sobre la staging.
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
 --                         SP.uspAlineacion_Registrar.
+-- Criterio de dorsal: si un jugador cambia de dorsal entre partidos, se toma
+-- como suyo el que quedo registrado en equipos.Jugador (el primero, carga 10)
+-- y no se validan los cambios. El jugador se resuelve primero por NOMBRE;
+-- el dorsal solo se usa como fallback.
 -- Requiere ejecutar antes las cargas 07 (selecciones), 10 (jugadores) y
 -- 11 (partidos).
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
@@ -64,6 +68,8 @@ IF OBJECT_ID(N'partidos.Alineacion', N'U') IS NULL
     THROW 51900, 'Faltan tablas o SP ABM. Ejecute primero el instalador.', 1;
 
 IF OBJECT_ID(N'tempdb..#AlineacionesStaging') IS NOT NULL DROP TABLE #AlineacionesStaging;
+IF OBJECT_ID(N'tempdb..#JugReg') IS NOT NULL DROP TABLE #JugReg;
+IF OBJECT_ID(N'tempdb..#Cand') IS NOT NULL DROP TABLE #Cand;
 
 -- Lector compartido: deja los JSON crudos, las equivalencias y el partido resuelto.
 :r $(RutaLecturaPartidos)
@@ -171,65 +177,94 @@ UPDATE #AlineacionesStaging SET Estado='Error',
     Detalle=N'No se pudo determinar la seleccion del equipo.'
 WHERE Estado='Pendiente' AND Seleccion IS NULL;
 
--- D7: el jugador no esta cargado para esa seleccion (carga 10).
-UPDATE #AlineacionesStaging SET Estado='Error',
+-- N1: jugadores registrados con el nombre descifrado una sola vez
+--     (evita descifrar fila por fila en cada regla).
+CREATE TABLE #JugReg (
+    IdJugador INT PRIMARY KEY,
+    Seleccion INT,
+    Numero INT,
+    NombreReg NVARCHAR(30) COLLATE DATABASE_DEFAULT
+);
+INSERT #JugReg (IdJugador, Seleccion, Numero, NombreReg)
+SELECT j.IdJugador, j.Seleccion, j.Numero,
+       CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'),
+               N'ClaveMaestra_Mundial_2026!', p.Nombre))
+FROM equipos.Jugador AS j
+JOIN equipos.Persona AS p ON p.IdPersona = j.IdJugador;
+
+-- N2: candidatos por nombre. Exacto=1 (nombre directo o alias), Exacto=0 (abreviado).
+CREATE TABLE #Cand (Fila INT, IdJugador INT, Exacto BIT);
+
+INSERT #Cand (Fila, IdJugador, Exacto)
+SELECT s.Fila, r.IdJugador, 1
+FROM #AlineacionesStaging AS s
+JOIN #JugReg AS r ON r.Seleccion = s.Seleccion
+WHERE s.Estado = 'Pendiente'
+  AND (r.NombreReg COLLATE Latin1_General_100_CI_AI = s.Nombre COLLATE Latin1_General_100_CI_AI
+       OR EXISTS (SELECT 1 FROM #AliasJugadores AS a
+                  WHERE a.Habilitado = '1'
+                    AND a.NombreCsv COLLATE Latin1_General_100_CI_AI = r.NombreReg COLLATE Latin1_General_100_CI_AI
+                    AND a.NombrePromiedos COLLATE Latin1_General_100_CI_AI = s.Nombre COLLATE Latin1_General_100_CI_AI));
+
+INSERT #Cand (Fila, IdJugador, Exacto)
+SELECT s.Fila, r.IdJugador, 0
+FROM #AlineacionesStaging AS s
+JOIN #JugReg AS r ON r.Seleccion = s.Seleccion
+WHERE s.Estado = 'Pendiente'
+  AND s.Nombre LIKE N'_. %'
+  AND LEFT(r.NombreReg COLLATE Latin1_General_100_CI_AI, 1) = LEFT(s.Nombre COLLATE Latin1_General_100_CI_AI, 1)
+  AND r.NombreReg COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(s.Nombre, 4, 100) COLLATE Latin1_General_100_CI_AI;
+
+-- N3: se resuelve por nombre solo si hay UN unico jugador candidato.
+--     El dorsal del JSON NO se valida: vale el que quedo registrado (el primero).
+UPDATE s SET IdJugador = c.IdJugador
+FROM #AlineacionesStaging AS s
+JOIN (SELECT Fila, MIN(IdJugador) AS IdJugador
+      FROM #Cand WHERE Exacto = 1
+      GROUP BY Fila HAVING COUNT(DISTINCT IdJugador) = 1) AS c ON c.Fila = s.Fila
+WHERE s.Estado = 'Pendiente';
+
+UPDATE s SET IdJugador = c.IdJugador
+FROM #AlineacionesStaging AS s
+JOIN (SELECT Fila, MIN(IdJugador) AS IdJugador
+      FROM #Cand WHERE Exacto = 0
+      GROUP BY Fila HAVING COUNT(DISTINCT IdJugador) = 1) AS c ON c.Fila = s.Fila
+WHERE s.Estado = 'Pendiente' AND s.IdJugador IS NULL
+  AND NOT EXISTS (SELECT 1 FROM #Cand AS e WHERE e.Fila = s.Fila AND e.Exacto = 1);
+
+-- D7: sin match por nombre y el dorsal tampoco existe en la seleccion.
+UPDATE s SET Estado='Error',
     Detalle=N'El jugador no esta cargado para esa seleccion: ejecute la carga 10.'
-WHERE Estado='Pendiente'
-  AND (SELECT COUNT(*) FROM equipos.Jugador
-       WHERE Numero = #AlineacionesStaging.Numero
-         AND Seleccion = #AlineacionesStaging.Seleccion) = 0;
+FROM #AlineacionesStaging AS s
+WHERE s.Estado='Pendiente' AND s.IdJugador IS NULL
+  AND NOT EXISTS (SELECT 1 FROM #JugReg AS r
+                  WHERE r.Seleccion = s.Seleccion AND r.Numero = s.Numero);
 
--- D8: el dorsal es ambiguo dentro de la seleccion.
-UPDATE #AlineacionesStaging SET Estado='Error',
-    Detalle=N'El dorsal es ambiguo en la seleccion: revise la carga 10.'
-WHERE Estado='Pendiente'
-  AND (SELECT COUNT(*) FROM equipos.Jugador
-       WHERE Numero = #AlineacionesStaging.Numero
-         AND Seleccion = #AlineacionesStaging.Seleccion) > 1;
-
--- D8b: dorsal compartido por dos jugadores distintos de la misma seleccion en
---      los JSON (ej. el 10 de Uzbekistan). La carga 10 conserva solo el primero
---      que aparece (equipos.Jugador tiene UNIQUE (Seleccion, Numero)); aca se
---      omite la fila del otro jugador para no atribuirle su alineacion al
---      jugador cargado. Se compara el nombre del JSON con el jugador registrado
---      (directo o por equivalencia habilitada). No es un error: queda 'Omitida'.
+-- D8b: dorsal compartido (solo para filas que NO se resolvieron por nombre).
+--      La carga 10 conserva solo el primero que aparece (UNIQUE (Seleccion, Numero)).
 UPDATE s SET Estado='Omitida',
     Detalle=N'Dorsal compartido en la seleccion: se tomo el primer jugador que aparece y este se omite.'
 FROM #AlineacionesStaging AS s
-WHERE s.Estado='Pendiente'
+WHERE s.Estado='Pendiente' AND s.IdJugador IS NULL
   AND EXISTS (SELECT 1 FROM #AlineacionesStaging o
               WHERE o.Seleccion=s.Seleccion AND o.Numero=s.Numero
-                AND o.Nombre COLLATE Latin1_General_100_CI_AI <> s.Nombre COLLATE Latin1_General_100_CI_AI)
-  AND NOT EXISTS (
-      SELECT 1 FROM equipos.Jugador AS j
-      JOIN equipos.Persona AS p ON p.IdPersona=j.IdJugador
-      WHERE j.Seleccion=s.Seleccion AND j.Numero=s.Numero
-        AND (CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', p.Nombre)) COLLATE Latin1_General_100_CI_AI = s.Nombre COLLATE Latin1_General_100_CI_AI
-             OR EXISTS (SELECT 1 FROM #AliasJugadores AS a
-                        WHERE a.Habilitado='1'
-                          AND a.NombreCsv COLLATE Latin1_General_100_CI_AI = CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', p.Nombre)) COLLATE Latin1_General_100_CI_AI
-                          AND a.NombrePromiedos COLLATE Latin1_General_100_CI_AI = s.Nombre COLLATE Latin1_General_100_CI_AI)
-             -- Nombre abreviado de la fuente ("A. Witsel", "G. Ochoa"): inicial
-             -- + apellido, igual que el fallback que ya usa el importador 16.
-             OR (s.Nombre LIKE N'_. %'
-                 AND LEFT(CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', p.Nombre)) COLLATE Latin1_General_100_CI_AI, 1) = LEFT(s.Nombre COLLATE Latin1_General_100_CI_AI, 1)
-                 AND CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', p.Nombre)) COLLATE Latin1_General_100_CI_AI LIKE N'% ' + SUBSTRING(s.Nombre, 4, 100) COLLATE Latin1_General_100_CI_AI)));
+                AND o.Nombre COLLATE Latin1_General_100_CI_AI <> s.Nombre COLLATE Latin1_General_100_CI_AI);
 
--- D9: el mismo jugador aparece dos veces en el mismo partido.
+-- Fallback por dorsal para lo que no se resolvio por nombre.
+UPDATE s SET IdJugador = r.IdJugador
+FROM #AlineacionesStaging AS s
+JOIN #JugReg AS r ON r.Seleccion = s.Seleccion AND r.Numero = s.Numero
+WHERE s.Estado = 'Pendiente' AND s.IdJugador IS NULL;
+
+-- D9: el mismo jugador aparece dos veces en el mismo partido (por IdJugador,
+--     ya que el dorsal puede variar entre partidos).
 UPDATE f SET Estado='Duplicada', Detalle=N'El jugador ya aparece en este partido.'
 FROM #AlineacionesStaging AS f
 WHERE f.Estado='Pendiente' AND EXISTS (
     SELECT 1 FROM #AlineacionesStaging AS o
-    WHERE o.IdPartido=f.IdPartido AND o.Numero=f.Numero
-      AND o.Seleccion=f.Seleccion AND o.Fila<f.Fila
+    WHERE o.IdPartido = f.IdPartido AND o.IdJugador = f.IdJugador
+      AND o.Estado = 'Pendiente' AND o.Fila < f.Fila
 );
-
--- Se resuelve el identificador del jugador.
-UPDATE s SET IdJugador = j.IdJugador
-FROM #AlineacionesStaging AS s
-JOIN equipos.Jugador AS j
-  ON j.Numero=s.Numero AND j.Seleccion=s.Seleccion
-WHERE s.Estado='Pendiente';
 
 -- Reporte de la depuracion: se informa ANTES de escribir en la tabla real.
 SELECT 'FASE 2 - Depuracion de alineaciones (antes de la persistencia)' AS Fase;
@@ -287,6 +322,8 @@ FROM #AlineacionesStaging ORDER BY Fila;
 
 DECLARE @fallos INT = (SELECT COUNT(*) FROM #AlineacionesStaging WHERE Estado='Error');
 DROP TABLE #AlineacionesStaging;
+DROP TABLE #JugReg;
+DROP TABLE #Cand;
 IF @fallos > 0
     THROW 51904, 'Importacion parcial: se conservaron las alineaciones correctas. Revise el detalle.', 1;
 GO

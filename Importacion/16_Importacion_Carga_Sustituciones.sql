@@ -1,6 +1,6 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 13/11/2026.
+-- Fecha: 13/11/2026 (ajuste de minutos con adicional y orden: 21/11/2026).
 -- Objetivo: cargar las sustituciones de los 104 JSON de Promiedos con la
 -- metodologia de tres fases. Tipo de evento de la fuente: 15.
 -- En la fuente, texts[0] es el jugador que entra (estaba en el banco) y
@@ -8,12 +8,19 @@
 -- La fuente no indica el motivo del cambio: los cambios antes del minuto 20 se
 -- registran como 'Lesion' y el resto como 'Tactica' (catalogo de la carga 13),
 -- con el detalle anotado en el reporte.
+-- Minutos con adicional ("90+3'"): Minuto = 90 (base) y Adicional = 3. El minuto
+-- base mantiene el cambio dentro del rango de su periodo y el adicional se usa
+-- solo para ordenar los cambios dentro del mismo minuto.
+-- El tope de ventanas NO se controla en la carga (@ignorarVentanas = 1): los
+-- partidos ya se jugaron y las pausas de hidratacion no cuentan como ventana pero
+-- no se pueden identificar en la fuente. Al final se informa una auditoria.
 --   FASE 1 STAGING     : una fila por sustitucion.
 --   FASE 2 DEPURACION  : reglas de conjunto (UPDATE) sobre la staging.
 --   FASE 3 PERSISTENCIA : solo las filas validas pasan por
 --                         SPTRANS.uspSustitucion_Registrar.
 -- Requiere ejecutar antes las cargas 10 (jugadores), 11 (partidos),
--- 13 (motivos) y 14 (alineaciones).
+-- 13 (motivos) y 14 (alineaciones), y reinstalar el SP de sustituciones
+-- (ajuste de ventanas).
 -- SSMS: Consulta -> Modo SQLCMD. Ajustar las rutas del servidor SQL.
 -- IMPORTANTE: cada integrante debe poner las rutas de su propia PC.
 -- :setvar CarpetaPartidos "C:\ruta\proyecto\Datos\Datos_Partidos\partidos"
@@ -83,6 +90,7 @@ CREATE TABLE #SustitucionesStaging (
     Etapa NVARCHAR(100) COLLATE DATABASE_DEFAULT,
     MinutoTexto NVARCHAR(20) COLLATE DATABASE_DEFAULT,
     Minuto INT,
+    Adicional INT,
     Periodo INT,
     Team INT,
     NombreIngreso NVARCHAR(60) COLLATE DATABASE_DEFAULT,
@@ -99,20 +107,19 @@ CREATE TABLE #SustitucionesStaging (
     Detalle NVARCHAR(2048) COLLATE DATABASE_DEFAULT
 );
 
+-- mt.T  : el texto del minuto sin apostrofe ni espacios ("90+3").
+-- mn.Base / mn.Ad : minuto base y adicional ("90+3'" -> 90 y 3; "67'" -> 67 y NULL).
 INSERT #SustitucionesStaging
-    (Archivo, GameId, IdPartido, Etapa, MinutoTexto, Minuto, Periodo, Team,
+    (Archivo, GameId, IdPartido, Etapa, MinutoTexto, Minuto, Adicional, Periodo, Team,
      NombreIngreso, NombreEgreso, Seleccion, DetallePartido)
 SELECT a.Archivo, p.GameId, p.IdPartido, JSON_VALUE(st.value, '$.name'),
        e.time,
-       TRY_CONVERT(INT, CASE WHEN CHARINDEX(NCHAR(39), CONVERT(NVARCHAR(20), e.time)) > 0
-            THEN LEFT(CONVERT(NVARCHAR(20), e.time), CHARINDEX(NCHAR(39), CONVERT(NVARCHAR(20), e.time))-1)
-            ELSE CONVERT(NVARCHAR(20), e.time) END),
+       mn.Base,
+       mn.Ad,
        CASE WHEN JSON_VALUE(st.value, '$.name')=N'Entretiempo' THEN 1
             WHEN JSON_VALUE(st.value, '$.name')=N'Fin de los 90 minutos' THEN 3
             WHEN JSON_VALUE(st.value, '$.name')=N'Suplementario' THEN
-                 CASE WHEN TRY_CONVERT(INT, CASE WHEN CHARINDEX(NCHAR(39), CONVERT(NVARCHAR(20), e.time)) > 0
-                      THEN LEFT(CONVERT(NVARCHAR(20), e.time), CHARINDEX(NCHAR(39), CONVERT(NVARCHAR(20), e.time))-1)
-                      ELSE CONVERT(NVARCHAR(20), e.time) END) <= 105 THEN 4 ELSE 5 END
+                 CASE WHEN mn.Base <= 105 THEN 4 ELSE 5 END
             WHEN JSON_VALUE(st.value, '$.name')=N'Penales' THEN 6 END,
        e.team, tx.Texto0, tx.Texto1,
        CASE WHEN e.team=1 THEN p.Eq1 ELSE p.Eq2 END, p.Detalle
@@ -131,6 +138,13 @@ CROSS APPLY OPENJSON(r.Events) WITH (
 CROSS APPLY (SELECT MAX(CASE WHEN c.[key]=0 THEN c.value END) AS Texto0,
                     MAX(CASE WHEN c.[key]=1 THEN c.value END) AS Texto1
              FROM OPENJSON(e.Texts) AS c) AS tx
+CROSS APPLY (SELECT LTRIM(RTRIM(REPLACE(CONVERT(NVARCHAR(20), e.time), NCHAR(39), N''))) AS T) AS mt
+CROSS APPLY (SELECT
+                TRY_CONVERT(INT, LTRIM(RTRIM(CASE WHEN CHARINDEX(N'+', mt.T) > 0
+                                  THEN LEFT(mt.T, CHARINDEX(N'+', mt.T)-1) ELSE mt.T END))) AS Base,
+                TRY_CONVERT(INT, LTRIM(RTRIM(CASE WHEN CHARINDEX(N'+', mt.T) > 0
+                                  THEN SUBSTRING(mt.T, CHARINDEX(N'+', mt.T)+1, 10) END))) AS Ad
+            ) AS mn
 WHERE e.type = 15;
 
 IF NOT EXISTS (SELECT 1 FROM #SustitucionesStaging)
@@ -153,7 +167,7 @@ UPDATE #SustitucionesStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (NULLIF(NombreIngreso,N'') IS NULL OR NULLIF(NombreEgreso,N'') IS NULL);
 
--- D3: el minuto no es un numero.
+-- D3: el minuto no es un numero (los minutos con adicional "90+3'" si se interpretan).
 UPDATE #SustitucionesStaging SET Estado='Error',
     Detalle=N'El minuto de la sustitucion no se pudo interpretar.'
 WHERE Estado='Pendiente' AND Minuto IS NULL;
@@ -323,10 +337,11 @@ DECLARE @fila INT, @idPartido INT, @minuto INT, @periodo INT,
 DECLARE crsSustituciones CURSOR LOCAL FAST_FORWARD FOR
     -- El SP exige registrar los cambios en orden de minuto y periodo: se procesa
     -- partido por partido y de forma cronologica (el momento del evento es
-    -- minuto * 10 + orden del periodo).
+    -- minuto * 10 + orden del periodo). Dentro del mismo minuto y periodo se
+    -- ordena por el tiempo adicional ("45+2'" va despues de "45'").
     SELECT Fila, IdPartido, Minuto, Periodo, IdIngreso, IdEgreso, IdMotivo
     FROM #SustitucionesStaging WHERE Estado='Pendiente'
-    ORDER BY IdPartido, Minuto, Periodo, Fila;
+    ORDER BY IdPartido, Minuto, Periodo, ISNULL(Adicional, 0), Fila;
 OPEN crsSustituciones;
 FETCH NEXT FROM crsSustituciones INTO @fila, @idPartido, @minuto, @periodo, @idIngreso, @idEgreso, @idMotivo;
 WHILE @@FETCH_STATUS = 0
@@ -344,7 +359,8 @@ BEGIN
         ELSE
         BEGIN
             EXEC SPTRANS.uspSustitucion_Registrar @minuto=@minuto, @partido=@idPartido,
-                @periodo=@periodo, @ingreso=@idIngreso, @egreso=@idEgreso, @motivo=@idMotivo;
+                @periodo=@periodo, @ingreso=@idIngreso, @egreso=@idEgreso, @motivo=@idMotivo,
+                @ignorarVentanas=1;
             SET @estado='Insertada';
         END;
     END TRY
@@ -362,14 +378,39 @@ DEALLOCATE crsSustituciones;
 -- Reporte final de la persistencia.
 SELECT 'FASE 3 - Persistencia de sustituciones' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #SustitucionesStaging GROUP BY Estado ORDER BY Estado;
-SELECT Fila, GameId, IdPartido, MinutoTexto, Minuto, Periodo, NombreIngreso, IdIngreso,
+SELECT Fila, GameId, IdPartido, MinutoTexto, Minuto, Adicional, Periodo, NombreIngreso, IdIngreso,
        NombreEgreso, IdEgreso, IdMotivo, Estado, Detalle
 FROM #SustitucionesStaging ORDER BY Fila;
+
+-- Auditoria (informativa, no bloquea): equipos con mas ventanas que el tope + 2.
+-- El +2 admite una pausa de hidratacion por tiempo, que no cuenta como ventana
+-- pero la fuente no permite identificar. Conviene revisar a mano estos casos.
+SELECT 'AUDITORIA - Equipos con ventanas por encima del tope (+2 por hidratacion)' AS Fase;
+;WITH M AS (
+    SELECT E.Partido, J.Seleccion, E.Periodo, E.Minuto
+    FROM partidos.Sustitucion AS S
+    JOIN partidos.Evento AS E ON E.IdEvento = S.IdSustitucion
+    JOIN equipos.Jugador AS J ON J.IdJugador = S.Egreso
+    JOIN partidos.Periodo AS P ON P.IdPeriodo = E.Periodo
+    WHERE P.Descripcion <> 'Descanso' AND P.EsPenales = 0 AND P.Inicio < 90
+    GROUP BY E.Partido, J.Seleccion, E.Periodo, E.Minuto
+), G AS (
+    SELECT Partido, Seleccion,
+           CASE WHEN Periodo = LAG(Periodo) OVER (PARTITION BY Partido, Seleccion ORDER BY Periodo, Minuto)
+                 AND Minuto - LAG(Minuto) OVER (PARTITION BY Partido, Seleccion ORDER BY Periodo, Minuto) <= 2
+                THEN 0 ELSE 1 END AS Nueva
+    FROM M
+)
+SELECT G.Partido, G.Seleccion, SUM(G.Nueva) AS Ventanas, mu.CAMBIOS_VENTANAS AS TopeVentanas
+FROM G
+JOIN partidos.Partido AS pa ON pa.IdPartido = G.Partido
+JOIN sedes.Mundial AS mu ON mu.IdMundial = pa.IdMundial
+GROUP BY G.Partido, G.Seleccion, mu.CAMBIOS_VENTANAS
+HAVING SUM(G.Nueva) > mu.CAMBIOS_VENTANAS + 2
+ORDER BY G.Partido, G.Seleccion;
 
 DECLARE @fallos INT = (SELECT COUNT(*) FROM #SustitucionesStaging WHERE Estado='Error');
 DROP TABLE #SustitucionesStaging;
 IF @fallos > 0
     THROW 51904, 'Importacion parcial: se conservaron las sustituciones correctas. Revise el detalle.', 1;
 GO
-
-
