@@ -1,8 +1,10 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 13/11/2026.
+-- Fecha: 21/11/2026.
 -- Objetivo: lector compartido por los importadores de datos deportivos
 -- (13 a 18). NO EJECUTAR SOLO: se incluye con :r desde un importador.
+-- Los CSV de equivalencias se leen como bytes y se separan con STRING_SPLIT,
+-- sin BULK INSERT: asi no dependen de que el archivo tenga LF o CRLF.
 --
 -- Prepara la FASE 1 (staging) comun:
 --   #ArchivosPartidos : los 104 JSON originales, sin modificar.
@@ -22,6 +24,7 @@ IF OBJECT_ID(N'tempdb..#FasesPartidos') IS NOT NULL DROP TABLE #FasesPartidos;
 IF OBJECT_ID(N'tempdb..#EquiposPartidos') IS NOT NULL DROP TABLE #EquiposPartidos;
 IF OBJECT_ID(N'tempdb..#SedesPartidos') IS NOT NULL DROP TABLE #SedesPartidos;
 IF OBJECT_ID(N'tempdb..#AliasJugadores') IS NOT NULL DROP TABLE #AliasJugadores;
+IF OBJECT_ID(N'tempdb..#EquivalenciasCrudo') IS NOT NULL DROP TABLE #EquivalenciasCrudo;
 IF OBJECT_ID(N'tempdb..#PartidosJson') IS NOT NULL DROP TABLE #PartidosJson;
 
 -- El contenido se guarda como VARCHAR con collation UTF8 porque SINGLE_BLOB
@@ -75,64 +78,121 @@ CREATE TABLE #PartidosJson (
 );
 
 BEGIN TRY
-    -- Con FORMAT='CSV' el terminador de fila debe coincidir con el fin de linea
-    -- real del archivo: LF o CRLF segun como quedo el CSV en el disco (con
-    -- core.autocrlf=true, Git lo deja en CRLF). Un terminador equivocado falla
-    -- con el error 7301 al compilar el BULK INSERT, y TRY/CATCH no lo puede
-    -- capturar: por eso se detecta leyendo el archivo y se elige el correcto.
-    DECLARE @fasesBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaFases)', SINGLE_BLOB) AS f);
-    IF CHARINDEX(0x0D0A, @fasesBytes) > 0
-        BULK INSERT #FasesPartidos FROM '$(RutaFases)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
-    ELSE
-        BULK INSERT #FasesPartidos FROM '$(RutaFases)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    -- Idem: se detecta el fin de linea real antes de cargar.
-    DECLARE @equiposBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaEquipos)', SINGLE_BLOB) AS f);
-    IF CHARINDEX(0x0D0A, @equiposBytes) > 0
-        BULK INSERT #EquiposPartidos FROM '$(RutaEquipos)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
-    ELSE
-        BULK INSERT #EquiposPartidos FROM '$(RutaEquipos)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    -- Idem: se detecta el fin de linea real antes de cargar.
-    DECLARE @sedesBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaSedes)', SINGLE_BLOB) AS f);
-    IF CHARINDEX(0x0D0A, @sedesBytes) > 0
-        BULK INSERT #SedesPartidos FROM '$(RutaSedes)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
-    ELSE
-        BULK INSERT #SedesPartidos FROM '$(RutaSedes)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    -- El CSV de equivalencias de jugadores tiene campos entre comillas (la
-    -- columna criterio lleva comas). Con FORMAT='CSV' el terminador de fila
-    -- debe coincidir con el fin de linea real del archivo: LF o CRLF segun la
-    -- configuracion de Git de cada PC. Se detecta leyendo el archivo y se elige
-    -- el terminador correcto, sin reintentos a ciegas.
-    DECLARE @aliasBytes VARBINARY(MAX) =
-        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaAliasJugadores)', SINGLE_BLOB) AS f);
-    IF CHARINDEX(0x0D0A, @aliasBytes) > 0
-        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
-    ELSE
-        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
-        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
+    -- Los CSV se bajan como BYTES (SINGLE_BLOB) y se separan con STRING_SPLIT.
+    -- No se usa BULK INSERT: con FORMAT='CSV' el proveedor OLE DB valida el
+    -- ROWTERMINATOR al compilar, incluso en la rama del IF que NO se ejecuta,
+    -- y falla con el error 7301 (IID_IColumnsInfo) que TRY/CATCH no atrapa.
+    -- Leyendo los bytes da igual que el archivo venga con LF o con CRLF.
+    CREATE TABLE #EquivalenciasCrudo (
+        Archivo NVARCHAR(100) COLLATE DATABASE_DEFAULT,
+        Contenido VARCHAR(MAX) COLLATE Latin1_General_100_CI_AS_SC_UTF8
+    );
+    INSERT #EquivalenciasCrudo (Archivo, Contenido)
+    SELECT N'fases', BulkColumn
+    FROM OPENROWSET(BULK '$(RutaFases)', SINGLE_BLOB) AS f
+    UNION ALL
+    SELECT N'equipos', BulkColumn
+    FROM OPENROWSET(BULK '$(RutaEquipos)', SINGLE_BLOB) AS f
+    UNION ALL
+    SELECT N'sedes', BulkColumn
+    FROM OPENROWSET(BULK '$(RutaSedes)', SINGLE_BLOB) AS f
+    UNION ALL
+    SELECT N'jugadores', BulkColumn
+    FROM OPENROWSET(BULK '$(RutaAliasJugadores)', SINGLE_BLOB) AS f;
 END TRY
 BEGIN CATCH
-    DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudieron leer las tablas de equivalencias. '
-                                           + ERROR_MESSAGE(), 2048);
-    THROW 51990, @mensaje, 1;
+    DECLARE @msgEquiv NVARCHAR(2048) = LEFT(N'No se pudieron leer las tablas de equivalencias. '
+                                            + ERROR_MESSAGE(), 2048);
+    THROW 51990, @msgEquiv, 1;
 END CATCH;
+
+DECLARE @txtFases NVARCHAR(MAX) =
+    (SELECT CONVERT(NVARCHAR(MAX), Contenido) FROM #EquivalenciasCrudo WHERE Archivo=N'fases');
+DECLARE @txtEquipos NVARCHAR(MAX) =
+    (SELECT CONVERT(NVARCHAR(MAX), Contenido) FROM #EquivalenciasCrudo WHERE Archivo=N'equipos');
+DECLARE @txtSedes NVARCHAR(MAX) =
+    (SELECT CONVERT(NVARCHAR(MAX), Contenido) FROM #EquivalenciasCrudo WHERE Archivo=N'sedes');
+DECLARE @txtJugadores NVARCHAR(MAX) =
+    (SELECT CONVERT(NVARCHAR(MAX), Contenido) FROM #EquivalenciasCrudo WHERE Archivo=N'jugadores');
+
+-- Cada CSV se separa en lineas por LF y se quita el CR que pueda quedar al final.
+-- La primera linea es la cabecera y se descarta (Ordinal > 1).
+-- Fases: tipo, valor del JSON, fase de la base (3 columnas).
+;WITH Lineas AS (
+    SELECT ordinal AS Ordinal, REPLACE(value, NCHAR(13), N'') AS Linea
+    FROM STRING_SPLIT(@txtFases, NCHAR(10), 1)
+    WHERE LTRIM(RTRIM(REPLACE(value, NCHAR(13), N''))) <> ''
+), Campos AS (
+    SELECT Ordinal,
+           (SELECT COUNT(*) FROM STRING_SPLIT(Linea, N',', 1)) AS Cantidad,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=1) AS c1,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=2) AS c2,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=3) AS c3
+    FROM Lineas
+)
+INSERT #FasesPartidos (Tipo, Valor, Fase)
+SELECT LTRIM(RTRIM(c1)), LTRIM(RTRIM(c2)), LTRIM(RTRIM(c3))
+FROM Campos
+WHERE Ordinal > 1 AND Cantidad = 3;
+
+-- Equipos: seleccion del CSV, slug de Promiedos, pais de la base (3 columnas).
+;WITH Lineas AS (
+    SELECT ordinal AS Ordinal, REPLACE(value, NCHAR(13), N'') AS Linea
+    FROM STRING_SPLIT(@txtEquipos, NCHAR(10), 1)
+    WHERE LTRIM(RTRIM(REPLACE(value, NCHAR(13), N''))) <> ''
+), Campos AS (
+    SELECT Ordinal,
+           (SELECT COUNT(*) FROM STRING_SPLIT(Linea, N',', 1)) AS Cantidad,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=1) AS c1,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=2) AS c2,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=3) AS c3
+    FROM Lineas
+)
+INSERT #EquiposPartidos (SeleccionCsv, Slug, Pais)
+SELECT LTRIM(RTRIM(c1)), LTRIM(RTRIM(c2)), LTRIM(RTRIM(c3))
+FROM Campos
+WHERE Ordinal > 1 AND Cantidad = 3;
+
+-- Sedes: nombre del JSON, nombre de la sede, ciudad y pais (4 columnas).
+;WITH Lineas AS (
+    SELECT ordinal AS Ordinal, REPLACE(value, NCHAR(13), N'') AS Linea
+    FROM STRING_SPLIT(@txtSedes, NCHAR(10), 1)
+    WHERE LTRIM(RTRIM(REPLACE(value, NCHAR(13), N''))) <> ''
+), Campos AS (
+    SELECT Ordinal,
+           (SELECT COUNT(*) FROM STRING_SPLIT(Linea, N',', 1)) AS Cantidad,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=1) AS c1,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=2) AS c2,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=3) AS c3,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=4) AS c4
+    FROM Lineas
+)
+INSERT #SedesPartidos (NombreJson, NombreSede, Ciudad, Pais)
+SELECT LTRIM(RTRIM(c1)), LTRIM(RTRIM(c2)), LTRIM(RTRIM(c3)), LTRIM(RTRIM(c4))
+FROM Campos
+WHERE Ordinal > 1 AND Cantidad = 4;
+
+-- Jugadores: la ultima columna (criterio) puede traer comas entre comillas,
+-- por eso se juntan todos los campos desde el quinto y se quitan las comillas.
+;WITH Lineas AS (
+    SELECT ordinal AS Ordinal, REPLACE(value, NCHAR(13), N'') AS Linea
+    FROM STRING_SPLIT(@txtJugadores, NCHAR(10), 1)
+    WHERE LTRIM(RTRIM(REPLACE(value, NCHAR(13), N''))) <> ''
+), Campos AS (
+    SELECT Ordinal,
+           (SELECT COUNT(*) FROM STRING_SPLIT(Linea, N',', 1)) AS Cantidad,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=1) AS c1,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=2) AS c2,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=3) AS c3,
+           (SELECT MAX(v.value) FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal=4) AS c4,
+           (SELECT STRING_AGG(REPLACE(v.value, N'"', N''), N',') WITHIN GROUP (ORDER BY v.ordinal)
+              FROM STRING_SPLIT(Linea, N',', 1) AS v WHERE v.ordinal >= 5) AS c5
+    FROM Lineas
+)
+INSERT #AliasJugadores (Seleccion, NombreCsv, NombrePromiedos, Habilitado, Criterio)
+SELECT LTRIM(RTRIM(c1)), LTRIM(RTRIM(c2)), LTRIM(RTRIM(c3)), LTRIM(RTRIM(c4)), LTRIM(RTRIM(c5))
+FROM Campos
+WHERE Ordinal > 1 AND Cantidad >= 5;
 
 UPDATE #FasesPartidos SET Tipo=LTRIM(RTRIM(Tipo)), Valor=LTRIM(RTRIM(Valor)),
     Fase=LTRIM(RTRIM(REPLACE(Fase,NCHAR(13),N'')));
