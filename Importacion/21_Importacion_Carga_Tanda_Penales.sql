@@ -34,17 +34,28 @@
 -- :setvar RutaFases "C:\ruta\proyecto\Datos\equivalencias_fases_partidos.csv"
 -- :setvar RutaAliasJugadores "C:\ruta\proyecto\Datos\Jugadores\equivalencias_jugadores.csv"
 
--- Rutas de la maquina actual (ajustar si el proyecto esta en otra carpeta).
-:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
-:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
-:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
-:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--Fidel
+:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
-USE [MUNDIALtesting];
+--Santutu
+--:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+--:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+--:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+--:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+--:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+
+USE MUNDIAL;
 GO
+-- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
+-- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -156,12 +167,12 @@ JOIN equipos.Pais AS p ON p.IdPais = se.IdPais
 WHERE s.Estado='Pendiente';
 
 UPDATE #TandaStaging SET NombreAutorBd = COALESCE(
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #TandaStaging.NombreAutor AND j.Seleccion = #TandaStaging.Seleccion),
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #TandaStaging.NombreAutor AND j.Seleccion = #TandaStaging.Seleccion),
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #TandaStaging.NombreAutor COLLATE Latin1_General_100_CI_AI
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI = #TandaStaging.NombreAutor COLLATE Latin1_General_100_CI_AI
        AND j.Seleccion = #TandaStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #TandaStaging.NombreAutor AND al.Habilitado='1'
@@ -174,7 +185,7 @@ UPDATE #TandaStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#TandaStaging.NombreAutorBd, #TandaStaging.NombreAutor)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#TandaStaging.NombreAutorBd, #TandaStaging.NombreAutor)
          AND j.Seleccion = #TandaStaging.Seleccion) = 0;
 
 -- D5: el ejecutante es ambiguo dentro de la seleccion.
@@ -183,18 +194,30 @@ UPDATE #TandaStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#TandaStaging.NombreAutorBd, #TandaStaging.NombreAutor)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#TandaStaging.NombreAutorBd, #TandaStaging.NombreAutor)
          AND j.Seleccion = #TandaStaging.Seleccion) > 1;
 
 -- Se resuelve el identificador del ejecutante.
 UPDATE s SET IdJugador = j.IdJugador
 FROM #TandaStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAutorBd, s.NombreAutor)
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(s.NombreAutorBd, s.NombreAutor)
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
--- D6: el ejecutante no estaba en cancha al terminar el partido (misma
--- validacion del SP, aqui preventiva). En la tanda el minuto es NULL.
+-- D6a: el ejecutante estaba en el banco y su ingreso no figura en la carga 16
+-- (por ejemplo, un cambio rechazado por el tope del reglamento). El tiro no se
+-- puede registrar: queda 'Omitida' con el detalle; no es un error de datos.
+UPDATE #TandaStaging SET Estado='Omitida',
+    Detalle=N'El ejecutante estaba en el banco y su ingreso no figura en la carga 16: el tiro se omite.'
+WHERE Estado='Pendiente' AND IdJugador IS NOT NULL
+  AND partidos.fnJugadorEnCanchaPeriodo(IdPartido, IdJugador, NULL, @idPeriodoPenales) = 0
+  AND EXISTS (SELECT 1 FROM partidos.Alineacion AS a
+              WHERE a.IdPartido = #TandaStaging.IdPartido
+                AND a.IdJugador = #TandaStaging.IdJugador
+                AND a.Rol = 'Suplente');
+
+-- D6b: el ejecutante no estaba en cancha por un problema de datos (no figura
+-- ni como suplente): es un error que hay que revisar.
 UPDATE #TandaStaging SET Estado='Error',
     Detalle=N'El ejecutante no estaba en cancha: revise la carga 14.'
 WHERE Estado='Pendiente' AND IdJugador IS NOT NULL
@@ -232,7 +255,7 @@ WHERE f.Estado='Pendiente' AND EXISTS (
 SELECT 'FASE 2 - Depuracion de la tanda (antes de la persistencia)' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #TandaStaging GROUP BY Estado ORDER BY Estado;
 SELECT Fila, GameId, Turno, Team, TipoEvento, NombreAutor, Seleccion, Estado, Detalle
-FROM #TandaStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
+FROM #TandaStaging WHERE Estado IN ('Error','Duplicada','Omitida') ORDER BY Fila;
 
 ---------------------------------------------------------------------------------------
 -- FASE 3 - PERSISTENCIA

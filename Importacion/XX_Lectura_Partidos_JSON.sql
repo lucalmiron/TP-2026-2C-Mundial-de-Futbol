@@ -84,10 +84,21 @@ BEGIN TRY
     BULK INSERT #SedesPartidos FROM '$(RutaSedes)'
     WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
           ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
-    -- El CSV de equivalencias de jugadores usa fin de linea LF.
-    BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
-    WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
-          ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
+    -- El CSV de equivalencias de jugadores tiene campos entre comillas (la
+    -- columna criterio lleva comas). Con FORMAT='CSV' el terminador de fila
+    -- debe coincidir con el fin de linea real del archivo: LF o CRLF segun la
+    -- configuracion de Git de cada PC. Se detecta leyendo el archivo y se elige
+    -- el terminador correcto, sin reintentos a ciegas.
+    DECLARE @aliasBytes VARBINARY(MAX) =
+        (SELECT BulkColumn FROM OPENROWSET(BULK '$(RutaAliasJugadores)', SINGLE_BLOB) AS f);
+    IF CHARINDEX(0x0D0A, @aliasBytes) > 0
+        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0d0a', CODEPAGE='65001', MAXERRORS=0);
+    ELSE
+        BULK INSERT #AliasJugadores FROM '$(RutaAliasJugadores)'
+        WITH (FORMAT='CSV', FIRSTROW=2, FIELDTERMINATOR=',',
+              ROWTERMINATOR='0x0a', CODEPAGE='65001', MAXERRORS=0);
 END TRY
 BEGIN CATCH
     DECLARE @mensaje NVARCHAR(2048) = LEFT(N'No se pudieron leer las tablas de equivalencias. '

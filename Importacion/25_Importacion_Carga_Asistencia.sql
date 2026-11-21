@@ -22,12 +22,12 @@
 -- :setvar RutaAsistencia "C:\ruta\proyecto\Datos\Datos_Partidos\asistencia_partidos.csv"
 
 --L
-:setvar RutaAsistencia "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
+--:setvar RutaAsistencia "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
 
 --Fidel
---:setvar RutaAsistencia "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
+:setvar RutaAsistencia "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\asistencia_partidos.csv"
 
-USE [MUNDIALtesting];
+USE MUNDIAL;
 GO
 SET NOCOUNT ON;
 SET XACT_ABORT ON;

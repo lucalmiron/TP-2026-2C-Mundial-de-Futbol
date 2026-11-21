@@ -31,17 +31,28 @@
 -- :setvar RutaFases "C:\ruta\proyecto\Datos\equivalencias_fases_partidos.csv"
 -- :setvar RutaAliasJugadores "C:\ruta\proyecto\Datos\Jugadores\equivalencias_jugadores.csv"
 
--- Rutas de la maquina actual (ajustar si el proyecto esta en otra carpeta).
-:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
-:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
-:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
-:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--Fidel
+:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
-USE [MUNDIALtesting];
+--Santutu
+--:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+--:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+--:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+--:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+--:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+
+USE MUNDIAL;
 GO
+-- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
+-- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -125,6 +136,26 @@ WHERE e.type = 5;
 IF NOT EXISTS (SELECT 1 FROM #RojasStaging)
     THROW 51901, 'No se encontraron rojas directas en los JSON; revise la lectura de archivos.', 1;
 
+-- Normaliza el nombre del arbitro igual que el 15 y el 19: la fuente lo escribe
+-- a veces como "Nombre (Pais)" y con variantes (inicial, sin tilde). Se necesita
+-- el nombre canonico para encontrar el arbitro que cargo el 15.
+UPDATE #RojasStaging SET
+    NombreArbitro = NULLIF(LTRIM(RTRIM(CASE WHEN CHARINDEX(N'(', NombreArbitro) > 0
+                                           THEN LEFT(NombreArbitro, CHARINDEX(N'(', NombreArbitro) - 1)
+                                           ELSE NombreArbitro END)), N'');
+
+CREATE TABLE #EquivalenciaArbitros (
+    Variante NVARCHAR(60) COLLATE Latin1_General_100_CI_AI,
+    Canonico NVARCHAR(60) COLLATE Latin1_General_100_CI_AS
+);
+INSERT #EquivalenciaArbitros (Variante, Canonico) VALUES
+    (N'I. Barton', N'Iván Barton'),
+    (N'Clement Turpin', N'Clément Turpin');
+UPDATE s SET NombreArbitro = e.Canonico
+FROM #RojasStaging AS s
+JOIN #EquivalenciaArbitros AS e ON e.Variante = s.NombreArbitro COLLATE Latin1_General_100_CI_AI;
+DROP TABLE #EquivalenciaArbitros;
+
 ---------------------------------------------------------------------------------------
 -- FASE 2 - DEPURACION
 -- Reglas de conjunto: cada UPDATE marca las filas invalidas y su motivo.
@@ -166,12 +197,12 @@ JOIN equipos.Pais AS p ON p.IdPais = se.IdPais
 WHERE s.Estado='Pendiente';
 
 UPDATE #RojasStaging SET NombreAmonestadoBd = COALESCE(
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre = #RojasStaging.NombreAmonestado AND j.Seleccion = #RojasStaging.Seleccion),
-    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #RojasStaging.NombreAmonestado AND j.Seleccion = #RojasStaging.Seleccion),
+    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #RojasStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI
+     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI = #RojasStaging.NombreAmonestado COLLATE Latin1_General_100_CI_AI
        AND j.Seleccion = #RojasStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #RojasStaging.NombreAmonestado AND al.Habilitado='1'
@@ -184,7 +215,7 @@ UPDATE #RojasStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#RojasStaging.NombreAmonestadoBd, #RojasStaging.NombreAmonestado)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#RojasStaging.NombreAmonestadoBd, #RojasStaging.NombreAmonestado)
          AND j.Seleccion = #RojasStaging.Seleccion) = 0;
 
 -- D7: el expulsado es ambiguo dentro de la seleccion.
@@ -193,7 +224,7 @@ UPDATE #RojasStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE pe.Nombre = ISNULL(#RojasStaging.NombreAmonestadoBd, #RojasStaging.NombreAmonestado)
+       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#RojasStaging.NombreAmonestadoBd, #RojasStaging.NombreAmonestado)
          AND j.Seleccion = #RojasStaging.Seleccion) > 1;
 
 -- D8: el arbitro del partido no esta cargado (carga 15).
@@ -203,18 +234,18 @@ WHERE Estado='Pendiente'
   AND (NULLIF(NombreArbitro, N'') IS NULL
     OR (SELECT COUNT(*) FROM arbitros.Arbitro AS ar
         JOIN equipos.Persona AS pe ON pe.IdPersona=ar.IdArbitro
-        WHERE pe.Nombre = #RojasStaging.NombreArbitro) <> 1);
+        WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #RojasStaging.NombreArbitro) <> 1);
 
 -- Se resuelven los identificadores.
 UPDATE s SET IdJugador = j.IdJugador
 FROM #RojasStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado)
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(s.NombreAmonestadoBd, s.NombreAmonestado)
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 
 UPDATE s SET IdArbitro = ar.IdArbitro
 FROM #RojasStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = s.NombreArbitro
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = s.NombreArbitro
 JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
 WHERE s.Estado='Pendiente';
 

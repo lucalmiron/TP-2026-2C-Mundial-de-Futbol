@@ -70,9 +70,10 @@ BEGIN
 		BEGIN TRANSACTION;
 
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
-			INSERT INTO equipos.Persona(Nombre, Fnac, Pais, Rol)
+			INSERT INTO equipos.Persona(Nombre, NombreHash, Fnac, Pais, Rol)
 			OUTPUT INSERTED.IdPersona INTO @nuevo(ID)
-			VALUES (ENCRYPTBYKEY(KEY_GUID('ClaveSimetrica_AES128_Mundial'), @nombre), @fnac, @pais, 'Tecnico');
+			VALUES (ENCRYPTBYKEY(KEY_GUID('ClaveSimetrica_AES128_Mundial'), @nombre),
+			        HASHBYTES('SHA2_256', @nombre), @fnac, @pais, 'Tecnico');
 
 			SELECT TOP 1 @idPersona = ID FROM @nuevo;
 

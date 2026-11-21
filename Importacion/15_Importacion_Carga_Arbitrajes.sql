@@ -1,4 +1,4 @@
-﻿-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
+-- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Comision 02
 -- Grupo 7: Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
 -- Fecha: 13/11/2026.
 -- Objetivo: cargar los arbitros y sus designaciones en los partidos de los 104
@@ -38,26 +38,28 @@
 --:setvar RutaAliasJugadores "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 --Fidel
---:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
---:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
---:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
---:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
---:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
---:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
---:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+:setvar CarpetaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+:setvar RutaLecturaJSON "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+:setvar RutaLecturaPartidos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+:setvar RutaEquipos "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+:setvar RutaSedes "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+:setvar RutaFases "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+:setvar RutaAliasJugadores "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 --Santutu
-:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
-:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
-:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
-:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
-:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
-:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
-:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
+--:setvar CarpetaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Datos_Partidos\partidos"
+--:setvar RutaLecturaJSON "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\11_Lectura_JSON_Partidos.sql"
+--:setvar RutaLecturaPartidos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion\XX_Lectura_Partidos_JSON.sql"
+--:setvar RutaEquipos "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_equipos_jugadores.csv"
+--:setvar RutaSedes "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_sedes_partidos.csv"
+--:setvar RutaFases "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\equivalencias_fases_partidos.csv"
+--:setvar RutaAliasJugadores "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Datos\Jugadores\equivalencias_jugadores.csv"
 
 
 USE MUNDIAL;
 GO
+-- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
+-- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -227,7 +229,7 @@ UPDATE #ArbitrajesStaging SET Estado='Error',
     Detalle=N'Ya existe una persona con ese nombre y no es arbitro: revise la carga 10.'
 WHERE Estado='Pendiente'
   AND EXISTS (SELECT 1 FROM equipos.Persona AS pe
-              WHERE pe.Nombre = #ArbitrajesStaging.NombreArbitro
+              WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #ArbitrajesStaging.NombreArbitro
                 AND NOT EXISTS (SELECT 1 FROM arbitros.Arbitro AS ar WHERE ar.IdArbitro=pe.IdPersona));
 
 -- D6: el arbitro ya fue designado en ese partido.
@@ -241,7 +243,7 @@ WHERE f.Estado='Pendiente' AND EXISTS (
 -- Se resuelve el arbitro si ya estaba cargado.
 UPDATE s SET IdArbitro = ar.IdArbitro
 FROM #ArbitrajesStaging AS s
-JOIN equipos.Persona AS pe ON pe.Nombre = s.NombreArbitro
+JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = s.NombreArbitro
 JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
 WHERE s.Estado='Pendiente';
 
@@ -304,7 +306,7 @@ BEGIN
             SELECT @idArbitro = IdArbitro
             FROM arbitros.Arbitro AS ar
             JOIN equipos.Persona AS pe ON pe.IdPersona=ar.IdArbitro
-            WHERE pe.Nombre=@nombre;
+            WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre))=@nombre;
             SET @estadoArbitro='Insertado';
         END
         ELSE
