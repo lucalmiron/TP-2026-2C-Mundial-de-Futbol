@@ -9,11 +9,13 @@
 
 --/Fecha: --/--/--
 
---Creacion de Stored Procedures para generacion de Reportes (entrega 7)
+--Creacion de Stored Procedures para generacion de Reportes (entrega 7) y consultas varias
 
 -- El instalador 00_Ejecutar_Todo.sql ya selecciona la base activa
 -- (MUNDIAL o MUNDIALtesting), asi que no se fuerza el USE MUNDIAL aqui.
 GO
+
+----REPORTES (entrega 7)
 
 --Goleadores por seleccion, fase y torneo
 IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspReporte_Goleadores'))
@@ -773,6 +775,8 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
+		SET NOCOUNT ON
+
 		--ETAPA 1---------------------------------------------
 		--llenado de tabla @general con toda la info que necesito a traves de un cross join de partido con pais
 		INSERT INTO @general (MUNDIAL, PARTIDO, [HORARIO DEL PARTIDO], [FECHA DEL PARTIDO], PAIS, [INICIO PRIMETIME], [FIN PRIMETIME], [HUSO HORARIO])
@@ -926,6 +930,722 @@ BEGIN
 
 		--ejecuto el query
 		EXEC (@query)
+	END
+END;
+GO
+
+----Consultas varias (System to be)
+
+----Historial de Partidos en los cuales el Jugador fue titular
+IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspJugador_Titularidad'))
+    DROP PROCEDURE SP.uspJugador_Titularidad
+GO
+CREATE PROCEDURE SP.uspJugador_Titularidad
+@mundial INT,
+@jugador INT
+AS
+BEGIN
+	DECLARE @errorCount INT
+	DECLARE @errorLine VARCHAR(200)
+
+	SET @errorCount = 0
+	SET @errorLine = 'Error/es:'
+
+	IF(@mundial IS NULL) OR (@mundial <= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Mundial.'
+	END
+
+	IF(@jugador IS NULL) OR (@jugador <= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Jugador.'
+	END
+
+	IF (@errorCount = 0)
+	BEGIN
+		IF NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @mundial)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Mundial.'
+		END
+
+		IF NOT EXISTS(SELECT 1 FROM equipos.Jugador WHERE IdJugador = @jugador)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Jugador.'
+		END
+	END
+
+	IF (@errorCount <> 0)
+		PRINT @errorLine
+	ELSE
+	BEGIN
+		WITH 
+		infoSeleccion AS
+		(
+			SELECT Seleccion.IdSeleccion, Pais.NOMBRE
+			FROM
+			equipos.Seleccion AS Seleccion
+			INNER JOIN
+			equipos.Pais AS Pais
+			ON Seleccion.IdPais = Pais.IdPais
+		),
+		infoJugador AS
+		(
+			SELECT Jugador.IdJugador, Persona.Nombre AS [JUGADOR]
+			FROM
+			equipos.Persona AS Persona
+			INNER JOIN
+			equipos.Jugador AS Jugador
+			ON Persona.IdPersona = Jugador.IdJugador
+		),
+		partidoConFase AS
+		(
+			SELECT Partido.IdMundial, Partido.IdPartido, Partido.Eq1, Partido.Eq2, Fase.Descripcion
+			FROM
+			partidos.Partido AS Partido
+			INNER JOIN
+			partidos.Fase AS Fase
+			ON Partido.IdFase = Fase.IdFase
+		)
+		SELECT 
+		YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL],
+		infoJugador.[JUGADOR],
+		(infoEq1.equipo1 + ' - ' + infoEq2.equipo2 + ' ('+partidoConFase.Descripcion+')') AS [PARTIDOS CON TITULARIDAD]
+		FROM
+		sedes.Mundial AS Mundial
+		INNER JOIN
+		partidoConFase
+		ON Mundial.IdMundial = partidoConFase.IdMundial
+		INNER JOIN
+		(
+			SELECT P1.IdPartido, infoSeleccion.NOMBRE AS equipo1
+			FROM
+			partidos.Partido AS P1
+			INNER JOIN
+			infoSeleccion
+			ON P1.Eq1 = infoSeleccion.IdSeleccion
+		) AS infoEq1
+		ON partidoConFase.IdPartido = infoEq1.IdPartido
+		INNER JOIN
+		(
+			SELECT P2.IdPartido, infoSeleccion.NOMBRE AS equipo2
+			FROM
+			partidos.Partido AS P2
+			INNER JOIN
+			infoSeleccion
+			ON P2.Eq2 = infoSeleccion.IdSeleccion
+		) AS infoEq2
+		ON partidoConFase.IdPartido = infoEq2.IdPartido
+		INNER JOIN
+		partidos.Alineacion AS Alineacion
+		ON partidoConFase.IdPartido = Alineacion.IdPartido
+		INNER JOIN
+		infoJugador
+		ON Alineacion.IdJugador = infoJugador.IdJugador
+		WHERE Mundial.IdMundial = @mundial AND infoJugador.IdJugador = @jugador AND Alineacion.Rol = 'Titular'
+	END
+END;
+GO
+
+----Fixture del Mundial con filtro por Sede, Fecha, Seleccion o Fase
+IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspFixture'))
+    DROP PROCEDURE SP.uspFixture
+GO
+CREATE PROCEDURE SP.uspFixture
+@categoria VARCHAR(9),
+@mundial INT
+AS
+BEGIN
+	DECLARE @errorCount INT
+	DECLARE @errorLine VARCHAR(200)
+
+	SET @errorCount = 0
+	SET @errorLine = 'Error/es:'
+
+	IF(@categoria IS NULL) OR (@categoria NOT IN ('Seleccion', 'Fase', 'Fecha', 'Sede'))
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Categoria.'
+	END
+
+	IF(@mundial IS NULL) OR (@mundial <= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Mundial.'
+	END
+
+	IF (@errorCount = 0) AND NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @mundial)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Mundial.'
+	END
+
+	IF (@errorCount <> 0)
+		PRINT @errorLine
+	ELSE
+	BEGIN
+		IF(@categoria = 'Sede')
+		BEGIN
+			WITH 
+			infoSeleccion AS
+			(
+				SELECT Seleccion.IdSeleccion, Pais.NOMBRE
+				FROM
+				equipos.Seleccion AS Seleccion
+				INNER JOIN
+				equipos.Pais AS Pais
+				ON Seleccion.IdPais = Pais.IdPais
+			),
+			partidoConFase AS
+			(
+				SELECT 
+				Partido.IdMundial, 
+				Partido.IdPartido, Partido.Eq1, Partido.Eq2, Fase.Descripcion, 
+				Partido.IdSede, Partido.Fecha AS [FECHA], Partido.HoraUTC AS [HORARIO (UTC)]
+				FROM
+				partidos.Partido AS Partido
+				INNER JOIN
+				partidos.Fase AS Fase
+				ON Partido.IdFase = Fase.IdFase
+			)
+			SELECT 
+			YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL], 
+			Sede.Nombre AS [SEDE],
+			(infoEq1.equipo1 + ' - ' + infoEq2.equipo2 + ' ('+partidoConFase.Descripcion+')') AS [PARTIDO],
+			partidoConFase.[FECHA], partidoConFase.[HORARIO (UTC)]
+			FROM
+			sedes.Mundial AS Mundial
+			INNER JOIN
+			partidoConFase
+			ON Mundial.IdMundial = partidoConFase.IdMundial
+			INNER JOIN
+			(
+				SELECT P1.IdPartido, infoSeleccion.NOMBRE AS equipo1
+				FROM
+				partidos.Partido AS P1
+				INNER JOIN
+				infoSeleccion
+				ON P1.Eq1 = infoSeleccion.IdSeleccion
+			) AS infoEq1
+			ON partidoConFase.IdPartido = infoEq1.IdPartido
+			INNER JOIN
+			(
+				SELECT P2.IdPartido, infoSeleccion.NOMBRE AS equipo2
+				FROM
+				partidos.Partido AS P2
+				INNER JOIN
+				infoSeleccion
+				ON P2.Eq2 = infoSeleccion.IdSeleccion
+			) AS infoEq2
+			ON partidoConFase.IdPartido = infoEq2.IdPartido
+			INNER JOIN
+			sedes.Sede AS Sede
+			ON partidoConFase.IdSede = Sede.IdSede
+			WHERE Mundial.IdMundial = @mundial
+			ORDER BY Sede.Nombre, partidoConFase.[FECHA], partidoConFase.[HORARIO (UTC)]
+		END
+
+		IF(@categoria = 'Fase')
+		BEGIN
+			WITH 
+			infoSeleccion AS
+			(
+				SELECT Seleccion.IdSeleccion, Pais.NOMBRE
+				FROM
+				equipos.Seleccion AS Seleccion
+				INNER JOIN
+				equipos.Pais AS Pais
+				ON Seleccion.IdPais = Pais.IdPais
+			),
+			partidoConFase AS
+			(
+				SELECT 
+				Partido.IdMundial, 
+				Partido.IdPartido, Partido.Eq1, Partido.Eq2, Fase.IdFase, Fase.Descripcion AS [FASE], 
+				Partido.Fecha AS [FECHA], Partido.HoraUTC AS [HORARIO (UTC)]
+				FROM
+				partidos.Partido AS Partido
+				INNER JOIN
+				partidos.Fase AS Fase
+				ON Partido.IdFase = Fase.IdFase
+			)
+			SELECT 
+			YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL], 
+			partidoConFase.[FASE],
+			(infoEq1.equipo1 + ' - ' + infoEq2.equipo2) AS [PARTIDO],
+			partidoConFase.[FECHA], partidoConFase.[HORARIO (UTC)]
+			FROM
+			sedes.Mundial AS Mundial
+			INNER JOIN
+			partidoConFase
+			ON Mundial.IdMundial = partidoConFase.IdMundial
+			INNER JOIN
+			(
+				SELECT P1.IdPartido, infoSeleccion.NOMBRE AS equipo1
+				FROM
+				partidos.Partido AS P1
+				INNER JOIN
+				infoSeleccion
+				ON P1.Eq1 = infoSeleccion.IdSeleccion
+			) AS infoEq1
+			ON partidoConFase.IdPartido = infoEq1.IdPartido
+			INNER JOIN
+			(
+				SELECT P2.IdPartido, infoSeleccion.NOMBRE AS equipo2
+				FROM
+				partidos.Partido AS P2
+				INNER JOIN
+				infoSeleccion
+				ON P2.Eq2 = infoSeleccion.IdSeleccion
+			) AS infoEq2
+			ON partidoConFase.IdPartido = infoEq2.IdPartido
+			WHERE Mundial.IdMundial = @mundial
+			ORDER BY partidoConFase.IdFase, partidoConFase.[FECHA], partidoConFase.[HORARIO (UTC)]
+		END
+
+		IF(@categoria = 'Seleccion')
+		BEGIN
+			WITH 
+			infoSeleccion AS
+			(
+				SELECT Seleccion.IdSeleccion, Pais.NOMBRE
+				FROM
+				equipos.Seleccion AS Seleccion
+				INNER JOIN
+				equipos.Pais AS Pais
+				ON Seleccion.IdPais = Pais.IdPais
+			),
+			partidoConFase AS
+			(
+				SELECT 
+				Partido.IdMundial, 
+				Partido.IdPartido, Partido.Eq1, Partido.Eq2, Fase.Descripcion, 
+				Partido.Fecha AS [FECHA], Partido.HoraUTC AS [HORARIO (UTC)]
+				FROM
+				partidos.Partido AS Partido
+				INNER JOIN
+				partidos.Fase AS Fase
+				ON Partido.IdFase = Fase.IdFase
+			),
+			partidosPorSeleccion AS
+			(
+				SELECT Pais.NOMBRE AS [SELECCION], SP.IdPartido
+				FROM
+				(
+				SELECT Eq1 AS seleccion, IdPartido FROM partidos.Partido
+				UNION
+				SELECT Eq2 AS seleccion, IdPartido FROM partidos.Partido
+				) AS SP
+				INNER JOIN
+				equipos.Seleccion AS Seleccion
+				ON SP.seleccion = Seleccion.IdSeleccion
+				INNER JOIN
+				equipos.Pais AS Pais
+				ON Seleccion.IdPais = Pais.IdPais
+			)
+			SELECT 
+			YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL], 
+			partidosPorSeleccion.[SELECCION],
+			(infoEq1.equipo1 + ' - ' + infoEq2.equipo2 + ' ('+partidoConFase.Descripcion+')') AS [PARTIDO],
+			partidoConFase.[FECHA], partidoConFase.[HORARIO (UTC)] 
+			FROM
+			sedes.Mundial AS Mundial
+			INNER JOIN
+			partidoConFase
+			ON Mundial.IdMundial = partidoConFase.IdMundial
+			INNER JOIN
+			(
+				SELECT P1.IdPartido, infoSeleccion.NOMBRE AS equipo1
+				FROM
+				partidos.Partido AS P1
+				INNER JOIN
+				infoSeleccion
+				ON P1.Eq1 = infoSeleccion.IdSeleccion
+			) AS infoEq1
+			ON partidoConFase.IdPartido = infoEq1.IdPartido
+			INNER JOIN
+			(
+				SELECT P2.IdPartido, infoSeleccion.NOMBRE AS equipo2
+				FROM
+				partidos.Partido AS P2
+				INNER JOIN
+				infoSeleccion
+				ON P2.Eq2 = infoSeleccion.IdSeleccion
+			) AS infoEq2
+			ON partidoConFase.IdPartido = infoEq2.IdPartido
+			INNER JOIN
+			partidosPorSeleccion
+			ON partidosPorSeleccion.IdPartido = partidoConFase.IdPartido
+			WHERE Mundial.IdMundial = @mundial
+			ORDER BY partidosPorSeleccion.SELECCION, partidoConFase.[FECHA], partidoConFase.[HORARIO (UTC)]
+		END
+
+		IF(@categoria = 'Fecha')
+		BEGIN
+			WITH 
+			infoSeleccion AS
+			(
+				SELECT Seleccion.IdSeleccion, Pais.NOMBRE
+				FROM
+				equipos.Seleccion AS Seleccion
+				INNER JOIN
+				equipos.Pais AS Pais
+				ON Seleccion.IdPais = Pais.IdPais
+			),
+			partidoConFase AS
+			(
+				SELECT 
+				Partido.IdMundial, 
+				Partido.IdPartido, Partido.Eq1, Partido.Eq2, Fase.Descripcion, 
+				Partido.IdSede, Partido.Fecha AS [FECHA], Partido.HoraUTC AS [HORARIO (UTC)]
+				FROM
+				partidos.Partido AS Partido
+				INNER JOIN
+				partidos.Fase AS Fase
+				ON Partido.IdFase = Fase.IdFase
+			)
+			SELECT 
+			YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL], partidoConFase.[FECHA],
+			(infoEq1.equipo1 + ' - ' + infoEq2.equipo2 + ' ('+partidoConFase.Descripcion+')') AS [PARTIDO], partidoConFase.[HORARIO (UTC)]
+			FROM
+			sedes.Mundial AS Mundial
+			INNER JOIN
+			partidoConFase
+			ON Mundial.IdMundial = partidoConFase.IdMundial
+			INNER JOIN
+			(
+				SELECT P1.IdPartido, infoSeleccion.NOMBRE AS equipo1
+				FROM
+				partidos.Partido AS P1
+				INNER JOIN
+				infoSeleccion
+				ON P1.Eq1 = infoSeleccion.IdSeleccion
+			) AS infoEq1
+			ON partidoConFase.IdPartido = infoEq1.IdPartido
+			INNER JOIN
+			(
+				SELECT P2.IdPartido, infoSeleccion.NOMBRE AS equipo2
+				FROM
+				partidos.Partido AS P2
+				INNER JOIN
+				infoSeleccion
+				ON P2.Eq2 = infoSeleccion.IdSeleccion
+			) AS infoEq2
+			ON partidoConFase.IdPartido = infoEq2.IdPartido
+			WHERE Mundial.IdMundial = @mundial
+			ORDER BY partidoConFase.[FECHA], partidoConFase.[HORARIO (UTC)]
+		END
+	END
+END;
+GO
+
+----Equipo en cancha de una Seleccion para un determinado Partido dado un minuto
+IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspAlineacion_Actual'))
+    DROP PROCEDURE SP.uspAlineacion_Actual
+GO
+CREATE PROCEDURE SP.uspAlineacion_Actual
+@partido INT,
+@seleccion INT,
+@minuto INT
+AS
+BEGIN
+	DECLARE @errorCount INT, @i INT, @cant INT, @jugOut INT, @jugIn INT
+	DECLARE @errorLine VARCHAR(200)
+
+	DECLARE @titulares TABLE(Partido INT, Jugador INT, Posicion VARCHAR(20))
+	DECLARE @cambios TABLE(ID INT IDENTITY(1, 1), Egreso INT, Ingreso INT)
+
+	SET @errorCount = 0
+	SET @i = 1
+	SET @errorLine = 'Error/es:'
+
+	IF(@partido IS NULL) OR (@partido <= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Partido.'
+	END
+
+	IF(@seleccion IS NULL) OR (@seleccion <= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Seleccion.'
+	END
+
+	IF(@minuto IS NULL) OR (@minuto <= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Minuto.'
+	END
+
+	IF(@errorCount = 0)
+	BEGIN
+		IF NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE IdPartido = @partido)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Partido.'
+		END
+
+		IF NOT EXISTS(SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Seleccion.'
+		END
+	END
+
+	IF 
+	(@errorCount = 0)
+	AND
+	NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE Eq1 = @seleccion)
+	AND
+	NOT EXISTS(SELECT 1 FROM partidos.Partido WHERE Eq2 = @seleccion)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- La seleccion no participo en el partido.'
+	END
+	
+	IF (@errorCount <> 0)
+		PRINT @errorLine
+	ELSE
+	BEGIN
+		SET NOCOUNT ON
+
+		--lista de titulares INICIALES de la seleccion indicada para el partido marcado
+		INSERT INTO @titulares(Partido, Jugador, Posicion)
+		SELECT Alineacion.IdPartido, Alineacion.IdJugador, Alineacion.PosicionCancha
+		FROM 
+		partidos.Alineacion AS Alineacion
+		INNER JOIN
+		equipos.Jugador AS Jugador
+		ON Alineacion.IdJugador = Jugador.IdJugador
+		WHERE Alineacion.IdPartido = @partido AND Alineacion.Rol = 'Titular' AND Jugador.Seleccion = @seleccion
+
+		--lista de cambios de la seleccion indicada para el partido marcado antes del minuto solicitado
+		INSERT INTO @cambios(Egreso, Ingreso)
+		SELECT Sustitucion.Egreso, Sustitucion.Ingreso
+		FROM
+		equipos.Jugador AS Jugador
+		INNER JOIN
+		partidos.Sustitucion AS Sustitucion
+		ON Jugador.IdJugador = Sustitucion.Egreso
+		INNER JOIN
+		partidos.Evento AS Evento
+		ON Sustitucion.IdSustitucion = Evento.IdEvento
+		WHERE Jugador.Seleccion = @seleccion AND Evento.Partido = @partido AND Evento.Minuto <= @minuto
+		ORDER BY Evento.Minuto ASC
+
+		SET @cant = (SELECT COUNT(ID) FROM @cambios)
+		WHILE @i <= @cant
+		BEGIN
+			SET @jugOut = (SELECT Egreso FROM @cambios WHERE ID = @i)
+			SET @jugIn = (SELECT Ingreso FROM @cambios WHERE ID = @i)
+
+			UPDATE @titulares
+			SET Jugador = @jugIn
+			WHERE Jugador = @jugOut
+
+			SET @i = @i + 1
+		END;
+
+		WITH 
+		partidoConFaseMundial AS
+		(
+			SELECT
+			Partido.IdPartido,
+			Partido.Eq1, Partido.Eq2,
+			Fase.Descripcion,
+			YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS mundial
+			FROM
+			sedes.Mundial AS Mundial
+			INNER JOIN
+			partidos.Partido AS Partido
+			ON Mundial.IdMundial = Partido.IdMundial
+			INNER JOIN
+			partidos.Fase AS Fase
+			ON Partido.IdFase = Fase.IdFase
+			WHERE Partido.IdPartido = @partido
+		),
+		infoSeleccion AS
+		(
+			SELECT Seleccion.IdSeleccion, Pais.NOMBRE
+			FROM
+			equipos.Seleccion AS Seleccion
+			INNER JOIN
+			equipos.Pais AS Pais
+			ON Seleccion.IdPais = Pais.IdPais
+		),
+		infoPartido AS
+		(
+			SELECT 
+			partidoConFaseMundial.IdPartido,
+			(infoEq1.equipo1 + ' - ' + infoEq2.equipo2 + ' ('+partidoConFaseMundial.Descripcion+') ' 
+			+ '['+'Mundial ' + CONVERT(VARCHAR, partidoConFaseMundial.mundial)+']') AS [PARTIDO]
+			FROM
+			partidoConFaseMundial
+			INNER JOIN
+			(
+				SELECT P1.IdPartido, infoSeleccion.NOMBRE AS equipo1
+				FROM
+				partidos.Partido AS P1
+				INNER JOIN
+				infoSeleccion
+				ON P1.Eq1 = infoSeleccion.IdSeleccion
+			) AS infoEq1
+			ON partidoConFaseMundial.IdPartido = infoEq1.IdPartido
+			INNER JOIN
+			(
+				SELECT P2.IdPartido, infoSeleccion.NOMBRE AS equipo2
+				FROM
+				partidos.Partido AS P2
+				INNER JOIN
+				infoSeleccion
+				ON P2.Eq2 = infoSeleccion.IdSeleccion
+			) AS infoEq2
+			ON partidoConFaseMundial.IdPartido = infoEq2.IdPartido
+		),
+		infoJugador AS
+		(
+			SELECT Jugador.IdJugador, Persona.Nombre AS [JUGADOR]
+			FROM
+			equipos.Persona AS Persona
+			INNER JOIN
+			equipos.Jugador AS Jugador
+			ON Persona.IdPersona = Jugador.IdJugador
+			WHERE Jugador.Seleccion = @seleccion
+		)
+		SELECT infoPartido.[PARTIDO], infoJugador.[JUGADOR], equipo.Posicion AS [POSICION]
+		FROM
+		infoPartido
+		INNER JOIN
+		@titulares AS equipo
+		ON equipo.Partido = infoPartido.IdPartido
+		INNER JOIN
+		infoJugador
+		ON equipo.Jugador = infoJugador.IdJugador
+	END
+END;
+GO
+
+----Informes post-Partido de un Arbitro por Partido
+IF EXISTS (SELECT name FROM sys.objects WHERE object_id = OBJECT_ID('SP.uspArbitro_Informes'))
+    DROP PROCEDURE SP.uspArbitro_Informes
+GO
+CREATE PROCEDURE SP.uspArbitro_Informes
+@mundial INT,
+@arbitro INT
+AS
+BEGIN
+	DECLARE @errorCount INT
+	DECLARE @errorLine VARCHAR(200)
+
+	SET @errorCount = 0
+	SET @errorLine = 'Error/es:'
+
+	IF(@mundial IS NULL) OR (@mundial <= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Mundial.'
+	END
+
+	IF(@arbitro IS NULL) OR (@arbitro <= 0)
+	BEGIN
+		SET @errorCount = @errorCount + 1
+		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Arbitro.'
+	END
+
+	IF(@errorCount = 0)
+	BEGIN
+		IF NOT EXISTS(SELECT 1 FROM sedes.Mundial WHERE IdMundial = @mundial)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Mundial.'
+		END
+
+		IF NOT EXISTS(SELECT 1 FROM arbitros.Arbitro WHERE IdArbitro = @arbitro)
+		BEGIN
+			SET @errorCount = @errorCount + 1
+			SET @errorLine = @errorLine + CHAR(13) + '- Valor inexistente: Arbitro.'
+		END
+	END
+	
+	IF (@errorCount <> 0)
+		PRINT @errorLine
+	ELSE
+	BEGIN
+		WITH 
+		partidoConFaseMundial AS
+		(
+			SELECT
+			Partido.IdPartido,
+			Partido.Eq1, Partido.Eq2,
+			Fase.Descripcion,
+			YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL]
+			FROM
+			sedes.Mundial AS Mundial
+			INNER JOIN
+			partidos.Partido AS Partido
+			ON Mundial.IdMundial = Partido.IdMundial
+			INNER JOIN
+			partidos.Fase AS Fase
+			ON Partido.IdFase = Fase.IdFase
+			WHERE Mundial.IdMundial = @mundial
+		),
+		infoSeleccion AS
+		(
+			SELECT Seleccion.IdSeleccion, Pais.NOMBRE
+			FROM
+			equipos.Seleccion AS Seleccion
+			INNER JOIN
+			equipos.Pais AS Pais
+			ON Seleccion.IdPais = Pais.IdPais
+		),
+		infoPartido AS
+		(
+			SELECT 
+			partidoConFaseMundial.[MUNDIAL],
+			partidoConFaseMundial.IdPartido,
+			(infoEq1.equipo1 + ' - ' + infoEq2.equipo2 + ' ('+partidoConFaseMundial.Descripcion+')') AS [PARTIDO]
+			FROM
+			partidoConFaseMundial
+			INNER JOIN
+			(
+				SELECT P1.IdPartido, infoSeleccion.NOMBRE AS equipo1
+				FROM
+				partidos.Partido AS P1
+				INNER JOIN
+				infoSeleccion
+				ON P1.Eq1 = infoSeleccion.IdSeleccion
+			) AS infoEq1
+			ON partidoConFaseMundial.IdPartido = infoEq1.IdPartido
+			INNER JOIN
+			(
+				SELECT P2.IdPartido, infoSeleccion.NOMBRE AS equipo2
+				FROM
+				partidos.Partido AS P2
+				INNER JOIN
+				infoSeleccion
+				ON P2.Eq2 = infoSeleccion.IdSeleccion
+			) AS infoEq2
+			ON partidoConFaseMundial.IdPartido = infoEq2.IdPartido
+		)
+		SELECT 
+		infoPartido.[MUNDIAL],
+		Persona.Nombre AS [ARBITRO], 
+		infoPartido.[PARTIDO], 
+		Reporte.Razon AS [RAZON DEL INFORME], Reporte.Descripcion AS [DESCRIPCION DEL INFORME]
+		FROM
+		infoPartido
+		INNER JOIN
+		arbitros.Reporte AS Reporte
+		ON infoPartido.IdPartido = Reporte.Partido
+		INNER JOIN
+		arbitros.Arbitro AS Arbitro
+		ON Reporte.Arbitro = Arbitro.IdArbitro
+		INNER JOIN
+		equipos.Persona AS Persona
+		ON Persona.IdPersona = Arbitro.IdArbitro
 	END
 END;
 GO
