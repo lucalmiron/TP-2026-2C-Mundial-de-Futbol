@@ -9,13 +9,15 @@
 
 --/Fecha: --/--/--
 
---Objetivo: Testear los SP de reportes y corroborar que la salida es acorde a los datos presentes en la base de datos.
+--Objetivo: Testear los SP de reportes(entrega 7) y de consulta(System to be), y corroborar que la salida es acorde a los datos presentes en la base de datos.
 
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'MUNDIAL')
 BEGIN
 	USE MUNDIAL
 END;
 GO
+
+----REPORTES
 
 --*--reporte de goleadores por seleccion/fase/mundial
 --por mundial
@@ -62,3 +64,24 @@ EXEC sp_configure 'show advanced options', 0;
 RECONFIGURE;
 GO
 */
+
+----CONSULTAS
+
+----Historial de Partidos en los cuales el Jugador fue titular
+EXEC SP.uspJugador_Titularidad @mundial = 1, @jugador = 1;
+
+----Fixture del Mundial con filtro por Sede, Fecha, Seleccion o Fase
+--Por Fase
+EXEC SP.uspFixture @categoria = 'Fase', @mundial = 1;
+--Por Sede
+EXEC SP.uspFixture @categoria = 'Sede', @mundial = 1;
+--Por Seleccion
+EXEC SP.uspFixture @categoria = 'Seleccion', @mundial = 1;
+--Por Fecha
+EXEC SP.uspFixture @categoria = 'Fecha', @mundial = 1;
+
+----Equipo en cancha de una Seleccion para un determinado Partido dado un minuto
+EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 1, @minuto = 25;
+
+----Informes post-Partido de un Arbitro por Partido
+EXEC SP.uspArbitro_Informes @mundial = 1, @arbitro = 1;
