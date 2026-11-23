@@ -69,6 +69,9 @@ GO
 
 ----Historial de Partidos en los cuales el Jugador fue titular
 EXEC SP.uspJugador_Titularidad @mundial = 1, @jugador = 1;
+EXEC SP.uspJugador_Titularidad @mundial = 1, @jugador = 3;
+EXEC SP.uspJugador_Titularidad @mundial = 1, @jugador = 4;
+EXEC SP.uspJugador_Titularidad @mundial = 1, @jugador = 5;
 
 ----Fixture del Mundial con filtro por Sede, Fecha, Seleccion o Fase
 --Por Fase
@@ -81,7 +84,9 @@ EXEC SP.uspFixture @categoria = 'Seleccion', @mundial = 1;
 EXEC SP.uspFixture @categoria = 'Fecha', @mundial = 1;
 
 ----Equipo en cancha de una Seleccion para un determinado Partido dado un minuto
-EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 1, @minuto = 25;
+EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 46, @minuto = 0;
+EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 46, @minuto = 46;
+EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 46, @minuto = 58;
 
 ----Informes post-Partido de un Arbitro por Partido
-EXEC SP.uspArbitro_Informes @mundial = 1, @arbitro = 1;
+EXEC SP.uspArbitro_Informes @mundial = 1, @arbitro = 1249;
