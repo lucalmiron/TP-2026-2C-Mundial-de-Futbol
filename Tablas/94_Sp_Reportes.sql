@@ -27,11 +27,6 @@ CREATE PROCEDURE SP.uspReporte_Goleadores
 WITH EXECUTE AS OWNER
 AS
 BEGIN
-	-- Abrir clave simetrica para descifrado de nombres (Entrega 8)
-	OPEN SYMMETRIC KEY ClaveSimetrica_AES128_Mundial
-	DECRYPTION BY CERTIFICATE CertificadoCifradoMundial
-	WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
-
 	DECLARE @errorCount INT
 	DECLARE @errorLine VARCHAR(200)
 
@@ -93,7 +88,7 @@ BEGIN
 					) AS infoSeleccion
 					INNER JOIN
 					(
-						SELECT CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre)) AS [NOMBRE DEL JUGADOR], Jugador.Seleccion, Jugador.IdJugador
+						SELECT Persona.Nombre AS [NOMBRE DEL JUGADOR], Jugador.Seleccion, Jugador.IdJugador
 						FROM
 						equipos.Persona AS Persona INNER JOIN equipos.Jugador AS Jugador ON Persona.IdPersona = Jugador.IdJugador
 
@@ -141,7 +136,7 @@ BEGIN
 				SELECT resumen.IdMundial, resumen.[FASE], infoJugador.[NOMBRE DEL JUGADOR], resumen.[GOLES POR AUTOR POR FASE], DENSE_RANK() OVER (PARTITION BY resumen.[FASE] ORDER BY resumen.[GOLES POR AUTOR POR FASE] DESC) AS [RANKING]
 				FROM
 				(
-					SELECT CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre)) AS [NOMBRE DEL JUGADOR], Jugador.IdJugador
+					SELECT Persona.Nombre AS [NOMBRE DEL JUGADOR], Jugador.IdJugador
 					FROM
 					equipos.Persona AS Persona INNER JOIN equipos.Jugador AS Jugador ON Persona.IdPersona = Jugador.IdJugador
 
@@ -183,7 +178,7 @@ BEGIN
 				SELECT resumen.IdMundial, infoJugador.[NOMBRE DEL JUGADOR], resumen.[TOTAL DE GOLES], DENSE_RANK() OVER (ORDER BY resumen.[TOTAL DE GOLES] DESC) AS [RANKING]
 				FROM
 				(
-					SELECT CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre)) AS [NOMBRE DEL JUGADOR], Jugador.IdJugador
+					SELECT Persona.Nombre AS [NOMBRE DEL JUGADOR], Jugador.IdJugador
 					FROM
 					equipos.Persona AS Persona INNER JOIN equipos.Jugador AS Jugador ON Persona.IdPersona = Jugador.IdJugador
 
@@ -198,7 +193,6 @@ BEGIN
 			ON infoT.IdMundial = Mundial.IdMundial
 		END
 	END
-	CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 END;
 GO
 
@@ -211,11 +205,6 @@ CREATE PROCEDURE SP.uspReporte_Tarjetas
 WITH EXECUTE AS OWNER
 AS
 BEGIN
-	-- Abrir clave simetrica para descifrado de nombres (Entrega 8)
-	OPEN SYMMETRIC KEY ClaveSimetrica_AES128_Mundial
-	DECRYPTION BY CERTIFICATE CertificadoCifradoMundial
-	WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
-
 	DECLARE @errorCount INT
 
 	SET @errorCount = 0
@@ -267,7 +256,7 @@ BEGIN
 		Pais.NOMBRE AS [SELECCION],
 		SUM(CASE WHEN resumenAmonestaciones.Tarjeta = 'Amarilla' THEN 1 ELSE 0 END) OVER (PARTITION BY Pais.NOMBRE) AS [TOTAL AMARILLAS DE LA SELECCION], 
 		SUM(CASE WHEN resumenAmonestaciones.Tarjeta = 'Roja' THEN 1 ELSE 0 END) OVER (PARTITION BY Pais.NOMBRE) AS [TOTAL ROJAS DE LA SELECCION],
-		CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre)) AS [NOMBRE DEL AMONESTADO], Amonestados.ESTADO,
+		Persona.Nombre AS [NOMBRE DEL AMONESTADO], Amonestados.ESTADO,
 		CASE
 		WHEN (Amonestados.ESTADO = 'Suspendido') AND (resumenAmonestaciones.ultimaTarjeta = 'Amarilla') THEN 'Por acumulacion de amarillas.'
 		WHEN (Amonestados.ESTADO = 'Suspendido') AND (resumenAmonestaciones.ultimaTarjeta = 'Roja') THEN 'Recibio una tarjeta roja.'
@@ -278,8 +267,8 @@ BEGIN
 		ELSE resumenAmonestaciones.[TARJETA]
 		END AS [TARJETA],
 		resumenAmonestaciones.[MOTIVO DE LA TARJETA],
-		SUM(CASE WHEN resumenAmonestaciones.Tarjeta = 'Amarilla' THEN 1 ELSE 0 END) OVER (PARTITION BY CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre))) AS [TOTAL AMARILLAS DE LA PERSONA], 
-		SUM(CASE WHEN resumenAmonestaciones.Tarjeta = 'Roja' THEN 1 ELSE 0 END) OVER (PARTITION BY CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre))) AS [TOTAL ROJAS DE LA PERSONA]
+		SUM(CASE WHEN resumenAmonestaciones.Tarjeta = 'Amarilla' THEN 1 ELSE 0 END) OVER (PARTITION BY Persona.Nombre) AS [TOTAL AMARILLAS DE LA PERSONA], 
+		SUM(CASE WHEN resumenAmonestaciones.Tarjeta = 'Roja' THEN 1 ELSE 0 END) OVER (PARTITION BY Persona.Nombre) AS [TOTAL ROJAS DE LA PERSONA]
 		FROM
 		equipos.Persona AS Persona
 		INNER JOIN
@@ -298,11 +287,9 @@ BEGIN
 		INNER JOIN
 		equipos.Pais AS Pais
 		ON Seleccion.IdPais = Pais.IdPais
-		ORDER BY Pais.NOMBRE, CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre))
+		ORDER BY Pais.NOMBRE, Persona.Nombre
 	END
-
-	CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
-END;
+	END;
 GO
 
 --Designaciones Arbitrales
@@ -314,11 +301,6 @@ CREATE PROCEDURE SP.uspReporte_Arbitraje
 WITH EXECUTE AS OWNER
 AS
 BEGIN
-	-- Abrir clave simetrica para descifrado de nombres (Entrega 8)
-	OPEN SYMMETRIC KEY ClaveSimetrica_AES128_Mundial
-	DECRYPTION BY CERTIFICATE CertificadoCifradoMundial
-	WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
-
 	DECLARE @errorCount INT
 
 	SET @errorCount = 0
@@ -397,7 +379,7 @@ BEGIN
 			infoB.[AMONESTADO], infoB.[TARJETA RECIBIDA], infoB.[MOTIVO DE LA TARJETA]
 			FROM
 			(
-				SELECT Arbitraje.Partido, CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre)) AS [ARBITRO]
+				SELECT Arbitraje.Partido, Persona.Nombre AS [ARBITRO]
 				FROM
 				equipos.Persona AS Persona
 				INNER JOIN
@@ -414,7 +396,7 @@ BEGIN
 				resumenPartidos.IdMundial,
 				resumenPartidos.IdPartido,
 				resumenPartidos.[PARTIDO],
-				CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre)) AS [AMONESTADO], Amonestacion.Tarjeta AS [TARJETA RECIBIDA], Amonestacion.Motivo AS [MOTIVO DE LA TARJETA]
+				Persona.Nombre AS [AMONESTADO], Amonestacion.Tarjeta AS [TARJETA RECIBIDA], Amonestacion.Motivo AS [MOTIVO DE LA TARJETA]
 				FROM
 				resumenPartidos
 				INNER JOIN
@@ -435,8 +417,7 @@ BEGIN
 		sedes.Mundial AS Mundial
 		ON infoT.IdMundial = Mundial.IdMundial
 	END
-	CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
-END;
+	END;
 GO
 
 --Ocupacion publicitaria por sede y partido
@@ -576,11 +557,6 @@ CREATE PROCEDURE SP.uspReporte_Convocados
 WITH EXECUTE AS OWNER
 AS
 BEGIN
-	-- Abrir clave simetrica para descifrado de nombres (Entrega 8)
-	OPEN SYMMETRIC KEY ClaveSimetrica_AES128_Mundial
-	DECRYPTION BY CERTIFICATE CertificadoCifradoMundial
-	WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
-
 	DECLARE @errorCount INT
 
 	SET @errorCount = 0
@@ -604,7 +580,7 @@ BEGIN
 			SELECT nombre.Nombre AS [@Nombre], nombre.Posicion AS [@Posicion], nombre.Numero AS [@Numero], Club.Nombre AS [@Club]
 			FROM
 			(
-				SELECT Jugador.Seleccion, CONVERT(NVARCHAR(30), DECRYPTBYKEY(Persona.Nombre)) AS Nombre, Jugador.Posicion, Jugador.Numero, Jugador.Club
+				SELECT Jugador.Seleccion, Persona.Nombre AS Nombre, Jugador.Posicion, Jugador.Numero, Jugador.Club
 				FROM 
 				equipos.Persona AS Persona 
 				INNER JOIN 
@@ -631,8 +607,6 @@ BEGIN
 		WHERE Mundial.IdMundial = @mundial
 		FOR XML PATH ('Seleccion'), ROOT('Convocados')
 	END
-
-	CLOSE SYMMETRIC KEY ClaveSimetrica_AES128_Mundial;
 END;
 GO
 

@@ -14,26 +14,53 @@
 -- Ejecutar en la base seleccionada por el instalador.
 GO
 
--- Entrega 8: Nombre se almacena cifrado (VARBINARY) y se agrega NombreHash para búsquedas.
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'equipos' AND TABLE_NAME = 'Persona')
+-- ============================================
+-- 16_Tabla_Persona.sql
+-- Crea equipos.Persona con Nombre NVARCHAR(30)
+-- Si existe con esquema viejo (VARBINARY), la elimina para recrearla
+-- ============================================
+
+-- Paso 1: Si la tabla existe con Nombre VARBINARY (esquema viejo), eliminarla
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'equipos' AND TABLE_NAME = 'Persona')
 BEGIN
-	CREATE TABLE equipos.Persona
-	(
-		IdPersona INT IDENTITY(1, 1),
-		Nombre VARBINARY(256) NOT NULL,      -- Cifrado con AES_128 (ver 97_Seguridad_Cifrado_Claves.sql)
-		NombreHash VARBINARY(32) NULL,        -- HASHBYTES('SHA2_256', Nombre) para busquedas sin descifrar
-		Fnac DATE NOT NULL,
-		Rol VARCHAR(10) NOT NULL,
-		Pais INT NOT NULL,
-		CONSTRAINT PK_Persona PRIMARY KEY (IdPersona),
-		CONSTRAINT FK_Persona_Pais FOREIGN KEY (Pais) REFERENCES equipos.Pais(IdPais)
-	);
-END;
+    IF EXISTS (
+        SELECT 1 FROM sys.columns c
+        JOIN sys.types t ON t.user_type_id = c.user_type_id
+        WHERE c.object_id = OBJECT_ID('equipos.Persona')
+          AND c.name = 'Nombre'
+          AND t.name = 'varbinary'
+    )
+    BEGIN
+        -- Eliminar dependencias FK que apuntan a Persona
+        IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE referenced_object_id = OBJECT_ID('equipos.Persona'))
+        BEGIN
+            DECLARE @dropFkSql NVARCHAR(MAX) = N'';
+            SELECT @dropFkSql = @dropFkSql + N'ALTER TABLE ' + QUOTENAME(OBJECT_SCHEMA_NAME(fk.parent_object_id)) + N'.' + QUOTENAME(OBJECT_NAME(fk.parent_object_id)) + N' DROP CONSTRAINT ' + QUOTENAME(fk.name) + N';' + CHAR(13) + CHAR(10)
+            FROM sys.foreign_keys fk
+            WHERE fk.referenced_object_id = OBJECT_ID('equipos.Persona');
+
+            EXEC sp_executesql @dropFkSql;
+        END
+
+        DROP TABLE equipos.Persona;
+        PRINT 'Tabla Persona eliminada (esquema viejo VARBINARY detectado).';
+    END
+END
 GO
 
--- Si la tabla ya existia pero no tiene NombreHash (bases creadas antes de la E8), se agrega.
-IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('equipos.Persona') AND name = 'NombreHash')
+-- Paso 2: Crear la tabla si no existe
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'equipos' AND TABLE_NAME = 'Persona')
 BEGIN
-	ALTER TABLE equipos.Persona ADD NombreHash VARBINARY(32) NULL;
+    CREATE TABLE equipos.Persona
+    (
+        IdPersona INT IDENTITY(1, 1),
+        Nombre NVARCHAR(30) NOT NULL,
+        Fnac DATE NOT NULL,
+        Rol VARCHAR(10) NOT NULL,
+        Pais INT NOT NULL,
+        CONSTRAINT PK_Persona PRIMARY KEY (IdPersona),
+        CONSTRAINT FK_Persona_Pais FOREIGN KEY (Pais) REFERENCES equipos.Pais(IdPais)
+    );
+    PRINT 'Tabla Persona creada con Nombre NVARCHAR(30).';
 END
 GO

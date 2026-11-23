@@ -27,8 +27,7 @@
 
 USE MUNDIAL;
 GO
--- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
--- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
+
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -198,7 +197,7 @@ UPDATE #ArbitrajesStaging SET Estado='Error',
     Detalle=N'Ya existe una persona con ese nombre y no es arbitro: revise la carga 10.'
 WHERE Estado='Pendiente'
   AND EXISTS (SELECT 1 FROM equipos.Persona AS pe
-              WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #ArbitrajesStaging.NombreArbitro
+              WHERE pe.Nombre = #ArbitrajesStaging.NombreArbitro
                 AND NOT EXISTS (SELECT 1 FROM arbitros.Arbitro AS ar WHERE ar.IdArbitro=pe.IdPersona));
 
 -- D6: el arbitro ya fue designado en ese partido.
@@ -212,7 +211,7 @@ WHERE f.Estado='Pendiente' AND EXISTS (
 -- Se resuelve el arbitro si ya estaba cargado.
 UPDATE s SET IdArbitro = ar.IdArbitro
 FROM #ArbitrajesStaging AS s
-JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = s.NombreArbitro
+JOIN equipos.Persona AS pe ON pe.Nombre = s.NombreArbitro
 JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
 WHERE s.Estado='Pendiente';
 
@@ -251,16 +250,16 @@ BEGIN
             SELECT @idArbitro = ar.IdArbitro
             FROM equipos.Persona AS pe
             JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
-            WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
+            WHERE pe.Nombre = @nombre;
             -- Cargas anteriores guardaban el nombre con el "(Pais)": se
             -- reutiliza ese arbitro y se corrige su nombre.
             IF @idArbitro IS NULL
             BEGIN
-                -- Busqueda por hash (Nombre esta cifrado, no se puede usar LIKE)
+                -- Busqueda directa por nombre (Nombre es texto plano)
                 SELECT @idArbitro = MIN(ar.IdArbitro)
                 FROM equipos.Persona AS pe
                 JOIN arbitros.Arbitro AS ar ON ar.IdArbitro = pe.IdPersona
-                WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
+                WHERE pe.Nombre = @nombre;
                 IF @idArbitro IS NOT NULL
                     EXEC SPTRANS.uspArbitro_Update @id=@idArbitro, @nombre=@nombre;
             END;
@@ -275,7 +274,7 @@ BEGIN
             SELECT @idArbitro = IdArbitro
             FROM arbitros.Arbitro AS ar
             JOIN equipos.Persona AS pe ON pe.IdPersona=ar.IdArbitro
-            WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre))=@nombre;
+            WHERE pe.Nombre=@nombre;
             SET @estadoArbitro='Insertado';
         END
         ELSE

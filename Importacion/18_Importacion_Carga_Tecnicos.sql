@@ -22,8 +22,7 @@
 
 USE MUNDIAL;
 GO
--- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
--- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
+
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -120,7 +119,7 @@ UPDATE #TecnicosStaging SET Estado='Error',
     Detalle=N'Ya existe una persona con ese nombre y no es tecnico: revise la carga 10.'
 WHERE Estado='Pendiente'
   AND EXISTS (SELECT 1 FROM equipos.Persona AS pe
-              WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #TecnicosStaging.Nombre
+              WHERE pe.Nombre = #TecnicosStaging.Nombre
                 AND NOT EXISTS (SELECT 1 FROM equipos.Tecnico AS te WHERE te.IdTecnico = pe.IdPersona));
 
 -- Se resuelve el pais de la seleccion (el DT es de la seleccion que dirige).
@@ -175,7 +174,7 @@ BEGIN
         SELECT @idTecnico = te.IdTecnico
         FROM equipos.Persona AS pe
         JOIN equipos.Tecnico AS te ON te.IdTecnico = pe.IdPersona
-        WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
+        WHERE pe.Nombre = @nombre;
         IF @idTecnico IS NULL
         BEGIN
             EXEC SPTRANS.uspTecnico_Registrar @nombre=@nombre,
@@ -185,7 +184,7 @@ BEGIN
             SELECT @idTecnico = te.IdTecnico
             FROM equipos.Persona AS pe
             JOIN equipos.Tecnico AS te ON te.IdTecnico = pe.IdPersona
-            WHERE pe.NombreHash = HASHBYTES('SHA2_256', @nombre);
+            WHERE pe.Nombre = @nombre;
             SET @estado='Insertada';
         END
         ELSE SET @estado='SinCambios';

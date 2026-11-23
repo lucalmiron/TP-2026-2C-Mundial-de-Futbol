@@ -7,6 +7,8 @@
 -- En SSMS, activar modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- Mantener las comillas si la ruta contiene espacios.
 
+--L
+:setvar TP_BDDA "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol"
 
 :ON ERROR EXIT
 

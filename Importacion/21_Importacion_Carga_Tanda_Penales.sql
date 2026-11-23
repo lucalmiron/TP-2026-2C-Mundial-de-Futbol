@@ -31,8 +31,7 @@
 
 USE MUNDIAL;
 GO
--- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
--- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
+
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -144,12 +143,12 @@ JOIN equipos.Pais AS p ON p.IdPais = se.IdPais
 WHERE s.Estado='Pendiente';
 
 UPDATE #TandaStaging SET NombreAutorBd = COALESCE(
-    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
+    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = #TandaStaging.NombreAutor AND j.Seleccion = #TandaStaging.Seleccion),
-    (SELECT TOP (1) CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) FROM equipos.Persona AS pe
+     WHERE pe.Nombre = #TandaStaging.NombreAutor AND j.Seleccion = #TandaStaging.Seleccion),
+    (SELECT TOP (1) pe.Nombre FROM equipos.Persona AS pe
      JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-     WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) COLLATE Latin1_General_100_CI_AI = #TandaStaging.NombreAutor COLLATE Latin1_General_100_CI_AI
+     WHERE pe.Nombre COLLATE Latin1_General_100_CI_AI = #TandaStaging.NombreAutor COLLATE Latin1_General_100_CI_AI
        AND j.Seleccion = #TandaStaging.Seleccion),
     (SELECT TOP (1) al.NombreCsv FROM #AliasJugadores AS al
      WHERE al.NombrePromiedos = #TandaStaging.NombreAutor AND al.Habilitado='1'
@@ -162,7 +161,7 @@ UPDATE #TandaStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#TandaStaging.NombreAutorBd, #TandaStaging.NombreAutor)
+       WHERE pe.Nombre = ISNULL(#TandaStaging.NombreAutorBd, #TandaStaging.NombreAutor)
          AND j.Seleccion = #TandaStaging.Seleccion) = 0;
 
 -- D5: el ejecutante es ambiguo dentro de la seleccion.
@@ -171,13 +170,13 @@ UPDATE #TandaStaging SET Estado='Error',
 WHERE Estado='Pendiente'
   AND (SELECT COUNT(*) FROM equipos.Persona AS pe
        JOIN equipos.Jugador AS j ON j.IdJugador=pe.IdPersona
-       WHERE CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(#TandaStaging.NombreAutorBd, #TandaStaging.NombreAutor)
+       WHERE pe.Nombre = ISNULL(#TandaStaging.NombreAutorBd, #TandaStaging.NombreAutor)
          AND j.Seleccion = #TandaStaging.Seleccion) > 1;
 
 -- Se resuelve el identificador del ejecutante.
 UPDATE s SET IdJugador = j.IdJugador
 FROM #TandaStaging AS s
-JOIN equipos.Persona AS pe ON CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', pe.Nombre)) = ISNULL(s.NombreAutorBd, s.NombreAutor)
+JOIN equipos.Persona AS pe ON pe.Nombre = ISNULL(s.NombreAutorBd, s.NombreAutor)
 JOIN equipos.Jugador AS j ON j.IdJugador = pe.IdPersona AND j.Seleccion = s.Seleccion
 WHERE s.Estado='Pendiente';
 

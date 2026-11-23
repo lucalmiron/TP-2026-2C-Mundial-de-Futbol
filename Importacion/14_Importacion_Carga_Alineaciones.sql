@@ -24,8 +24,7 @@
 
 USE MUNDIAL;
 GO
--- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
--- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
+
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
@@ -156,8 +155,7 @@ CREATE TABLE #JugReg (
 );
 INSERT #JugReg (IdJugador, Seleccion, Numero, NombreReg)
 SELECT j.IdJugador, j.Seleccion, j.Numero,
-       CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'),
-               N'ClaveMaestra_Mundial_2026!', p.Nombre))
+       p.Nombre
 FROM equipos.Jugador AS j
 JOIN equipos.Persona AS p ON p.IdPersona = j.IdJugador;
 

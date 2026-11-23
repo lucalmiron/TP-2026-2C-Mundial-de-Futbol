@@ -31,6 +31,8 @@ BEGIN
 	DECLARE @vIdMundial INT
 	DECLARE @vMin INT
 	DECLARE @vMax INT
+	DECLARE @motivoCifrado VARBINARY(256)
+	DECLARE @motivoHash VARBINARY(32)
 
 	BEGIN TRY
 		IF (@seleccion IS NULL) OR (@seleccion <= 0)
@@ -80,6 +82,9 @@ BEGIN
 			WHERE A.IdJugador = @egreso AND P.Fecha >= @fecha)
 			SET @errores += '- El egreso tiene alineaciones desde la fecha del cambio.' + N' ';
 
+		-- Cifrar motivo
+		EXEC SP.uspSeguridad_CifrarMotivoCambioConvocatoria @motivo, @motivoCifrado OUTPUT, @motivoHash OUTPUT;
+
 		BEGIN TRANSACTION
 
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
@@ -91,8 +96,8 @@ BEGIN
 			SET Estado = 'Activo'
 			WHERE IdJugador = @ingreso
 
-			INSERT INTO equipos.CambioConvocatoria (Seleccion, Egreso, Ingreso, Fecha, Motivo)
-			VALUES (@seleccion, @egreso, @ingreso, @fecha, @motivo)
+			INSERT INTO equipos.CambioConvocatoria (Seleccion, Egreso, Ingreso, Fecha, Motivo, MotivoHash)
+			VALUES (@seleccion, @egreso, @ingreso, @fecha, @motivoCifrado, @motivoHash)
 
 			COMMIT TRANSACTION
 	END TRY

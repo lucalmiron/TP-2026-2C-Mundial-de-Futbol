@@ -26,8 +26,7 @@
 
 USE MUNDIAL;
 GO
--- Entrega 8: equipos.Persona.Nombre esta cifrado; se lee con DECRYPTBYKEYAUTOCERT.
--- No depende de que la clave este abierta en la sesion (los SP de ABM la cierran).
+
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 DECLARE @idMundial INT = 1;
@@ -493,7 +492,7 @@ BEGIN
         FROM equipos.Jugador j WITH (UPDLOCK, HOLDLOCK)
         JOIN equipos.Persona p ON p.IdPersona=j.IdJugador
         WHERE j.Seleccion=@idSeleccion
-          AND CONVERT(NVARCHAR(30), DECRYPTBYKEYAUTOCERT(CERT_ID(N'CertificadoCifradoMundial'), N'ClaveMaestra_Mundial_2026!', p.Nombre))=@nombreSp;
+          AND p.Nombre=@nombreSp;
         IF @cantidad>1 THROW 51602,'Identidad ambigua: varios jugadores con ese nombre en la seleccion.',1;
         IF @cantidad=0
         BEGIN
