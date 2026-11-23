@@ -110,10 +110,10 @@ BEGIN
 		BEGIN
 			WITH resumen AS
 			(
-				SELECT infoFase.IdMundial, infoFase.[FASE], goles.Autor, SUM(goles.[GOLES POR AUTOR POR PARTIDO]) AS [GOLES POR AUTOR POR FASE]
+				SELECT infoFase.IdMundial, infoFase.IdFase, infoFase.[FASE], goles.Autor, SUM(goles.[GOLES POR AUTOR POR PARTIDO]) AS [GOLES POR AUTOR POR FASE]
 				FROM
 				(
-					SELECT Partido.IdMundial, Fase.Descripcion AS [FASE], Partido.IdPartido
+					SELECT Partido.IdMundial, Fase.IdFase, Fase.Descripcion AS [FASE], Partido.IdPartido
 					FROM 
 					partidos.Fase AS Fase INNER JOIN partidos.Partido AS Partido ON Partido.IdFase = Fase.IdFase
 					WHERE Partido.IdMundial = 1
@@ -128,12 +128,12 @@ BEGIN
 
 				) AS goles
 				ON infoFase.IdPartido = goles.Partido
-				GROUP BY infoFase.IdMundial, infoFase.[FASE], goles.Autor
+				GROUP BY infoFase.IdMundial, infoFase.IdFase, infoFase.[FASE], goles.Autor
 			)
 			SELECT YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL], infoT.FASE, infoT.[NOMBRE DEL JUGADOR], infoT.[GOLES POR AUTOR POR FASE], infoT.RANKING
 			FROM
 			(
-				SELECT resumen.IdMundial, resumen.[FASE], infoJugador.[NOMBRE DEL JUGADOR], resumen.[GOLES POR AUTOR POR FASE], DENSE_RANK() OVER (PARTITION BY resumen.[FASE] ORDER BY resumen.[GOLES POR AUTOR POR FASE] DESC) AS [RANKING]
+				SELECT resumen.IdMundial, resumen.IdFase, resumen.[FASE], infoJugador.[NOMBRE DEL JUGADOR], resumen.[GOLES POR AUTOR POR FASE], DENSE_RANK() OVER (PARTITION BY resumen.[FASE] ORDER BY resumen.[GOLES POR AUTOR POR FASE] DESC) AS [RANKING]
 				FROM
 				(
 					SELECT Persona.Nombre AS [NOMBRE DEL JUGADOR], Jugador.IdJugador
@@ -149,6 +149,7 @@ BEGIN
 			INNER JOIN
 			sedes.Mundial AS Mundial
 			ON infoT.IdMundial = Mundial.IdMundial
+			ORDER BY infoT.IdFase ASC
 		END
 
 		IF(@categoria = 'Mundial')
@@ -225,12 +226,13 @@ BEGIN
 	BEGIN
 		WITH resumenAmonestaciones AS
 		(
-			SELECT A.[MUNDIAL], A.Amonestado, A.[TARJETA], A.[MOTIVO DE LA TARJETA],
+			SELECT A.[MUNDIAL], A.IdAmonestacion, A.Amonestado, A.[TARJETA], A.[MOTIVO DE LA TARJETA],
 			B.Tarjeta AS ultimaTarjeta
 			FROM
 			(
 				SELECT 
 				YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL],
+				Amonestacion.IdAmonestacion,
 				Amonestacion.Amonestado,
 				Amonestacion.Tarjeta AS [TARJETA], Amonestacion.Motivo AS [MOTIVO DE LA TARJETA],
 				MAX(Amonestacion.IdAmonestacion) OVER (PARTITION BY Amonestacion.Amonestado) AS idLastAmon
@@ -261,11 +263,7 @@ BEGIN
 		WHEN (Amonestados.ESTADO = 'Suspendido') AND (resumenAmonestaciones.ultimaTarjeta = 'Amarilla') THEN 'Por acumulacion de amarillas.'
 		WHEN (Amonestados.ESTADO = 'Suspendido') AND (resumenAmonestaciones.ultimaTarjeta = 'Roja') THEN 'Recibio una tarjeta roja.'
 		END AS [MOTIVO DE LA SUSPENSION],
-		CASE
-		WHEN (resumenAmonestaciones.TARJETA = 'Roja') AND (resumenAmonestaciones.[MOTIVO DE LA TARJETA] <> 'Por acumulacion de amarillas') 
-		THEN (resumenAmonestaciones.TARJETA + '(DIRECTA)')
-		ELSE resumenAmonestaciones.[TARJETA]
-		END AS [TARJETA],
+		resumenAmonestaciones.[TARJETA],
 		resumenAmonestaciones.[MOTIVO DE LA TARJETA],
 		SUM(CASE WHEN resumenAmonestaciones.Tarjeta = 'Amarilla' THEN 1 ELSE 0 END) OVER (PARTITION BY Persona.Nombre) AS [TOTAL AMARILLAS DE LA PERSONA], 
 		SUM(CASE WHEN resumenAmonestaciones.Tarjeta = 'Roja' THEN 1 ELSE 0 END) OVER (PARTITION BY Persona.Nombre) AS [TOTAL ROJAS DE LA PERSONA]
@@ -287,7 +285,7 @@ BEGIN
 		INNER JOIN
 		equipos.Pais AS Pais
 		ON Seleccion.IdPais = Pais.IdPais
-		ORDER BY Pais.NOMBRE, Persona.Nombre
+		ORDER BY Pais.NOMBRE, Persona.Nombre, resumenAmonestaciones.IdAmonestacion
 	END
 	END;
 GO
@@ -636,64 +634,72 @@ BEGIN
 
 	IF(@errorCount = 0)
 	BEGIN
-		WITH resumenPartidos AS
+		WITH
+		infoEq1 AS
+		(
+			SELECT Partido1.IdPartido, Pais1.NOMBRE AS [SELECCION 1]
+			FROM
+			partidos.Partido AS Partido1
+			INNER JOIN
+			equipos.Seleccion AS Seleccion1
+			ON Partido1.Eq1 = Seleccion1.IdSeleccion
+			INNER JOIN
+			equipos.Pais AS Pais1
+			ON Seleccion1.IdPais = Pais1.IdPais
+		),
+		infoEq2 AS
+		(
+			SELECT Partido2.IdPartido, Pais2.NOMBRE AS [SELECCION 2]
+			FROM
+			partidos.Partido AS Partido2
+			INNER JOIN
+			equipos.Seleccion AS Seleccion2
+			ON Partido2.Eq2 = Seleccion2.IdSeleccion
+			INNER JOIN
+			equipos.Pais AS Pais2
+			ON Seleccion2.IdPais = Pais2.IdPais
+		),
+		infoPartido AS
 		(
 			SELECT 
-			infoPart.IdMundial, 
-			Fase.Descripcion AS [FASE], 
-			(infoPart.[SELECCION 1] + ' ' + 
-			STR(infoPart.GolesEq1, 2) + ' (' + STR(infoPart.PenalesEq1, 2) + ' )' + 
-			'  - ' + 
-			STR(infoPart.GolesEq2, 2) + ' (' + STR(infoPart.PenalesEq2, 2) + ' ) ' +
-			' ' + infoPart.[SELECCION 2]) AS [RESULTADO DEL PARTIDO]
+			YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL],
+			Fase.IdFase, Fase.Descripcion AS [FASE],
+			Partido.IdPartido, 
+			Partido.GolesEq1, Partido.GolesEq2,
+			CASE
+			WHEN PenalesEq1 IS NULL THEN 0
+			ELSE PenalesEq1
+			END AS PenalesEq1,
+			CASE
+			WHEN PenalesEq2 IS NULL THEN 0
+			ELSE PenalesEq2
+			END AS PenalesEq2
 			FROM
-			(
-				SELECT P.IdMundial, P.IdFase, infoEq1.[SELECCION 1], infoEq2.[SELECCION 2], P.GolesEq1, P.GolesEq2, P.PenalesEq1, P.PenalesEq2
-				FROM partidos.Partido AS P
-				INNER JOIN
-				(
-					SELECT Partido1.IdPartido, Pais1.NOMBRE AS [SELECCION 1]
-					FROM
-					partidos.Partido AS Partido1
-					INNER JOIN
-					equipos.Seleccion AS Seleccion1
-					ON Partido1.Eq1 = Seleccion1.IdSeleccion
-					INNER JOIN
-					equipos.Pais AS Pais1
-					ON Seleccion1.IdPais = Pais1.IdPais
-
-				) AS infoEq1
-				ON P.IdPartido = infoEq1.IdPartido
-				INNER JOIN
-				(
-					SELECT Partido2.IdPartido, Pais2.NOMBRE AS [SELECCION 2]
-					FROM
-					partidos.Partido AS Partido2
-					INNER JOIN
-					equipos.Seleccion AS Seleccion2
-					ON Partido2.Eq2 = Seleccion2.IdSeleccion
-					INNER JOIN
-					equipos.Pais AS Pais2
-					ON Seleccion2.IdPais = Pais2.IdPais
-
-				) AS infoEq2
-				ON P.IdPartido = infoEq2.IdPartido
-				WHERE P.IdMundial = @mundial
-
-			) AS infoPart
+			sedes.Mundial AS Mundial
+			INNER JOIN
+			partidos.Partido AS Partido
+			ON Mundial.IdMundial = Partido.IdMundial
 			INNER JOIN
 			partidos.Fase AS Fase
-			ON infoPart.IdFase = Fase.IdFase
+			ON Partido.IdFase = Fase.IdFase
+			WHERE Mundial.IdMundial = 1
 		)
 		SELECT 
-		YEAR(Mundial.ACTIVIDAD_FECHA_INICIO) AS [MUNDIAL],
-		resumenPartidos.[FASE],
-		resumenPartidos.[RESULTADO DEL PARTIDO]
+		infoPartido.[MUNDIAL], infoPartido.[FASE],
+		(infoEq1.[SELECCION 1] + ' ' + 
+		STR(infoPartido.GolesEq1, 2) + ' (' + STR(infoPartido.PenalesEq1, 2) + ' )' + 
+		'  - ' + 
+		STR(infoPartido.GolesEq2, 2) + ' (' + STR(infoPartido.PenalesEq2, 2) + ' ) ' +
+		' ' + infoEq2.[SELECCION 2]) AS [RESULTADO DEL PARTIDO]
 		FROM
-		resumenPartidos
+		infoPartido
 		INNER JOIN
-		sedes.Mundial AS Mundial
-		ON resumenPartidos.IdMundial = Mundial.IdMundial
+		infoEq1
+		ON infoPartido.IdPartido = infoEq1.IdPartido
+		INNER JOIN
+		infoEq2
+		ON infoPartido.IdPartido = infoEq2.IdPartido
+		ORDER BY infoPartido.IdFase
 	END
 END;
 GO
@@ -1348,7 +1354,7 @@ BEGIN
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Seleccion.'
 	END
 
-	IF(@minuto IS NULL) OR (@minuto <= 0)
+	IF(@minuto IS NULL) OR (@minuto < 0)
 	BEGIN
 		SET @errorCount = @errorCount + 1
 		SET @errorLine = @errorLine + CHAR(13) + '- Valor invalido: Minuto.'
