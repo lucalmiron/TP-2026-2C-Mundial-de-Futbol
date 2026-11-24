@@ -1,0 +1,1934 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "egchjab",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "Fecha 2",
+    "winner": 2,
+    "teams": [
+      {
+        "name": "Nueva Zelanda",
+        "short_name": "Nueva Zelanda",
+        "url_name": "new-zealand",
+        "id": "cdjb",
+        "country_id": "bfj",
+        "allow_open": true,
+        "colors": {
+          "color": "#E7E8EC",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Finn Surman",
+            "player_sname": "Surman",
+            "time": 15.0,
+            "time_to_display": "15'"
+          }
+        ]
+      },
+      {
+        "name": "Egipto",
+        "short_name": "Egipto",
+        "url_name": "egypt",
+        "id": "fbaa",
+        "country_id": "bdb",
+        "allow_open": true,
+        "colors": {
+          "color": "#FF0000",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Mostafa Ziko",
+            "player_sname": "Ziko",
+            "time": 58.0,
+            "time_to_display": "58'"
+          },
+          {
+            "player_name": "Mohamed Salah",
+            "player_sname": "Salah",
+            "time": 67.0,
+            "time_to_display": "67'"
+          },
+          {
+            "player_name": "Mahmoud Trézéguet",
+            "player_sname": "Trezeguet",
+            "time": 82.0,
+            "time_to_display": "82'"
+          }
+        ]
+      }
+    ],
+    "url_name": "new-zealand-vs-egypt",
+    "scores": [
+      1.0,
+      3.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Finalizado",
+      "short_name": "Final",
+      "symbol_name": "Fin"
+    },
+    "start_time": "21-06-2026 22:00",
+    "game_time": 90,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Final",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "4-2-3-1",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Max Crocombe",
+                "player_short_name": "Crocombe",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 33,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Liberato Cacace",
+                "player_short_name": "Cacace",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 76.0,
+                  "player": 21,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 5,
+                "name": "Michael Boxall",
+                "player_short_name": "Boxall",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 33
+                },
+                "age": 38,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 16,
+                "name": "Finn Surman",
+                "player_short_name": "Surman",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 66
+                },
+                "age": 23,
+                "height": "1.90",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 2,
+                "name": "Tim Payne",
+                "player_short_name": "Payne",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 85.0,
+                  "player": 4,
+                  "type": 2
+                },
+                "age": 32,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 85.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Marko Stamenic",
+                "player_short_name": "Stamenic",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 20
+                },
+                "age": 24,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Joe Bell",
+                "player_short_name": "Bell",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 80
+                },
+                "age": 27,
+                "height": "1.82"
+              },
+              {
+                "jersey_num": 11,
+                "name": "Elijah Just",
+                "player_short_name": "Just",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 85.0,
+                  "player": 3,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.76",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 85.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Sarpreet Singh",
+                "player_short_name": "Singh",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 76.0,
+                  "player": 23,
+                  "type": 2
+                },
+                "age": 27,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 20,
+                "name": "Callum McCowatt",
+                "player_short_name": "McCowatt",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bfj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 66.0,
+                  "player": 19,
+                  "type": 2
+                },
+                "age": 27,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 66.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Chris Wood",
+                "player_short_name": "Wood",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bfj",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "age": 34,
+                "height": "1.91"
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 4,
+                "name": "Tyler Bindon",
+                "player_short_name": "Bindon",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bfj",
+                "is_captain": false,
+                "substitution": {
+                  "time": 85.0,
+                  "player": 2,
+                  "type": 1
+                },
+                "age": 21,
+                "height": "1.90",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 85.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 19,
+                "name": "Ben Old",
+                "player_short_name": "Old",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bfj",
+                "is_captain": false,
+                "substitution": {
+                  "time": 66.0,
+                  "player": 20,
+                  "type": 1
+                },
+                "age": 24,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 66.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 21,
+                "name": "Jesse Randall",
+                "player_short_name": "Randall",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bfj",
+                "is_captain": false,
+                "substitution": {
+                  "time": 76.0,
+                  "player": 13,
+                  "type": 1
+                },
+                "age": 24,
+                "height": "1.76",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 23,
+                "name": "R. Thomas",
+                "player_short_name": "R. Thomas",
+                "position": "",
+                "formation_position": "",
+                "country_id": "",
+                "is_captain": false,
+                "substitution": {
+                  "time": 76.0,
+                  "player": 10,
+                  "type": 1
+                },
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 3,
+                "name": "Francis de Vries",
+                "player_short_name": "de Vries",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bfj",
+                "is_captain": false,
+                "substitution": {
+                  "time": 85.0,
+                  "player": 11,
+                  "type": 1
+                },
+                "age": 31,
+                "height": "1.81",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 85.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Kosta Barbarouses",
+                "player_short_name": "Barbarouses",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 36,
+                "height": "1.71"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Lachlan Bayliss",
+                "player_short_name": "Bayliss",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.78"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Callan Elliott",
+                "player_short_name": "Elliott",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.77"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Alex Paulsen",
+                "player_short_name": "Paulsen",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.84"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Nando Pijnaker",
+                "player_short_name": "Pijnaker",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 7,
+                "name": "Logan Rogerson",
+                "player_short_name": "Logan Rogerson",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.82"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Alex Rufer",
+                "player_short_name": "Rufer",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Tommy Smith",
+                "player_short_name": "Smith",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 36,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Ben Waine",
+                "player_short_name": "Waine",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Michael Woud",
+                "player_short_name": "Woud",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bfj",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.96"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Darren Bazeley",
+                "player_short_name": "Bazeley",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "b",
+                "is_captain": false,
+                "age": 54
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "4-2-3-1",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 23,
+                "name": "Mostafa Shobeir Oufa",
+                "player_short_name": "Oufa",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 26,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Ahmed Fatouh",
+                "player_short_name": "Fatouh",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 0
+                },
+                "age": 28,
+                "height": "1.77"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Hamdy Fathy",
+                "player_short_name": "Fathy",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 41.0,
+                  "player": 5,
+                  "type": 2
+                },
+                "age": 32,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 41.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 2,
+                "name": "Yasser Ibrahim",
+                "player_short_name": "Ibrahim",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 66
+                },
+                "age": 33,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Mohamed Hany",
+                "player_short_name": "Hany",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 100
+                },
+                "age": 30,
+                "height": "1.84"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Mohanad Lasheen",
+                "player_short_name": "Lasheen",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 20
+                },
+                "age": 30,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 19,
+                "name": "Marwan Ateya",
+                "player_short_name": "Ateya",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 80
+                },
+                "age": 28,
+                "height": "1.76"
+              },
+              {
+                "jersey_num": 8,
+                "name": "Emam Ashour",
+                "player_short_name": "Ashour",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 85.0,
+                  "player": 25,
+                  "type": 2
+                },
+                "age": 28,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 85.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Mohamed Salah",
+                "player_short_name": "Salah",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bdb",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 85.0,
+                  "player": 4,
+                  "type": 2
+                },
+                "age": 34,
+                "height": "1.75",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 85.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 11,
+                "name": "Mostafa Ziko",
+                "player_short_name": "Ziko",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 76.0,
+                  "player": 9,
+                  "type": 2
+                },
+                "age": 29,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 22,
+                "name": "Omar Marmoush",
+                "player_short_name": "Marmoush",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bdb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 76.0,
+                  "player": 7,
+                  "type": 2
+                },
+                "age": 27,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 4,
+                "name": "Hossam Abdelmaguid",
+                "player_short_name": "Abdelmaguid",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bdb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 85.0,
+                  "player": 10,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.93",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 85.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Mahmoud Trézéguet",
+                "player_short_name": "Trezeguet",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bdb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 76.0,
+                  "player": 22,
+                  "type": 1
+                },
+                "age": 32,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 6,
+                "name": "Mohamed Abdel Monem",
+                "player_short_name": "Abdelmonem",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bdb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 4,
+                  "type": 1
+                },
+                "age": 27,
+                "height": "1.84",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 5,
+                "name": "Rami Rabia",
+                "player_short_name": "Rabia",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bdb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 41.0,
+                  "player": 14,
+                  "type": 1
+                },
+                "age": 33,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 41.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 25,
+                "name": "Ahmed Sayed Zizo",
+                "player_short_name": "Zizo",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bdb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 85.0,
+                  "player": 8,
+                  "type": 1
+                },
+                "age": 30,
+                "height": "1.75",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 85.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Hamza Abdelkarim",
+                "player_short_name": "Abdelkarim",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bdb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 76.0,
+                  "player": 11,
+                  "type": 1
+                },
+                "age": 18,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 76.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 26,
+                "name": "Mohamed Alaa",
+                "player_short_name": "Alaa",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Nabil Emad Dunga",
+                "player_short_name": "Dunga",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Tarek Alaa",
+                "player_short_name": "Alaa",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.78"
+              },
+              {
+                "jersey_num": 1,
+                "name": "Mohamed El Shenawy",
+                "player_short_name": "El Shenawi",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 37,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Mahmoud Saber",
+                "player_short_name": "Saber",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.70"
+              },
+              {
+                "jersey_num": 20,
+                "name": "Ibrahim Adel",
+                "player_short_name": "Adel",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.78"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Haissem Hassan",
+                "player_short_name": "Hassan",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.75"
+              },
+              {
+                "jersey_num": 16,
+                "name": "Mahdi Soliman",
+                "player_short_name": "Soliman",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 39,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Karim Hafez",
+                "player_short_name": "Hafez",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.75"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Hossam Hassan",
+                "player_short_name": "Hossam Hassan",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "bdb",
+                "is_captain": false,
+                "age": 60
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=47&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=47&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "eh",
+      "cta_link": "https://gml-grp.com/C.ashx?btag=a_68154b_3685c_&affid=15975&siteid=68154&adid=3685&c=",
+      "options": [
+        {
+          "name": "1",
+          "votes": 21196,
+          "percentage": 11,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egchjab&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 14027,
+          "percentage": 8,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egchjab&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 150222,
+          "percentage": 81,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egchjab&vote=2"
+        }
+      ],
+      "total_votes": 140938,
+      "odds": [
+        {
+          "name": "1",
+          "value": 5.75,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 3.9,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 1.6,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "BC Place (Vancouver)"
+      },
+      {
+        "name": "Capacidad",
+        "value": "52497"
+      },
+      {
+        "name": "Árbitro",
+        "value": "Omar Al Ali"
+      },
+      {
+        "name": "Arg TV",
+        "value": "TyC Sports Play,  , DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          1.0,
+          0.0
+        ],
+        "rows": [
+          {
+            "time": "15'",
+            "events": [
+              {
+                "type": 1,
+                "time": "15'",
+                "team": 1,
+                "texts": [
+                  "Finn Surman",
+                  "Tim Payne"
+                ],
+                "player_jersey_num": 16
+              }
+            ]
+          },
+          {
+            "time": "17'",
+            "events": [
+              {
+                "type": 4,
+                "time": "17'",
+                "team": 2,
+                "texts": [
+                  "Mohanad Lasheen"
+                ],
+                "player_jersey_num": 17
+              }
+            ]
+          },
+          {
+            "time": "20'",
+            "events": [
+              {
+                "type": 4,
+                "time": "20'",
+                "team": 1,
+                "texts": [
+                  "Sarpreet Singh"
+                ],
+                "player_jersey_num": 10
+              }
+            ]
+          },
+          {
+            "time": "34'",
+            "events": [
+              {
+                "type": 4,
+                "time": "34'",
+                "team": 1,
+                "texts": [
+                  "Callum McCowatt"
+                ],
+                "player_jersey_num": 20
+              }
+            ]
+          },
+          {
+            "time": "41'",
+            "events": [
+              {
+                "type": 15,
+                "time": "41'",
+                "team": 2,
+                "texts": [
+                  "Rami Rabia",
+                  "Hamdy Fathy"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          1.0,
+          3.0
+        ],
+        "rows": [
+          {
+            "time": "58'",
+            "events": [
+              {
+                "type": 1,
+                "time": "58'",
+                "team": 2,
+                "texts": [
+                  "Mostafa Ziko",
+                  "Mohamed Hany"
+                ],
+                "player_jersey_num": 11
+              }
+            ]
+          },
+          {
+            "time": "66'",
+            "events": [
+              {
+                "type": 15,
+                "time": "66'",
+                "team": 1,
+                "texts": [
+                  "Ben Old",
+                  "Callum McCowatt"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "67'",
+            "events": [
+              {
+                "type": 1,
+                "time": "67'",
+                "team": 2,
+                "texts": [
+                  "Mohamed Salah",
+                  "Mostafa Ziko"
+                ],
+                "player_jersey_num": 10
+              }
+            ]
+          },
+          {
+            "time": "76'",
+            "events": [
+              {
+                "type": 15,
+                "time": "76'",
+                "team": 1,
+                "texts": [
+                  "Jesse Randall",
+                  "Liberato Cacace"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "76'",
+                "team": 2,
+                "texts": [
+                  "Mahmoud Trézéguet",
+                  "Omar Marmoush"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "76'",
+            "events": [
+              {
+                "type": 15,
+                "time": "76'",
+                "team": 1,
+                "texts": [
+                  "R. Thomas",
+                  "Sarpreet Singh"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "76'",
+                "team": 2,
+                "texts": [
+                  "Hamza Abdelkarim",
+                  "Mostafa Ziko"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "82'",
+            "events": [
+              {
+                "type": 1,
+                "time": "82'",
+                "team": 2,
+                "texts": [
+                  "Mahmoud Trézéguet",
+                  "Mohamed Salah"
+                ],
+                "player_jersey_num": 7
+              }
+            ]
+          },
+          {
+            "time": "85'",
+            "events": [
+              {
+                "type": 15,
+                "time": "85'",
+                "team": 1,
+                "texts": [
+                  "Francis de Vries",
+                  "Elijah Just"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "85'",
+                "team": 2,
+                "texts": [
+                  "Ahmed Sayed Zizo",
+                  "Emam Ashour"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "85'",
+            "events": [
+              {
+                "type": 15,
+                "time": "85'",
+                "team": 1,
+                "texts": [
+                  "Tyler Bindon",
+                  "Tim Payne"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "85'",
+                "team": 2,
+                "texts": [
+                  "Hossam Abdelmaguid",
+                  "Mohamed Salah"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 2,
+                "texts": [
+                  "Mohamed Abdel Monem",
+                  "Hossam Abdelmaguid"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "11",
+          "19"
+        ],
+        "percentages": [
+          0.37,
+          0.63
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "5",
+          "7"
+        ],
+        "percentages": [
+          0.42,
+          0.58
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "44%",
+          "56%"
+        ],
+        "percentages": [
+          0.44,
+          0.56
+        ]
+      },
+      {
+        "name": "Ataques",
+        "values": [
+          "77",
+          "110"
+        ],
+        "percentages": [
+          0.41,
+          0.59
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "8",
+          "13"
+        ],
+        "percentages": [
+          0.38,
+          0.62
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "4",
+          "3"
+        ],
+        "percentages": [
+          0.57,
+          0.43
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "3",
+          "0"
+        ],
+        "percentages": [
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "14",
+          "8"
+        ],
+        "percentages": [
+          0.64,
+          0.36
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "2",
+          "1"
+        ],
+        "percentages": [
+          0.67,
+          0.33
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "0"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "head_to_head": {
+      "home_wins": 0,
+      "away_wins": 2,
+      "draws": 0,
+      "games": [
+        {
+          "id": "egchjab",
+          "league": {
+            "name": "Mundial",
+            "id": "fjda",
+            "url_name": "fifa-world-cup",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": true,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 2,
+          "teams": [
+            {
+              "name": "Nueva Zelanda",
+              "short_name": "Nueva Zelanda",
+              "url_name": "new-zealand",
+              "id": "cdjb",
+              "country_id": "bfj",
+              "allow_open": true,
+              "colors": {
+                "color": "#E7E8EC",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Egipto",
+              "short_name": "Egipto",
+              "url_name": "egypt",
+              "id": "fbaa",
+              "country_id": "bdb",
+              "allow_open": true,
+              "colors": {
+                "color": "#FF0000",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "new-zealand-vs-egypt",
+          "scores": [
+            1.0,
+            3.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "21-06-2026 22:00",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 5.75,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 3.9,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 1.6,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "eahcghd",
+          "league": {
+            "name": "New Administrative Capital Cup",
+            "id": "iaib",
+            "url_name": "new-administrative-capital-cup",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 1,
+          "to_qualify": 1,
+          "teams": [
+            {
+              "name": "Egipto",
+              "short_name": "Egipto",
+              "url_name": "egypt",
+              "id": "fbaa",
+              "country_id": "bdb",
+              "allow_open": true,
+              "colors": {
+                "color": "#FF0000",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Nueva Zelanda",
+              "short_name": "Nueva Zelanda",
+              "url_name": "new-zealand",
+              "id": "cdjb",
+              "country_id": "bfj",
+              "allow_open": true,
+              "colors": {
+                "color": "#E7E8EC",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "egypt-vs-new-zealand",
+          "scores": [
+            1.0,
+            0.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "22-03-2024 17:00",
+          "game_time_status_to_display": "Final"
+        }
+      ]
+    },
+    "recent_form": {
+      "home": [
+        0,
+        0,
+        1,
+        2,
+        0
+      ],
+      "away": [
+        0,
+        1,
+        2,
+        0,
+        0
+      ]
+    },
+    "standings": {
+      "title": "Posiciones",
+      "columns": [
+        {
+          "key": "points",
+          "display_name": "PTS",
+          "is_bold": true
+        },
+        {
+          "key": "games_played",
+          "display_name": "J"
+        },
+        {
+          "key": "ratio",
+          "display_name": "+/-"
+        }
+      ],
+      "rows": [
+        {
+          "num": 2,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Egipto",
+              "short_name": "Egipto",
+              "url_name": "egypt",
+              "id": "fbaa",
+              "country_id": "bdb",
+              "allow_open": true,
+              "colors": {
+                "color": "#FF0000",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "5"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "num": 4,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Nueva Zelanda",
+              "short_name": "Nueva Zelanda",
+              "url_name": "new-zealand",
+              "id": "cdjb",
+              "country_id": "bfj",
+              "allow_open": true,
+              "colors": {
+                "color": "#E7E8EC",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "1"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "-6"
+            }
+          ]
+        }
+      ]
+    },
+    "videos": [
+      {
+        "source": "youtube",
+        "url": "https://www.youtube.com/watch?v=ItIpZzUzemc",
+        "video_id": "ItIpZzUzemc",
+        "thumbnail_url": "https://img.youtube.com/vi/ItIpZzUzemc/maxresdefault.jpg",
+        "embedding_allowed": false
+      }
+    ]
+  }
+}

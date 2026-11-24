@@ -1,0 +1,2078 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "ehejcgi",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "16avos de final",
+    "winner": 1,
+    "to_qualify": 1,
+    "teams": [
+      {
+        "name": "Portugal",
+        "short_name": "Portugal",
+        "url_name": "portugal",
+        "id": "faci",
+        "country_id": "bb",
+        "allow_open": true,
+        "colors": {
+          "color": "#A81D30",
+          "text_color": "#FFFFFF"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Cristiano Ronaldo",
+            "player_sname": "Ronaldo",
+            "time": 68.0,
+            "time_to_display": "68'",
+            "goal_type": "Pen"
+          },
+          {
+            "player_name": "Gonçalo Ramos",
+            "player_sname": "Ramos",
+            "time": 90.0,
+            "time_to_display": "90'+4"
+          }
+        ]
+      },
+      {
+        "name": "Croacia",
+        "short_name": "Croacia",
+        "url_name": "croatia",
+        "id": "faff",
+        "country_id": "di",
+        "allow_open": true,
+        "colors": {
+          "color": "#FFFFFF",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Ivan Perisic",
+            "player_sname": "Perisic",
+            "time": 53.0,
+            "time_to_display": "53'"
+          }
+        ]
+      }
+    ],
+    "url_name": "portugal-vs-croatia",
+    "scores": [
+      2.0,
+      1.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Finalizado",
+      "short_name": "Final",
+      "symbol_name": "Fin"
+    },
+    "start_time": "02-07-2026 20:00",
+    "game_time": 90,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Final",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "4-2-3-1",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Diogo Costa",
+                "player_short_name": "Costa",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 27,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Nuno Mendes",
+                "player_short_name": "Mendes",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 0
+                },
+                "age": 24,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Renato Veiga",
+                "player_short_name": "Veiga",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 33
+                },
+                "age": 23,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Ruben Dias",
+                "player_short_name": "Dias",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 66
+                },
+                "age": 29,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 20,
+                "name": "João Cancelo",
+                "player_short_name": "Cancelo",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 63.0,
+                  "player": 9,
+                  "type": 2
+                },
+                "age": 32,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 23,
+                "name": "Vitinha",
+                "player_short_name": "Vitinha",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 62.0,
+                  "player": 10,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.70",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 62.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 15,
+                "name": "João Neves",
+                "player_short_name": "J. Neves",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 80
+                },
+                "age": 22,
+                "height": "1.71"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Rafael Leão",
+                "player_short_name": "Leao",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 0
+                },
+                "age": 27,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Bruno Fernandes",
+                "player_short_name": "Fernandes",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 63.0,
+                  "player": 2,
+                  "type": 2
+                },
+                "age": 32,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 18,
+                "name": "Pedro Neto",
+                "player_short_name": "Neto",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 63.0,
+                  "player": 26,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.74",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Cristiano Ronaldo",
+                "player_short_name": "Ronaldo",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bb",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 81.0,
+                  "player": 21,
+                  "type": 2
+                },
+                "age": 41,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 81.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 2,
+                "name": "Nelson Semedo",
+                "player_short_name": "Semedo",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 63.0,
+                  "player": 8,
+                  "type": 1
+                },
+                "age": 32,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 26,
+                "name": "Francisco Conceição",
+                "player_short_name": "Conceição",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 63.0,
+                  "player": 18,
+                  "type": 1
+                },
+                "age": 23,
+                "height": "1.66",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Gonçalo Ramos",
+                "player_short_name": "Ramos",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 63.0,
+                  "player": 20,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Bernardo Silva",
+                "player_short_name": "Bernardo",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 62.0,
+                  "player": 23,
+                  "type": 1
+                },
+                "age": 32,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 62.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 21,
+                "name": "Ruben Neves",
+                "player_short_name": "R. Neves",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 81.0,
+                  "player": 7,
+                  "type": 1
+                },
+                "age": 29,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 81.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 5,
+                "name": "Diogo Dalot",
+                "player_short_name": "Dalot",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.84"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Rui Silva",
+                "player_short_name": "Silva",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 32,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 11,
+                "name": "João Félix",
+                "player_short_name": "Félix",
+                "position": "Delantero",
+                "formation_position": "Segundo Delantero",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.81"
+              },
+              {
+                "jersey_num": 19,
+                "name": "Goncalo Guedes",
+                "player_short_name": "Guedes",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Goncalo Inacio",
+                "player_short_name": "Inacio",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 4,
+                "name": "Tomás Araújo",
+                "player_short_name": "Araújo",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 16,
+                "name": "Francisco Trincão",
+                "player_short_name": "Trincão",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 12,
+                "name": "José Sá",
+                "player_short_name": "Sá",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 33,
+                "height": "1.92"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Matheus Nunes",
+                "player_short_name": "Nunes",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Samú Costa",
+                "player_short_name": "S. Costa",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.85"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Roberto Martínez",
+                "player_short_name": "Roberto Martínez",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "c",
+                "is_captain": false,
+                "age": 53
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "4-2-3-1",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Dominik Livakovic",
+                "player_short_name": "Livakovic",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 31,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Ivan Perisic",
+                "player_short_name": "Perisic",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 0
+                },
+                "age": 37,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 3,
+                "name": "Marin Pongracic",
+                "player_short_name": "Pongracic",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 33
+                },
+                "age": 29,
+                "height": "1.93"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Josip Šutalo",
+                "player_short_name": "Šutalo",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 66
+                },
+                "age": 26,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 2,
+                "name": "Josip Stanišić",
+                "player_short_name": "Stanišić",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 100
+                },
+                "age": 26,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 8,
+                "name": "Mateo Kovacic",
+                "player_short_name": "Kovacic",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 9,
+                  "type": 2
+                },
+                "age": 32,
+                "height": "1.78",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Luka Modric",
+                "player_short_name": "Modric",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "di",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 80
+                },
+                "age": 41,
+                "height": "1.72",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 16,
+                "name": "Martin Baturina",
+                "player_short_name": "Baturina",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 68.0,
+                  "player": 15,
+                  "type": 2
+                },
+                "age": 23,
+                "height": "1.78",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 68.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Petar Sucic",
+                "player_short_name": "Sučić",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 50
+                },
+                "age": 23,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Nikola Vlašić",
+                "player_short_name": "Vlašić",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 4,
+                  "type": 2
+                },
+                "age": 29,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 11,
+                "name": "Ante Budimir",
+                "player_short_name": "Budimir",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "di",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 20,
+                  "type": 2
+                },
+                "age": 35,
+                "height": "1.90",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 4,
+                "name": "Josko Gvardiol",
+                "player_short_name": "Gvardiol",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "di",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 13,
+                  "type": 1
+                },
+                "age": 24,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Andrej Kramaric",
+                "player_short_name": "Kramaric",
+                "position": "Delantero",
+                "formation_position": "Segundo Delantero",
+                "country_id": "di",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 8,
+                  "type": 1
+                },
+                "age": 35,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 20,
+                "name": "Igor Matanovic",
+                "player_short_name": "Matanovic",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "di",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 11,
+                  "type": 1
+                },
+                "age": 23,
+                "height": "1.94",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 15,
+                "name": "Mario Pasalic",
+                "player_short_name": "Pasalic",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "di",
+                "is_captain": false,
+                "substitution": {
+                  "time": 68.0,
+                  "player": 16,
+                  "type": 1
+                },
+                "age": 31,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 68.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 25,
+                "name": "Martin Erlić",
+                "player_short_name": "Erlić",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.92"
+              },
+              {
+                "jersey_num": 19,
+                "name": "Toni Fruk",
+                "player_short_name": "Fruk",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.77"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Kristijan Jakic",
+                "player_short_name": "Jakić",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.81"
+              },
+              {
+                "jersey_num": 23,
+                "name": "Dominik Kotarski",
+                "player_short_name": "Kotarski",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 7,
+                "name": "Nikola Moro",
+                "player_short_name": "Moro",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Petar Musa",
+                "player_short_name": "Musa",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Ivor Pandur",
+                "player_short_name": "Pandur",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Marco Pasalic",
+                "player_short_name": "Pasalic",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.77"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Luka Sučić",
+                "player_short_name": "Sucic",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Luka Vušković",
+                "player_short_name": "Vušković",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 19,
+                "height": "1.93"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Duje Ćaleta-Car",
+                "player_short_name": "Ćaleta-Car",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.93"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Zlatko Dalić",
+                "player_short_name": "Z. Dalic",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "di",
+                "is_captain": false,
+                "age": 60
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=42&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=42&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "ec",
+      "cta_link": "https://record.pba.betsson.bet.ar/_nrLvEWDn_qD1kXvT18cTCmNd7ZgqdRLk/36",
+      "options": [
+        {
+          "name": "1",
+          "votes": 246686,
+          "percentage": 79,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=ehejcgi&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 23140,
+          "percentage": 7,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=ehejcgi&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 43017,
+          "percentage": 14,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=ehejcgi&vote=2"
+        }
+      ],
+      "total_votes": 369154,
+      "odds": [
+        {
+          "name": "1",
+          "value": 1.67,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 3.75,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 5.25,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "BMO Field (Toronto)"
+      },
+      {
+        "name": "Capacidad",
+        "value": "43036"
+      },
+      {
+        "name": "Árbitro",
+        "value": "Espen Eskås (Noruega)"
+      },
+      {
+        "name": "Arg TV",
+        "value": "TyC Sports, Telefe, TyC Sports Play, Mitelefe.com,  , DAZN, DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          0.0,
+          0.0
+        ],
+        "rows": [
+          {
+            "time": "17'",
+            "events": [
+              {
+                "type": 4,
+                "time": "17'",
+                "team": 1,
+                "texts": [
+                  "Ruben Dias"
+                ],
+                "player_jersey_num": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          2.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 2,
+                "texts": [
+                  "Igor Matanovic",
+                  "Ante Budimir"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "53'",
+            "events": [
+              {
+                "type": 1,
+                "time": "53'",
+                "team": 2,
+                "texts": [
+                  "Ivan Perisic",
+                  "Josip Stanišić"
+                ],
+                "player_jersey_num": 14
+              }
+            ]
+          },
+          {
+            "time": "58'",
+            "events": [
+              {
+                "type": 10,
+                "time": "58'",
+                "team": 1,
+                "texts": [
+                  "Rafael Leão"
+                ],
+                "player_jersey_num": 17
+              }
+            ]
+          },
+          {
+            "time": "59'",
+            "events": [
+              {
+                "type": 4,
+                "time": "59'",
+                "team": 2,
+                "texts": [
+                  "Luka Modric"
+                ],
+                "player_jersey_num": 10
+              }
+            ]
+          },
+          {
+            "time": "62'",
+            "events": [
+              {
+                "type": 15,
+                "time": "62'",
+                "team": 1,
+                "texts": [
+                  "Bernardo Silva",
+                  "Vitinha"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "62'",
+            "events": [
+              {
+                "type": 9,
+                "time": "62'",
+                "team": 1,
+                "texts": [
+                  "Gol anulado",
+                  "Cristiano Ronaldo"
+                ],
+                "player_jersey_num": 7
+              }
+            ]
+          },
+          {
+            "time": "63'",
+            "events": [
+              {
+                "type": 15,
+                "time": "63'",
+                "team": 1,
+                "texts": [
+                  "Nelson Semedo",
+                  "Bruno Fernandes"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "63'",
+            "events": [
+              {
+                "type": 15,
+                "time": "63'",
+                "team": 1,
+                "texts": [
+                  "Gonçalo Ramos",
+                  "João Cancelo"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "63'",
+            "events": [
+              {
+                "type": 15,
+                "time": "63'",
+                "team": 1,
+                "texts": [
+                  "Francisco Conceição",
+                  "Pedro Neto"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "68'",
+            "events": [
+              {
+                "type": 3,
+                "time": "68'",
+                "team": 1,
+                "texts": [
+                  "Cristiano Ronaldo"
+                ],
+                "player_jersey_num": 7
+              },
+              {
+                "type": 15,
+                "time": "68'",
+                "team": 2,
+                "texts": [
+                  "Mario Pasalic",
+                  "Martin Baturina"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "75'",
+            "events": [
+              {
+                "type": 10,
+                "time": "75'",
+                "team": 2,
+                "texts": [
+                  "Mateo Kovacic"
+                ],
+                "player_jersey_num": 8
+              }
+            ]
+          },
+          {
+            "time": "81'",
+            "events": [
+              {
+                "type": 15,
+                "time": "81'",
+                "team": 1,
+                "texts": [
+                  "Ruben Neves",
+                  "Cristiano Ronaldo"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 2,
+                "texts": [
+                  "Josko Gvardiol",
+                  "Nikola Vlašić"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 2,
+                "texts": [
+                  "Andrej Kramaric",
+                  "Mateo Kovacic"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'+4",
+            "events": [
+              {
+                "type": 1,
+                "time": "90'+4",
+                "team": 1,
+                "texts": [
+                  "Gonçalo Ramos",
+                  "Rafael Leão"
+                ],
+                "player_jersey_num": 9
+              }
+            ]
+          },
+          {
+            "time": "90'+8",
+            "events": [
+              {
+                "type": 4,
+                "time": "90'+8",
+                "team": 2,
+                "texts": [
+                  "Ivan Perisic"
+                ],
+                "player_jersey_num": 14
+              }
+            ]
+          },
+          {
+            "time": "90'+13",
+            "events": [
+              {
+                "type": 9,
+                "time": "90'+13",
+                "team": 2,
+                "texts": [
+                  "Gol anulado",
+                  "Josko Gvardiol"
+                ],
+                "player_jersey_num": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "15",
+          "13"
+        ],
+        "percentages": [
+          0.54,
+          0.46
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "3",
+          "6"
+        ],
+        "percentages": [
+          0.33,
+          0.67
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "60%",
+          "40%"
+        ],
+        "percentages": [
+          0.6,
+          0.4
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "12",
+          "6"
+        ],
+        "percentages": [
+          0.67,
+          0.33
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "9",
+          "5"
+        ],
+        "percentages": [
+          0.64,
+          0.36
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "1",
+          "4"
+        ],
+        "percentages": [
+          0.2,
+          0.8
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "6",
+          "12"
+        ],
+        "percentages": [
+          0.33,
+          0.67
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "1",
+          "2"
+        ],
+        "percentages": [
+          0.33,
+          0.67
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "0"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "head_to_head": {
+      "home_wins": 3,
+      "away_wins": 1,
+      "draws": 1,
+      "games": [
+        {
+          "id": "ehejcgi",
+          "league": {
+            "name": "Mundial",
+            "id": "fjda",
+            "url_name": "fifa-world-cup",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": true,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "stage_round_name": "16avos de final",
+          "winner": 1,
+          "to_qualify": 1,
+          "teams": [
+            {
+              "name": "Portugal",
+              "short_name": "Portugal",
+              "url_name": "portugal",
+              "id": "faci",
+              "country_id": "bb",
+              "allow_open": true,
+              "colors": {
+                "color": "#A81D30",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Croacia",
+              "short_name": "Croacia",
+              "url_name": "croatia",
+              "id": "faff",
+              "country_id": "di",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "portugal-vs-croatia",
+          "scores": [
+            2.0,
+            1.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "02-07-2026 20:00",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 1.67,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 3.75,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 5.25,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "eafbchb",
+          "league": {
+            "name": "Liga de las Naciones - UEFA",
+            "id": "habg",
+            "url_name": "uefa-nations-league",
+            "country_id": "bj",
+            "show_country_flags": false,
+            "allow_open": true,
+            "country_name": "Europa",
+            "is_international": true
+          },
+          "winner": -1,
+          "teams": [
+            {
+              "name": "Croacia",
+              "short_name": "Croacia",
+              "url_name": "croatia",
+              "id": "faff",
+              "country_id": "di",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Portugal",
+              "short_name": "Portugal",
+              "url_name": "portugal",
+              "id": "faci",
+              "country_id": "bb",
+              "allow_open": true,
+              "colors": {
+                "color": "#A81D30",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "croatia-vs-portugal",
+          "scores": [
+            1.0,
+            1.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "18-11-2024 16:45",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 2.4,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 3.1,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 3.25,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "eafbbeb",
+          "league": {
+            "name": "Liga de las Naciones - UEFA",
+            "id": "habg",
+            "url_name": "uefa-nations-league",
+            "country_id": "bj",
+            "show_country_flags": false,
+            "allow_open": true,
+            "country_name": "Europa",
+            "is_international": true
+          },
+          "winner": 1,
+          "teams": [
+            {
+              "name": "Portugal",
+              "short_name": "Portugal",
+              "url_name": "portugal",
+              "id": "faci",
+              "country_id": "bb",
+              "allow_open": true,
+              "colors": {
+                "color": "#A81D30",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Croacia",
+              "short_name": "Croacia",
+              "url_name": "croatia",
+              "id": "faff",
+              "country_id": "di",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "portugal-vs-croatia",
+          "scores": [
+            2.0,
+            1.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "05-09-2024 15:45",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 1.53,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 4.1,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 6.25,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "eaegihd",
+          "league": {
+            "name": "Amistoso Internacional",
+            "id": "fha",
+            "url_name": "friendly-international",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 2,
+          "teams": [
+            {
+              "name": "Portugal",
+              "short_name": "Portugal",
+              "url_name": "portugal",
+              "id": "faci",
+              "country_id": "bb",
+              "allow_open": true,
+              "colors": {
+                "color": "#A81D30",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Croacia",
+              "short_name": "Croacia",
+              "url_name": "croatia",
+              "id": "faff",
+              "country_id": "di",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "portugal-vs-croatia",
+          "scores": [
+            1.0,
+            2.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "08-06-2024 13:45",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 1.62,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 4.1,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 4.75,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "cbjfiec",
+          "league": {
+            "name": "Liga de las Naciones - UEFA",
+            "id": "habg",
+            "url_name": "uefa-nations-league",
+            "country_id": "bj",
+            "show_country_flags": false,
+            "allow_open": true,
+            "country_name": "Europa",
+            "is_international": true
+          },
+          "winner": 2,
+          "teams": [
+            {
+              "name": "Croacia",
+              "short_name": "Croacia",
+              "url_name": "croatia",
+              "id": "faff",
+              "country_id": "di",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Portugal",
+              "short_name": "Portugal",
+              "url_name": "portugal",
+              "id": "faci",
+              "country_id": "bb",
+              "allow_open": true,
+              "colors": {
+                "color": "#A81D30",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "croatia-vs-portugal",
+          "scores": [
+            2.0,
+            3.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "17-11-2020 16:45",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 4.2,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 3.75,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 1.8,
+                "trend": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "recent_form": {
+      "home": [
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "away": [
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "videos": [
+      {
+        "source": "youtube",
+        "url": "https://www.youtube.com/watch?v=zFek03eyHUQ",
+        "video_id": "zFek03eyHUQ",
+        "thumbnail_url": "https://img.youtube.com/vi/zFek03eyHUQ/maxresdefault.jpg",
+        "embedding_allowed": false
+      }
+    ]
+  }
+}

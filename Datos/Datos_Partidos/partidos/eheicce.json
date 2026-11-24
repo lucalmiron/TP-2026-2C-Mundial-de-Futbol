@@ -1,0 +1,2215 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "eheicce",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "16avos de final",
+    "winner": 2,
+    "to_qualify": 2,
+    "teams": [
+      {
+        "name": "Alemania",
+        "short_name": "Alemania",
+        "url_name": "germany",
+        "id": "cdhc",
+        "country_id": "e",
+        "allow_open": true,
+        "colors": {
+          "color": "#FFFFFF",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Kai Havertz",
+            "player_sname": "Havertz",
+            "time": 54.0,
+            "time_to_display": "54'"
+          },
+          {
+            "player_name": "Joshua Kimmich",
+            "player_sname": "Kimmich",
+            "time": 122.0,
+            "time_to_display": "2",
+            "goal_type": "Pen"
+          },
+          {
+            "player_name": "Jamal Musiala",
+            "player_sname": "Musiala",
+            "time": 123.0,
+            "time_to_display": "3",
+            "goal_type": "Pen"
+          },
+          {
+            "player_name": "Nadiem Amiri",
+            "player_sname": "Amiri",
+            "time": 125.0,
+            "time_to_display": "5",
+            "goal_type": "Pen"
+          }
+        ]
+      },
+      {
+        "name": "Paraguay",
+        "short_name": "Paraguay",
+        "url_name": "paraguay",
+        "id": "faha",
+        "country_id": "bai",
+        "allow_open": true,
+        "colors": {
+          "color": "#FFFFFF",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Julio Enciso",
+            "player_sname": "Enciso",
+            "time": 42.0,
+            "time_to_display": "42'"
+          },
+          {
+            "player_name": "Mauricio Magalhaes",
+            "player_sname": "Mauricio",
+            "time": 121.0,
+            "time_to_display": "1",
+            "goal_type": "Pen"
+          },
+          {
+            "player_name": "Gustavo Gómez",
+            "player_sname": "Gómez",
+            "time": 122.0,
+            "time_to_display": "2",
+            "goal_type": "Pen"
+          },
+          {
+            "player_name": "Matías Galarza Fonda",
+            "player_sname": "Galarza",
+            "time": 123.0,
+            "time_to_display": "3",
+            "goal_type": "Pen"
+          },
+          {
+            "player_name": "José Canale",
+            "player_sname": "Canale",
+            "time": 126.0,
+            "time_to_display": "6",
+            "goal_type": "Pen"
+          }
+        ]
+      }
+    ],
+    "url_name": "germany-vs-paraguay",
+    "scores": [
+      1.0,
+      1.0
+    ],
+    "penalties": [
+      3.0,
+      4.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Por penales",
+      "short_name": "Por penales",
+      "symbol_name": "Pen"
+    },
+    "start_time": "29-06-2026 17:30",
+    "game_time": 126,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Por penales",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "4-4-2",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Manuel Neuer",
+                "player_short_name": "Neuer",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 40,
+                "height": "1.93"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Nathaniel Brown",
+                "player_short_name": "Brown",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 0
+                },
+                "age": 23,
+                "height": "1.76"
+              },
+              {
+                "jersey_num": 2,
+                "name": "Antonio Rüdiger",
+                "player_short_name": "Rüdiger",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 110.0,
+                  "player": 24,
+                  "type": 2
+                },
+                "age": 33,
+                "height": "1.90",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 110.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 4,
+                "name": "Jonathan Tah",
+                "player_short_name": "Tah",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 66
+                },
+                "age": 30,
+                "height": "1.95",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 6,
+                "name": "Joshua Kimmich",
+                "player_short_name": "Kimmich",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "e",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 100
+                },
+                "age": 31,
+                "height": "1.77"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Florian Wirtz",
+                "player_short_name": "Wirtz",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 110.0,
+                  "player": 20,
+                  "type": 2
+                },
+                "age": 23,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 110.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 5,
+                "name": "Aleksandar Pavlović",
+                "player_short_name": "Pavlovic",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 79.0,
+                  "player": 3,
+                  "type": 2
+                },
+                "age": 22,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 79.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 23,
+                "name": "Felix Nmecha",
+                "player_short_name": "Nmecha",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 66
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 8,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.90",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 19,
+                "name": "Leroy Sané",
+                "player_short_name": "Sané",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 88.0,
+                  "player": 11,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 88.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 26,
+                "name": "Deniz Undav",
+                "player_short_name": "Undav",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 25
+                },
+                "substitution": {
+                  "time": 63.0,
+                  "player": 10,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Kai Havertz",
+                "player_short_name": "Havertz",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "e",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 75
+                },
+                "age": 27,
+                "height": "1.93",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 20,
+                "name": "Nadiem Amiri",
+                "player_short_name": "Amiri",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "e",
+                "is_captain": false,
+                "substitution": {
+                  "time": 110.0,
+                  "player": 17,
+                  "type": 1
+                },
+                "age": 30,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 110.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 3,
+                "name": "Waldemar Anton",
+                "player_short_name": "Anton",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "e",
+                "is_captain": false,
+                "substitution": {
+                  "time": 79.0,
+                  "player": 5,
+                  "type": 1
+                },
+                "age": 30,
+                "height": "1.89",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 79.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Leon Goretzka",
+                "player_short_name": "Goretzka",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "e",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 23,
+                  "type": 1
+                },
+                "age": 31,
+                "height": "1.89",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Jamal Musiala",
+                "player_short_name": "Musiala",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "e",
+                "is_captain": false,
+                "substitution": {
+                  "time": 63.0,
+                  "player": 26,
+                  "type": 1
+                },
+                "age": 23,
+                "height": "1.84",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 63.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 24,
+                "name": "Malick Thiaw",
+                "player_short_name": "Thiaw",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "e",
+                "is_captain": false,
+                "substitution": {
+                  "time": 110.0,
+                  "player": 2,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.94",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 110.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 11,
+                "name": "Nick Woltemade",
+                "player_short_name": "Woltemade",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "e",
+                "is_captain": false,
+                "substitution": {
+                  "time": 88.0,
+                  "player": 19,
+                  "type": 1
+                },
+                "age": 24,
+                "height": "1.98",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 88.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 12,
+                "name": "Oliver Baumann",
+                "player_short_name": "Baumann",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "e",
+                "is_captain": false,
+                "age": 36,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Maximilian Beier",
+                "player_short_name": "Beier",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "e",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Pascal Gross",
+                "player_short_name": "Gross",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "e",
+                "is_captain": false,
+                "age": 35,
+                "height": "1.81"
+              },
+              {
+                "jersey_num": 9,
+                "name": "Jamie Leweling",
+                "player_short_name": "Leweling",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "e",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Alexander Nübel",
+                "player_short_name": "Nübel",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "e",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.93"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Assan Ouédraogo",
+                "player_short_name": "Ouedraogo",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "e",
+                "is_captain": false,
+                "age": 20,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 22,
+                "name": "David Raum",
+                "player_short_name": "Raum",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "e",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.81"
+              },
+              {
+                "jersey_num": 16,
+                "name": "Angelo Stiller",
+                "player_short_name": "Stiller",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "e",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.83"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Julian Nagelsmann",
+                "player_short_name": "Nagelsmann",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "e",
+                "is_captain": false,
+                "age": 39,
+                "height": "1.90"
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "4-4-2",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 12,
+                "name": "Orlando Gill",
+                "player_short_name": "Gill",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 26,
+                "height": "1.99"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Júnior Alonso",
+                "player_short_name": "Alonso",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 120.0,
+                  "player": 5,
+                  "type": 2
+                },
+                "age": 33,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 120.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 13,
+                "name": "José Canale",
+                "player_short_name": "Canale",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 33
+                },
+                "age": 30,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Gustavo Gómez",
+                "player_short_name": "Gómez",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 66
+                },
+                "age": 33,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 4,
+                "name": "Juan José Cáceres",
+                "player_short_name": "Cáceres",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 99.0,
+                  "player": 20,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 99.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 23,
+                "name": "Matías Galarza Fonda",
+                "player_short_name": "Galarza",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 0
+                },
+                "age": 24,
+                "height": "1.75",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 14,
+                "name": "Andrés Cubas",
+                "player_short_name": "Cubas",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 33
+                },
+                "age": 30,
+                "height": "1.66",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 16,
+                "name": "Damián Bobadilla",
+                "player_short_name": "Bobadilla",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 66
+                },
+                "substitution": {
+                  "time": 99.0,
+                  "player": 9,
+                  "type": 2
+                },
+                "age": 25,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 99.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Miguel Almirón",
+                "player_short_name": "Almirón",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 2,
+                  "type": 2
+                },
+                "age": 32,
+                "height": "1.78",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 19,
+                "name": "Julio Enciso",
+                "player_short_name": "Enciso",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 25
+                },
+                "substitution": {
+                  "time": 57.0,
+                  "player": 11,
+                  "type": 2
+                },
+                "age": 22,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 57.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 21,
+                "name": "Gabriel Ávalos",
+                "player_short_name": "Ávalos",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 75
+                },
+                "substitution": {
+                  "time": 55.0,
+                  "player": 24,
+                  "type": 2
+                },
+                "age": 36,
+                "height": "1.91",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 55.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 5,
+                "name": "Fabián Balbuena",
+                "player_short_name": "Balbuena",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 120.0,
+                  "player": 6,
+                  "type": 1
+                },
+                "age": 35,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 120.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 24,
+                "name": "Gustavo Caballero",
+                "player_short_name": "Caballero",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 55.0,
+                  "player": 21,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.89",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 55.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 11,
+                "name": "Mauricio Magalhaes",
+                "player_short_name": "Mauricio",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 57.0,
+                  "player": 19,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.75",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 57.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 20,
+                "name": "Braian Ojeda",
+                "player_short_name": "Ojeda",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 99.0,
+                  "player": 4,
+                  "type": 1
+                },
+                "age": 26,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 99.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Antonio Sanabria",
+                "player_short_name": "Sanabria",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 99.0,
+                  "player": 16,
+                  "type": 1
+                },
+                "age": 30,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 99.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 2,
+                "name": "Gustavo Velázquez",
+                "player_short_name": "Velázquez",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 10,
+                  "type": 1
+                },
+                "age": 35,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 3,
+                "name": "Omar Alderete",
+                "player_short_name": "Alderete",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Álex Arce",
+                "player_short_name": "Arce",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 1,
+                "name": "Roberto Fernández",
+                "player_short_name": "Fernández",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 38,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Alexandro Maidana",
+                "player_short_name": "Maidana",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 21,
+                "height": "1.78"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Gastón Olveira",
+                "player_short_name": "Olveira",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 33,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Isidro Pitta",
+                "player_short_name": "Pitta",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Alejandro Romero",
+                "player_short_name": "Kaku",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.65"
+              },
+              {
+                "jersey_num": 7,
+                "name": "Ramón Sosa",
+                "player_short_name": "Sosa",
+                "position": "Delantero",
+                "formation_position": "Segundo Delantero",
+                "country_id": "bai",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.78"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Gustavo Alfaro",
+                "player_short_name": "Alfaro",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "ba",
+                "is_captain": false,
+                "age": 64,
+                "height": "1.81"
+              }
+            ]
+          }
+        ]
+      },
+      "missing_players": [
+        [
+          {
+            "jersey_num": 15,
+            "name": "Nico Schlotterbeck",
+            "player_short_name": "Schlotterbeck",
+            "position": "Defensor",
+            "formation_position": "Defensa Central",
+            "country_id": "e",
+            "is_captain": false,
+            "age": 26,
+            "height": "1.91",
+            "missing_details": {
+              "type": 1,
+              "reason": "Lesionado",
+              "will_play_status": 2,
+              "will_play": "No jugarán"
+            }
+          }
+        ],
+        [
+          {
+            "jersey_num": 8,
+            "name": "Diego Gómez",
+            "player_short_name": "Gómez",
+            "position": "Mediocampista",
+            "formation_position": "Mediocampista Central",
+            "country_id": "bai",
+            "is_captain": false,
+            "age": 23,
+            "height": "1.83",
+            "missing_details": {
+              "type": 3,
+              "reason": "Tarjeta Amarilla",
+              "will_play_status": 2,
+              "will_play": "No jugarán"
+            }
+          }
+        ]
+      ]
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=174&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=174&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "bhe",
+      "cta_link": "http://pba.stake.bet.ar/?c=fmMbyTIj",
+      "options": [
+        {
+          "name": "1",
+          "votes": 105236,
+          "percentage": 83,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=eheicce&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 8495,
+          "percentage": 7,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=eheicce&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 13154,
+          "percentage": 10,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=eheicce&vote=2"
+        }
+      ],
+      "total_votes": 119271,
+      "odds": [
+        {
+          "name": "1",
+          "value": 1.33,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 5.0,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 9.5,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "Gillette Stadium (Foxborough)"
+      },
+      {
+        "name": "Capacidad",
+        "value": "64146"
+      },
+      {
+        "name": "Árbitro",
+        "value": "Jalal Jayed (Marruecos)"
+      },
+      {
+        "name": "Arg TV",
+        "value": "TyC Sports, TyC Sports Play,  , DAZN, DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          0.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "42'",
+            "events": [
+              {
+                "type": 1,
+                "time": "42'",
+                "team": 2,
+                "texts": [
+                  "Julio Enciso",
+                  "Matías Galarza Fonda"
+                ],
+                "player_jersey_num": 19
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          1.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 1,
+                "texts": [
+                  "Leon Goretzka",
+                  "Felix Nmecha"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "54'",
+            "events": [
+              {
+                "type": 1,
+                "time": "54'",
+                "team": 1,
+                "texts": [
+                  "Kai Havertz",
+                  "Florian Wirtz"
+                ],
+                "player_jersey_num": 7
+              }
+            ]
+          },
+          {
+            "time": "55'",
+            "events": [
+              {
+                "type": 15,
+                "time": "55'",
+                "team": 2,
+                "texts": [
+                  "Gustavo Caballero",
+                  "Gabriel Ávalos"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "57'",
+            "events": [
+              {
+                "type": 15,
+                "time": "57'",
+                "team": 2,
+                "texts": [
+                  "Mauricio Magalhaes",
+                  "Julio Enciso"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "63'",
+            "events": [
+              {
+                "type": 15,
+                "time": "63'",
+                "team": 1,
+                "texts": [
+                  "Jamal Musiala",
+                  "Deniz Undav"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "65'",
+            "events": [
+              {
+                "type": 4,
+                "time": "65'",
+                "team": 2,
+                "texts": [
+                  "Andrés Cubas"
+                ],
+                "player_jersey_num": 14
+              }
+            ]
+          },
+          {
+            "time": "79'",
+            "events": [
+              {
+                "type": 15,
+                "time": "79'",
+                "team": 1,
+                "texts": [
+                  "Waldemar Anton",
+                  "Aleksandar Pavlović"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "88'",
+            "events": [
+              {
+                "type": 15,
+                "time": "88'",
+                "team": 1,
+                "texts": [
+                  "Nick Woltemade",
+                  "Leroy Sané"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 2,
+                "texts": [
+                  "Gustavo Velázquez",
+                  "Miguel Almirón"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Suplementario",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          1.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "99'",
+            "events": [
+              {
+                "type": 15,
+                "time": "99'",
+                "team": 2,
+                "texts": [
+                  "Antonio Sanabria",
+                  "Damián Bobadilla"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "99'",
+            "events": [
+              {
+                "type": 15,
+                "time": "99'",
+                "team": 2,
+                "texts": [
+                  "Braian Ojeda",
+                  "Juan José Cáceres"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "104'",
+            "events": [
+              {
+                "type": 9,
+                "time": "104'",
+                "team": 1,
+                "texts": [
+                  "Gol anulado",
+                  "Jonathan Tah"
+                ],
+                "player_jersey_num": 4
+              }
+            ]
+          },
+          {
+            "time": "105'",
+            "events": [
+              {
+                "type": 4,
+                "time": "105'",
+                "team": 1,
+                "texts": [
+                  "Julian Nagelsmann"
+                ],
+                "player_jersey_num": null
+              },
+              {
+                "type": 4,
+                "time": "105'",
+                "team": 2,
+                "texts": [
+                  "Gustavo Alfaro"
+                ],
+                "player_jersey_num": null
+              }
+            ]
+          },
+          {
+            "time": "105'",
+            "events": [
+              {
+                "type": 4,
+                "time": "105'",
+                "team": 2,
+                "texts": [
+                  "Miguel Almirón"
+                ],
+                "player_jersey_num": 10
+              }
+            ]
+          },
+          {
+            "time": "106'",
+            "events": [
+              {
+                "type": 4,
+                "time": "106'",
+                "team": 1,
+                "texts": [
+                  "Kai Havertz"
+                ],
+                "player_jersey_num": 7
+              }
+            ]
+          },
+          {
+            "time": "110'",
+            "events": [
+              {
+                "type": 15,
+                "time": "110'",
+                "team": 1,
+                "texts": [
+                  "Nadiem Amiri",
+                  "Florian Wirtz"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "110'",
+            "events": [
+              {
+                "type": 15,
+                "time": "110'",
+                "team": 1,
+                "texts": [
+                  "Malick Thiaw",
+                  "Antonio Rüdiger"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "115'",
+            "events": [
+              {
+                "type": 4,
+                "time": "115'",
+                "team": 1,
+                "texts": [
+                  "Jamal Musiala"
+                ],
+                "player_jersey_num": 10
+              }
+            ]
+          },
+          {
+            "time": "117'",
+            "events": [
+              {
+                "type": 4,
+                "time": "117'",
+                "team": 2,
+                "texts": [
+                  "Matías Galarza Fonda"
+                ],
+                "player_jersey_num": 23
+              }
+            ]
+          },
+          {
+            "time": "120'",
+            "events": [
+              {
+                "type": 15,
+                "time": "120'",
+                "team": 2,
+                "texts": [
+                  "Fabián Balbuena",
+                  "Júnior Alonso"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Penales",
+        "show_stage_title": true,
+        "is_penalties_stage": true,
+        "scores": [
+          3.0,
+          4.0
+        ],
+        "rows": [
+          {
+            "time": "1",
+            "events": [
+              {
+                "type": 17,
+                "time": "1",
+                "team": 1,
+                "texts": [
+                  "Kai Havertz"
+                ],
+                "player_jersey_num": 7
+              },
+              {
+                "type": 3,
+                "time": "1",
+                "team": 2,
+                "texts": [
+                  "Mauricio Magalhaes"
+                ],
+                "player_jersey_num": 11
+              }
+            ]
+          },
+          {
+            "time": "2",
+            "events": [
+              {
+                "type": 3,
+                "time": "2",
+                "team": 1,
+                "texts": [
+                  "Joshua Kimmich"
+                ],
+                "player_jersey_num": 6
+              },
+              {
+                "type": 3,
+                "time": "2",
+                "team": 2,
+                "texts": [
+                  "Gustavo Gómez"
+                ],
+                "player_jersey_num": 15
+              }
+            ]
+          },
+          {
+            "time": "3",
+            "events": [
+              {
+                "type": 3,
+                "time": "3",
+                "team": 1,
+                "texts": [
+                  "Jamal Musiala"
+                ],
+                "player_jersey_num": 10
+              },
+              {
+                "type": 3,
+                "time": "3",
+                "team": 2,
+                "texts": [
+                  "Matías Galarza Fonda"
+                ],
+                "player_jersey_num": 23
+              }
+            ]
+          },
+          {
+            "time": "4",
+            "events": [
+              {
+                "type": 17,
+                "time": "4",
+                "team": 1,
+                "texts": [
+                  "Nick Woltemade"
+                ],
+                "player_jersey_num": 11
+              },
+              {
+                "type": 17,
+                "time": "4",
+                "team": 2,
+                "texts": [
+                  "Antonio Sanabria"
+                ],
+                "player_jersey_num": 9
+              }
+            ]
+          },
+          {
+            "time": "5",
+            "events": [
+              {
+                "type": 3,
+                "time": "5",
+                "team": 1,
+                "texts": [
+                  "Nadiem Amiri"
+                ],
+                "player_jersey_num": 20
+              },
+              {
+                "type": 17,
+                "time": "5",
+                "team": 2,
+                "texts": [
+                  "Fabián Balbuena"
+                ],
+                "player_jersey_num": 5
+              }
+            ]
+          },
+          {
+            "time": "6",
+            "events": [
+              {
+                "type": 17,
+                "time": "6",
+                "team": 1,
+                "texts": [
+                  "Jonathan Tah"
+                ],
+                "player_jersey_num": 4
+              },
+              {
+                "type": 3,
+                "time": "6",
+                "team": 2,
+                "texts": [
+                  "José Canale"
+                ],
+                "player_jersey_num": 13
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "21",
+          "7"
+        ],
+        "percentages": [
+          0.75,
+          0.25
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "6",
+          "3"
+        ],
+        "percentages": [
+          0.67,
+          0.33
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "75%",
+          "25%"
+        ],
+        "percentages": [
+          0.75,
+          0.25
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "12",
+          "17"
+        ],
+        "percentages": [
+          0.41,
+          0.59
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "16",
+          "6"
+        ],
+        "percentages": [
+          0.73,
+          0.27
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "4",
+          "1"
+        ],
+        "percentages": [
+          0.8,
+          0.2
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "18",
+          "12"
+        ],
+        "percentages": [
+          0.6,
+          0.4
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "2",
+          "2"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "0"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "head_to_head": {
+      "home_wins": 0,
+      "away_wins": 1,
+      "draws": 1,
+      "games": [
+        {
+          "id": "eheicce",
+          "league": {
+            "name": "Mundial",
+            "id": "fjda",
+            "url_name": "fifa-world-cup",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": true,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "stage_round_name": "16avos de final",
+          "winner": 2,
+          "to_qualify": 2,
+          "teams": [
+            {
+              "name": "Alemania",
+              "short_name": "Alemania",
+              "url_name": "germany",
+              "id": "cdhc",
+              "country_id": "e",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Paraguay",
+              "short_name": "Paraguay",
+              "url_name": "paraguay",
+              "id": "faha",
+              "country_id": "bai",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "germany-vs-paraguay",
+          "scores": [
+            1.0,
+            1.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Por penales",
+            "short_name": "Por penales",
+            "symbol_name": "Pen"
+          },
+          "start_time": "29-06-2026 17:30",
+          "game_time_status_to_display": "Por penales",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 1.33,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 5.0,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 9.5,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "dhcdgg",
+          "league": {
+            "name": "Amistoso Internacional",
+            "id": "fha",
+            "url_name": "friendly-international",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": -1,
+          "teams": [
+            {
+              "name": "Alemania",
+              "short_name": "Alemania",
+              "url_name": "germany",
+              "id": "cdhc",
+              "country_id": "e",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Paraguay",
+              "short_name": "Paraguay",
+              "url_name": "paraguay",
+              "id": "faha",
+              "country_id": "bai",
+              "allow_open": true,
+              "colors": {
+                "color": "#FFFFFF",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "germany-vs-paraguay",
+          "scores": [
+            3.0,
+            3.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "14-08-2013 15:45",
+          "game_time_status_to_display": "Final"
+        }
+      ]
+    },
+    "recent_form": {
+      "home": [
+        2,
+        1,
+        0,
+        2,
+        0
+      ],
+      "away": [
+        1,
+        1,
+        0,
+        0,
+        2
+      ]
+    }
+  }
+}

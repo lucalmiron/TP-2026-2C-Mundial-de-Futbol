@@ -1,0 +1,1654 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "egjhhdf",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "Fecha 2",
+    "winner": 1,
+    "teams": [
+      {
+        "name": "Colombia",
+        "short_name": "Colombia",
+        "url_name": "colombia",
+        "id": "fahb",
+        "country_id": "baj",
+        "allow_open": true,
+        "colors": {
+          "color": "#F0E975",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Daniel Muñoz",
+            "player_sname": "Muñoz",
+            "time": 76.0,
+            "time_to_display": "76'"
+          }
+        ]
+      },
+      {
+        "name": "RD Congo",
+        "short_name": "RD Congo",
+        "url_name": "dr-congo",
+        "id": "begfa",
+        "country_id": "cdf",
+        "allow_open": true,
+        "colors": {
+          "color": "#6BC7F1",
+          "text_color": "#000000"
+        },
+        "red_cards": 0
+      }
+    ],
+    "url_name": "colombia-vs-dr-congo",
+    "scores": [
+      1.0,
+      0.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Finalizado",
+      "short_name": "Final",
+      "symbol_name": "Fin"
+    },
+    "start_time": "23-06-2026 23:00",
+    "game_time": 90,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Final",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "4-3-3",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 12,
+                "name": "Camilo Vargas",
+                "player_short_name": "Vargas",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 37,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Johan Mojica",
+                "player_short_name": "Mojica",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 0
+                },
+                "age": 34,
+                "height": "1.84"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Jhon Lucumí",
+                "player_short_name": "Lucumí",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 33
+                },
+                "age": 28,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 23,
+                "name": "Davinson Sánchez",
+                "player_short_name": "Sánchez",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 66
+                },
+                "age": 30,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 2,
+                "name": "Daniel Muñoz",
+                "player_short_name": "Muñoz",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 100
+                },
+                "age": 30,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 11,
+                "name": "Jhon Arias",
+                "player_short_name": "Arias",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 77.0,
+                  "player": 6,
+                  "type": 2
+                },
+                "age": 29,
+                "height": "1.68",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 77.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 16,
+                "name": "Jefferson Lerma",
+                "player_short_name": "Lerma",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 50
+                },
+                "age": 32,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 14,
+                "name": "Gustavo Puerta",
+                "player_short_name": "Puerta",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 80
+                },
+                "age": 23,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 7,
+                "name": "Luis Díaz",
+                "player_short_name": "Díaz",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 0
+                },
+                "age": 29,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Luis Suárez",
+                "player_short_name": "Suárez",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "baj",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 58.0,
+                  "player": 9,
+                  "type": 2
+                },
+                "age": 28,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 58.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "James Rodríguez",
+                "player_short_name": "Rodríguez",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "baj",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 58.0,
+                  "player": 20,
+                  "type": 2
+                },
+                "age": 35,
+                "height": "1.81",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 58.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 9,
+                "name": "Jhon Córdoba",
+                "player_short_name": "Córdoba",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "baj",
+                "is_captain": false,
+                "substitution": {
+                  "time": 58.0,
+                  "player": 25,
+                  "type": 1
+                },
+                "age": 33,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 58.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 20,
+                "name": "Juan Fernando Quintero",
+                "player_short_name": "Quintero",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "baj",
+                "is_captain": false,
+                "substitution": {
+                  "time": 58.0,
+                  "player": 10,
+                  "type": 1
+                },
+                "age": 33,
+                "height": "1.67",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 58.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 6,
+                "name": "Richard Ríos",
+                "player_short_name": "Ríos",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "baj",
+                "is_captain": false,
+                "substitution": {
+                  "time": 77.0,
+                  "player": 11,
+                  "type": 1
+                },
+                "age": 26,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 77.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 4,
+                "name": "Santiago Arias",
+                "player_short_name": "Arias",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 34,
+                "height": "1.77"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Jáminton Campaz",
+                "player_short_name": "Campaz",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.66"
+              },
+              {
+                "jersey_num": 8,
+                "name": "Jorge Carrascal",
+                "player_short_name": "Carrascal",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Kevin Castaño",
+                "player_short_name": "Castaño",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 18,
+                "name": "Willer Ditta",
+                "player_short_name": "Ditta",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.79"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Andrés Gómez",
+                "player_short_name": "Gómez",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 24,
+                "height": "1.70"
+              },
+              {
+                "jersey_num": 19,
+                "name": "Juan Camilo Hernández",
+                "player_short_name": "Hernández",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.76"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Déiver Machado",
+                "player_short_name": "Machado",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 33,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Yerry Mina",
+                "player_short_name": "Mina",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 32,
+                "height": "1.95"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Álvaro Montero",
+                "player_short_name": "Montero",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 31,
+                "height": "2.01"
+              },
+              {
+                "jersey_num": 1,
+                "name": "David Ospina",
+                "player_short_name": "Ospina",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 38,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Juan Portilla",
+                "player_short_name": "Portilla",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "baj",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.81"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": 0,
+                "name": "Néstor Lorenzo",
+                "player_short_name": "Lorenzo",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "ba",
+                "is_captain": false,
+                "age": 60,
+                "height": "1.85"
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "5-3-2",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "L. Mpasi",
+                "player_short_name": "L. Mpasi",
+                "position": "",
+                "formation_position": "",
+                "country_id": "",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                }
+              },
+              {
+                "jersey_num": 3,
+                "name": "Steve Kapuadi",
+                "player_short_name": "Kapuadi",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cdf",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 25
+                },
+                "age": 28,
+                "height": "1.96"
+              },
+              {
+                "jersey_num": 4,
+                "name": "Axel Tuanzebe",
+                "player_short_name": "Tuanzebe",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cdf",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 50
+                },
+                "age": 28,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Chancel Mbemba",
+                "player_short_name": "Mbemba",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cdf",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 75
+                },
+                "age": 32,
+                "height": "1.82"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Arthur Masuaku",
+                "player_short_name": "Masuaku",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "cdf",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 72.0,
+                  "player": 12,
+                  "type": 2
+                },
+                "age": 32,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 72.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 2,
+                "name": "Aaron Wan-Bissaka",
+                "player_short_name": "Wan-Bissaka",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "cdf",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 100
+                },
+                "age": 28,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Edo Kayembe",
+                "player_short_name": "Kayembe",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cdf",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 72.0,
+                  "player": 18,
+                  "type": 2
+                },
+                "age": 28,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 72.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Samuel Moutoussamy",
+                "player_short_name": "Moutoussamy",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cdf",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 82.0,
+                  "player": 7,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.76",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 82.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 6,
+                "name": "Ngal'ayel Mukau",
+                "player_short_name": "Mukau",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "cdf",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 80
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 14,
+                  "type": 2
+                },
+                "age": 21,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 20,
+                "name": "Yoane Wissa",
+                "player_short_name": "Wissa",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cdf",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 25
+                },
+                "age": 30,
+                "height": "1.76"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Cedric Bakambu",
+                "player_short_name": "Bakambu",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cdf",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 75
+                },
+                "substitution": {
+                  "time": 57.0,
+                  "player": 23,
+                  "type": 2
+                },
+                "age": 35,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 57.0
+                  }
+                }
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 23,
+                "name": "Simon Banza",
+                "player_short_name": "Banza",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cdf",
+                "is_captain": false,
+                "substitution": {
+                  "time": 57.0,
+                  "player": 17,
+                  "type": 1
+                },
+                "age": 30,
+                "height": "1.89",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 57.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 12,
+                "name": "Joris Kayembe",
+                "player_short_name": "Kayembe",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "cdf",
+                "is_captain": false,
+                "substitution": {
+                  "time": 72.0,
+                  "player": 26,
+                  "type": 1
+                },
+                "age": 32,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 72.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Nathanael Mbuku",
+                "player_short_name": "Mbuku",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "cdf",
+                "is_captain": false,
+                "substitution": {
+                  "time": 82.0,
+                  "player": 8,
+                  "type": 1
+                },
+                "age": 24,
+                "height": "1.70",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 82.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 18,
+                "name": "Charles Pickel",
+                "player_short_name": "Pickel",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "cdf",
+                "is_captain": false,
+                "substitution": {
+                  "time": 72.0,
+                  "player": 25,
+                  "type": 1
+                },
+                "age": 29,
+                "height": "1.87",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 72.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 14,
+                "name": "Noah Sadiki",
+                "player_short_name": "Sadiki",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cdf",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 6,
+                  "type": 1
+                },
+                "age": 21,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 5,
+                "name": "Dylan Batubinsika",
+                "player_short_name": "Batubinsika",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cdf",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 10,
+                "name": "Theo Bongonda",
+                "player_short_name": "Bongonda",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "cdf",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.76"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Meschack Elia",
+                "player_short_name": "Elia",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "cdf",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Matthieu Epolo",
+                "player_short_name": "Epolo",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "cdf",
+                "is_captain": false,
+                "age": 21,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 16,
+                "name": "T. Fayulu",
+                "player_short_name": "T. Fayulu",
+                "position": "",
+                "formation_position": "",
+                "country_id": "",
+                "is_captain": false
+              },
+              {
+                "jersey_num": 11,
+                "name": "Gaël Kakuta",
+                "player_short_name": "Kakuta",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "cdf",
+                "is_captain": false,
+                "age": 35,
+                "height": "1.72"
+              },
+              {
+                "jersey_num": 19,
+                "name": "Fiston Mayele",
+                "player_short_name": "Mayele",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cdf",
+                "is_captain": false,
+                "age": 32,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 24,
+                "name": "Gedeon Kalulu",
+                "player_short_name": "Gedeon Kalulu",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "cdf",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.78"
+              },
+              {
+                "jersey_num": 9,
+                "name": "Brian Cipenga",
+                "player_short_name": "Cipenga",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "cdf",
+                "is_captain": false,
+                "age": 28,
+                "height": "1.72"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Aaron Tshibola",
+                "player_short_name": "Tshibola",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cdf",
+                "is_captain": false,
+                "age": 31,
+                "height": "1.84"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Sébastien Desabre",
+                "player_short_name": "Sébastien Desabre",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "f",
+                "is_captain": false,
+                "age": 50,
+                "height": "1.82"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=42&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=42&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "ec",
+      "cta_link": "https://record.pba.betsson.bet.ar/_nrLvEWDn_qD1kXvT18cTCmNd7ZgqdRLk/36",
+      "options": [
+        {
+          "name": "1",
+          "votes": 57612,
+          "percentage": 76,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhhdf&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 8586,
+          "percentage": 11,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhhdf&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 9654,
+          "percentage": 13,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=egjhhdf&vote=2"
+        }
+      ],
+      "total_votes": 75852,
+      "odds": [
+        {
+          "name": "1",
+          "value": 1.53,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 3.9,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 7.0,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "Estadio AKRON"
+      },
+      {
+        "name": "Capacidad",
+        "value": "45664"
+      },
+      {
+        "name": "Árbitro",
+        "value": "Maurizio Mariani"
+      },
+      {
+        "name": "Arg TV",
+        "value": " , DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          0.0,
+          0.0
+        ],
+        "rows": [
+          {
+            "time": "4'",
+            "events": [
+              {
+                "type": 10,
+                "time": "4'",
+                "team": 1,
+                "texts": [
+                  "Daniel Muñoz"
+                ],
+                "player_jersey_num": 2
+              }
+            ]
+          },
+          {
+            "time": "8'",
+            "events": [
+              {
+                "type": 9,
+                "time": "8'",
+                "team": 1,
+                "texts": [
+                  "Gol anulado",
+                  "Daniel Muñoz"
+                ],
+                "player_jersey_num": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          1.0,
+          0.0
+        ],
+        "rows": [
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 2,
+                "texts": [
+                  "Noah Sadiki",
+                  "Ngal'ayel Mukau"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "56'",
+            "events": [
+              {
+                "type": 4,
+                "time": "56'",
+                "team": 1,
+                "texts": [
+                  "Jhon Lucumí"
+                ],
+                "player_jersey_num": 3
+              }
+            ]
+          },
+          {
+            "time": "57'",
+            "events": [
+              {
+                "type": 15,
+                "time": "57'",
+                "team": 2,
+                "texts": [
+                  "Simon Banza",
+                  "Cedric Bakambu"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "58'",
+            "events": [
+              {
+                "type": 15,
+                "time": "58'",
+                "team": 1,
+                "texts": [
+                  "Juan Fernando Quintero",
+                  "James Rodríguez"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "58'",
+            "events": [
+              {
+                "type": 15,
+                "time": "58'",
+                "team": 1,
+                "texts": [
+                  "Jhon Córdoba",
+                  "Luis Suárez"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "72'",
+            "events": [
+              {
+                "type": 15,
+                "time": "72'",
+                "team": 2,
+                "texts": [
+                  "Joris Kayembe",
+                  "Arthur Masuaku"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "72'",
+            "events": [
+              {
+                "type": 15,
+                "time": "72'",
+                "team": 2,
+                "texts": [
+                  "Charles Pickel",
+                  "Edo Kayembe"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "76'",
+            "events": [
+              {
+                "type": 1,
+                "time": "76'",
+                "team": 1,
+                "texts": [
+                  "Daniel Muñoz",
+                  "Juan Fernando Quintero"
+                ],
+                "player_jersey_num": 2
+              }
+            ]
+          },
+          {
+            "time": "77'",
+            "events": [
+              {
+                "type": 15,
+                "time": "77'",
+                "team": 1,
+                "texts": [
+                  "Richard Ríos",
+                  "Jhon Arias"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "82'",
+            "events": [
+              {
+                "type": 15,
+                "time": "82'",
+                "team": 2,
+                "texts": [
+                  "Nathanael Mbuku",
+                  "Samuel Moutoussamy"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'+3",
+            "events": [
+              {
+                "type": 4,
+                "time": "90'+3",
+                "team": 2,
+                "texts": [
+                  "Charles Pickel"
+                ],
+                "player_jersey_num": 18
+              }
+            ]
+          },
+          {
+            "time": "90'+4",
+            "events": [
+              {
+                "type": 4,
+                "time": "90'+4",
+                "team": 1,
+                "texts": [
+                  "Jefferson Lerma"
+                ],
+                "player_jersey_num": 16
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "20",
+          "7"
+        ],
+        "percentages": [
+          0.74,
+          0.26
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "9",
+          "1"
+        ],
+        "percentages": [
+          0.9,
+          0.1
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "64%",
+          "36%"
+        ],
+        "percentages": [
+          0.64,
+          0.36
+        ]
+      },
+      {
+        "name": "Ataques",
+        "values": [
+          "102",
+          "68"
+        ],
+        "percentages": [
+          0.6,
+          0.4
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "15",
+          "11"
+        ],
+        "percentages": [
+          0.58,
+          0.42
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "5",
+          "4"
+        ],
+        "percentages": [
+          0.56,
+          0.44
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "7",
+          "0"
+        ],
+        "percentages": [
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "12",
+          "16"
+        ],
+        "percentages": [
+          0.43,
+          0.57
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "2",
+          "1"
+        ],
+        "percentages": [
+          0.67,
+          0.33
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "0"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "recent_form": {
+      "home": [
+        1,
+        0,
+        2,
+        0,
+        1
+      ],
+      "away": [
+        2,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    "standings": {
+      "title": "Posiciones",
+      "columns": [
+        {
+          "key": "points",
+          "display_name": "PTS",
+          "is_bold": true
+        },
+        {
+          "key": "games_played",
+          "display_name": "J"
+        },
+        {
+          "key": "ratio",
+          "display_name": "+/-"
+        }
+      ],
+      "rows": [
+        {
+          "num": 1,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "Colombia",
+              "short_name": "Colombia",
+              "url_name": "colombia",
+              "id": "fahb",
+              "country_id": "baj",
+              "allow_open": true,
+              "colors": {
+                "color": "#F0E975",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "7"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "3"
+            }
+          ]
+        },
+        {
+          "num": 3,
+          "entity": {
+            "type": 1,
+            "object": {
+              "name": "RD Congo",
+              "short_name": "RD Congo",
+              "url_name": "dr-congo",
+              "id": "begfa",
+              "country_id": "cdf",
+              "allow_open": true,
+              "colors": {
+                "color": "#6BC7F1",
+                "text_color": "#000000"
+              }
+            }
+          },
+          "values": [
+            {
+              "key": "points",
+              "value": "4"
+            },
+            {
+              "key": "games_played",
+              "value": "3"
+            },
+            {
+              "key": "ratio",
+              "value": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "videos": [
+      {
+        "source": "youtube",
+        "url": "https://www.youtube.com/watch?v=WX6Da5LJnOQ",
+        "video_id": "WX6Da5LJnOQ",
+        "thumbnail_url": "https://img.youtube.com/vi/WX6Da5LJnOQ/maxresdefault.jpg",
+        "embedding_allowed": false
+      }
+    ]
+  }
+}

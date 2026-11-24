@@ -1,0 +1,840 @@
+-- UNLaM - Bases de Datos Aplicadas - Grupo 7. 
+-- Fecha: 02/11/2026.
+-- Almiron, Luca;
+-- Figueroa, Santiago;
+-- Ruarte, Fidel;
+-- Villalba, Leandro.
+-- Objetivo: leer los 104 JSON originales. Incluir desde 11_Importacion_Carga_Partidos.sql.
+-- No ejecutar solo. Sin GO: utiliza las tablas temporales del importador.
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchife.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchife.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchife.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchiff.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchiff.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchiff.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchifg.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchifg.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchifg.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchifh.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchifh.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchifh.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchifi.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchifi.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchifi.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchifj.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchifj.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchifj.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchiga.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchiga.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchiga.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchigb.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchigb.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchigb.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchigc.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchigc.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchigc.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchigd.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchigd.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchigd.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchige.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchige.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchige.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchigf.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchigf.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchigf.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchigg.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchigg.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchigg.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchigh.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchigh.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchigh.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchigi.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchigi.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchigi.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchigj.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchigj.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchigj.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchiha.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchiha.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchiha.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchihb.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchihb.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchihb.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchihc.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchihc.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchihc.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchihd.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchihd.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchihd.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchihe.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchihe.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchihe.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchihf.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchihf.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchihf.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchihg.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchihg.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchihg.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchihh.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchihh.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchihh.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchihj.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchihj.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchihj.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchiia.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchiia.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchiia.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchiib.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchiib.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchiib.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchiic.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchiic.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchiic.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchiid.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchiid.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchiid.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchiie.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchiie.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchiie.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchijb.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchijb.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchijb.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchijg.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchijg.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchijg.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchijh.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchijh.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchijh.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjab.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjab.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjab.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjac.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjac.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjac.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjad.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjad.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjad.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjae.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjae.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjae.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjaf.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjaf.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjaf.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjag.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjag.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjag.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjba.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjba.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjba.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjbb.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjbb.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjbb.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjbc.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjbc.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjbc.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjbi.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjbi.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjbi.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjca.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjca.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjca.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjcb.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjcb.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjcb.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjce.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjce.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjce.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjch.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjch.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjch.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjcj.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjcj.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjcj.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjda.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjda.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjda.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjdc.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjdc.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjdc.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjdd.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjdd.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjdd.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjdf.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjdf.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjdf.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjdh.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjdh.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjdh.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egchjdi.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egchjdi.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egchjdi.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhgjg.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhgjg.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhgjg.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhgjh.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhgjh.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhgjh.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhgji.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhgji.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhgji.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhgjj.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhgjj.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhgjj.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhaa.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhaa.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhaa.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhab.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhab.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhab.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhac.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhac.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhac.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhad.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhad.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhad.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhae.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhae.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhae.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhaf.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhaf.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhaf.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhag.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhag.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhag.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhah.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhah.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhah.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhde.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhde.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhde.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhdf.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhdf.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhdf.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhhdg.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhhdg.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhhdg.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhjcb.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhjcb.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhjcb.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhjcc.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhjcc.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhjcc.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'egjhjcd.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\egjhjcd.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'egjhjcd.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehefgah.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehefgah.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehefgah.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehehgjg.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehehgjg.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehehgjg.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehehgjh.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehehgjh.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehehgjh.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehehgjj.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehehgjj.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehehgjj.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'eheibaj.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\eheibaj.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'eheibaj.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'eheicce.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\eheicce.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'eheicce.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'eheiccf.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\eheiccf.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'eheiccf.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'eheicde.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\eheicde.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'eheicde.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'eheicee.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\eheicee.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'eheicee.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'eheiiii.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\eheiiii.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'eheiiii.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehejcgi.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehejcgi.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehejcgi.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehejcha.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehejcha.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehejcha.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehejchb.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehejchb.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehejchb.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehejchc.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehejchc.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehejchc.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehejchd.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehejchd.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehejchd.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehejche.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehejche.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehejche.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehfaaaj.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehfaaaj.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehfaaaj.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehfafad.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehfafad.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehfafad.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehfajad.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehfajad.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehfajad.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehfdebf.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehfdebf.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehfdebf.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehfecjd.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehfecjd.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehfecjd.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehfhage.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehfhage.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehfhage.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehfihdg.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehfihdg.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehfihdg.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehfihfd.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehfihfd.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehfihfd.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehfjdhg.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehfjdhg.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehfjdhg.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehgahcb.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehgahcb.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehgahcb.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehgbeie.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehgbeie.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehgbeie.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehgcaec.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehgcaec.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehgcaec.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehgejfb.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehgejfb.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehgejfb.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehgjhcc.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehgjhcc.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehgjhcc.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehhdcbe.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehhdcbe.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehhdcbe.json',ERROR_MESSAGE());
+END CATCH;
+
+BEGIN TRY
+    INSERT #ArchivosPartidos (Archivo,Contenido)
+    SELECT N'ehhdcbj.json',BulkColumn FROM OPENROWSET(BULK '$(TP_BDDA)\Datos\Datos_Partidos\partidos\ehhdcbj.json',SINGLE_BLOB) a;
+END TRY
+BEGIN CATCH
+    INSERT #ErroresArchivos VALUES (N'ehhdcbj.json',ERROR_MESSAGE());
+END CATCH;

@@ -1,0 +1,4821 @@
+{
+    "TTL": 300,
+    "games": [
+        {
+            "id": "egchigi",
+            "stage_round_name": "Fecha 1",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Qatar",
+                    "short_name": "Qatar",
+                    "url_name": "qatar",
+                    "id": "fahj",
+                    "country_id": "bbf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#990000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Suiza",
+                    "short_name": "Suiza",
+                    "url_name": "switzerland",
+                    "id": "fadc",
+                    "country_id": "bf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DE152F",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "qatar-vs-switzerland",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "13-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchifg",
+            "stage_round_name": "Fecha 1",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Brasil",
+                    "short_name": "Brasil",
+                    "url_name": "brazil",
+                    "id": "cdhj",
+                    "country_id": "cb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#EAE380",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Marruecos",
+                    "short_name": "Marruecos",
+                    "url_name": "morocco",
+                    "id": "fajd",
+                    "country_id": "bch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E60000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "brazil-vs-morocco",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "13-06-2026 19:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchijb",
+            "stage_round_name": "Fecha 1",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Haití",
+                    "short_name": "Haití",
+                    "url_name": "haiti",
+                    "id": "fecc",
+                    "country_id": "bfc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#3300FF",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Escocia",
+                    "short_name": "Escocia",
+                    "url_name": "scotland",
+                    "id": "fagj",
+                    "country_id": "i",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0D2852",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "haiti-vs-scotland",
+            "scores": [
+                0.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "13-06-2026 22:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhac",
+            "stage_round_name": "Fecha 1",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Australia",
+                    "short_name": "Australia",
+                    "url_name": "australia",
+                    "id": "cdia",
+                    "country_id": "dg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F0BD49",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Turquía",
+                    "short_name": "Turquía",
+                    "url_name": "turkiye",
+                    "id": "faeh",
+                    "country_id": "bc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "australia-vs-turkiye",
+            "scores": [
+                2.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "14-06-2026 01:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchiie",
+            "stage_round_name": "Fecha 1",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Alemania",
+                    "short_name": "Alemania",
+                    "url_name": "germany",
+                    "id": "cdhc",
+                    "country_id": "e",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Curazao",
+                    "short_name": "Curazao",
+                    "url_name": "curacao",
+                    "id": "cedjh",
+                    "country_id": "cdc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#607BC8",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "germany-vs-curacao",
+            "scores": [
+                7.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "14-06-2026 14:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchifj",
+            "stage_round_name": "Fecha 1",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Países Bajos",
+                    "short_name": "Países Bajos",
+                    "url_name": "netherlands",
+                    "id": "cdhh",
+                    "country_id": "h",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF6803",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Japón",
+                    "short_name": "Japón",
+                    "url_name": "japan",
+                    "id": "cdic",
+                    "country_id": "de",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#233251",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "netherlands-vs-japan",
+            "scores": [
+                2.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "14-06-2026 17:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchihb",
+            "stage_round_name": "Fecha 1",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Costa de Marfil",
+                    "short_name": "Costa de Marfil",
+                    "url_name": "ivory-coast",
+                    "id": "cdif",
+                    "country_id": "he",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF7C0A",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Ecuador",
+                    "short_name": "Ecuador",
+                    "url_name": "ecuador",
+                    "id": "fahf",
+                    "country_id": "fb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#EBD31E",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "ivory-coast-vs-ecuador",
+            "scores": [
+                1.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "14-06-2026 20:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhaf",
+            "stage_round_name": "Fecha 1",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Suecia",
+                    "short_name": "Suecia",
+                    "url_name": "sweden",
+                    "id": "cdhb",
+                    "country_id": "ce",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F9DE52",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Túnez",
+                    "short_name": "Túnez",
+                    "url_name": "tunisia",
+                    "id": "fbae",
+                    "country_id": "bdf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F1F1F1",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "sweden-vs-tunisia",
+            "scores": [
+                5.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "14-06-2026 23:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjae",
+            "stage_round_name": "Fecha 1",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "España",
+                    "short_name": "España",
+                    "url_name": "spain",
+                    "id": "fafa",
+                    "country_id": "c",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F94046",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Cabo Verde",
+                    "short_name": "Cabo Verde",
+                    "url_name": "cape-verde",
+                    "id": "febb",
+                    "country_id": "bef",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0A478A",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "spain-vs-cape-verde",
+            "scores": [
+                0.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "15-06-2026 13:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjdc",
+            "stage_round_name": "Fecha 1",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Bélgica",
+                    "short_name": "Bélgica",
+                    "url_name": "belgium",
+                    "id": "cdhd",
+                    "country_id": "bg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#D42838",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Egipto",
+                    "short_name": "Egipto",
+                    "url_name": "egypt",
+                    "id": "fbaa",
+                    "country_id": "bdb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF0000",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "belgium-vs-egypt",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "15-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchihg",
+            "stage_round_name": "Fecha 1",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Arabia Saudita",
+                    "short_name": "Arabia Saudita",
+                    "url_name": "saudi-arabia",
+                    "id": "faih",
+                    "country_id": "bcc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0B5648",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Uruguay",
+                    "short_name": "Uruguay",
+                    "url_name": "uruguay",
+                    "id": "fahd",
+                    "country_id": "bbb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#CBDBEE",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "saudi-arabia-vs-uruguay",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "15-06-2026 19:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjac",
+            "stage_round_name": "Fecha 1",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Irán",
+                    "short_name": "Irán",
+                    "url_name": "iran",
+                    "id": "fajb",
+                    "country_id": "ib",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FAEFFE",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Nueva Zelanda",
+                    "short_name": "Nueva Zelanda",
+                    "url_name": "new-zealand",
+                    "id": "cdjb",
+                    "country_id": "bfj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E7E8EC",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "iran-vs-new-zealand",
+            "scores": [
+                2.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "15-06-2026 22:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchigc",
+            "stage_round_name": "Fecha 1",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Francia",
+                    "short_name": "Francia",
+                    "url_name": "france",
+                    "id": "fagb",
+                    "country_id": "f",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1A55BD",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Senegal",
+                    "short_name": "Senegal",
+                    "url_name": "senegal",
+                    "id": "fbac",
+                    "country_id": "bdd",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "france-vs-senegal",
+            "scores": [
+                3.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "16-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhjcb",
+            "stage_round_name": "Fecha 1",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Irak",
+                    "short_name": "Irak",
+                    "url_name": "iraq",
+                    "id": "fahi",
+                    "country_id": "bbe",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F5F9F7",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Noruega",
+                    "short_name": "Noruega",
+                    "url_name": "norway",
+                    "id": "cdhg",
+                    "country_id": "ch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E63237",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "iraq-vs-norway",
+            "scores": [
+                1.0,
+                4.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "16-06-2026 19:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchihj",
+            "stage_round_name": "Fecha 1",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Argentina",
+                    "short_name": "Argentina",
+                    "url_name": "argentina",
+                    "id": "cdhi",
+                    "country_id": "ba",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Argelia",
+                    "short_name": "Argelia",
+                    "url_name": "algeria",
+                    "id": "fbaj",
+                    "country_id": "bdj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "argentina-vs-algeria",
+            "scores": [
+                3.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "16-06-2026 22:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjba",
+            "stage_round_name": "Fecha 1",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Austria",
+                    "short_name": "Austria",
+                    "url_name": "austria",
+                    "id": "fafj",
+                    "country_id": "ca",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF0000",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Jordania",
+                    "short_name": "Jordania",
+                    "url_name": "jordan",
+                    "id": "faid",
+                    "country_id": "bbj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "austria-vs-jordan",
+            "scores": [
+                3.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "17-06-2026 01:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhde",
+            "stage_round_name": "Fecha 1",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Portugal",
+                    "short_name": "Portugal",
+                    "url_name": "portugal",
+                    "id": "faci",
+                    "country_id": "bb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#A81D30",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "RD Congo",
+                    "short_name": "RD Congo",
+                    "url_name": "dr-congo",
+                    "id": "begfa",
+                    "country_id": "cdf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#6BC7F1",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "portugal-vs-dr-congo",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "17-06-2026 14:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchigf",
+            "stage_round_name": "Fecha 1",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Inglaterra",
+                    "short_name": "Inglaterra",
+                    "url_name": "england",
+                    "id": "fafe",
+                    "country_id": "b",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DFE3EB",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Croacia",
+                    "short_name": "Croacia",
+                    "url_name": "croatia",
+                    "id": "faff",
+                    "country_id": "di",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "england-vs-croatia",
+            "scores": [
+                4.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "17-06-2026 17:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjbi",
+            "stage_round_name": "Fecha 1",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Ghana",
+                    "short_name": "Ghana",
+                    "url_name": "ghana",
+                    "id": "faje",
+                    "country_id": "gf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Panamá",
+                    "short_name": "Panamá",
+                    "url_name": "panama",
+                    "id": "febe",
+                    "country_id": "beg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DB0000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "ghana-vs-panama",
+            "scores": [
+                1.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "17-06-2026 20:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjda",
+            "stage_round_name": "Fecha 1",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Uzbekistán",
+                    "short_name": "Uzbekistán",
+                    "url_name": "uzbekistan",
+                    "id": "faif",
+                    "country_id": "bcb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1158BB",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Colombia",
+                    "short_name": "Colombia",
+                    "url_name": "colombia",
+                    "id": "fahb",
+                    "country_id": "baj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F0E975",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "uzbekistan-vs-colombia",
+            "scores": [
+                1.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "17-06-2026 23:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhgjh",
+            "stage_round_name": "Fecha 2",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Republica Checa",
+                    "short_name": "Republica Checa",
+                    "url_name": "czech-republic",
+                    "id": "faea",
+                    "country_id": "cc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#CC0000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Sudáfrica",
+                    "short_name": "Sudáfrica",
+                    "url_name": "south-africa",
+                    "id": "fbad",
+                    "country_id": "bde",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FDD301",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "czech-republic-vs-south-africa",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "18-06-2026 13:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhaa",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Suiza",
+                    "short_name": "Suiza",
+                    "url_name": "switzerland",
+                    "id": "fadc",
+                    "country_id": "bf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DE152F",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Bosnia Herzegovina",
+                    "short_name": "Bosnia Herzegovina",
+                    "url_name": "bosnia-&-herzegovina",
+                    "id": "faei",
+                    "country_id": "fh",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1752A7",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "switzerland-vs-bosnia-&-herzegovina",
+            "scores": [
+                4.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "18-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjdh",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Canadá",
+                    "short_name": "Canadá",
+                    "url_name": "canada",
+                    "id": "cdii",
+                    "country_id": "gg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#A70115",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Qatar",
+                    "short_name": "Qatar",
+                    "url_name": "qatar",
+                    "id": "fahj",
+                    "country_id": "bbf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#990000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "canada-vs-qatar",
+            "scores": [
+                6.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "18-06-2026 19:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchife",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "México",
+                    "short_name": "México",
+                    "url_name": "mexico",
+                    "id": "fbag",
+                    "country_id": "db",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#298B77",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Corea del Sur",
+                    "short_name": "Corea del Sur",
+                    "url_name": "south-korea",
+                    "id": "cdid",
+                    "country_id": "ig",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F8373E",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "mexico-vs-south-korea",
+            "scores": [
+                1.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "18-06-2026 22:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchifh",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Estados Unidos",
+                    "short_name": "Estados Unidos",
+                    "url_name": "usa",
+                    "id": "cdij",
+                    "country_id": "bi",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Australia",
+                    "short_name": "Australia",
+                    "url_name": "australia",
+                    "id": "cdia",
+                    "country_id": "dg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F0BD49",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "usa-vs-australia",
+            "scores": [
+                2.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "19-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchiic",
+            "stage_round_name": "Fecha 2",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Escocia",
+                    "short_name": "Escocia",
+                    "url_name": "scotland",
+                    "id": "fagj",
+                    "country_id": "i",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0D2852",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Marruecos",
+                    "short_name": "Marruecos",
+                    "url_name": "morocco",
+                    "id": "fajd",
+                    "country_id": "bch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E60000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "scotland-vs-morocco",
+            "scores": [
+                0.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "19-06-2026 19:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchiid",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Brasil",
+                    "short_name": "Brasil",
+                    "url_name": "brazil",
+                    "id": "cdhj",
+                    "country_id": "cb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#EAE380",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Haití",
+                    "short_name": "Haití",
+                    "url_name": "haiti",
+                    "id": "fecc",
+                    "country_id": "bfc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#3300FF",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "brazil-vs-haiti",
+            "scores": [
+                3.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "19-06-2026 21:30",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhad",
+            "stage_round_name": "Fecha 2",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Turquía",
+                    "short_name": "Turquía",
+                    "url_name": "turkiye",
+                    "id": "faeh",
+                    "country_id": "bc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Paraguay",
+                    "short_name": "Paraguay",
+                    "url_name": "paraguay",
+                    "id": "faha",
+                    "country_id": "bai",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "turkiye-vs-paraguay",
+            "scores": [
+                0.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "20-06-2026 00:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhag",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Países Bajos",
+                    "short_name": "Países Bajos",
+                    "url_name": "netherlands",
+                    "id": "cdhh",
+                    "country_id": "h",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF6803",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Suecia",
+                    "short_name": "Suecia",
+                    "url_name": "sweden",
+                    "id": "cdhb",
+                    "country_id": "ce",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F9DE52",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "netherlands-vs-sweden",
+            "scores": [
+                5.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "20-06-2026 14:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchihc",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Alemania",
+                    "short_name": "Alemania",
+                    "url_name": "germany",
+                    "id": "cdhc",
+                    "country_id": "e",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Costa de Marfil",
+                    "short_name": "Costa de Marfil",
+                    "url_name": "ivory-coast",
+                    "id": "cdif",
+                    "country_id": "he",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF7C0A",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "germany-vs-ivory-coast",
+            "scores": [
+                2.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "20-06-2026 17:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchijg",
+            "stage_round_name": "Fecha 2",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Ecuador",
+                    "short_name": "Ecuador",
+                    "url_name": "ecuador",
+                    "id": "fahf",
+                    "country_id": "fb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#EBD31E",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Curazao",
+                    "short_name": "Curazao",
+                    "url_name": "curacao",
+                    "id": "cedjh",
+                    "country_id": "cdc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#607BC8",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "ecuador-vs-curacao",
+            "scores": [
+                0.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "20-06-2026 21:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchihd",
+            "stage_round_name": "Fecha 2",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Túnez",
+                    "short_name": "Túnez",
+                    "url_name": "tunisia",
+                    "id": "fbae",
+                    "country_id": "bdf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F1F1F1",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Japón",
+                    "short_name": "Japón",
+                    "url_name": "japan",
+                    "id": "cdic",
+                    "country_id": "de",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#233251",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "tunisia-vs-japan",
+            "scores": [
+                0.0,
+                4.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "21-06-2026 01:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchihh",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "España",
+                    "short_name": "España",
+                    "url_name": "spain",
+                    "id": "fafa",
+                    "country_id": "c",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F94046",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Arabia Saudita",
+                    "short_name": "Arabia Saudita",
+                    "url_name": "saudi-arabia",
+                    "id": "faih",
+                    "country_id": "bcc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0B5648",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "spain-vs-saudi-arabia",
+            "scores": [
+                4.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "21-06-2026 13:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchiga",
+            "stage_round_name": "Fecha 2",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Bélgica",
+                    "short_name": "Bélgica",
+                    "url_name": "belgium",
+                    "id": "cdhd",
+                    "country_id": "bg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#D42838",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Irán",
+                    "short_name": "Irán",
+                    "url_name": "iran",
+                    "id": "fajb",
+                    "country_id": "ib",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FAEFFE",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "belgium-vs-iran",
+            "scores": [
+                0.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "21-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjaf",
+            "stage_round_name": "Fecha 2",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Uruguay",
+                    "short_name": "Uruguay",
+                    "url_name": "uruguay",
+                    "id": "fahd",
+                    "country_id": "bbb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#CBDBEE",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Cabo Verde",
+                    "short_name": "Cabo Verde",
+                    "url_name": "cape-verde",
+                    "id": "febb",
+                    "country_id": "bef",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0A478A",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "uruguay-vs-cape-verde",
+            "scores": [
+                2.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "21-06-2026 19:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjab",
+            "stage_round_name": "Fecha 2",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Nueva Zelanda",
+                    "short_name": "Nueva Zelanda",
+                    "url_name": "new-zealand",
+                    "id": "cdjb",
+                    "country_id": "bfj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E7E8EC",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Egipto",
+                    "short_name": "Egipto",
+                    "url_name": "egypt",
+                    "id": "fbaa",
+                    "country_id": "bdb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF0000",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "new-zealand-vs-egypt",
+            "scores": [
+                1.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "21-06-2026 22:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchigd",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Argentina",
+                    "short_name": "Argentina",
+                    "url_name": "argentina",
+                    "id": "cdhi",
+                    "country_id": "ba",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Austria",
+                    "short_name": "Austria",
+                    "url_name": "austria",
+                    "id": "fafj",
+                    "country_id": "ca",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF0000",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "argentina-vs-austria",
+            "scores": [
+                2.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "22-06-2026 14:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhjcc",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Francia",
+                    "short_name": "Francia",
+                    "url_name": "france",
+                    "id": "fagb",
+                    "country_id": "f",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1A55BD",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Irak",
+                    "short_name": "Irak",
+                    "url_name": "iraq",
+                    "id": "fahi",
+                    "country_id": "bbe",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F5F9F7",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "france-vs-iraq",
+            "scores": [
+                3.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "22-06-2026 18:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjch",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Noruega",
+                    "short_name": "Noruega",
+                    "url_name": "norway",
+                    "id": "cdhg",
+                    "country_id": "ch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E63237",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Senegal",
+                    "short_name": "Senegal",
+                    "url_name": "senegal",
+                    "id": "fbac",
+                    "country_id": "bdd",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "norway-vs-senegal",
+            "scores": [
+                3.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "22-06-2026 21:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjbb",
+            "stage_round_name": "Fecha 2",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Jordania",
+                    "short_name": "Jordania",
+                    "url_name": "jordan",
+                    "id": "faid",
+                    "country_id": "bbj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Argelia",
+                    "short_name": "Argelia",
+                    "url_name": "algeria",
+                    "id": "fbaj",
+                    "country_id": "bdj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "jordan-vs-algeria",
+            "scores": [
+                1.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "23-06-2026 00:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjcj",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Portugal",
+                    "short_name": "Portugal",
+                    "url_name": "portugal",
+                    "id": "faci",
+                    "country_id": "bb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#A81D30",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Uzbekistán",
+                    "short_name": "Uzbekistán",
+                    "url_name": "uzbekistan",
+                    "id": "faif",
+                    "country_id": "bcb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1158BB",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "portugal-vs-uzbekistan",
+            "scores": [
+                5.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "23-06-2026 14:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjca",
+            "stage_round_name": "Fecha 2",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Inglaterra",
+                    "short_name": "Inglaterra",
+                    "url_name": "england",
+                    "id": "fafe",
+                    "country_id": "b",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DFE3EB",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Ghana",
+                    "short_name": "Ghana",
+                    "url_name": "ghana",
+                    "id": "faje",
+                    "country_id": "gf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "england-vs-ghana",
+            "scores": [
+                0.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "23-06-2026 17:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjdf",
+            "stage_round_name": "Fecha 2",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Panamá",
+                    "short_name": "Panamá",
+                    "url_name": "panama",
+                    "id": "febe",
+                    "country_id": "beg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DB0000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Croacia",
+                    "short_name": "Croacia",
+                    "url_name": "croatia",
+                    "id": "faff",
+                    "country_id": "di",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "panama-vs-croatia",
+            "scores": [
+                0.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "23-06-2026 20:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhdf",
+            "stage_round_name": "Fecha 2",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Colombia",
+                    "short_name": "Colombia",
+                    "url_name": "colombia",
+                    "id": "fahb",
+                    "country_id": "baj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F0E975",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "RD Congo",
+                    "short_name": "RD Congo",
+                    "url_name": "dr-congo",
+                    "id": "begfa",
+                    "country_id": "cdf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#6BC7F1",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "colombia-vs-dr-congo",
+            "scores": [
+                1.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "23-06-2026 23:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchiff",
+            "stage_round_name": "Fecha 3",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Suiza",
+                    "short_name": "Suiza",
+                    "url_name": "switzerland",
+                    "id": "fadc",
+                    "country_id": "bf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DE152F",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Canadá",
+                    "short_name": "Canadá",
+                    "url_name": "canada",
+                    "id": "cdii",
+                    "country_id": "gg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#A70115",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "switzerland-vs-canada",
+            "scores": [
+                2.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "24-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhab",
+            "stage_round_name": "Fecha 3",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Bosnia Herzegovina",
+                    "short_name": "Bosnia Herzegovina",
+                    "url_name": "bosnia-&-herzegovina",
+                    "id": "faei",
+                    "country_id": "fh",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1752A7",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Qatar",
+                    "short_name": "Qatar",
+                    "url_name": "qatar",
+                    "id": "fahj",
+                    "country_id": "bbf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#990000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "bosnia-&-herzegovina-vs-qatar",
+            "scores": [
+                3.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "24-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchiib",
+            "stage_round_name": "Fecha 3",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Escocia",
+                    "short_name": "Escocia",
+                    "url_name": "scotland",
+                    "id": "fagj",
+                    "country_id": "i",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0D2852",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Brasil",
+                    "short_name": "Brasil",
+                    "url_name": "brazil",
+                    "id": "cdhj",
+                    "country_id": "cb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#EAE380",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "scotland-vs-brazil",
+            "scores": [
+                0.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "24-06-2026 19:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjdi",
+            "stage_round_name": "Fecha 3",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Marruecos",
+                    "short_name": "Marruecos",
+                    "url_name": "morocco",
+                    "id": "fajd",
+                    "country_id": "bch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E60000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Haití",
+                    "short_name": "Haití",
+                    "url_name": "haiti",
+                    "id": "fecc",
+                    "country_id": "bfc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#3300FF",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "morocco-vs-haiti",
+            "scores": [
+                4.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "24-06-2026 19:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchigh",
+            "stage_round_name": "Fecha 3",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Sudáfrica",
+                    "short_name": "Sudáfrica",
+                    "url_name": "south-africa",
+                    "id": "fbad",
+                    "country_id": "bde",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FDD301",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Corea del Sur",
+                    "short_name": "Corea del Sur",
+                    "url_name": "south-korea",
+                    "id": "cdid",
+                    "country_id": "ig",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F8373E",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "south-africa-vs-south-korea",
+            "scores": [
+                1.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "24-06-2026 22:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhgji",
+            "stage_round_name": "Fecha 3",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Republica Checa",
+                    "short_name": "Republica Checa",
+                    "url_name": "czech-republic",
+                    "id": "faea",
+                    "country_id": "cc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#CC0000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "México",
+                    "short_name": "México",
+                    "url_name": "mexico",
+                    "id": "fbag",
+                    "country_id": "db",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#298B77",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "czech-republic-vs-mexico",
+            "scores": [
+                0.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "24-06-2026 22:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchifi",
+            "stage_round_name": "Fecha 3",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Ecuador",
+                    "short_name": "Ecuador",
+                    "url_name": "ecuador",
+                    "id": "fahf",
+                    "country_id": "fb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#EBD31E",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Alemania",
+                    "short_name": "Alemania",
+                    "url_name": "germany",
+                    "id": "cdhc",
+                    "country_id": "e",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "ecuador-vs-germany",
+            "scores": [
+                2.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "25-06-2026 17:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchijh",
+            "stage_round_name": "Fecha 3",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Curazao",
+                    "short_name": "Curazao",
+                    "url_name": "curacao",
+                    "id": "cedjh",
+                    "country_id": "cdc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#607BC8",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Costa de Marfil",
+                    "short_name": "Costa de Marfil",
+                    "url_name": "ivory-coast",
+                    "id": "cdif",
+                    "country_id": "he",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF7C0A",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "curacao-vs-ivory-coast",
+            "scores": [
+                0.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "25-06-2026 17:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchihe",
+            "stage_round_name": "Fecha 3",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Túnez",
+                    "short_name": "Túnez",
+                    "url_name": "tunisia",
+                    "id": "fbae",
+                    "country_id": "bdf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F1F1F1",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Países Bajos",
+                    "short_name": "Países Bajos",
+                    "url_name": "netherlands",
+                    "id": "cdhh",
+                    "country_id": "h",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF6803",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "tunisia-vs-netherlands",
+            "scores": [
+                1.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "25-06-2026 20:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhah",
+            "stage_round_name": "Fecha 3",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Japón",
+                    "short_name": "Japón",
+                    "url_name": "japan",
+                    "id": "cdic",
+                    "country_id": "de",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#233251",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Suecia",
+                    "short_name": "Suecia",
+                    "url_name": "sweden",
+                    "id": "cdhb",
+                    "country_id": "ce",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F9DE52",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "japan-vs-sweden",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "25-06-2026 20:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchiha",
+            "stage_round_name": "Fecha 3",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Paraguay",
+                    "short_name": "Paraguay",
+                    "url_name": "paraguay",
+                    "id": "faha",
+                    "country_id": "bai",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Australia",
+                    "short_name": "Australia",
+                    "url_name": "australia",
+                    "id": "cdia",
+                    "country_id": "dg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F0BD49",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "paraguay-vs-australia",
+            "scores": [
+                0.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "25-06-2026 23:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhae",
+            "stage_round_name": "Fecha 3",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Turquía",
+                    "short_name": "Turquía",
+                    "url_name": "turkiye",
+                    "id": "faeh",
+                    "country_id": "bc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Estados Unidos",
+                    "short_name": "Estados Unidos",
+                    "url_name": "usa",
+                    "id": "cdij",
+                    "country_id": "bi",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "turkiye-vs-usa",
+            "scores": [
+                3.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "25-06-2026 23:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjce",
+            "stage_round_name": "Fecha 3",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Noruega",
+                    "short_name": "Noruega",
+                    "url_name": "norway",
+                    "id": "cdhg",
+                    "country_id": "ch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E63237",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Francia",
+                    "short_name": "Francia",
+                    "url_name": "france",
+                    "id": "fagb",
+                    "country_id": "f",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1A55BD",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "norway-vs-france",
+            "scores": [
+                1.0,
+                4.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "26-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhjcd",
+            "stage_round_name": "Fecha 3",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Senegal",
+                    "short_name": "Senegal",
+                    "url_name": "senegal",
+                    "id": "fbac",
+                    "country_id": "bdd",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Irak",
+                    "short_name": "Irak",
+                    "url_name": "iraq",
+                    "id": "fahi",
+                    "country_id": "bbe",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F5F9F7",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "senegal-vs-iraq",
+            "scores": [
+                5.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "26-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchigb",
+            "stage_round_name": "Fecha 3",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Uruguay",
+                    "short_name": "Uruguay",
+                    "url_name": "uruguay",
+                    "id": "fahd",
+                    "country_id": "bbb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#CBDBEE",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "España",
+                    "short_name": "España",
+                    "url_name": "spain",
+                    "id": "fafa",
+                    "country_id": "c",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F94046",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "uruguay-vs-spain",
+            "scores": [
+                0.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "26-06-2026 21:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjag",
+            "stage_round_name": "Fecha 3",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Cabo Verde",
+                    "short_name": "Cabo Verde",
+                    "url_name": "cape-verde",
+                    "id": "febb",
+                    "country_id": "bef",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0A478A",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Arabia Saudita",
+                    "short_name": "Arabia Saudita",
+                    "url_name": "saudi-arabia",
+                    "id": "faih",
+                    "country_id": "bcc",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0B5648",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "cape-verde-vs-saudi-arabia",
+            "scores": [
+                0.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "26-06-2026 21:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchihf",
+            "stage_round_name": "Fecha 3",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Egipto",
+                    "short_name": "Egipto",
+                    "url_name": "egypt",
+                    "id": "fbaa",
+                    "country_id": "bdb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF0000",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Irán",
+                    "short_name": "Irán",
+                    "url_name": "iran",
+                    "id": "fajb",
+                    "country_id": "ib",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FAEFFE",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "egypt-vs-iran",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "27-06-2026 00:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjad",
+            "stage_round_name": "Fecha 3",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Nueva Zelanda",
+                    "short_name": "Nueva Zelanda",
+                    "url_name": "new-zealand",
+                    "id": "cdjb",
+                    "country_id": "bfj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E7E8EC",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Bélgica",
+                    "short_name": "Bélgica",
+                    "url_name": "belgium",
+                    "id": "cdhd",
+                    "country_id": "bg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#D42838",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "new-zealand-vs-belgium",
+            "scores": [
+                1.0,
+                5.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "27-06-2026 00:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjcb",
+            "stage_round_name": "Fecha 3",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "Croacia",
+                    "short_name": "Croacia",
+                    "url_name": "croatia",
+                    "id": "faff",
+                    "country_id": "di",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Ghana",
+                    "short_name": "Ghana",
+                    "url_name": "ghana",
+                    "id": "faje",
+                    "country_id": "gf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "croatia-vs-ghana",
+            "scores": [
+                2.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "27-06-2026 18:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjdd",
+            "stage_round_name": "Fecha 3",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Panamá",
+                    "short_name": "Panamá",
+                    "url_name": "panama",
+                    "id": "febe",
+                    "country_id": "beg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DB0000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Inglaterra",
+                    "short_name": "Inglaterra",
+                    "url_name": "england",
+                    "id": "fafe",
+                    "country_id": "b",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DFE3EB",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "panama-vs-england",
+            "scores": [
+                0.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "27-06-2026 18:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchige",
+            "stage_round_name": "Fecha 3",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Colombia",
+                    "short_name": "Colombia",
+                    "url_name": "colombia",
+                    "id": "fahb",
+                    "country_id": "baj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F0E975",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Portugal",
+                    "short_name": "Portugal",
+                    "url_name": "portugal",
+                    "id": "faci",
+                    "country_id": "bb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#A81D30",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "colombia-vs-portugal",
+            "scores": [
+                0.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "27-06-2026 20:30",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egjhhdg",
+            "stage_round_name": "Fecha 3",
+            "winner": 1,
+            "teams": [
+                {
+                    "name": "RD Congo",
+                    "short_name": "RD Congo",
+                    "url_name": "dr-congo",
+                    "id": "begfa",
+                    "country_id": "cdf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#6BC7F1",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Uzbekistán",
+                    "short_name": "Uzbekistán",
+                    "url_name": "uzbekistan",
+                    "id": "faif",
+                    "country_id": "bcb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1158BB",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "dr-congo-vs-uzbekistan",
+            "scores": [
+                3.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "27-06-2026 20:30",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchiia",
+            "stage_round_name": "Fecha 3",
+            "winner": -1,
+            "teams": [
+                {
+                    "name": "Argelia",
+                    "short_name": "Argelia",
+                    "url_name": "algeria",
+                    "id": "fbaj",
+                    "country_id": "bdj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Austria",
+                    "short_name": "Austria",
+                    "url_name": "austria",
+                    "id": "fafj",
+                    "country_id": "ca",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF0000",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "algeria-vs-austria",
+            "scores": [
+                3.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "27-06-2026 23:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "egchjbc",
+            "stage_round_name": "Fecha 3",
+            "winner": 2,
+            "teams": [
+                {
+                    "name": "Jordania",
+                    "short_name": "Jordania",
+                    "url_name": "jordan",
+                    "id": "faid",
+                    "country_id": "bbj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Argentina",
+                    "short_name": "Argentina",
+                    "url_name": "argentina",
+                    "id": "cdhi",
+                    "country_id": "ba",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "jordan-vs-argentina",
+            "scores": [
+                1.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "27-06-2026 23:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehefgah",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Sudáfrica",
+                    "short_name": "Sudáfrica",
+                    "url_name": "south-africa",
+                    "id": "fbad",
+                    "country_id": "bde",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FDD301",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Canadá",
+                    "short_name": "Canadá",
+                    "url_name": "canada",
+                    "id": "cdii",
+                    "country_id": "gg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#A70115",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "south-africa-vs-canada",
+            "scores": [
+                0.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "28-06-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehehgjg",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Brasil",
+                    "short_name": "Brasil",
+                    "url_name": "brazil",
+                    "id": "cdhj",
+                    "country_id": "cb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#EAE380",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Japón",
+                    "short_name": "Japón",
+                    "url_name": "japan",
+                    "id": "cdic",
+                    "country_id": "de",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#233251",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "brazil-vs-japan",
+            "scores": [
+                2.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "29-06-2026 14:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "eheicce",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Alemania",
+                    "short_name": "Alemania",
+                    "url_name": "germany",
+                    "id": "cdhc",
+                    "country_id": "e",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Paraguay",
+                    "short_name": "Paraguay",
+                    "url_name": "paraguay",
+                    "id": "faha",
+                    "country_id": "bai",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "germany-vs-paraguay",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "penalties": [
+                3.0,
+                4.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Por penales",
+                "short_name": "Por penales",
+                "symbol_name": "Pen"
+            },
+            "start_time": "29-06-2026 17:30",
+            "game_time": 126,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Por penales"
+        },
+        {
+            "id": "ehehgjh",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Países Bajos",
+                    "short_name": "Países Bajos",
+                    "url_name": "netherlands",
+                    "id": "cdhh",
+                    "country_id": "h",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF6803",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Marruecos",
+                    "short_name": "Marruecos",
+                    "url_name": "morocco",
+                    "id": "fajd",
+                    "country_id": "bch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E60000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "netherlands-vs-morocco",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "penalties": [
+                2.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Por penales",
+                "short_name": "Por penales",
+                "symbol_name": "Pen"
+            },
+            "start_time": "29-06-2026 22:00",
+            "game_time": 125,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Por penales"
+        },
+        {
+            "id": "eheibaj",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Costa de Marfil",
+                    "short_name": "Costa de Marfil",
+                    "url_name": "ivory-coast",
+                    "id": "cdif",
+                    "country_id": "he",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF7C0A",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Noruega",
+                    "short_name": "Noruega",
+                    "url_name": "norway",
+                    "id": "cdhg",
+                    "country_id": "ch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E63237",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "ivory-coast-vs-norway",
+            "scores": [
+                1.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "30-06-2026 14:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "eheicde",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Francia",
+                    "short_name": "Francia",
+                    "url_name": "france",
+                    "id": "fagb",
+                    "country_id": "f",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1A55BD",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Suecia",
+                    "short_name": "Suecia",
+                    "url_name": "sweden",
+                    "id": "cdhb",
+                    "country_id": "ce",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F9DE52",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "france-vs-sweden",
+            "scores": [
+                3.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "30-06-2026 18:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "eheiiii",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "México",
+                    "short_name": "México",
+                    "url_name": "mexico",
+                    "id": "fbag",
+                    "country_id": "db",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#298B77",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Ecuador",
+                    "short_name": "Ecuador",
+                    "url_name": "ecuador",
+                    "id": "fahf",
+                    "country_id": "fb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#EBD31E",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "mexico-vs-ecuador",
+            "scores": [
+                2.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "30-06-2026 23:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehejchb",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Inglaterra",
+                    "short_name": "Inglaterra",
+                    "url_name": "england",
+                    "id": "fafe",
+                    "country_id": "b",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DFE3EB",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "RD Congo",
+                    "short_name": "RD Congo",
+                    "url_name": "dr-congo",
+                    "id": "begfa",
+                    "country_id": "cdf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#6BC7F1",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "england-vs-dr-congo",
+            "scores": [
+                2.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "01-07-2026 13:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehejchc",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Bélgica",
+                    "short_name": "Bélgica",
+                    "url_name": "belgium",
+                    "id": "cdhd",
+                    "country_id": "bg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#D42838",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Senegal",
+                    "short_name": "Senegal",
+                    "url_name": "senegal",
+                    "id": "fbac",
+                    "country_id": "bdd",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "belgium-vs-senegal",
+            "scores": [
+                3.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "En Tiempo Extra",
+                "short_name": "En Tiempo Extra",
+                "symbol_name": "TE"
+            },
+            "start_time": "01-07-2026 17:00",
+            "game_time": 120,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "En Tiempo Extra"
+        },
+        {
+            "id": "ehehgjj",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Estados Unidos",
+                    "short_name": "Estados Unidos",
+                    "url_name": "usa",
+                    "id": "cdij",
+                    "country_id": "bi",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Bosnia Herzegovina",
+                    "short_name": "Bosnia Herzegovina",
+                    "url_name": "bosnia-&-herzegovina",
+                    "id": "faei",
+                    "country_id": "fh",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1752A7",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "usa-vs-bosnia-&-herzegovina",
+            "scores": [
+                2.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "01-07-2026 21:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehejchd",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "España",
+                    "short_name": "España",
+                    "url_name": "spain",
+                    "id": "fafa",
+                    "country_id": "c",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F94046",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Austria",
+                    "short_name": "Austria",
+                    "url_name": "austria",
+                    "id": "fafj",
+                    "country_id": "ca",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF0000",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "spain-vs-austria",
+            "scores": [
+                3.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "02-07-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehejcgi",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Portugal",
+                    "short_name": "Portugal",
+                    "url_name": "portugal",
+                    "id": "faci",
+                    "country_id": "bb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#A81D30",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Croacia",
+                    "short_name": "Croacia",
+                    "url_name": "croatia",
+                    "id": "faff",
+                    "country_id": "di",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "portugal-vs-croatia",
+            "scores": [
+                2.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "02-07-2026 20:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehejche",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Suiza",
+                    "short_name": "Suiza",
+                    "url_name": "switzerland",
+                    "id": "fadc",
+                    "country_id": "bf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DE152F",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Argelia",
+                    "short_name": "Argelia",
+                    "url_name": "algeria",
+                    "id": "fbaj",
+                    "country_id": "bdj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "switzerland-vs-algeria",
+            "scores": [
+                2.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "03-07-2026 00:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "eheicee",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Australia",
+                    "short_name": "Australia",
+                    "url_name": "australia",
+                    "id": "cdia",
+                    "country_id": "dg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F0BD49",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Egipto",
+                    "short_name": "Egipto",
+                    "url_name": "egypt",
+                    "id": "fbaa",
+                    "country_id": "bdb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF0000",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "australia-vs-egypt",
+            "scores": [
+                1.0,
+                1.0
+            ],
+            "penalties": [
+                2.0,
+                4.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Por penales",
+                "short_name": "Por penales",
+                "symbol_name": "Pen"
+            },
+            "start_time": "03-07-2026 15:00",
+            "game_time": 124,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Por penales"
+        },
+        {
+            "id": "eheiccf",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Argentina",
+                    "short_name": "Argentina",
+                    "url_name": "argentina",
+                    "id": "cdhi",
+                    "country_id": "ba",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Cabo Verde",
+                    "short_name": "Cabo Verde",
+                    "url_name": "cape-verde",
+                    "id": "febb",
+                    "country_id": "bef",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#0A478A",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "argentina-vs-cape-verde",
+            "scores": [
+                3.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "En Tiempo Extra",
+                "short_name": "En Tiempo Extra",
+                "symbol_name": "TE"
+            },
+            "start_time": "03-07-2026 19:00",
+            "game_time": 120,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "En Tiempo Extra"
+        },
+        {
+            "id": "ehejcha",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Colombia",
+                    "short_name": "Colombia",
+                    "url_name": "colombia",
+                    "id": "fahb",
+                    "country_id": "baj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F0E975",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Ghana",
+                    "short_name": "Ghana",
+                    "url_name": "ghana",
+                    "id": "faje",
+                    "country_id": "gf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "colombia-vs-ghana",
+            "scores": [
+                1.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "03-07-2026 22:30",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehfaaaj",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Canadá",
+                    "short_name": "Canadá",
+                    "url_name": "canada",
+                    "id": "cdii",
+                    "country_id": "gg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#A70115",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Marruecos",
+                    "short_name": "Marruecos",
+                    "url_name": "morocco",
+                    "id": "fajd",
+                    "country_id": "bch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E60000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "canada-vs-morocco",
+            "scores": [
+                0.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "04-07-2026 14:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehfajad",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Paraguay",
+                    "short_name": "Paraguay",
+                    "url_name": "paraguay",
+                    "id": "faha",
+                    "country_id": "bai",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Francia",
+                    "short_name": "Francia",
+                    "url_name": "france",
+                    "id": "fagb",
+                    "country_id": "f",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1A55BD",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "paraguay-vs-france",
+            "scores": [
+                0.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "04-07-2026 18:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehfafad",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Brasil",
+                    "short_name": "Brasil",
+                    "url_name": "brazil",
+                    "id": "cdhj",
+                    "country_id": "cb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#EAE380",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Noruega",
+                    "short_name": "Noruega",
+                    "url_name": "norway",
+                    "id": "cdhg",
+                    "country_id": "ch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E63237",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "brazil-vs-norway",
+            "scores": [
+                1.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "05-07-2026 17:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehfdebf",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "México",
+                    "short_name": "México",
+                    "url_name": "mexico",
+                    "id": "fbag",
+                    "country_id": "db",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#298B77",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Inglaterra",
+                    "short_name": "Inglaterra",
+                    "url_name": "england",
+                    "id": "fafe",
+                    "country_id": "b",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DFE3EB",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "mexico-vs-england",
+            "scores": [
+                2.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "05-07-2026 22:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehfhage",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Portugal",
+                    "short_name": "Portugal",
+                    "url_name": "portugal",
+                    "id": "faci",
+                    "country_id": "bb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#A81D30",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "España",
+                    "short_name": "España",
+                    "url_name": "spain",
+                    "id": "fafa",
+                    "country_id": "c",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F94046",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "portugal-vs-spain",
+            "scores": [
+                0.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "06-07-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehfecjd",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Estados Unidos",
+                    "short_name": "Estados Unidos",
+                    "url_name": "usa",
+                    "id": "cdij",
+                    "country_id": "bi",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Bélgica",
+                    "short_name": "Bélgica",
+                    "url_name": "belgium",
+                    "id": "cdhd",
+                    "country_id": "bg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#D42838",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "usa-vs-belgium",
+            "scores": [
+                1.0,
+                4.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "06-07-2026 21:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehfihdg",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Argentina",
+                    "short_name": "Argentina",
+                    "url_name": "argentina",
+                    "id": "cdhi",
+                    "country_id": "ba",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Egipto",
+                    "short_name": "Egipto",
+                    "url_name": "egypt",
+                    "id": "fbaa",
+                    "country_id": "bdb",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FF0000",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "argentina-vs-egypt",
+            "scores": [
+                3.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "07-07-2026 13:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehfihfd",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Suiza",
+                    "short_name": "Suiza",
+                    "url_name": "switzerland",
+                    "id": "fadc",
+                    "country_id": "bf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DE152F",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Colombia",
+                    "short_name": "Colombia",
+                    "url_name": "colombia",
+                    "id": "fahb",
+                    "country_id": "baj",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F0E975",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "switzerland-vs-colombia",
+            "scores": [
+                0.0,
+                0.0
+            ],
+            "penalties": [
+                4.0,
+                3.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Por penales",
+                "short_name": "Por penales",
+                "symbol_name": "Pen"
+            },
+            "start_time": "07-07-2026 17:00",
+            "game_time": 125,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Por penales"
+        },
+        {
+            "id": "ehfjdhg",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Francia",
+                    "short_name": "Francia",
+                    "url_name": "france",
+                    "id": "fagb",
+                    "country_id": "f",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1A55BD",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Marruecos",
+                    "short_name": "Marruecos",
+                    "url_name": "morocco",
+                    "id": "fajd",
+                    "country_id": "bch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E60000",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "france-vs-morocco",
+            "scores": [
+                2.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "09-07-2026 17:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehgbeie",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "España",
+                    "short_name": "España",
+                    "url_name": "spain",
+                    "id": "fafa",
+                    "country_id": "c",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F94046",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Bélgica",
+                    "short_name": "Bélgica",
+                    "url_name": "belgium",
+                    "id": "cdhd",
+                    "country_id": "bg",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#D42838",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "spain-vs-belgium",
+            "scores": [
+                2.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "10-07-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehgahcb",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Noruega",
+                    "short_name": "Noruega",
+                    "url_name": "norway",
+                    "id": "cdhg",
+                    "country_id": "ch",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#E63237",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Inglaterra",
+                    "short_name": "Inglaterra",
+                    "url_name": "england",
+                    "id": "fafe",
+                    "country_id": "b",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DFE3EB",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "norway-vs-england",
+            "scores": [
+                1.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "En Tiempo Extra",
+                "short_name": "En Tiempo Extra",
+                "symbol_name": "TE"
+            },
+            "start_time": "11-07-2026 18:00",
+            "game_time": 120,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "En Tiempo Extra"
+        },
+        {
+            "id": "ehgcaec",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "Argentina",
+                    "short_name": "Argentina",
+                    "url_name": "argentina",
+                    "id": "cdhi",
+                    "country_id": "ba",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Suiza",
+                    "short_name": "Suiza",
+                    "url_name": "switzerland",
+                    "id": "fadc",
+                    "country_id": "bf",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DE152F",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "argentina-vs-switzerland",
+            "scores": [
+                3.0,
+                1.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "En Tiempo Extra",
+                "short_name": "En Tiempo Extra",
+                "symbol_name": "TE"
+            },
+            "start_time": "11-07-2026 22:00",
+            "game_time": 120,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "En Tiempo Extra"
+        },
+        {
+            "id": "ehgejfb",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Francia",
+                    "short_name": "Francia",
+                    "url_name": "france",
+                    "id": "fagb",
+                    "country_id": "f",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1A55BD",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "España",
+                    "short_name": "España",
+                    "url_name": "spain",
+                    "id": "fafa",
+                    "country_id": "c",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F94046",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "france-vs-spain",
+            "scores": [
+                0.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "14-07-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehgjhcc",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Inglaterra",
+                    "short_name": "Inglaterra",
+                    "url_name": "england",
+                    "id": "fafe",
+                    "country_id": "b",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DFE3EB",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Argentina",
+                    "short_name": "Argentina",
+                    "url_name": "argentina",
+                    "id": "cdhi",
+                    "country_id": "ba",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "england-vs-argentina",
+            "scores": [
+                1.0,
+                2.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "15-07-2026 16:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehhdcbe",
+            "winner": 2,
+            "to_qualify": 2,
+            "teams": [
+                {
+                    "name": "Francia",
+                    "short_name": "Francia",
+                    "url_name": "france",
+                    "id": "fagb",
+                    "country_id": "f",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#1A55BD",
+                        "text_color": "#FFFFFF"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Inglaterra",
+                    "short_name": "Inglaterra",
+                    "url_name": "england",
+                    "id": "fafe",
+                    "country_id": "b",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#DFE3EB",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "france-vs-england",
+            "scores": [
+                4.0,
+                6.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "Finalizado",
+                "short_name": "Final",
+                "symbol_name": "Fin"
+            },
+            "start_time": "18-07-2026 18:00",
+            "game_time": 90,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "Final"
+        },
+        {
+            "id": "ehhdcbj",
+            "winner": 1,
+            "to_qualify": 1,
+            "teams": [
+                {
+                    "name": "España",
+                    "short_name": "España",
+                    "url_name": "spain",
+                    "id": "fafa",
+                    "country_id": "c",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#F94046",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                },
+                {
+                    "name": "Argentina",
+                    "short_name": "Argentina",
+                    "url_name": "argentina",
+                    "id": "cdhi",
+                    "country_id": "ba",
+                    "allow_open": true,
+                    "colors": {
+                        "color": "#FFFFFF",
+                        "text_color": "#000000"
+                    },
+                    "red_cards": 0
+                }
+            ],
+            "url_name": "spain-vs-argentina",
+            "scores": [
+                1.0,
+                0.0
+            ],
+            "status": {
+                "enum": 3,
+                "name": "En Tiempo Extra",
+                "short_name": "En Tiempo Extra",
+                "symbol_name": "TE"
+            },
+            "start_time": "19-07-2026 16:00",
+            "game_time": 120,
+            "game_time_to_display": "",
+            "game_time_status_to_display": "En Tiempo Extra"
+        }
+    ]
+}

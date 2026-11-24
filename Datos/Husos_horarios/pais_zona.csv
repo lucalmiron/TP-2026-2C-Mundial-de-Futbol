@@ -1,0 +1,49 @@
+pais,ciudad_referencia,zona_horaria
+USA,Washington D. C.,America/New_York
+Canada,Ottawa,America/Toronto
+Mexico,Ciudad de México,America/Mexico_City
+Japan,Tokio,Asia/Tokyo
+New Zealand,Wellington,Pacific/Auckland
+IR Iran,Teherán,Asia/Tehran
+Argentina,Buenos Aires,America/Argentina/Buenos_Aires
+Uzbekistan,Taskent,Asia/Tashkent
+Korea Republic,Seúl,Asia/Seoul
+Jordan,Amán,Asia/Amman
+Australia,Canberra,Australia/Sydney
+Brazil,Brasilia,America/Sao_Paulo
+Ecuador,Quito,America/Guayaquil
+Colombia,Bogotá,America/Bogota
+Paraguay,Asunción,America/Asuncion
+Uruguay,Montevideo,America/Montevideo
+Morocco,Rabat,Africa/Casablanca
+Tunisia,Túnez,Africa/Tunis
+Egypt,El Cairo,Africa/Cairo
+Algeria,Argel,Africa/Algiers
+Ghana,Acra,Africa/Accra
+Cape Verde,Praia,Atlantic/Cape_Verde
+South Africa,Pretoria,Africa/Johannesburg
+Qatar,Doha,Asia/Qatar
+England,Londres,Europe/London
+Senegal,Dakar,Africa/Dakar
+Ivory Coast,Yamusukro,Africa/Abidjan
+Saudi Arabia,Riad,Asia/Riyadh
+France,París,Europe/Paris
+Croatia,Zagreb,Europe/Zagreb
+Portugal,Lisboa,Europe/Lisbon
+Norway,Oslo,Europe/Oslo
+Germany,Berlín,Europe/Berlin
+Netherlands,Ámsterdam,Europe/Amsterdam
+Austria,Viena,Europe/Vienna
+Belgium,Bruselas,Europe/Brussels
+Scotland,Edimburgo,Europe/London
+Spain,Madrid,Europe/Madrid
+Switzerland,Berna,Europe/Zurich
+Curaçao,Willemstad,America/Curacao
+Haiti,Puerto Príncipe,America/Port-au-Prince
+Panama,Ciudad de Panamá,America/Panama
+Sweden,Estocolmo,Europe/Stockholm
+Türkiye,Ankara,Europe/Istanbul
+Czechia,Praga,Europe/Prague
+Bosnia and Herzegovina,Sarajevo,Europe/Sarajevo
+Congo DR,Kinshasa,Africa/Kinshasa
+Iraq,Bagdad,Asia/Baghdad

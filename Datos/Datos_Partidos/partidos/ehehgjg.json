@@ -1,0 +1,2023 @@
+{
+  "TTL": 600,
+  "cache_time": 259200,
+  "game": {
+    "id": "ehehgjg",
+    "league": {
+      "name": "Mundial",
+      "id": "fjda",
+      "url_name": "fifa-world-cup",
+      "country_id": "fe",
+      "show_country_flags": false,
+      "allow_open": true,
+      "country_name": "Internacional",
+      "is_international": true
+    },
+    "stage_round_name": "16avos de final",
+    "winner": 1,
+    "to_qualify": 1,
+    "teams": [
+      {
+        "name": "Brasil",
+        "short_name": "Brasil",
+        "url_name": "brazil",
+        "id": "cdhj",
+        "country_id": "cb",
+        "allow_open": true,
+        "colors": {
+          "color": "#EAE380",
+          "text_color": "#000000"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Casemiro",
+            "player_sname": "Casemiro",
+            "time": 56.0,
+            "time_to_display": "56'"
+          },
+          {
+            "player_name": "Gabriel Martinelli",
+            "player_sname": "Martinelli",
+            "time": 90.0,
+            "time_to_display": "90'+5"
+          }
+        ]
+      },
+      {
+        "name": "Japón",
+        "short_name": "Japón",
+        "url_name": "japan",
+        "id": "cdic",
+        "country_id": "de",
+        "allow_open": true,
+        "colors": {
+          "color": "#233251",
+          "text_color": "#FFFFFF"
+        },
+        "red_cards": 0,
+        "goals": [
+          {
+            "player_name": "Kaishu Sano",
+            "player_sname": "Sano",
+            "time": 29.0,
+            "time_to_display": "29'"
+          }
+        ]
+      }
+    ],
+    "url_name": "brazil-vs-japan",
+    "scores": [
+      2.0,
+      1.0
+    ],
+    "status": {
+      "enum": 3,
+      "name": "Finalizado",
+      "short_name": "Final",
+      "symbol_name": "Fin"
+    },
+    "start_time": "29-06-2026 14:00",
+    "game_time": 90,
+    "game_time_to_display": "",
+    "game_time_status_to_display": "Final",
+    "players": {
+      "lineups": {
+        "support_visual_lineups": true,
+        "teams": [
+          {
+            "status": "Confirmado",
+            "formation": "4-3-3",
+            "team_num": 1,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Alisson",
+                "player_short_name": "Alisson",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 34,
+                "height": "1.93"
+              },
+              {
+                "jersey_num": 16,
+                "name": "Douglas Santos",
+                "player_short_name": "Santos",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 0
+                },
+                "age": 32,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Gabriel Magalhães",
+                "player_short_name": "Magalhães",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 33
+                },
+                "age": 28,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 4,
+                "name": "Marquinhos",
+                "player_short_name": "Marquinhos",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cb",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 66
+                },
+                "age": 32,
+                "height": "1.83"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Danilo",
+                "player_short_name": "Danilo",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 33,
+                  "y": 100
+                },
+                "age": 35,
+                "height": "1.84",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 20,
+                "name": "Lucas Paquetá",
+                "player_short_name": "Lucas Paquetá",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 46.0,
+                  "player": 19,
+                  "type": 2
+                },
+                "age": 29,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 5,
+                "name": "Casemiro",
+                "player_short_name": "Casemiro",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 17,
+                  "type": 2
+                },
+                "age": 34,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 8,
+                "name": "Bruno Guimarães",
+                "player_short_name": "Guimarães",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 66,
+                  "y": 80
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 18,
+                  "type": 2
+                },
+                "age": 28,
+                "height": "1.82",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Vinicius",
+                "player_short_name": "Vinicius",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 0
+                },
+                "age": 26,
+                "height": "1.76",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Matheus Cunha",
+                "player_short_name": "Cunha",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 50
+                },
+                "substitution": {
+                  "time": 66.0,
+                  "player": 22,
+                  "type": 2
+                },
+                "age": 27,
+                "height": "1.83",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 66.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 26,
+                "name": "Rayan",
+                "player_short_name": "Rayan",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "cb",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 99,
+                  "y": 100
+                },
+                "age": 20,
+                "height": "1.87"
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 19,
+                "name": "Endrick",
+                "player_short_name": "Endrick",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 46.0,
+                  "player": 20,
+                  "type": 1
+                },
+                "age": 20,
+                "height": "1.72",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 46.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 17,
+                "name": "Fabinho",
+                "player_short_name": "Fabinho",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "cb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 5,
+                  "type": 1
+                },
+                "age": 33,
+                "height": "1.88",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 22,
+                "name": "Gabriel Martinelli",
+                "player_short_name": "Martinelli",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "cb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 66.0,
+                  "player": 9,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.78",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 66.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 18,
+                "name": "Danilo Santos",
+                "player_short_name": "Danilo Santos",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cb",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 8,
+                  "type": 1
+                },
+                "age": 25,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 24,
+                "name": "Roger Ibanez",
+                "player_short_name": "Ibañez",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 6,
+                "name": "Alex Sandro",
+                "player_short_name": "Sandro",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 35,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 25,
+                "name": "Igor Thiago",
+                "player_short_name": "Thiago",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 15,
+                "name": "Leo Pereira",
+                "player_short_name": "Pereira",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 30,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Weverton",
+                "player_short_name": "Weverton",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 38,
+                "height": "1.89"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Luiz Henrique",
+                "player_short_name": "Henrique",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.82"
+              },
+              {
+                "jersey_num": 23,
+                "name": "Ederson Moraes",
+                "player_short_name": "Ederson",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 33,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 14,
+                "name": "Bremer",
+                "player_short_name": "Bremer",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 10,
+                "name": "Neymar",
+                "player_short_name": "Neymar",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 34,
+                "height": "1.75"
+              },
+              {
+                "jersey_num": 2,
+                "name": "Éderson",
+                "player_short_name": "Éderson",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "cb",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.83"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Carlo Ancelotti",
+                "player_short_name": "Ancelotti",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "d",
+                "is_captain": false,
+                "age": 67,
+                "height": "1.79"
+              }
+            ]
+          },
+          {
+            "status": "Confirmado",
+            "formation": "3-4-2-1",
+            "team_num": 2,
+            "starting": [
+              {
+                "jersey_num": 1,
+                "name": "Zion Suzuki",
+                "player_short_name": "Suzuki",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 0,
+                  "y": 50
+                },
+                "age": 24,
+                "height": "1.90"
+              },
+              {
+                "jersey_num": 21,
+                "name": "Hiroki Ito",
+                "player_short_name": "Ito",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 25
+                },
+                "age": 27,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 3,
+                "name": "Shogo Taniguchi",
+                "player_short_name": "Taniguchi",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 50
+                },
+                "age": 35,
+                "height": "1.85"
+              },
+              {
+                "jersey_num": 22,
+                "name": "Takehiro Tomiyasu",
+                "player_short_name": "Tomiyasu",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 25,
+                  "y": 75
+                },
+                "age": 27,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 13,
+                "name": "Keito Nakamura",
+                "player_short_name": "Nakamura",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 0
+                },
+                "substitution": {
+                  "time": 66.0,
+                  "player": 25,
+                  "type": 2
+                },
+                "age": 26,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 66.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 15,
+                "name": "Daichi Kamada",
+                "player_short_name": "Kamada",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Ofensivo",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 33
+                },
+                "substitution": {
+                  "time": 78.0,
+                  "player": 7,
+                  "type": 2
+                },
+                "age": 30,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 78.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 24,
+                "name": "Kaishu Sano",
+                "player_short_name": "Sano",
+                "position": "Mediocampista",
+                "formation_position": "Centrocampista defensivo",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 66
+                },
+                "age": 25,
+                "height": "1.76",
+                "events": {
+                  "goals": {
+                    "goals": 1,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": false,
+                    "time": -1
+                  }
+                }
+              },
+              {
+                "jersey_num": 10,
+                "name": "Ritsu Doan",
+                "player_short_name": "Doan",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "de",
+                "is_captain": true,
+                "pitch_location": {
+                  "x": 50,
+                  "y": 100
+                },
+                "substitution": {
+                  "time": 66.0,
+                  "player": 2,
+                  "type": 2
+                },
+                "age": 28,
+                "height": "1.72",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 66.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 11,
+                "name": "Daizen Maeda",
+                "player_short_name": "Maeda",
+                "position": "Delantero",
+                "formation_position": "Delantero Izquierdo",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 20
+                },
+                "substitution": {
+                  "time": 90.0,
+                  "player": 19,
+                  "type": 2
+                },
+                "age": 29,
+                "height": "1.73",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 14,
+                "name": "Junya Ito",
+                "player_short_name": "Ito",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 75,
+                  "y": 80
+                },
+                "substitution": {
+                  "time": 78.0,
+                  "player": 6,
+                  "type": 2
+                },
+                "age": 33,
+                "height": "1.77",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 78.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 18,
+                "name": "Ayase Ueda",
+                "player_short_name": "Ueda",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "de",
+                "is_captain": false,
+                "pitch_location": {
+                  "x": 100,
+                  "y": 50
+                },
+                "age": 28,
+                "height": "1.82"
+              }
+            ],
+            "bench": [
+              {
+                "jersey_num": 6,
+                "name": "Shuto Machino",
+                "player_short_name": "Machino",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "de",
+                "is_captain": false,
+                "substitution": {
+                  "time": 78.0,
+                  "player": 14,
+                  "type": 1
+                },
+                "age": 27,
+                "height": "1.85",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 78.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 19,
+                "name": "Koki Ogawa",
+                "player_short_name": "Ogawa",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "de",
+                "is_captain": false,
+                "substitution": {
+                  "time": 90.0,
+                  "player": 11,
+                  "type": 1
+                },
+                "age": 29,
+                "height": "1.86",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 90.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 2,
+                "name": "Yukinari Sugawara",
+                "player_short_name": "Sugawara",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Derecho",
+                "country_id": "de",
+                "is_captain": false,
+                "substitution": {
+                  "time": 66.0,
+                  "player": 10,
+                  "type": 1
+                },
+                "age": 26,
+                "height": "1.79",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 66.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 25,
+                "name": "Junnosuke Suzuki",
+                "player_short_name": "Suzuki",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "de",
+                "is_captain": false,
+                "substitution": {
+                  "time": 66.0,
+                  "player": 13,
+                  "type": 1
+                },
+                "age": 23,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": true,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 66.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 7,
+                "name": "Ao Tanaka",
+                "player_short_name": "Tanaka",
+                "position": "Mediocampista",
+                "formation_position": "Mediocampista Central",
+                "country_id": "de",
+                "is_captain": false,
+                "substitution": {
+                  "time": 78.0,
+                  "player": 15,
+                  "type": 1
+                },
+                "age": 28,
+                "height": "1.80",
+                "events": {
+                  "goals": {
+                    "goals": 0,
+                    "own_goals": 0
+                  },
+                  "cards": {
+                    "yellow": false,
+                    "red": false,
+                    "red_type": -1
+                  },
+                  "substitution": {
+                    "has_substitution": true,
+                    "time": 78.0
+                  }
+                }
+              },
+              {
+                "jersey_num": 9,
+                "name": "Keisuke Goto",
+                "player_short_name": "Goto",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 21,
+                "height": "1.91"
+              },
+              {
+                "jersey_num": 23,
+                "name": "Tomoki Hayakawa",
+                "player_short_name": "Hayakawa",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.87"
+              },
+              {
+                "jersey_num": 4,
+                "name": "Ko Itakura",
+                "player_short_name": "Itakura",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 8,
+                "name": "Takefusa Kubo",
+                "player_short_name": "Kubo",
+                "position": "Delantero",
+                "formation_position": "Delantero Derecho",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.73"
+              },
+              {
+                "jersey_num": 5,
+                "name": "Yuto Nagatomo",
+                "player_short_name": "Nagatomo",
+                "position": "Defensor",
+                "formation_position": "Defensa Lateral Izquierdo",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 40,
+                "height": "1.70"
+              },
+              {
+                "jersey_num": 12,
+                "name": "Keisuke Osako",
+                "player_short_name": "Osako",
+                "position": "Arquero",
+                "formation_position": "Arquero",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 27,
+                "height": "1.88"
+              },
+              {
+                "jersey_num": 20,
+                "name": "Ayumu Seko",
+                "player_short_name": "Seko",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 26,
+                "height": "1.86"
+              },
+              {
+                "jersey_num": 26,
+                "name": "Kento Shiogai",
+                "player_short_name": "Shiogai",
+                "position": "Delantero",
+                "formation_position": "Centro Delantero",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 21,
+                "height": "1.80"
+              },
+              {
+                "jersey_num": 17,
+                "name": "Yuito Suzuki",
+                "player_short_name": "Y. Suzuki",
+                "position": "Delantero",
+                "formation_position": "Segundo Delantero",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 25,
+                "height": "1.75"
+              },
+              {
+                "jersey_num": 16,
+                "name": "Tsuyoshi Watanabe",
+                "player_short_name": "Watanabe",
+                "position": "Defensor",
+                "formation_position": "Defensa Central",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 29,
+                "height": "1.84"
+              }
+            ],
+            "staff": [
+              {
+                "jersey_num": -1,
+                "name": "Hajime Moriyasu",
+                "player_short_name": "H. Moriyasu",
+                "position": "Dirección",
+                "formation_position": "Entrenador",
+                "country_id": "de",
+                "is_captain": false,
+                "age": 58
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "prediction": {
+      "pixels": {
+        "impression": [
+          "https://api-ads-v3.betforce.io/api/v1/px/4160/5171",
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=42&ad_type=native&is_mobile=false&action=impression"
+        ],
+        "click": [
+          "https://tracking.adsage.io/pixel.png?ad_source=native&placement=gc_prediction_card&country_id=AR&region_id=B&bmid=42&ad_type=native&is_mobile=false&action=click"
+        ]
+      },
+      "bookie_id": "ec",
+      "cta_link": "https://record.pba.betsson.bet.ar/_nrLvEWDn_qD1kXvT18cTCmNd7ZgqdRLk/36",
+      "options": [
+        {
+          "name": "1",
+          "votes": 208860,
+          "percentage": 75,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=ehehgjg&vote=1"
+        },
+        {
+          "name": "X",
+          "votes": 20707,
+          "percentage": 8,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=ehehgjg&vote=x"
+        },
+        {
+          "name": "2",
+          "votes": 46425,
+          "percentage": 17,
+          "vote_url": "https://api.promiedos.com.ar/gamecenter/vote/?gameid=ehehgjg&vote=2"
+        }
+      ],
+      "total_votes": 292551,
+      "odds": [
+        {
+          "name": "1",
+          "value": 1.73,
+          "trend": 0
+        },
+        {
+          "name": "X",
+          "value": 3.6,
+          "trend": 0
+        },
+        {
+          "name": "2",
+          "value": 5.0,
+          "trend": 0
+        }
+      ]
+    },
+    "game_info": [
+      {
+        "name": "Estadio",
+        "value": "NRG Stadium (Houston)"
+      },
+      {
+        "name": "Capacidad",
+        "value": "68777"
+      },
+      {
+        "name": "Árbitro",
+        "value": "Maurizio Mariani (Italia)"
+      },
+      {
+        "name": "Arg TV",
+        "value": "Telefe, Mitelefe.com,  , DAZN, Disney+ Premium, DSports"
+      }
+    ],
+    "events": [
+      {
+        "name": "Entretiempo",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          0.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "12'",
+            "events": [
+              {
+                "type": 4,
+                "time": "12'",
+                "team": 2,
+                "texts": [
+                  "Kaishu Sano"
+                ],
+                "player_jersey_num": 24
+              }
+            ]
+          },
+          {
+            "time": "14'",
+            "events": [
+              {
+                "type": 4,
+                "time": "14'",
+                "team": 1,
+                "texts": [
+                  "Casemiro"
+                ],
+                "player_jersey_num": 5
+              }
+            ]
+          },
+          {
+            "time": "29'",
+            "events": [
+              {
+                "type": 1,
+                "time": "29'",
+                "team": 2,
+                "texts": [
+                  "Kaishu Sano"
+                ],
+                "player_jersey_num": 24
+              }
+            ]
+          },
+          {
+            "time": "45'",
+            "events": [
+              {
+                "type": 4,
+                "time": "45'",
+                "team": 2,
+                "texts": [
+                  "Daichi Kamada"
+                ],
+                "player_jersey_num": 15
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Fin de los 90 minutos",
+        "show_stage_title": true,
+        "is_penalties_stage": false,
+        "scores": [
+          2.0,
+          1.0
+        ],
+        "rows": [
+          {
+            "time": "46'",
+            "events": [
+              {
+                "type": 15,
+                "time": "46'",
+                "team": 1,
+                "texts": [
+                  "Endrick",
+                  "Lucas Paquetá"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "48'",
+            "events": [
+              {
+                "type": 4,
+                "time": "48'",
+                "team": 1,
+                "texts": [
+                  "Danilo"
+                ],
+                "player_jersey_num": 13
+              }
+            ]
+          },
+          {
+            "time": "56'",
+            "events": [
+              {
+                "type": 1,
+                "time": "56'",
+                "team": 1,
+                "texts": [
+                  "Casemiro",
+                  "Gabriel Magalhães"
+                ],
+                "player_jersey_num": 5
+              }
+            ]
+          },
+          {
+            "time": "58'",
+            "events": [
+              {
+                "type": 10,
+                "time": "58'",
+                "team": 1,
+                "texts": [
+                  "Vinicius"
+                ],
+                "player_jersey_num": 7
+              }
+            ]
+          },
+          {
+            "time": "66'",
+            "events": [
+              {
+                "type": 15,
+                "time": "66'",
+                "team": 1,
+                "texts": [
+                  "Gabriel Martinelli",
+                  "Matheus Cunha"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "66'",
+                "team": 2,
+                "texts": [
+                  "Yukinari Sugawara",
+                  "Ritsu Doan"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "66'",
+            "events": [
+              {
+                "type": 15,
+                "time": "66'",
+                "team": 2,
+                "texts": [
+                  "Junnosuke Suzuki",
+                  "Keito Nakamura"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "78'",
+            "events": [
+              {
+                "type": 15,
+                "time": "78'",
+                "team": 2,
+                "texts": [
+                  "Ao Tanaka",
+                  "Daichi Kamada"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "78'",
+            "events": [
+              {
+                "type": 15,
+                "time": "78'",
+                "team": 2,
+                "texts": [
+                  "Shuto Machino",
+                  "Junya Ito"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "84'",
+            "events": [
+              {
+                "type": 4,
+                "time": "84'",
+                "team": 2,
+                "texts": [
+                  "Junnosuke Suzuki"
+                ],
+                "player_jersey_num": 25
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 1,
+                "texts": [
+                  "Fabinho",
+                  "Casemiro"
+                ]
+              },
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 2,
+                "texts": [
+                  "Koki Ogawa",
+                  "Daizen Maeda"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'",
+            "events": [
+              {
+                "type": 15,
+                "time": "90'",
+                "team": 1,
+                "texts": [
+                  "Danilo Santos",
+                  "Bruno Guimarães"
+                ]
+              }
+            ]
+          },
+          {
+            "time": "90'+5",
+            "events": [
+              {
+                "type": 1,
+                "time": "90'+5",
+                "team": 1,
+                "texts": [
+                  "Gabriel Martinelli",
+                  "Bruno Guimarães"
+                ],
+                "player_jersey_num": 22
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "statistics": [
+      {
+        "name": "Total Remates",
+        "values": [
+          "19",
+          "5"
+        ],
+        "percentages": [
+          0.79,
+          0.21
+        ]
+      },
+      {
+        "name": "Remates al arco",
+        "values": [
+          "7",
+          "2"
+        ],
+        "percentages": [
+          0.78,
+          0.22
+        ]
+      },
+      {
+        "name": "Posesión",
+        "values": [
+          "69%",
+          "31%"
+        ],
+        "percentages": [
+          0.69,
+          0.31
+        ]
+      },
+      {
+        "name": "Ataques",
+        "values": [
+          "125",
+          "64"
+        ],
+        "percentages": [
+          0.66,
+          0.34
+        ]
+      },
+      {
+        "name": "Saques de falta",
+        "values": [
+          "10",
+          "4"
+        ],
+        "percentages": [
+          0.71,
+          0.29
+        ]
+      },
+      {
+        "name": "Saques de Esquina",
+        "values": [
+          "6",
+          "2"
+        ],
+        "percentages": [
+          0.75,
+          0.25
+        ]
+      },
+      {
+        "name": "Fueras de Juego",
+        "values": [
+          "1",
+          "0"
+        ],
+        "percentages": [
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "name": "Faltas",
+        "values": [
+          "4",
+          "13"
+        ],
+        "percentages": [
+          0.24,
+          0.76
+        ]
+      },
+      {
+        "name": "Tarjetas Amarillas",
+        "values": [
+          "2",
+          "3"
+        ],
+        "percentages": [
+          0.4,
+          0.6
+        ]
+      },
+      {
+        "name": "Tarjetas Rojas",
+        "values": [
+          "0",
+          "0"
+        ],
+        "percentages": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "head_to_head": {
+      "home_wins": 4,
+      "away_wins": 1,
+      "draws": 0,
+      "games": [
+        {
+          "id": "ehehgjg",
+          "league": {
+            "name": "Mundial",
+            "id": "fjda",
+            "url_name": "fifa-world-cup",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": true,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "stage_round_name": "16avos de final",
+          "winner": 1,
+          "to_qualify": 1,
+          "teams": [
+            {
+              "name": "Brasil",
+              "short_name": "Brasil",
+              "url_name": "brazil",
+              "id": "cdhj",
+              "country_id": "cb",
+              "allow_open": true,
+              "colors": {
+                "color": "#EAE380",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Japón",
+              "short_name": "Japón",
+              "url_name": "japan",
+              "id": "cdic",
+              "country_id": "de",
+              "allow_open": true,
+              "colors": {
+                "color": "#233251",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "brazil-vs-japan",
+          "scores": [
+            2.0,
+            1.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "29-06-2026 14:00",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 1.73,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 3.6,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 5.0,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "efdeggj",
+          "league": {
+            "name": "Amistoso Internacional",
+            "id": "fha",
+            "url_name": "friendly-international",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 1,
+          "teams": [
+            {
+              "name": "Japón",
+              "short_name": "Japón",
+              "url_name": "japan",
+              "id": "cdic",
+              "country_id": "de",
+              "allow_open": true,
+              "colors": {
+                "color": "#233251",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Brasil",
+              "short_name": "Brasil",
+              "url_name": "brazil",
+              "id": "cdhj",
+              "country_id": "cb",
+              "allow_open": true,
+              "colors": {
+                "color": "#EAE380",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "japan-vs-brazil",
+          "scores": [
+            3.0,
+            2.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "14-10-2025 07:30",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 5.0,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 4.5,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 1.55,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "dfefgfc",
+          "league": {
+            "name": "Amistoso Internacional",
+            "id": "fha",
+            "url_name": "friendly-international",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 2,
+          "teams": [
+            {
+              "name": "Japón",
+              "short_name": "Japón",
+              "url_name": "japan",
+              "id": "cdic",
+              "country_id": "de",
+              "allow_open": true,
+              "colors": {
+                "color": "#233251",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Brasil",
+              "short_name": "Brasil",
+              "url_name": "brazil",
+              "id": "cdhj",
+              "country_id": "cb",
+              "allow_open": true,
+              "colors": {
+                "color": "#EAE380",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "japan-vs-brazil",
+          "scores": [
+            0.0,
+            1.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "06-06-2022 07:20",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 6.0,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 4.33,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 1.44,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "bfdafgc",
+          "league": {
+            "name": "Amistoso Internacional",
+            "id": "fha",
+            "url_name": "friendly-international",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 2,
+          "teams": [
+            {
+              "name": "Japón",
+              "short_name": "Japón",
+              "url_name": "japan",
+              "id": "cdic",
+              "country_id": "de",
+              "allow_open": true,
+              "colors": {
+                "color": "#233251",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Brasil",
+              "short_name": "Brasil",
+              "url_name": "brazil",
+              "id": "cdhj",
+              "country_id": "cb",
+              "allow_open": true,
+              "colors": {
+                "color": "#EAE380",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "japan-vs-brazil",
+          "scores": [
+            1.0,
+            3.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "10-11-2017 09:00",
+          "game_time_status_to_display": "Final",
+          "main_odds": {
+            "options": [
+              {
+                "name": "1",
+                "value": 13.0,
+                "trend": 0
+              },
+              {
+                "name": "X",
+                "value": 6.0,
+                "trend": 0
+              },
+              {
+                "name": "2",
+                "value": 1.22,
+                "trend": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "fjfdfh",
+          "league": {
+            "name": "Amistoso Internacional",
+            "id": "fha",
+            "url_name": "friendly-international",
+            "country_id": "fe",
+            "show_country_flags": false,
+            "allow_open": false,
+            "country_name": "Internacional",
+            "is_international": true
+          },
+          "winner": 2,
+          "teams": [
+            {
+              "name": "Japón",
+              "short_name": "Japón",
+              "url_name": "japan",
+              "id": "cdic",
+              "country_id": "de",
+              "allow_open": true,
+              "colors": {
+                "color": "#233251",
+                "text_color": "#FFFFFF"
+              },
+              "red_cards": 0
+            },
+            {
+              "name": "Brasil",
+              "short_name": "Brasil",
+              "url_name": "brazil",
+              "id": "cdhj",
+              "country_id": "cb",
+              "allow_open": true,
+              "colors": {
+                "color": "#EAE380",
+                "text_color": "#000000"
+              },
+              "red_cards": 0
+            }
+          ],
+          "url_name": "japan-vs-brazil",
+          "scores": [
+            0.0,
+            4.0
+          ],
+          "status": {
+            "enum": 3,
+            "name": "Finalizado",
+            "short_name": "Final",
+            "symbol_name": "Fin"
+          },
+          "start_time": "14-10-2014 07:45",
+          "game_time_status_to_display": "Final"
+        }
+      ]
+    },
+    "recent_form": {
+      "home": [
+        1,
+        1,
+        2,
+        0,
+        1
+      ],
+      "away": [
+        1,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    "videos": [
+      {
+        "source": "youtube",
+        "url": "https://www.youtube.com/watch?v=0wGLeNHWslY",
+        "video_id": "0wGLeNHWslY",
+        "thumbnail_url": "https://img.youtube.com/vi/0wGLeNHWslY/maxresdefault.jpg",
+        "embedding_allowed": false
+      }
+    ]
+  }
+}

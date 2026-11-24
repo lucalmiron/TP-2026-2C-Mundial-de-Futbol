@@ -1,0 +1,384 @@
+--/Universidad Nacional de La Matanza
+--/Bases de Datos Aplicadas - Comision 02
+
+--/Grupo 7 - Integrantes:
+--Almiron, Luca
+--Figueroa, Santiago
+--Ruarte, Fidel
+--Villalba, Leandro
+
+--/Fecha: 26/10/26
+
+--Test de los SP de Espacio Publicitario
+
+IF DB_NAME() <> N'MUNDIALtesting'
+    THROW 51000, 'Seleccionar la base MUNDIALtesting para estas pruebas.', 1;
+GO
+
+-- Setup: crear una sede de prueba para los tests
+-- Use a temp table to persist the value across GO batches
+IF OBJECT_ID('tempdb..#TestSetup') IS NOT NULL DROP TABLE #TestSetup;
+CREATE TABLE #TestSetup (testSedeId INT);
+
+IF NOT EXISTS (SELECT 1 FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test')
+    EXEC SP.uspHusoHorario_Registrar @nombre = 'UTC-3 Test';
+GO
+
+-- Esperado: se crean 2 paises.
+
+
+IF NOT EXISTS (SELECT 1 FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP')
+	EXEC SP.uspIdioma_Registrar @descripcion = 'Espanol EP';
+GO
+
+DECLARE @husoT INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test');
+DECLARE @idiomaT INT = (SELECT IdIdioma FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP');
+
+IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1')
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP1', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 21;
+IF NOT EXISTS (SELECT 1 FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP2')
+	EXEC SP.uspPais_Registrar @nombre = 'Pais Test EP2', @idioma = @idiomaT, @huso = @husoT, @ptIni = '17:00', @ptFin = '23:00', @pbi = 22;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sedes.Sede WHERE Nombre = 'Sede Test')
+BEGIN
+    DECLARE @husoId INT = (SELECT IdHuso FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test');
+    DECLARE @paisId INT = (SELECT IdPais FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
+    EXEC SP.uspSede_Registrar @nombre = 'Sede Test', @ciudad = 'Ciudad Test', @capacidad = 50000, @pais = @paisId, @huso = @husoId;
+END
+GO
+
+INSERT INTO #TestSetup (testSedeId)
+SELECT IdSede FROM sedes.Sede WHERE Nombre = 'Sede Test';
+GO
+
+--/ALTA
+
+-- Esperado: imprime 'Error/es: - Valor invalido: Tipo.'
+DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
+BEGIN TRY
+EXEC SP.EspacioPublicitario_Registrar @tipo = '', @costo = 5000, @idSede = @testSedeId, @numero = 1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 51000 THROW;
+END CATCH
+GO
+
+-- Esperado: imprime 'Error/es: - Valor invalido: Costo.'
+DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
+BEGIN TRY
+EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = NULL, @idSede = @testSedeId, @numero = 1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 51000 THROW;
+END CATCH
+GO
+
+-- Esperado: imprime 'Error/es: - Valor invalido: Costo.'
+DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
+BEGIN TRY
+EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = -100, @idSede = @testSedeId, @numero = 1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 51000 THROW;
+END CATCH
+GO
+
+-- Esperado: no imprime nada, se insertan 4 filas (los 4 tipos de espacio del torneo).
+DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
+IF NOT EXISTS (SELECT 1 FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Panel Perimetral' AND S.Nombre = 'Sede Test')
+    EXEC SP.EspacioPublicitario_Registrar @tipo = 'Panel Perimetral', @costo = 5000, @idSede = @testSedeId, @numero = 1;
+GO
+
+DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
+IF NOT EXISTS (SELECT 1 FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test')
+    EXEC SP.EspacioPublicitario_Registrar @tipo = 'Cubo LED', @costo = 7000, @idSede = @testSedeId, @numero = 2;
+GO
+
+DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
+IF NOT EXISTS (SELECT 1 FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Tunnel de Acceso' AND S.Nombre = 'Sede Test')
+    EXEC SP.EspacioPublicitario_Registrar @tipo = 'Tunnel de Acceso', @costo = 6500, @idSede = @testSedeId, @numero = 3;
+GO
+
+DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
+IF NOT EXISTS (SELECT 1 FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Pantalla Principal' AND S.Nombre = 'Sede Test')
+    EXEC SP.EspacioPublicitario_Registrar @tipo = 'Pantalla Principal', @costo = 9000, @idSede = @testSedeId, @numero = 4;
+GO
+
+-- Esperado: 4 filas.
+SELECT * FROM publicidad.EspacioPublicitario;
+GO
+
+-- Esperado: imprime 'Error/es: - Valor duplicado: Tipo de espacio.'
+DECLARE @testSedeId INT = (SELECT testSedeId FROM #TestSetup);
+BEGIN TRY
+EXEC SP.EspacioPublicitario_Registrar @tipo = 'Cubo LED', @costo = 7000, @idSede = @testSedeId, @numero = 2;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 51000 THROW;
+END CATCH
+GO
+
+--/UPDATE
+--Los ids se resuelven por nombre para que el test se pueda ejecutar mas de una vez.
+
+-- Esperado: el Cubo LED pasa a Costo = 7500.
+DECLARE @idCubo INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test');
+EXEC SP.EspacioPublicitario_Update @idEP = @idCubo, @costo = 7500;
+GO
+
+-- Esperado: 1 fila con Tipo = Cubo LED y Costo = 7500.
+SELECT * FROM publicidad.EspacioPublicitario WHERE Tipo = 'Cubo LED';
+GO
+
+-- Esperado: imprime 'Error/es: - Valor inexistente: IdEP.'
+BEGIN TRY
+EXEC SP.EspacioPublicitario_Update @idEP = 999999, @costo = 7500;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 51000 THROW;
+END CATCH
+GO
+
+-- Esperado: imprime 'Error/es: - Valor invalido: Costo.'
+DECLARE @idCubo2 INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test');
+BEGIN TRY
+EXEC SP.EspacioPublicitario_Update @idEP = @idCubo2, @costo = -1;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 51000 THROW;
+END CATCH
+GO
+
+-- Esperado: rechaza el tipo vacio.
+DECLARE @idCubo3 INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test');
+BEGIN TRY
+EXEC SP.EspacioPublicitario_Update @idEP = @idCubo3, @tipo = '';
+    THROW 51999, 'Se esperaba un rechazo.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 51000 THROW;
+END CATCH
+GO
+
+--/BAJA
+
+-- Esperado: imprime 'Error/es: - Valor inexistente: IdEP.'
+BEGIN TRY
+EXEC SP.EspacioPublicitario_Bajar @idEP = 999999;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 51000 THROW;
+END CATCH
+GO
+
+-- Esperado: se borra la fila, quedan 3 filas.
+DECLARE @idCubo4 INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Cubo LED' AND S.Nombre = 'Sede Test');
+EXEC SP.EspacioPublicitario_Bajar @idEP = @idCubo4;
+GO
+
+SELECT * FROM publicidad.EspacioPublicitario;
+GO
+
+--/BAJA CON REGISTROS RELACIONADOS
+--Para bloquear la baja hace falta una publicidad exhibida en ese espacio,
+--y para registrarla hace falta la cadena Pais > Mundial > Selecciones > Sede > Fase > Partido.
+
+DECLARE @epPais1 INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
+
+-- Esperado: se crea el mundial.
+IF NOT EXISTS (SELECT 1 FROM sedes.Mundial WHERE IdPais = @epPais1)
+	EXEC SP.uspMundial_Registrar @idPais = @epPais1, @fechaInicio = '2026-06-01', @fechaFin = '2026-07-30',
+		@tamMin = 11, @tamMax = 23, @ventanas = 3, @cantidad = 5, @suspMax = 2, @suspTiempo = 1;
+GO
+
+-- Esperado: se crea el grupo.
+IF NOT EXISTS (SELECT 1 FROM equipos.Grupo WHERE NOMBRE = 'Grupo EP')
+	EXEC SP.uspGrupo_Registrar @nombre = 'Grupo EP';
+GO
+
+DECLARE @epPais1b  INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
+DECLARE @epMundial INT = (SELECT MIN(IdMundial) FROM sedes.Mundial WHERE IdPais = @epPais1b);
+DECLARE @epGrupo   INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo EP');
+
+-- Esperado: se crea la seleccion del primer pais.
+IF NOT EXISTS (SELECT 1 FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF EP1')
+	EXEC SP.uspSeleccion_Registrar @idPais = @epPais1b, @idMundial = @epMundial, @idGrupo = @epGrupo, @confederacion = 'CONF EP1';
+GO
+
+DECLARE @epPais2    INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP2');
+DECLARE @epPais1b   INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
+DECLARE @epMundial2 INT = (SELECT MIN(IdMundial) FROM sedes.Mundial WHERE IdPais = @epPais1b);
+DECLARE @epGrupo2   INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo EP');
+
+-- Esperado: se crea la seleccion del segundo pais.
+IF NOT EXISTS (SELECT 1 FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF EP2')
+	EXEC SP.uspSeleccion_Registrar @idPais = @epPais2, @idMundial = @epMundial2, @idGrupo = @epGrupo2, @confederacion = 'CONF EP2';
+GO
+
+-- Esperado: se crea la fase.
+IF NOT EXISTS (SELECT 1 FROM partidos.Fase WHERE Descripcion = 'Grupos')
+	EXEC SP.uspFase_Registrar @Descripcion = 'Grupos';
+GO
+
+DECLARE @epSede     INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test');
+DECLARE @epFase     INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Grupos');
+DECLARE @epPais1c   INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
+DECLARE @epMundial3 INT = (SELECT MIN(IdMundial) FROM sedes.Mundial WHERE IdPais = @epPais1c);
+DECLARE @epSel1     INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF EP1');
+DECLARE @epSel2     INT = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION = 'CONF EP2');
+
+-- Esperado: se crea el partido.
+IF NOT EXISTS (SELECT 1 FROM partidos.Partido WHERE IdFase = @epFase AND Eq1 = @epSel1 AND Eq2 = @epSel2)
+	EXEC SP.uspPartido_Registrar @IdFase = @epFase, @IdSede = @epSede, @IdMundial = @epMundial3,
+		@Eq1 = @epSel1, @Eq2 = @epSel2, @Fecha = '2026-06-15', @HoraUTC = '16:00', @HoraLocal = '13:00';
+GO
+
+-- Esperado: se crea la campana y la publicidad.
+IF NOT EXISTS (SELECT 1 FROM publicidad.Campania WHERE Nombre = 'Campana Test EP')
+	EXEC SP.uspCampania_Registrar @nombre = 'Campana Test EP', @descripcion = 'Campana del test de espacio';
+GO
+
+DECLARE @epCamp INT = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campana Test EP');
+DECLARE @epIdioma2 INT = COALESCE((SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP'),
+								  (SELECT MIN(IdIdioma) FROM arbitros.Idioma));
+
+IF NOT EXISTS (SELECT 1 FROM publicidad.Publicidad WHERE Nombre = 'Publicidad Test EP')
+	EXEC SP.uspPublicidad_Registrar @nombre = 'Publicidad Test EP', @idCampania = @epCamp, @idIdioma = @epIdioma2;
+GO
+
+DECLARE @epPub     INT = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Publicidad Test EP');
+DECLARE @epPartido INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test' AND P.Fecha = '2026-06-15');
+DECLARE @epEspacio INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Panel Perimetral' AND S.Nombre = 'Sede Test');
+
+-- Esperado: se crea el historial de exhibicion de esa publicidad en el Panel Perimetral.
+DECLARE @sedeEspacio INT = (SELECT IdSede FROM publicidad.EspacioPublicitario WHERE IdEP = @epEspacio);
+IF NOT EXISTS (SELECT 1 FROM publicidad.CostoFranja WHERE IdSede = @sedeEspacio AND TipoFranja = 'General')
+    EXEC SP.CostoFranja_Registrar @tipoFranja = 'General', @costo = 100, @idSede = @sedeEspacio;
+DECLARE @tarifa INT = (SELECT MIN(IdCF) FROM publicidad.CostoFranja WHERE IdSede = @sedeEspacio AND TipoFranja = 'General');
+IF NOT EXISTS (SELECT 1 FROM publicidad.HistorialPublicidad WHERE IdPublicidad = @epPub AND IdEP = @epEspacio)
+	EXEC SP.uspHistorialPublicidad_Registrar @idPublicidad = @epPub, @idPartido = @epPartido, @idEP = @epEspacio, @costoFinal = 5000, @idCF = @tarifa;
+GO
+
+-- Esperado: imprime 'Error/es: - Existen 1 o mas registros relacionados: Historial Publicidad. Elimine dichos registros para continuar.'
+DECLARE @epEspacio2 INT = (SELECT MIN(E.IdEP) FROM publicidad.EspacioPublicitario E INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE E.Tipo = 'Panel Perimetral' AND S.Nombre = 'Sede Test');
+BEGIN TRY
+EXEC SP.EspacioPublicitario_Bajar @idEP = @epEspacio2;
+    THROW 51999, 'Se esperaba un rechazo.', 1;
+END TRY
+BEGIN CATCH
+    IF ERROR_NUMBER() <> 51000 THROW;
+END CATCH
+GO
+
+-- Esperado: la fila sigue existiendo.
+SELECT * FROM publicidad.EspacioPublicitario WHERE Tipo = 'Panel Perimetral';
+GO
+
+--/Limpieza de lo que genera el test
+--Todo en un solo bloque para no perder las variables. Cada loop tiene su propio contador y tope.
+
+--1) El historial de publicidad, la publicidad y la campana.
+DECLARE @epId INT, @i INT = 0;
+
+WHILE @i < 5
+BEGIN
+	SET @epId = (SELECT MIN(H.IdHistorial) FROM publicidad.HistorialPublicidad H INNER JOIN publicidad.EspacioPublicitario E ON E.IdEP = H.IdEP INNER JOIN sedes.Sede S ON S.IdSede = E.IdSede WHERE S.Nombre = 'Sede Test' AND E.Tipo IN ('Panel Perimetral','Cubo LED','Tunnel de Acceso','Pantalla Principal'));
+	IF @epId IS NULL BREAK;
+	EXEC SP.uspHistorialPublicidad_Bajar @id = @epId;
+	SET @i = @i + 1;
+END
+
+SET @i = 0;
+WHILE @i < 5
+BEGIN
+	SET @epId = (SELECT MIN(IdPublicidad) FROM publicidad.Publicidad WHERE Nombre = 'Publicidad Test EP');
+	IF @epId IS NULL BREAK;
+	EXEC SP.uspPublicidad_Bajar @id = @epId;
+	SET @i = @i + 1;
+END
+
+SET @i = 0;
+WHILE @i < 5
+BEGIN
+	SET @epId = (SELECT MIN(IdCampania) FROM publicidad.Campania WHERE Nombre = 'Campana Test EP');
+	IF @epId IS NULL BREAK;
+	EXEC SP.uspCampania_Bajar @id = @epId;
+	SET @i = @i + 1;
+END
+
+--2) El partido, la fase y la sede.
+DECLARE @epPartidoB INT = (SELECT MIN(P.IdPartido) FROM partidos.Partido P INNER JOIN sedes.Sede S ON S.IdSede = P.IdSede WHERE S.Nombre = 'Sede Test' AND P.Fecha = '2026-06-15');
+IF @epPartidoB IS NOT NULL
+	EXEC SP.uspPartido_Bajar @Id = @epPartidoB;
+
+DECLARE @epFaseB INT = (SELECT MIN(IdFase) FROM partidos.Fase WHERE Descripcion = 'Grupos');
+IF @epFaseB IS NOT NULL
+BEGIN
+    BEGIN TRY
+        EXEC SP.uspFase_Bajar @Id = @epFaseB;
+    END TRY
+    BEGIN CATCH
+        IF ERROR_NUMBER() <> 50000 OR ERROR_MESSAGE() NOT LIKE '%Existen partidos con esta fase%' THROW;
+        PRINT 'Omitido: la fase Grupos tiene partidos asociados (datos importados).';
+    END CATCH;
+END
+
+DECLARE @epSedeB INT = (SELECT MIN(IdSede) FROM sedes.Sede WHERE Nombre = 'Sede Test');
+DELETE publicidad.EspacioPublicitario WHERE IdSede = @epSedeB;
+DELETE publicidad.CostoFranja WHERE IdSede = @epSedeB;
+IF @epSedeB IS NOT NULL
+	EXEC SP.uspSede_Bajar @idSede = @epSedeB;
+
+--3) Las selecciones, el grupo, el mundial, los paises, el huso horario y el idioma.
+DECLARE @epSelB INT;
+SET @i = 0;
+WHILE @i < 5
+BEGIN
+	SET @epSelB = (SELECT MIN(IdSeleccion) FROM equipos.Seleccion WHERE CONFEDERACION LIKE 'CONF EP%');
+	IF @epSelB IS NULL BREAK;
+	EXEC SP.uspSeleccion_Bajar @idSeleccion = @epSelB;
+	SET @i = @i + 1;
+END
+
+DECLARE @epGrupoB INT = (SELECT MIN(IdGrupo) FROM equipos.Grupo WHERE NOMBRE = 'Grupo EP');
+IF @epGrupoB IS NOT NULL
+	EXEC SP.uspGrupo_Bajar @id = @epGrupoB;
+
+DECLARE @epPaisE INT = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE = 'Pais Test EP1');
+DECLARE @epMundialB INT = (SELECT MIN(IdMundial) FROM sedes.Mundial WHERE IdPais = @epPaisE);
+IF @epMundialB IS NOT NULL
+	EXEC SP.uspMundial_Bajar @id = @epMundialB;
+
+DECLARE @epPaisB INT;
+SET @i = 0;
+WHILE @i < 5
+BEGIN
+	SET @epPaisB = (SELECT MIN(IdPais) FROM equipos.Pais WHERE NOMBRE LIKE 'Pais Test EP%');
+	IF @epPaisB IS NULL BREAK;
+	EXEC SP.uspPais_Bajar @idPais = @epPaisB;
+	SET @i = @i + 1;
+END
+
+DECLARE @epIdiomaB INT = (SELECT MIN(IdIdioma) FROM arbitros.Idioma WHERE Descripcion = 'Espanol EP');
+IF @epIdiomaB IS NOT NULL
+	EXEC SP.uspIdioma_Bajar @id = @epIdiomaB;
+
+DECLARE @epHusoB INT = (SELECT MIN(IdHuso) FROM sedes.HusoHorario WHERE Nombre = 'UTC-3 Test');
+IF @epHusoB IS NOT NULL
+	EXEC SP.uspHusoHorario_Bajar @idHuso = @epHusoB;
+
+-- Esperado: no queda nada del test.
+SELECT * FROM publicidad.HistorialPublicidad;
+SELECT * FROM publicidad.EspacioPublicitario WHERE Tipo = 'Panel Perimetral';
+GO
+
+DROP TABLE #TestSetup;
+GO
