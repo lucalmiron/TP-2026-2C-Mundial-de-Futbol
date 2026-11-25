@@ -35,6 +35,7 @@ IF @@TRANCOUNT <> 0 OR (2 & @@OPTIONS) = 2
 
 IF OBJECT_ID(N'tempdb..#IdiomasCrudo') IS NOT NULL DROP TABLE #IdiomasCrudo;
 IF OBJECT_ID(N'tempdb..#IdiomasStaging') IS NOT NULL DROP TABLE #IdiomasStaging;
+GO
 
 ---------------------------------------------------------------------------------------
 -- FASE 1 - STAGING
@@ -60,6 +61,12 @@ CREATE TABLE #IdiomasStaging (
     Estado VARCHAR(20) COLLATE DATABASE_DEFAULT NOT NULL DEFAULT 'Pendiente',
     Detalle NVARCHAR(2048) COLLATE DATABASE_DEFAULT
 );
+
+-- Defensivo: garantizar que la columna IdIdioma exista en el staging
+-- (algunos entornos no la materializan desde el CREATE del mismo lote).
+IF NOT EXISTS (SELECT 1 FROM tempdb.sys.columns
+               WHERE object_id = OBJECT_ID('tempdb..#IdiomasStaging') AND name = 'IdIdioma')
+    ALTER TABLE #IdiomasStaging ADD IdIdioma INT;
 
 BEGIN TRY
     -- SQLCMD sustituye la ruta antes de enviar el lote a SQL Server.

@@ -21,11 +21,11 @@
 -- UNICO LUGAR A EDITAR: cada integrante pone aqui la ruta de su carpeta del proyecto.
 -- No hay que definir variables de Windows ni tocar ningun otro archivo.
 -- santutu
-:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
+--:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
 -- fidel
 
 --L
---:setvar TP_BDDA "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol"
+:setvar TP_BDDA "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol"
 
 -- IGNORE: sigue ejecutando aunque un importador marque errores permisibles.
 -- Para cortar ante el primer error, cambiar por :ON ERROR EXIT
