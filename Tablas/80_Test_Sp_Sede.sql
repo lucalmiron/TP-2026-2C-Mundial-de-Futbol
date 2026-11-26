@@ -1,6 +1,6 @@
 -- Universidad Nacional de La Matanza - Bases de Datos Aplicadas - Grupo 7
 -- Almiron, Luca; Figueroa, Santiago; Ruarte, Fidel; Villalba, Leandro.
--- Fecha: 26/10/26.
+-- Fecha: 26/11/26 (se agregan pruebas de latitud/longitud para Power BI).
 -- Objetivo: comprobar ABM de sede con identificadores obtenidos de sus datos de prueba.
 IF DB_NAME() <> N'MUNDIALtesting'
     THROW 51000, 'Seleccionar la base MUNDIALtesting para estas pruebas.', 1;
@@ -74,13 +74,16 @@ BEGIN CATCH
 END CATCH;
 PRINT 'OK 5: Huso horario';
 
-EXEC SP.uspSede_Registrar 'Sede prueba 84','Ciudad prueba',50000,@pais,@huso;
+EXEC SP.uspSede_Registrar 'Sede prueba 84','Ciudad prueba',50000,@pais,@huso,-34.603722,-58.381592;
 SELECT @sede=IdSede FROM sedes.Sede WHERE Nombre='Sede prueba 84' AND IdPais=@pais;
 IF @sede IS NULL THROW 51999,'No se registro la sede.',1;
+IF NOT EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede=@sede
+              AND Latitud=-34.603722 AND Longitud=-58.381592)
+ THROW 51999,'No se registraron las coordenadas.',1;
 SELECT * FROM sedes.Sede WHERE IdSede=@sede;
 
 BEGIN TRY
- EXEC SP.uspSede_Registrar 'Sede prueba 84','Ciudad prueba',50000,@pais,@huso;
+ EXEC SP.uspSede_Registrar 'Sede prueba 84','Ciudad prueba',50000,@pais,@huso,-34.603722,-58.381592;
  THROW 51999,'Se esperaba rechazo.',1;
 END TRY
 BEGIN CATCH
@@ -92,6 +95,13 @@ EXEC SP.uspSede_Update @idSede=@sede,@capacidad=60000;
 IF NOT EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede=@sede AND Capacidad=60000)
  THROW 51999,'No se actualizo la capacidad.',1;
 SELECT * FROM sedes.Sede WHERE IdSede=@sede;
+
+-- La modificacion de coordenadas debe conservar las demas (COALESCE).
+EXEC SP.uspSede_Update @idSede=@sede,@latitud=-34.603900,@longitud=-58.381700;
+IF NOT EXISTS(SELECT 1 FROM sedes.Sede WHERE IdSede=@sede
+              AND Latitud=-34.603900 AND Longitud=-58.381700 AND Capacidad=60000)
+ THROW 51999,'No se actualizaron las coordenadas o se perdio la capacidad.',1;
+PRINT 'OK: coordenadas en alta y modificacion';
 
 BEGIN TRY
  EXEC SP.uspSede_Update @idSede=-1,@capacidad=60000;
@@ -146,4 +156,4 @@ EXEC SP.uspHusoHorario_Bajar @huso;
 EXEC SP.uspIdioma_Bajar @idioma;
 IF EXISTS(SELECT 1 FROM equipos.Pais WHERE IdPais=@pais) OR EXISTS(SELECT 1 FROM sedes.HusoHorario WHERE IdHuso=@huso)
  THROW 51999,'Quedaron datos de prueba.',1;
-PRINT 'Sede: alta, modificacion, baja y 11 rechazos comprobados.';
+PRINT 'Sede: alta, modificacion, baja, coordenadas y 11 rechazos comprobados.';
