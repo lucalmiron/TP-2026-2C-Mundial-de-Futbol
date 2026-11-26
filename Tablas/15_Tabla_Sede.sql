@@ -31,3 +31,11 @@ BEGIN
 	);
 END;
 GO
+
+-- Migracion re-ejecutable para tablas existentes creadas sin coordenadas
+IF COL_LENGTH('sedes.Sede', 'Latitud') IS NULL
+	ALTER TABLE sedes.Sede ADD Latitud DECIMAL(9,6) NULL
+GO
+IF COL_LENGTH('sedes.Sede', 'Longitud') IS NULL
+	ALTER TABLE sedes.Sede ADD Longitud DECIMAL(9,6) NULL
+GO
