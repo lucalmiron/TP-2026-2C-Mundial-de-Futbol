@@ -5,7 +5,8 @@
 -- Ruarte, Fidel
 -- Villalba, Leandro
 -- 26/10/26
--- Objetivo: Creacion sede.
+-- Objetivo: Creacion sede (con Latitud/Longitud para Power BI mapa).
+-- Actualización: 25/11/2026 - Agregadas coordenadas.
 
 -- Ejecutar en la base seleccionada por el instalador.
 GO
@@ -20,6 +21,8 @@ BEGIN
 		Capacidad INT NOT NULL,
 		IdPais INT NOT NULL,
 		IdHuso INT NOT NULL,
+		Latitud DECIMAL(9,6) NULL,
+		Longitud DECIMAL(9,6) NULL,
 		CONSTRAINT PK_Sede PRIMARY KEY (IdSede),
 		CONSTRAINT CK_Sede_Capacidad CHECK (Capacidad > 0),
 		CONSTRAINT UQ_Sede_Nombre_Ciudad UNIQUE (Nombre, Ciudad),

@@ -3,12 +3,16 @@
 -- Fecha: 26/10/26.
 -- Objetivo: instalar la base, tablas y procedimientos de la entrega 5.
 -- Orden: 01-02 bases y esquemas; 03-36 tablas y restricciones; 37-69 SP;
--- 70-96 entregas 6/7; 97-100 seguridad y cifrado.
+-- 70-96 entregas 6/7; 97-100 seguridad y cifrado; 105 vistas BI.
 -- En SSMS, activar modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- Mantener las comillas si la ruta contiene espacios.
 
 --L
 --:setvar TP_BDDA "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol"
+--Fidel
+:setvar TP_BDDA "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol"
+--Santutu
+--:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
 
 :ON ERROR EXIT
 
@@ -169,6 +173,9 @@ GO
 GO
 :r $(TP_BDDA)\Tablas\100_Seguridad_Usuarios.sql
 GO
+-- Entrega 9 / Fase 1: vistas planas para Power BI (requiere roles de la E8).
+:r $(TP_BDDA)\Tablas\105_Vistas_Reportes.sql
+GO
 
 USE [MUNDIALtesting];
 GO
@@ -256,6 +263,9 @@ GO
 :r $(TP_BDDA)\Tablas\99_Seguridad_Roles.sql
 GO
 :r $(TP_BDDA)\Tablas\100_Seguridad_Usuarios.sql
+GO
+-- Entrega 9 / Fase 1: vistas planas para Power BI (requiere roles de la E8).
+:r $(TP_BDDA)\Tablas\105_Vistas_Reportes.sql
 GO
 PRINT 'Instalacion de entrega 5 finalizada en MUNDIALtesting.';
 GO

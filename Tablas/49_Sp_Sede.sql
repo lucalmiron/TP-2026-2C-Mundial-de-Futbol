@@ -5,7 +5,8 @@
 -- Ruarte, Fidel
 -- Villalba, Leandro
 -- 26/10/26
--- Objetivo: SP Sede.
+-- Objetivo: SP Sede (con Latitud/Longitud).
+-- Actualización: 25/11/2026 - Agregadas coordenadas para Power BI.
 
 -- Ejecutar en la base seleccionada por el instalador.
 --USE MUNDIAL
@@ -15,11 +16,13 @@ if exists (select name from sys.objects where object_id = object_id('SP.uspSede_
     drop procedure SP.uspSede_Registrar
 go
 create procedure SP.uspSede_Registrar
-    @nombre    varchar(30),
-    @ciudad    varchar(30),
-    @capacidad int,
-    @pais      int,
-    @huso      int
+    @nombre     varchar(30),
+    @ciudad     varchar(30),
+    @capacidad  int,
+    @pais       int,
+    @huso       int,
+    @latitud    decimal(9,6) = NULL,
+    @longitud   decimal(9,6) = NULL
 as
 begin
 	DECLARE @errores NVARCHAR(2048) = N'';
@@ -53,8 +56,8 @@ begin
 
 		IF LEN(@errores)>0 THROW 50000, @errores, 1;
 
-		INSERT INTO sedes.Sede (Nombre, Ciudad, Capacidad, IdPais, IdHuso)
-		VALUES (@nombre, @ciudad, @capacidad, @pais, @huso)
+		INSERT INTO sedes.Sede (Nombre, Ciudad, Capacidad, IdPais, IdHuso, Latitud, Longitud)
+		VALUES (@nombre, @ciudad, @capacidad, @pais, @huso, @latitud, @longitud)
 	END TRY
 	BEGIN CATCH
 		THROW;
@@ -73,7 +76,9 @@ create procedure SP.uspSede_Update
     @ciudad    varchar(30) = null,
     @capacidad int = null,
     @pais      int = null,
-    @huso      int = null
+    @huso      int = null,
+    @latitud   decimal(9,6) = NULL,
+    @longitud  decimal(9,6) = NULL
 as
 begin
 	DECLARE @errores NVARCHAR(2048) = N'';
@@ -120,7 +125,9 @@ begin
 			Ciudad    = COALESCE(@ciudad, Ciudad),
 			Capacidad = COALESCE(@capacidad, Capacidad),
 			IdPais    = COALESCE(@pais, IdPais),
-			IdHuso    = COALESCE(@huso, IdHuso)
+			IdHuso    = COALESCE(@huso, IdHuso),
+			Latitud   = COALESCE(@latitud, Latitud),
+			Longitud  = COALESCE(@longitud, Longitud)
 		WHERE IdSede = @idSede
 	END TRY
 	BEGIN CATCH

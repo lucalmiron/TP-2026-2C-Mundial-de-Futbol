@@ -72,6 +72,12 @@ BEGIN
 END;
 GO
 
+IF NOT EXISTS (SELECT name FROM sys.schemas WHERE name = 'reportes')
+BEGIN
+	EXECUTE('CREATE SCHEMA reportes')
+END;
+GO
+
 --/Limpieza de las tablas de la version anterior.
 --/Estas entidades vivian en el schema TABLAS; hoy cada una esta en su schema
 --/(sedes, publicidad). Si no se eliminan quedan duplicadas con el mismo nombre.

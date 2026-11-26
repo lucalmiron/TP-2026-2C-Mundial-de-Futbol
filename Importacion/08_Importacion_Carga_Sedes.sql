@@ -17,8 +17,7 @@
 -- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- SQL Server lee los archivos desde el disco local del servidor.
-
-
+-- Actualización: 25/11/2026 - Agregadas coordenadas Latitud/Longitud hardcodeadas para Power BI.
 
 
 USE MUNDIAL;
@@ -71,6 +70,8 @@ CREATE TABLE #SedesStaging (
     ZonaOriginal NVARCHAR(200) COLLATE DATABASE_DEFAULT,
     PaisBd NVARCHAR(200) COLLATE DATABASE_DEFAULT,
     ZonaIana NVARCHAR(200) COLLATE DATABASE_DEFAULT,
+    Latitud DECIMAL(9,6) NULL,
+    Longitud DECIMAL(9,6) NULL,
     Estado VARCHAR(20) COLLATE DATABASE_DEFAULT NOT NULL DEFAULT 'Pendiente',
     Detalle NVARCHAR(2048) COLLATE DATABASE_DEFAULT
 );
@@ -287,6 +288,32 @@ JOIN (SELECT PaisCsv, CiudadCsv, MIN(PaisBd) AS PaisBd, MIN(ZonaIana) AS ZonaIan
   ON e.PaisCsv = r.PaisOriginal AND e.CiudadCsv = r.Ciudad
 WHERE r.Estado='Pendiente';
 
+-- D12: asignar coordenadas hardcodeadas por nombre+ciudad (fuente: Wikipedia - estadios Mundial 2026)
+WITH Coords AS (
+    SELECT * FROM (VALUES
+        (N'BMO Field', N'Toronto', 43.6403, -79.4136),
+        (N'Estadio BC Place', N'Vancouver', 49.2781, -123.1121),
+        (N'Mercedes-Benz Stadium', N'Atlanta', 33.7555, -84.4008),
+        (N'Gillette Stadium', N'Boston', 42.0911, -71.2643),
+        (N'AT&T Stadium', N'Dallas', 32.7473, -97.0945),
+        (N'Lincoln Financial Field', N'Filadelfia', 39.9008, -75.1675),
+        (N'NRG Stadium', N'Houston', 29.6847, -95.4107),
+        (N'Arrowhead Stadium', N'Kansas City', 39.0489, -94.4845),
+        (N'SoFi Stadium', N'Los Ángeles', 33.9535, -118.3392),
+        (N'Hard Rock Stadium', N'Miami', 25.9580, -80.2389),
+        (N'MetLife Stadium', N'Nueva York / Nueva Jersey', 40.8136, -74.0745),
+        (N'Levi''s Stadium', N'San Francisco', 37.4032, -121.9698),
+        (N'Lumen Field', N'Seattle', 47.5952, -122.3316),
+        (N'Estadio Azteca', N'Ciudad de México', 19.3026, -99.1500),
+        (N'Estadio Akron', N'Guadalajara', 20.6889, -103.4015),
+        (N'Estadio BBVA', N'Monterrey', 25.6683, -100.3095)
+    ) AS V(Nombre, Ciudad, Latitud, Longitud)
+)
+UPDATE r SET Latitud = c.Latitud, Longitud = c.Longitud
+FROM #SedesStaging AS r
+JOIN Coords AS c ON c.Nombre = r.Nombre AND c.Ciudad = r.Ciudad
+WHERE r.Estado = 'Pendiente';
+
 -- Reporte de la depuracion: se informa ANTES de escribir en la tabla real.
 SELECT 'FASE 2 - Depuracion de sedes (antes de la persistencia)' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #SedesStaging GROUP BY Estado ORDER BY Estado;
@@ -302,12 +329,13 @@ FROM #SedesStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
 DECLARE @fila INT, @nombre NVARCHAR(200), @ciudad NVARCHAR(200), @capTexto NVARCHAR(50),
         @paisBd NVARCHAR(200), @zona NVARCHAR(200),
         @cantidad INT, @capacidad INT, @idPais INT, @idHuso INT, @idSede INT,
-        @nombreSp VARCHAR(30), @ciudadSp VARCHAR(30), @estado VARCHAR(20);
+        @nombreSp VARCHAR(30), @ciudadSp VARCHAR(30), @estado VARCHAR(20),
+        @latitud DECIMAL(9,6), @longitud DECIMAL(9,6);
 DECLARE crsSedes CURSOR LOCAL FAST_FORWARD FOR
-    SELECT Fila, Nombre, Ciudad, CapacidadTexto, PaisBd, ZonaIana
+    SELECT Fila, Nombre, Ciudad, CapacidadTexto, PaisBd, ZonaIana, Latitud, Longitud
     FROM #SedesStaging WHERE Estado='Pendiente' ORDER BY Fila;
 OPEN crsSedes;
-FETCH NEXT FROM crsSedes INTO @fila,@nombre,@ciudad,@capTexto,@paisBd,@zona;
+FETCH NEXT FROM crsSedes INTO @fila,@nombre,@ciudad,@capTexto,@paisBd,@zona,@latitud,@longitud;
 WHILE @@FETCH_STATUS=0
 BEGIN
     BEGIN TRY
@@ -330,14 +358,17 @@ BEGIN
         IF @cantidad=0
         BEGIN
             EXEC SP.uspSede_Registrar @nombre=@nombreSp,@ciudad=@ciudadSp,
-                @capacidad=@capacidad,@pais=@idPais,@huso=@idHuso;
+                @capacidad=@capacidad,@pais=@idPais,@huso=@idHuso,
+                @latitud=@latitud,@longitud=@longitud;
             SET @estado='Insertada';
         END
         ELSE IF EXISTS (SELECT 1 FROM sedes.Sede WHERE IdSede=@idSede
-                        AND (Capacidad<>@capacidad OR IdPais<>@idPais OR IdHuso<>@idHuso))
+                        AND (Capacidad<>@capacidad OR IdPais<>@idPais OR IdHuso<>@idHuso
+                            OR ISNULL(Latitud,0)<>ISNULL(@latitud,0) OR ISNULL(Longitud,0)<>ISNULL(@longitud,0)))
         BEGIN
             EXEC SP.uspSede_Update @idSede=@idSede,
-                @capacidad=@capacidad,@pais=@idPais,@huso=@idHuso;
+                @capacidad=@capacidad,@pais=@idPais,@huso=@idHuso,
+                @latitud=@latitud,@longitud=@longitud;
             SET @estado='Actualizada';
         END
         ELSE SET @estado='SinCambios';
@@ -348,7 +379,7 @@ BEGIN
         IF XACT_STATE()<>0 ROLLBACK TRANSACTION;
         UPDATE #SedesStaging SET Estado='Error',Detalle=ERROR_MESSAGE() WHERE Fila=@fila;
     END CATCH;
-    FETCH NEXT FROM crsSedes INTO @fila,@nombre,@ciudad,@capTexto,@paisBd,@zona;
+    FETCH NEXT FROM crsSedes INTO @fila,@nombre,@ciudad,@capTexto,@paisBd,@zona,@latitud,@longitud;
 END;
 CLOSE crsSedes;
 DEALLOCATE crsSedes;
@@ -357,7 +388,7 @@ DEALLOCATE crsSedes;
 SELECT 'FASE 3 - Persistencia de sedes' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #SedesStaging GROUP BY Estado ORDER BY Estado;
 SELECT Fila, NumeroLinea, Nombre, Ciudad, CapacidadTexto AS Capacidad, PaisOriginal,
-       PaisBd, ZonaIana, Estado, Detalle
+       PaisBd, ZonaIana, Latitud, Longitud, Estado, Detalle
 FROM #SedesStaging ORDER BY Fila;
 
 DECLARE @fallos INT = (SELECT COUNT(*) FROM #SedesStaging WHERE Estado='Error');
