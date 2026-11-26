@@ -622,13 +622,23 @@ def _manejar_error_odbc(exc):
 #   consultar -> /api/datos, /api/resumen    abm -> /api/abm*
 #   importar  -> /api/importar*              reportes -> /api/reportes*
 # ==========================================================================
-PUBLICIDAD = {"anunciantes", "campanias", "publicidades"}   # entidades ABM del Gestor de publicidad
+# Entidades ABM del Gestor de publicidad.
+PUBLICIDAD = {"anunciantes", "campanias", "publicidades", "espacios"}
+# Entidades ABM del Cargador de resultados: solo lo que se carga a medida que pasan los partidos
+# (el partido incluye la tanda de penales, que va por /api/abm/partidos/<pk>/tanda).
+RESULTADOS = {"partidos", "goles", "eventos", "amonestaciones", "sustituciones", "alineaciones", "arbitrajes"}
+SIN_PUBLICIDAD = set(DATASETS) - {"publicidad"}   # datos deportivos: todo menos la pauta publicitaria
 ROL_PERMISOS = {
     # permisos: areas de la API; abm: entidades ABM permitidas (None = todas); baja: puede eliminar
-    "Administrador":          {"permisos": {"consultar", "abm", "importar", "reportes"}, "abm": None, "baja": True},
-    "Gestor de publicidad":   {"permisos": {"consultar", "abm", "reportes"}, "abm": PUBLICIDAD, "baja": False},
-    "Cargador de resultados": {"permisos": {"consultar", "importar"}, "abm": set(), "baja": False},
-    "Consulta":               {"permisos": {"consultar", "reportes"}, "abm": set(), "baja": False},
+    # datos: vistas de /api/datos permitidas (None = todas); reportes_ids: reportes permitidos (None = todos)
+    "Administrador":          {"permisos": {"consultar", "abm", "importar", "reportes"}, "abm": None, "baja": True,
+                               "datos": None, "reportes_ids": None},
+    "Gestor de publicidad":   {"permisos": {"consultar", "abm", "reportes"}, "abm": PUBLICIDAD, "baja": False,
+                               "datos": {"publicidad", "sedes"}, "reportes_ids": {"publicidad"}},
+    "Cargador de resultados": {"permisos": {"consultar", "abm"}, "abm": RESULTADOS, "baja": False,
+                               "datos": SIN_PUBLICIDAD, "reportes_ids": set()},
+    "Consulta":               {"permisos": {"consultar", "reportes"}, "abm": set(), "baja": False,
+                               "datos": None, "reportes_ids": None},
 }
 
 
@@ -660,6 +670,15 @@ def _controlar_rol():
             return jsonify(error=f"El rol {rol} no tiene acceso a esta entidad."), 403
         if request.method == "DELETE" and not cfg["baja"]:
             return jsonify(error=f"El rol {rol} no puede eliminar registros."), 403
+    elif area == "reportes":
+        partes = request.path.strip("/").split("/")          # api / reportes / <id>
+        if len(partes) >= 3 and cfg["reportes_ids"] is not None and partes[2] not in cfg["reportes_ids"]:
+            return jsonify(error=f"El rol {rol} no tiene acceso a este reporte."), 403
+    elif request.path.startswith("/api/datos/"):
+        if cfg["datos"] is not None and request.path.split("/")[3] not in cfg["datos"]:
+            return jsonify(error=f"El rol {rol} no tiene acceso a estos datos."), 403
+    elif request.path == "/api/resumen" and cfg["datos"] is not None:
+        return jsonify(error=f"El rol {rol} no tiene acceso al resumen."), 403
     return None
 
 
@@ -1010,13 +1029,14 @@ def importar_ejecutar(nombre):
 
 @app.get("/api/reportes")
 def reportes_lista():
+    ok = _rol_actual()["reportes_ids"]
     claves = sorted({c["opciones"] for v in REPORTES.values() for c in v.get("campos", []) if c.get("opciones")})
     datos = consultar_varias({"m": OPCIONES["mundiales"], **{k: OPCIONES[k] for k in claves}})
     mundiales = datos.pop("m")
     return jsonify(mundiales=mundiales, opciones=datos,
                    reportes=[{"id": k, "titulo": v["titulo"], "desc": v["desc"], "extra": v.get("extra", {}),
                               "campos": v.get("campos", []), "sin_mundial": bool(v.get("sin_mundial"))}
-                             for k, v in REPORTES.items()])
+                             for k, v in REPORTES.items() if ok is None or k in ok])
 
 
 @app.post("/api/reportes/<nombre>")

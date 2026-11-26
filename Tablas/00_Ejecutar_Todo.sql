@@ -10,7 +10,7 @@
 --L
 --:setvar TP_BDDA "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol"
 --Fidel
-:setvar TP_BDDA "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol"
+--:setvar TP_BDDA "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol"
 --Santutu
 --:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
 

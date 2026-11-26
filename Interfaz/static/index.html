@@ -437,7 +437,9 @@
   /* ---------- Login por rol ---------- */
   #login.fondo { z-index: 70; }
   #login[hidden], .usuario[hidden] { display: none; }
-  .rol { display: block; width: 100%; margin-top: 8px; padding: 7px 12px; text-align: left; }
+  .login-form .campo { width: 100%; height: auto; min-height: 29px; padding: 5px 7px; }
+  .login-form .mpie { margin-top: 16px; }
+  .login-form .nota { margin: 10px 0 0; font-size: 12px; opacity: .75; }
   .usuario { display: inline-flex; align-items: center; gap: 8px; }
   .usuario .mini { width: 28px; height: 26px; }
 
@@ -473,13 +475,23 @@
 
   <div class="fondo" id="login" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="loginTit">
-      <div class="mcab" id="loginTit">Ingresar como</div>
+      <div class="mcab" id="loginTit">Iniciar sesión</div>
       <div class="mcuerpo">
-        <p>Elegí tu usuario para continuar.</p>
-        <button class="btn rol" data-rol="Administrador">Administrador</button>
-        <button class="btn rol" data-rol="Gestor de publicidad">Gestor de publicidad</button>
-        <button class="btn rol" data-rol="Cargador de resultados">Cargador de resultados</button>
-        <button class="btn rol" data-rol="Consulta">Consulta</button>
+        <form class="login-form" id="loginForm" autocomplete="off">
+          <label for="lgUsuario">Usuario</label>
+          <input class="campo" id="lgUsuario" type="text" autocomplete="off">
+          <label for="lgClave">Contraseña</label>
+          <input class="campo" id="lgClave" type="password" autocomplete="off">
+          <label for="lgRol">Rol</label>
+          <select class="campo" id="lgRol">
+            <option>Administrador</option>
+            <option>Gestor de publicidad</option>
+            <option>Cargador de resultados</option>
+            <option>Consulta</option>
+          </select>
+          <p class="nota">Acceso de demostración: el usuario y la contraseña no se validan.</p>
+          <div class="mpie"><button type="submit" class="btn ok" id="lgEntrar">Ingresar</button></div>
+        </form>
       </div>
     </div>
   </div>
@@ -541,7 +553,7 @@
   function pantallaConsultar() {
     $('#contenido').innerHTML =
       '<h2 class="titulo">Consultar</h2><p class="sub">Elegí qué información querés ver.</p>' +
-      '<div class="tarjetas">' + CAMPOS.map(function (c, i) {
+      '<div class="tarjetas">' + CAMPOS.filter(function (c) { return puedeDato(c.id); }).map(function (c, i) {
         return '<button class="tarjeta c' + (i % 3) + '" data-id="' + c.id + '">' +
           '<div class="cab"><span>N° ' + String(i + 1).padStart(2, '0') + '</span><span>★</span></div>' +
           '<div class="cuerpo"><h3>' + esc(c.titulo) + '</h3><p>' + esc(c.desc) + '</p><div class="abrir">ABRIR ►</div></div></button>';
@@ -951,14 +963,14 @@
   function pantallaReportes() {
     $('#contenido').innerHTML = '<div class="estado-msg">Cargando…</div>';
     cargarReportes().then(function (d) {
-      $('#contenido').innerHTML = '<h2 class="titulo">Reportes</h2><p class="sub">Reportes de la Entrega 7, ejecutados con sus stored procedures.</p>' + tarjetasHTML(d.reportes, 'data-rep');
+      $('#contenido').innerHTML = '<h2 class="titulo">Reportes</h2><p class="sub">Reportes de la Entrega 7, ejecutados con sus stored procedures.</p>' + tarjetasHTML(d.reportes.filter(function (r) { return puedeReporte(r.id); }), 'data-rep');
     }).catch(function (e) { errorPantalla(e, 'reportes'); });
   }
 
   function pantallaReporteForm(id) {
     $('#contenido').innerHTML = '<div class="estado-msg">Cargando…</div>';
     cargarReportes().then(function (d) {
-      var c = d.reportes.filter(function (x) { return x.id === id; })[0];
+      var c = d.reportes.filter(function (x) { return x.id === id && puedeReporte(x.id); })[0];
       if (!c) throw new Error('Reporte desconocido: ' + id);
       var extra = Object.keys(c.extra || {}).map(function (k) {
         return '<label class="lbl" for="r_' + k + '">' + esc(k) + '</label><select class="campo" id="r_' + k + '">' +
@@ -1019,6 +1031,8 @@
     if (!getRol()) return;                                   /* sin rol: se muestra el login */
     if (['abm', 'importar', 'reportes'].indexOf(partes[0]) >= 0 && !tienePermiso(partes[0])) { location.hash = 'consultar'; return; }
     if (partes[0] === 'abm' && partes[1] && !puedeEntidad(partes[1])) { location.hash = 'abm'; return; }
+    if (partes[0] === 'consultar' && partes[1] && POR_ID[partes[1]] && !puedeDato(partes[1])) { location.hash = 'consultar'; return; }
+    if (partes[0] === 'reportes' && partes[1] && !puedeReporte(partes[1])) { location.hash = 'reportes'; return; }
     $('#bConsultar').classList.toggle('on', partes[0] === 'consultar');
     $('#bB').classList.toggle('on', partes[0] === 'abm');
     $('#bC').classList.toggle('on', partes[0] === 'importar');
@@ -1052,15 +1066,23 @@
   });
   window.addEventListener('hashchange', ruta);
 
-  /* ---------- Roles: Administrador y Consulta ---------- */
-  // Administrador: todo. Gestor de publicidad: ABM de publicidad sin baja + reportes. Cargador de resultados: importar. Consulta: consultar + reportes.
+  /* ---------- Roles ---------- */
+  // Administrador: todo (incluye Importar y baja).
+  // Gestor de publicidad: ABM de anunciantes, campañas, piezas y espacios (sin baja); consulta solo Publicidad y Sedes;
+  //   de los reportes solo "Ocupación publicitaria".
+  // Cargador de resultados: ABM de partidos (con penales), goles, eventos, tarjetas, sustituciones, alineaciones y arbitrajes
+  //   (sin baja, sin Importar); consulta los datos deportivos (sin Publicidad); sin reportes.
+  // Consulta: consultar + reportes, sin ABM.
   // El backend (app.py, ROL_PERMISOS) valida lo mismo en cada /api/*; esto solo adapta la interfaz.
-  var PUBLICIDAD = ['anunciantes', 'campanias', 'publicidades'];
-  var PERMISOS = {   // abmEntidades: null = todas; baja: puede eliminar
-    'Administrador':          { abm: true,  importar: true,  reportes: true,  abmEntidades: null,      baja: true  },
-    'Gestor de publicidad':   { abm: true,  importar: false, reportes: true,  abmEntidades: PUBLICIDAD, baja: false },
-    'Cargador de resultados': { abm: false, importar: true,  reportes: false, abmEntidades: [],         baja: false },
-    'Consulta':               { abm: false, importar: false, reportes: true,  abmEntidades: [],         baja: false }
+  var PUBLICIDAD = ['anunciantes', 'campanias', 'publicidades', 'espacios'];
+  var RESULTADOS = ['partidos', 'goles', 'eventos', 'amonestaciones', 'sustituciones', 'alineaciones', 'arbitrajes'];
+  var SIN_PUBLICIDAD = CAMPOS.map(function (c) { return c.id; }).filter(function (id) { return id !== 'publicidad'; });
+  // abmEntidades / datos / reportesIds: null = todos; baja: puede eliminar
+  var PERMISOS = {
+    'Administrador':          { abm: true,  importar: true,  reportes: true,  abmEntidades: null,      baja: true,  datos: null,                    reportesIds: null },
+    'Gestor de publicidad':   { abm: true,  importar: false, reportes: true,  abmEntidades: PUBLICIDAD, baja: false, datos: ['publicidad', 'sedes'], reportesIds: ['publicidad'] },
+    'Cargador de resultados': { abm: true,  importar: false, reportes: false, abmEntidades: RESULTADOS, baja: false, datos: SIN_PUBLICIDAD,         reportesIds: [] },
+    'Consulta':               { abm: false, importar: false, reportes: true,  abmEntidades: [],         baja: false, datos: null,                    reportesIds: null }
   };
   var ROLES = Object.keys(PERMISOS);
   var rolMem = null;
@@ -1069,6 +1091,9 @@
     return ROLES.indexOf(rolMem) >= 0 ? rolMem : null;
   }
   function tienePermiso(p) { var r = getRol(); return !!(r && PERMISOS[r][p]); }
+  function enLista(lst, id) { return lst === null || lst.indexOf(id) >= 0; }
+  function puedeDato(id) { var r = getRol(); return !!r && enLista(PERMISOS[r].datos, id); }
+  function puedeReporte(id) { var r = getRol(); return !!r && PERMISOS[r].reportes && enLista(PERMISOS[r].reportesIds, id); }
   function puedeEntidad(id) { var r = getRol(); if (!r || !PERMISOS[r].abm) return false; var e = PERMISOS[r].abmEntidades; return e === null || e.indexOf(id) >= 0; }
 
   // todos los pedidos llevan el rol en el header X-Rol
@@ -1081,23 +1106,38 @@
     return fetchOriginal(url, opts);
   };
 
-  function setRol(r) {
-    rolMem = r;
-    try { if (r) sessionStorage.setItem('rol', r); else sessionStorage.removeItem('rol'); } catch (e) {}
-    cache = {};
+  var usuarioMem = '';
+  function getUsuario() {
+    if (!usuarioMem) { try { usuarioMem = sessionStorage.getItem('usuario') || ''; } catch (e) {} }
+    return usuarioMem;
+  }
+  function setRol(r, usuario) {
+    rolMem = r; usuarioMem = r ? (usuario || '') : '';
+    try {
+      if (r) { sessionStorage.setItem('rol', r); sessionStorage.setItem('usuario', usuarioMem); }
+      else { sessionStorage.removeItem('rol'); sessionStorage.removeItem('usuario'); }
+    } catch (e) {}
+    cache = {}; RP = null; AB = null;      /* lo cargado con otro rol no se reutiliza */
     pintarSesion();
     ruta();
   }
   function pintarSesion() {
     var r = getRol();
-    $('#login').hidden = !!r; $('#usuario').hidden = !r; $('#usuarioRol').textContent = r || '';
+    $('#login').hidden = !!r; $('#usuario').hidden = !r;
+    $('#usuarioRol').textContent = r ? (getUsuario() ? getUsuario() + ' · ' + r : r) : '';
     $('#bB').style.display = tienePermiso('abm') ? '' : 'none';
     $('#bC').style.display = tienePermiso('importar') ? '' : 'none';
     $('#bD').style.display = tienePermiso('reportes') ? '' : 'none';
-    if (!r) { $('#contenido').innerHTML = ''; $('#login .rol').focus(); }
+    if (!r) {
+      $('#contenido').innerHTML = '';
+      $('#lgUsuario').value = ''; $('#lgClave').value = '';
+      $('#lgUsuario').focus();
+    }
   }
-  $('#login').addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-rol]'); if (b) setRol(b.dataset.rol);
+  /* Login de demostración: no se valida nada, cualquier usuario y contraseña (o vacíos) entran. */
+  $('#loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    setRol($('#lgRol').value, $('#lgUsuario').value.trim());
   });
   $('#cambiarRol').addEventListener('click', function () { setRol(null); });
   window.Sesion = { rol: getRol, tienePermiso: tienePermiso };   /* para usar despues: Sesion.rol() / Sesion.tienePermiso(permiso) */
