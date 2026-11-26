@@ -905,7 +905,7 @@
   function pantallaImportar() {
     $('#contenido').innerHTML = '<div class="estado-msg">Cargando…</div>';
     api('/api/importar').then(function (lista) {
-      $('#contenido').innerHTML = '<h2 class="titulo">Importar</h2><p class="sub">Cargá archivos con los procedimientos de importación de la Entrega 6.</p>' + tarjetasHTML(lista, 'data-imp');
+      $('#contenido').innerHTML = '<h2 class="titulo">Importar</h2><p class="sub">Ejecutá los scripts de importación de la Entrega 6 en orden. Si no elegís archivos se usan los de la carpeta Datos del proyecto.</p>' + tarjetasHTML(lista, 'data-imp');
     }).catch(function (e) { errorPantalla(e, 'importar'); });
   }
 
@@ -914,22 +914,24 @@
     api('/api/importar').then(function (lista) {
       var c = lista.filter(function (x) { return x.id === id; })[0];
       if (!c) throw new Error('Importación desconocida: ' + id);
-      $('#contenido').innerHTML = '<h2 class="titulo">Importar · ' + esc(c.titulo) + '</h2><p class="sub">' + esc(c.desc) + '. Los archivos se guardan tal cual, sin modificarlos.</p>' +
+      $('#contenido').innerHTML = '<h2 class="titulo">Importar · ' + esc(c.titulo) + '</h2><p class="sub">' + esc(c.desc) + '.</p>' +
         '<div class="barra"><button class="btn" id="volver">◄ Volver</button></div>' +
-        '<div class="form-caja">' + c.archivos.map(function (a) {
-          return '<label class="lbl" for="a_' + a.variable + '">' + esc(a.etiqueta) + '</label>' +
-            '<input class="campo" type="file" id="a_' + a.variable + '" accept="' + esc(a.ext.join(',')) + '">';
-        }).join('') + (c.disponible ? '' : '<div class="aviso">No encuentro el script <b>' + esc(c.script) + '</b>. Copialo a la carpeta <b>' + esc(c.carpeta) + '</b> y volvé a abrir esta pantalla.</div>') +
+        '<div class="form-caja">' + (c.archivos.length
+          ? '<p class="sub">Archivos opcionales: si no elegís ninguno se usan los de la carpeta <b>Datos</b> del proyecto.</p>' + c.archivos.map(function (a) {
+              return '<label class="lbl" for="a_' + a.variable + '">' + esc(a.etiqueta) + '</label>' +
+                '<input class="campo" type="file" id="a_' + a.variable + '" accept="' + esc(a.ext.join(',')) + '">';
+            }).join('')
+          : '<p class="sub">Esta importación usa los archivos de la carpeta <b>Datos</b> del proyecto.</p>') +
+          (c.disponible ? '' : '<div class="aviso">No encuentro el script <b>' + esc(c.script) + '</b>. Copialo a la carpeta <b>' + esc(c.carpeta) + '</b> y volvé a abrir esta pantalla.</div>') +
           '<div class="acciones"><button class="btn ok" id="importar">Importar</button></div></div>' +
         '<div id="resultado"></div>';
       $('#volver').addEventListener('click', function () { location.hash = 'importar'; });
       $('#importar').addEventListener('click', function () {
-        var fd = new FormData(), faltan = [];
+        var fd = new FormData();
         c.archivos.forEach(function (a) {
           var f = $('#a_' + a.variable).files[0];
-          if (f) fd.append(a.variable, f); else faltan.push(a.etiqueta);
+          if (f) fd.append(a.variable, f);
         });
-        if (faltan.length) { $('#resultado').innerHTML = '<div class="aviso">Falta elegir: ' + esc(faltan.join(', ')) + '</div>'; return; }
         var btn = $('#importar'); btn.disabled = true;
         $('#resultado').innerHTML = '<div class="estado-msg">Importando…</div>';
         api('/api/importar/' + id, { method: 'POST', body: fd }).then(function (r) {

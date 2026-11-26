@@ -33,9 +33,13 @@ DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 MAX_FILAS = 10000
 BASE = os.path.dirname(os.path.abspath(__file__))
+# Raiz del repositorio (contiene Datos, Importacion y Tablas). Los scripts de la
+# Entrega 6 leen los archivos con $(TP_BDDA)\Datos\..., asi que esta ruta es la
+# que se reemplaza al ejecutarlos desde la interfaz.
+RAIZ = os.getenv("RUTA_RAIZ", os.path.dirname(BASE))
 # Carpeta con los scripts de importacion de la Entrega 6 (.sql) y carpeta donde se guardan,
 # sin modificar, los archivos que se suben desde la pantalla de importacion.
-RUTA_IMPORTADORES = os.getenv("RUTA_IMPORTADORES", os.path.join(BASE, "importadores"))
+RUTA_IMPORTADORES = os.getenv("RUTA_IMPORTADORES", os.path.join(RAIZ, "Importacion"))
 RUTA_SUBIDAS = os.getenv("RUTA_SUBIDAS", os.path.join(BASE, "subidas"))
 LIMITE_FILAS_VISTA = 1000        # importacion
 LIMITE_FILAS_REPORTE = 200000    # reportes: practicamente todas las filas
@@ -767,21 +771,79 @@ def abm_partido_tanda(pk):
 # guarda tal cual llega (la Entrega 6 prohibe modificarlo antes de importarlo).
 # ==========================================================================
 
-IMPORTADORES = {
-    "motivos": {
-        "titulo": "Motivos de sustitución",
-        "desc": "Catálogo de motivos de cambio (CSV)",
-        "script": "13_Importacion_Carga_Motivos.sql",
-        "archivos": [{"variable": "RutaMotivos", "etiqueta": "motivos_sustitucion.csv", "ext": [".csv"]}],
-    },
-    "pbi": {
-        "titulo": "PBI por país",
-        "desc": "API del Banco Mundial (XML) y equivalencias ISO3 (CSV)",
-        "script": "12_Importacion_Carga_PBI_Pais.sql",
-        "archivos": [{"variable": "RutaPBI", "etiqueta": "pbi_por_pais.xml", "ext": [".xml"]},
-                     {"variable": "RutaEquiv", "etiqueta": "pais_iso3.csv", "ext": [".csv"]}],
-    },
-}
+def _leer_texto(ruta):
+    datos = open(ruta, "rb").read()
+    if datos[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        return datos.decode("utf-16")
+    try:
+        return datos.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return datos.decode("cp1252")
+
+
+def _orden_script(nombre):
+    """Orden natural: 01, 02, ..., 06, 06b, 07, ..."""
+    m = re.match(r"(\d+)([a-z]?)", nombre)
+    return (int(m.group(1)), m.group(2)) if m else (9999, nombre)
+
+
+def _titulo_importador(nombre):
+    base = re.sub(r"^\d+\w*_Importacion_Carga_", "", nombre[:-4])
+    return re.sub(r"(?<=[a-z])(?=[A-Z])", " ", base).replace("_", " ").strip()
+
+
+def _datos_del_script(texto):
+    """Archivos bajo la carpeta Datos que menciona el script (subida opcional)."""
+    rutas = []
+    for m in re.finditer(r"\$\(TP_BDDA\)[\\/](Datos[\\/][^'\"\r\n]+)", texto):
+        rel = os.path.normpath(m.group(1).strip())
+        if re.search(r"\.(csv|xml|json|xlsx)$", rel, re.I) and rel not in rutas:
+            rutas.append(rel)
+    return rutas
+
+
+def _descripcion_script(texto):
+    """Primer parrafo del comentario 'Objetivo:' (hasta 3 lineas de continuacion)."""
+    lineas = texto.splitlines()
+    for i, linea in enumerate(lineas):
+        m = re.match(r"^\s*--\s*Objetivo:\s*(.*)$", linea, re.I)
+        if not m:
+            continue
+        partes = [m.group(1).strip()]
+        for siguiente in lineas[i + 1:i + 4]:
+            if not re.match(r"^\s*--\s(?!\s)", siguiente):
+                break
+            partes.append(re.sub(r"^\s*--\s?", "", siguiente).strip())
+        desc = re.sub(r"\s+", " ", " ".join(partes)).strip().rstrip(".")
+        return desc[:280] + ("…" if len(desc) > 280 else "")
+    return ""
+
+
+def _descubrir_importadores():
+    """Un importador por cada script NN_Importacion_Carga_*.sql (salvo los 00_*)."""
+    if not os.path.isdir(RUTA_IMPORTADORES):
+        return {}
+    salida = {}
+    for nombre in sorted(os.listdir(RUTA_IMPORTADORES), key=_orden_script):
+        if not re.match(r"^\d+.*_Importacion_Carga_.*\.sql$", nombre, re.I) or nombre.startswith("00_"):
+            continue
+        texto = _leer_texto(os.path.join(RUTA_IMPORTADORES, nombre))
+        archivos = []
+        for i, rel in enumerate(_datos_del_script(texto), 1):
+            ext = os.path.splitext(rel)[1].lower()
+            archivos.append({"variable": f"f{i}", "etiqueta": os.path.basename(rel),
+                             "ruta": rel, "ext": [ext]})
+        prefijo = re.match(r"^(\d+[a-z]?)", nombre).group(1)
+        salida[nombre[:-4]] = {
+            "titulo": f"{prefijo} · {_titulo_importador(nombre)}",
+            "desc": _descripcion_script(texto) or nombre,
+            "script": nombre,
+            "archivos": archivos,
+        }
+    return salida
+
+
+IMPORTADORES = _descubrir_importadores()
 
 # Reportes de la Entrega 7. "xml": True si el SP devuelve un XML (FOR XML).
 # "extra": parametros ademas de @mundial, con sus valores permitidos.
@@ -817,16 +879,6 @@ REPORTES = {
 }
 
 
-def _leer_texto(ruta):
-    datos = open(ruta, "rb").read()
-    if datos[:2] in (b"\xff\xfe", b"\xfe\xff"):
-        return datos.decode("utf-16")
-    try:
-        return datos.decode("utf-8-sig")
-    except UnicodeDecodeError:
-        return datos.decode("cp1252")
-
-
 def _lotes_sql(texto):
     """Separa el script en lotes por las lineas que solo dicen GO."""
     texto = texto.replace("\r\n", "\n").replace("\r", "\n")
@@ -834,8 +886,7 @@ def _lotes_sql(texto):
 
 
 # Carpetas donde se busca el script .sql de cada importacion (en este orden).
-CARPETAS_SCRIPTS = [RUTA_IMPORTADORES, BASE,
-                    r"C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol\Importacion"]
+CARPETAS_SCRIPTS = [RUTA_IMPORTADORES, os.path.join(RAIZ, "Importacion"), BASE]
 
 
 def buscar_script(nombre):
@@ -846,15 +897,41 @@ def buscar_script(nombre):
     return None
 
 
+def _expandir_includes(texto, vistos=None):
+    """Reemplaza las lineas ':r archivo.sql' por el contenido del archivo (recursivo)."""
+    vistos = set() if vistos is None else vistos
+
+    def leer(m):
+        ruta = m.group(1).strip().strip('"')
+        ruta = os.path.normpath(ruta.replace("$(TP_BDDA)", RAIZ))
+        if ruta in vistos:
+            return ""
+        if not os.path.isfile(ruta):
+            raise ErrorApi(f"No se encontró el script incluido: {ruta}")
+        vistos.add(ruta)
+        return _expandir_includes(_leer_texto(ruta), vistos)
+
+    return re.sub(r"^[ \t]*:r[ \t]+(.+?)[ \t]*$", leer, texto, flags=re.M | re.I)
+
+
 def preparar_script(cfg, rutas):
     ruta = buscar_script(cfg["script"])
     if not ruta:
         raise ErrorApi(f"No se encontró el script {cfg['script']}. Copialo a la carpeta {RUTA_IMPORTADORES} "
                        "(o definí la variable de entorno RUTA_IMPORTADORES).")
     texto = _leer_texto(ruta)
-    texto = re.sub(r"^[ \t]*:setvar\b.*$", "", texto, flags=re.M)   # rutas fijas de cada integrante
-    for variable, valor in rutas.items():
-        texto = texto.replace(f"$({variable})", valor.replace("'", "''"))
+    texto = _expandir_includes(texto)                                  # :r (lectores compartidos)
+    # Los archivos subidos pisan la ruta que el script lee por defecto.
+    for a in cfg.get("archivos", []):
+        subido = rutas.get(a["variable"])
+        if not subido:
+            continue
+        for variante in (os.path.join("$(TP_BDDA)", a["ruta"]),
+                         os.path.join("$(TP_BDDA)", a["ruta"].replace("\\", "/")),
+                         os.path.normpath(os.path.join(RAIZ, a["ruta"]))):
+            texto = texto.replace(variante, subido)
+    texto = texto.replace("$(TP_BDDA)", RAIZ)                          # raiz del repositorio
+    texto = re.sub(r"^[ \t]*:\w+\b.*$", "", texto, flags=re.M)         # :setvar, :ON, etc.
     faltan = sorted(set(re.findall(r"\$\((\w+)\)", texto)))
     if faltan:
         raise ErrorApi("El script usa variables sin valor: " + ", ".join(faltan))
@@ -917,7 +994,7 @@ def importar_ejecutar(nombre):
     for a in cfg["archivos"]:
         f = request.files.get(a["variable"])
         if not f or not f.filename:
-            raise ErrorApi(f"Falta el archivo: {a['etiqueta']}.")
+            continue  # opcional: si no se sube, se usa el archivo del proyecto (Datos\...)
         ext = os.path.splitext(f.filename)[1].lower()
         if ext not in a["ext"]:
             raise ErrorApi(f"{a['etiqueta']}: se esperaba un archivo {' / '.join(a['ext'])}.")
