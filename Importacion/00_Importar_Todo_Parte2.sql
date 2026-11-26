@@ -26,6 +26,7 @@
 -- No hay que definir variables de Windows ni tocar ningun otro archivo.
 -- santutu
 :setvar TP_BDDA "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol"
+--:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
 -- fidel
 
 --L

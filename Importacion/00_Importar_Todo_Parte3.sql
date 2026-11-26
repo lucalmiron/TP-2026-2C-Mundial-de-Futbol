@@ -9,7 +9,7 @@
 --
 -- Incluye (en este orden): 22 Goles_Penal, 23 Rojas_Directas,
 --                          21 Tanda_Penales, 24 Arbitraje_FIFA,
---                          25 Asistencia.
+--                          25 Asistencia, 29 CambioConvocatoria.
 --
 -- Dependencias (por eso el orden no es el numerico):
 --   16 (Parte 2) y 22 (aqui) antes de 21 -> la tanda solo se carga si el
@@ -18,6 +18,8 @@
 --   15 (Parte 2) antes de 24 -> la planilla FIFA completa sin duplicar al
 --                              arbitro principal que ya cargo la 15.
 --   11 (Parte 1) antes de 25 -> la asistencia actualiza un partido del fixture.
+--   07, 06b y 10 (Parte 1) antes de 29 -> el cambio de convocatoria usa
+--                                        selecciones, mundial y jugadores.
 --
 -- Cada importador esta precedido por un PRINT con la hora: si algo falla, el
 -- ultimo ">>>" que aparece en la pestania Mensajes es el importador culpable.
@@ -26,6 +28,7 @@
 -- No hay que definir variables de Windows ni tocar ningun otro archivo.
 -- santutu
 :setvar TP_BDDA "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol"
+--:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
 -- fidel
 
 --L
@@ -70,6 +73,11 @@ GO
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 25_Carga_Asistencia';
 GO
 :r $(TP_BDDA)\Importacion\25_Importacion_Carga_Asistencia.sql
+GO
+
+PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 29_Carga_CambioConvocatoria';
+GO
+:r $(TP_BDDA)\Importacion\29_Importacion_Carga_CambioConvocatoria.sql
 GO
 
 PRINT '=====================================================';
