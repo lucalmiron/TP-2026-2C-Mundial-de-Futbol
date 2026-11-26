@@ -278,6 +278,8 @@
   td.num { white-space: nowrap; }
   td .caja { white-space: nowrap; }
   td.nulo { color: #666; }
+  td.cifrado { font: 12px "Courier New", monospace; color: #800000; }
+  td.cifrado .caja { margin-right: 6px; }
   .pie {
     display: flex;
     flex-wrap: wrap;
@@ -504,6 +506,7 @@
     { id: 'partidos', titulo: 'Partidos', desc: 'Fixture, sedes y resultados', filtro: 'Fase' },
     { id: 'selecciones', titulo: 'Selecciones', desc: 'Países, grupos y confederaciones', filtro: 'Grupo' },
     { id: 'jugadores', titulo: 'Jugadores', desc: 'Convocados de cada selección', filtro: 'Selección' },
+    { id: 'convocatoria', titulo: 'Convocatoria', desc: 'Altas y bajas del plantel, con su motivo', filtro: 'Selección' },
     { id: 'tecnicos', titulo: 'Cuerpo técnico', desc: 'Directores técnicos y ayudantes', filtro: 'Selección' },
     { id: 'sedes', titulo: 'Sedes', desc: 'Estadios, ciudades y capacidad', filtro: 'País' },
     { id: 'arbitros', titulo: 'Árbitros', desc: 'Categoría, idiomas y designaciones', filtro: 'Categoría' },
@@ -586,6 +589,9 @@
       case 'Tipo': return '<td><span class="caja ' + (/contra/i.test(v) ? 'r' : (/penal/i.test(v) ? 'b' : 'g')) + '">' + esc(v) + '</span></td>';
       case 'Fase': case 'Grupo': return '<td><span class="caja b">' + esc(v) + '</span></td>';
       case 'Minuto': return '<td class="num">' + esc(v) + '\u2032</td>';
+      case 'Motivo':
+        if (T && T.cifrado) return '<td class="cifrado"><span class="caja r" title="Cifrado con AES-128: solo el Administrador puede verlo en texto plano">&#128274; cifrado</span>' + esc(v) + '</td>';
+        return '<td>' + esc(v) + '</td>';
     }
     if (typeof v === 'number') return '<td class="num">' + nro(v) + '</td>';
     return '<td>' + esc(v) + '</td>';
@@ -631,9 +637,10 @@
       var vistos = {}; d.rows.forEach(function (r) { if (r[fc] !== null) vistos[r[fc]] = 1; });
       ops = Object.keys(vistos).sort(function (a, b) { return a.localeCompare(b, 'es', { numeric: true }); });
     }
-    T = { cols: d.columns, rows: d.rows, vista: [], q: '', sc: -1, sd: 1, pag: 1, tam: 20, fcol: fc, fval: '' };
+    T = { cols: d.columns, rows: d.rows, vista: [], q: '', sc: -1, sd: 1, pag: 1, tam: 20, fcol: fc, fval: '', cifrado: !!d.cifrado };
     $('#contenido').innerHTML =
       '<h2 class="titulo">' + esc(c.titulo) + '</h2><p class="sub">' + esc(c.desc) + '</p>' +
+      (T.cifrado ? '<p class="sub">El motivo viaja cifrado (AES-128). Ingresá como <b>Administrador</b> para verlo en texto plano.</p>' : '') +
       '<div class="barra"><button class="btn" id="volver">◄ Volver</button>' +
       '<input class="campo buscar" id="q" type="search" placeholder="Buscar…" autocomplete="off">' +
       (fc >= 0 ? '<select class="campo" id="filtro"><option value="">' + esc(c.filtro) + ': todos</option>' +
@@ -1072,11 +1079,12 @@
   //   de los reportes solo "Ocupación publicitaria".
   // Cargador de resultados: ABM de partidos (con penales), goles, eventos, tarjetas, sustituciones, alineaciones y arbitrajes
   //   (sin baja, sin Importar); consulta los datos deportivos (sin Publicidad); sin reportes.
-  // Consulta: consultar + reportes, sin ABM.
+  // Consulta: consultar + reportes, sin ABM. Convocatoria se ve en ambos perfiles:
+  // el motivo llega cifrado para Consulta y en claro para Administrador (lo decide el backend).
   // El backend (app.py, ROL_PERMISOS) valida lo mismo en cada /api/*; esto solo adapta la interfaz.
   var PUBLICIDAD = ['anunciantes', 'campanias', 'publicidades', 'espacios'];
   var RESULTADOS = ['partidos', 'goles', 'eventos', 'amonestaciones', 'sustituciones', 'alineaciones', 'arbitrajes'];
-  var SIN_PUBLICIDAD = CAMPOS.map(function (c) { return c.id; }).filter(function (id) { return id !== 'publicidad'; });
+  var SIN_PUBLICIDAD = CAMPOS.map(function (c) { return c.id; }).filter(function (id) { return id !== 'publicidad' && id !== 'convocatoria'; });
   // abmEntidades / datos / reportesIds: null = todos; baja: puede eliminar
   var PERMISOS = {
     'Administrador':          { abm: true,  importar: true,  reportes: true,  abmEntidades: null,      baja: true,  datos: null,                    reportesIds: null },

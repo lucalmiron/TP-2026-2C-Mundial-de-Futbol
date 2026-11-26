@@ -101,6 +101,69 @@ def consultar_varias(consultas):
 
 
 # --------------------------------------------------------------------------
+# Cifrado del motivo de convocatoria (Entrega 8)
+# El alta cifra con SP.uspSeguridad_CifrarMotivoCambioConvocatoria. Aqui solo se
+# descifra bajo pedido, y unicamente para el rol Administrador: el resto de los
+# perfiles recibe el VARBINARY tal cual (formatear() lo muestra en hexadecimal).
+# --------------------------------------------------------------------------
+SP_DESCIFRAR_MOTIVO = "SP.uspSeguridad_DescifrarMotivoCambioConvocatoria"
+
+
+def _descifrar_motivo(cur, id_cambio):
+    """Devuelve el motivo en texto plano para un IdCambio, usando el SP de la BD."""
+    sql = (f"SET NOCOUNT ON; DECLARE @m VARCHAR(200); "
+           f"EXEC {SP_DESCIFRAR_MOTIVO} @idCambio = ?, @motivo = @m OUTPUT; SELECT @m;")
+    cur.execute(sql, id_cambio)
+    texto = None
+    while True:
+        if cur.description:
+            for fila in cur.fetchall():
+                if fila and fila[0] is not None:
+                    texto = fila[0]
+        if not cur.nextset():
+            break
+    return texto
+
+
+def descifrar_motivos(res):
+    """Reemplaza en {'columns','rows'} la columna Motivo (hex) por texto plano.
+
+    Junta primero todas las salidas para que un error a mitad de camino no deje
+    algunas filas descifradas y otras no.
+    """
+    columnas = res["columns"]
+    if "ID" not in columnas or "Motivo" not in columnas or not res["rows"]:
+        return res
+    i_id, i_motivo = columnas.index("ID"), columnas.index("Motivo")
+    cn = conectar()
+    try:
+        cur = cn.cursor()
+        textos = [_descifrar_motivo(cur, fila[i_id]) for fila in res["rows"]]
+    finally:
+        cn.close()
+    for fila, texto in zip(res["rows"], textos):
+        if texto is not None:
+            fila[i_motivo] = texto
+    return res
+
+
+def descifrar_motivos_dicts(filas):
+    """Igual que descifrar_motivos pero para la lista de dicts que usa el ABM."""
+    if not filas or "Motivo" not in filas[0]:
+        return filas
+    cn = conectar()
+    try:
+        cur = cn.cursor()
+        textos = [_descifrar_motivo(cur, f.get("IdCambio")) for f in filas]
+    finally:
+        cn.close()
+    for fila, texto in zip(filas, textos):
+        if texto is not None:
+            fila["Motivo"] = texto
+    return filas
+
+
+# --------------------------------------------------------------------------
 # Fragmento reutilizable: datos de las dos selecciones de un partido (alias P)
 # --------------------------------------------------------------------------
 _EQUIPOS = """
@@ -144,6 +207,18 @@ DATASETS = {
         JOIN equipos.Pais PA ON PA.IdPais = S.IdPais
         LEFT JOIN equipos.Club C ON C.IdClub = J.Club
         ORDER BY PA.NOMBRE, J.Numero""",
+    # Motivo se guarda cifrado (VARBINARY, AES-128). Se devuelve tal cual (en hex,
+    # ver formatear()) y el endpoint /api/datos/convocatoria lo descifra solo para
+    # el rol Administrador, llamando al SP de la Entrega 8.
+    "convocatoria": """
+        SELECT C.IdCambio AS [ID], PS.NOMBRE AS [Selección], C.Fecha AS [Fecha],
+               PEE.Nombre AS [Sale], PEI.Nombre AS [Entra], C.Motivo AS [Motivo]
+        FROM equipos.CambioConvocatoria C
+        JOIN equipos.Seleccion S ON S.IdSeleccion = C.Seleccion
+        JOIN equipos.Pais PS ON PS.IdPais = S.IdPais
+        JOIN equipos.Persona PEE ON PEE.IdPersona = C.Egreso
+        JOIN equipos.Persona PEI ON PEI.IdPersona = C.Ingreso
+        ORDER BY C.Fecha DESC, C.IdCambio DESC""",
     "tecnicos": """
         SELECT T.IdTecnico AS [ID], PE.Nombre AS [Nombre], T.Funcion AS [Función],
                PA.NOMBRE AS [Selección], T.Estado AS [Estado], T.TarjetasAcum AS [Tarjetas acum.]
@@ -627,18 +702,21 @@ PUBLICIDAD = {"anunciantes", "campanias", "publicidades", "espacios"}
 # Entidades ABM del Cargador de resultados: solo lo que se carga a medida que pasan los partidos
 # (el partido incluye la tanda de penales, que va por /api/abm/partidos/<pk>/tanda).
 RESULTADOS = {"partidos", "goles", "eventos", "amonestaciones", "sustituciones", "alineaciones", "arbitrajes"}
-SIN_PUBLICIDAD = set(DATASETS) - {"publicidad"}   # datos deportivos: todo menos la pauta publicitaria
+# "convocatoria" queda fuera de los datos deportivos del Cargador: esa vista muestra
+# el motivo cifrado y solo está disponible para Consulta y Administrador.
+SIN_PUBLICIDAD = set(DATASETS) - {"publicidad", "convocatoria"}
 ROL_PERMISOS = {
     # permisos: areas de la API; abm: entidades ABM permitidas (None = todas); baja: puede eliminar
     # datos: vistas de /api/datos permitidas (None = todas); reportes_ids: reportes permitidos (None = todos)
+    # descifrar: único permiso que ve el Motivo de convocatoria en texto plano.
     "Administrador":          {"permisos": {"consultar", "abm", "importar", "reportes"}, "abm": None, "baja": True,
-                               "datos": None, "reportes_ids": None},
+                               "datos": None, "reportes_ids": None, "descifrar": True},
     "Gestor de publicidad":   {"permisos": {"consultar", "abm", "reportes"}, "abm": PUBLICIDAD, "baja": False,
-                               "datos": {"publicidad", "sedes"}, "reportes_ids": {"publicidad"}},
+                               "datos": {"publicidad", "sedes"}, "reportes_ids": {"publicidad"}, "descifrar": False},
     "Cargador de resultados": {"permisos": {"consultar", "abm"}, "abm": RESULTADOS, "baja": False,
-                               "datos": SIN_PUBLICIDAD, "reportes_ids": set()},
+                               "datos": SIN_PUBLICIDAD, "reportes_ids": set(), "descifrar": False},
     "Consulta":               {"permisos": {"consultar", "reportes"}, "abm": set(), "baja": False,
-                               "datos": None, "reportes_ids": None},
+                               "datos": None, "reportes_ids": None, "descifrar": False},
 }
 
 
@@ -706,6 +784,13 @@ def abm_datos(nombre):
         consultas[k] = OPCIONES[k]
     opciones = consultar_varias(consultas)
     filas = opciones.pop("__filas")
+    if nombre == "cambios-convocatoria" and _rol_actual()["descifrar"]:
+        # El ABM lo ve solo el Administrador: le mostramos el motivo en claro,
+        # igual que en la vista de Consultar. Si falta la Entrega 8 se deja el hex.
+        try:
+            filas = descifrar_motivos_dicts(filas)
+        except pyodbc.Error:
+            pass
     sps = detectar_sps(cfg)
     info = {rol: _info_sp(sps[rol]) for rol in ROLES}
     return jsonify(titulo=cfg["titulo"], etiqueta=cfg["etiqueta"], pk=_pk_cols(cfg),
@@ -1105,7 +1190,19 @@ def api_datos(nombre):
     if sql is None:
         return jsonify(error=f"Vista desconocida: {nombre}"), 404
     try:
-        return jsonify(consultar(sql))
+        res = consultar(sql)
+        if nombre == "convocatoria":
+            # Por defecto el motivo viaja cifrado (hex del VARBINARY). Solo el
+            # Administrador pide el descifrado al SP con EXECUTE AS OWNER.
+            res["cifrado"] = True
+            if _rol_actual()["descifrar"]:
+                try:
+                    descifrar_motivos(res)
+                    res["cifrado"] = False
+                except pyodbc.Error:
+                    # Si no está aplicada la Entrega 8 se deja el valor cifrado.
+                    res["cifrado"] = True
+        return jsonify(res)
     except Exception as exc:  # mensaje legible para mostrar en la interfaz
         return jsonify(error=str(exc)), 500
 
