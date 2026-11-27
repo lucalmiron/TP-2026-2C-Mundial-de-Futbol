@@ -259,7 +259,7 @@ WHERE f.Estado='Pendiente' AND EXISTS (
 -- Reporte de la depuracion.
 SELECT 'FASE 2 - Depuracion de cambios de convocatoria (antes de la persistencia)' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #CambiosStaging GROUP BY Estado ORDER BY Estado;
-SELECT Fila, NumeroLinea, SeleccionTexto, EgresoTexto, IngresoTexto, FechaTexto, MotivoTexto, Estado, Detalle
+SELECT Fila, NumeroLinea, SeleccionTexto AS Seleccion, EgresoTexto AS Egreso, IngresoTexto AS Ingreso, FechaTexto AS Fecha, MotivoTexto AS Motivo, Estado, Detalle
 FROM #CambiosStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
 
 ---------------------------------------------------------------------------------------
@@ -296,7 +296,7 @@ DEALLOCATE crsCambios;
 -- Reporte final.
 SELECT 'FASE 3 - Persistencia de cambios de convocatoria' AS Fase;
 SELECT Estado, COUNT(*) AS Cantidad FROM #CambiosStaging GROUP BY Estado ORDER BY Estado;
-SELECT Fila, NumeroLinea, SeleccionTexto, EgresoTexto, IngresoTexto, FechaTexto, MotivoTexto, Estado, Detalle
+SELECT Fila, NumeroLinea, SeleccionTexto AS Seleccion, EgresoTexto AS Egreso, IngresoTexto AS Ingreso, FechaTexto AS Fecha, MotivoTexto AS Motivo, Estado, Detalle
 FROM #CambiosStaging ORDER BY Fila;
 
 DECLARE @fallos INT = (SELECT COUNT(*) FROM #CambiosStaging WHERE Estado='Error');
