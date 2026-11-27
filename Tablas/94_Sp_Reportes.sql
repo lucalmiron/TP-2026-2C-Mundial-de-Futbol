@@ -274,7 +274,7 @@ BEGIN
 		ON Persona.IdPersona = resumenAmonestaciones.Amonestado
 		INNER JOIN
 		(
-			SELECT IdJugador AS ID, Seleccion, Estado AS [ESTADO] FROM equipos.Jugador
+			SELECT IdJugador AS ID, Seleccion, Estado AS [ESTADO] FROM equipos.Jugador WHERE Estado <> 'Inactivo'
 			UNION
 			SELECT IdTecnico AS ID, Seleccion, Estado AS [ESTADO] FROM equipos.Tecnico
 		) AS Amonestados
