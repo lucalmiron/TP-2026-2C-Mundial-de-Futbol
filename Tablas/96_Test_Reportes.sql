@@ -84,9 +84,9 @@ EXEC SP.uspFixture @categoria = 'Seleccion', @mundial = 1;
 EXEC SP.uspFixture @categoria = 'Fecha', @mundial = 1;
 
 ----Equipo en cancha de una Seleccion para un determinado Partido dado un minuto
-EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 46, @minuto = 0;
-EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 46, @minuto = 46;
-EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 46, @minuto = 58;
+EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 9, @minuto = 0;
+EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 9, @minuto = 46;
+EXEC SP.uspAlineacion_Actual @partido = 1, @seleccion = 9, @minuto = 70;
 
 ----Informes post-Partido de un Arbitro por Partido
-EXEC SP.uspArbitro_Informes @mundial = 1, @arbitro = 1249;
+EXEC SP.uspArbitro_Informes @mundial = 1, @arbitro = 1281;
