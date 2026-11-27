@@ -936,7 +936,7 @@
       $('#contenido').innerHTML = '<h2 class="titulo">Importar · ' + esc(c.titulo) + '</h2><p class="sub">' + esc(c.desc) + '.</p>' +
         '<div class="barra"><button class="btn" id="volver">◄ Volver</button></div>' +
         '<div class="form-caja">' + (c.archivos.length
-          ? '<p class="sub">Archivos opcionales: si no elegís ninguno se usan los de la carpeta <b>Datos</b> del proyecto.</p>' + c.archivos.map(function (a) {
+          ? '<p class="sub">Tenés que elegir todos los archivos. Si falta alguno, no se realiza la importación.</p>' + c.archivos.map(function (a) {
               return '<label class="lbl" for="a_' + a.variable + '">' + esc(a.etiqueta) + '</label>' +
                 '<input class="campo" type="file" id="a_' + a.variable + '" accept="' + esc(a.ext.join(',')) + '">';
             }).join('')
@@ -951,6 +951,11 @@
           var f = $('#a_' + a.variable).files[0];
           if (f) fd.append(a.variable, f);
         });
+        var faltan = c.archivos.filter(function (a) { return !$('#a_' + a.variable).files[0]; });
+        if (faltan.length) {
+          $('#resultado').innerHTML = '<div class="aviso">No se realizó la importación: falta elegir ' + faltan.map(function (a) { return esc(a.etiqueta); }).join(', ') + '.</div>';
+          return;
+        }
         var btn = $('#importar'); btn.disabled = true;
         $('#resultado').innerHTML = '<div class="estado-msg">Importando…</div>';
         api('/api/importar/' + id, { method: 'POST', body: fd }).then(function (r) {

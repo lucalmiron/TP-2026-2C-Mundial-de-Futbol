@@ -1093,12 +1093,18 @@ def importar_ejecutar(nombre):
     cfg = IMPORTADORES.get(nombre)
     if not cfg:
         raise ErrorApi(f"Importación desconocida: {nombre}")
+    # Antes de tocar nada: hay que subir TODOS los archivos que usa el script. Si falta
+    # alguno no se ejecuta la importacion (evita cargas parciales o mezclar con Datos).
+    faltantes = [a["etiqueta"] for a in cfg["archivos"]
+                 if not request.files.get(a["variable"]) or not request.files[a["variable"]].filename]
+    if faltantes:
+        raise ErrorApi("No se realizó la importación: falta subir " + ", ".join(faltantes) + ".")
     os.makedirs(RUTA_SUBIDAS, exist_ok=True)
     rutas, marca = {}, time.strftime("%Y%m%d_%H%M%S")
     for a in cfg["archivos"]:
         f = request.files.get(a["variable"])
         if not f or not f.filename:
-            continue  # opcional: si no se sube, se usa el archivo del proyecto (Datos\...)
+            continue  # no deberia ocurrir: ya se verifico que estan todos
         ext = os.path.splitext(f.filename)[1].lower()
         if ext not in a["ext"]:
             raise ErrorApi(f"{a['etiqueta']}: se esperaba un archivo {' / '.join(a['ext'])}.")
