@@ -56,8 +56,8 @@ BEGIN
 		IF NOT EXISTS (SELECT 1 FROM equipos.Seleccion WHERE IdSeleccion = @seleccion)
 			SET @errores += '- Valor inexistente: Seleccion.' + N' ';
 
-		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @egreso AND Seleccion = @seleccion AND Estado = 'Activo')
-			SET @errores += '- El egreso no es un convocado activo de la seleccion.' + N' ';
+		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @egreso AND Seleccion = @seleccion AND Estado IN ('Activo','Suspendido'))
+			SET @errores += '- El egreso no es un convocado activo o suspendido de la seleccion.' + N' ';
 
 		IF NOT EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @ingreso AND Seleccion = @seleccion)
 			SET @errores += '- El ingreso no pertenece a la seleccion.' + N' ';

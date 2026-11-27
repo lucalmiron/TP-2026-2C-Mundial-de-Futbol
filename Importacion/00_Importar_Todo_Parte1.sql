@@ -8,12 +8,14 @@
 --
 -- Incluye: 00_Ejecutar_Todo, 01 Grupos, 02 Fases, 03 Periodos, 04 Husos,
 --          05 Idioma, 06 Pais, 06b Mundial, 07 Selecciones, 08 Sedes,
---          09 Clubes, 10 Jugadores, 11 Partidos, 12 PBI_Pais.
+--          09 Clubes, 10 Jugadores, 10b Reservas, 11 Partidos, 12 PBI_Pais.
 --
 -- Dependencias con las otras partes:
 --   03 y 10 (aqui) antes de 21 (Parte 3).
 --   08 (aqui) antes de 26 y 27 (Parte 2).
 --   11 (aqui) antes de 25 (Parte 3).
+--   10b (aqui) antes de 29 (Parte 3): los cambios de convocatoria usan los
+--   jugadores reserva cargados por 10b como ingreso.
 --
 -- Cada importador esta precedido por un PRINT con la hora: si algo falla, el
 -- ultimo ">>>" que aparece en la pestania Mensajes es el importador culpable.
@@ -21,12 +23,12 @@
 -- UNICO LUGAR A EDITAR: cada integrante pone aqui la ruta de su carpeta del proyecto.
 -- No hay que definir variables de Windows ni tocar ningun otro archivo.
 -- santutu
-:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
+--:setvar TP_BDDA "C:\Users\Administrator\Desktop\tp_bdda\TP-2026-2C-Mundial-de-Futbol"
 -- fidel
 --:setvar TP_BDDA "C:\Users\Usuario\Documents\proyecto BDDA\TP-2026-2C-Mundial-de-Futbol"
 
 --L
---:setvar TP_BDDA "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol"
+:setvar TP_BDDA "C:\Users\Luca\Documents\TP_Mundial\TP-2026-2C-Mundial-de-Futbol"
 
 -- IGNORE: sigue ejecutando aunque un importador marque errores permisibles.
 -- Para cortar ante el primer error, cambiar por :ON ERROR EXIT
@@ -102,6 +104,11 @@ GO
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 10_Carga_Jugadores';
 GO
 :r $(TP_BDDA)\Importacion\10_Importacion_Carga_Jugadores.sql
+GO
+
+PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 10b_Carga_Reservas';
+GO
+:r $(TP_BDDA)\Importacion\10b_Importacion_Carga_Reservas.sql
 GO
 
 PRINT '>>> ' + CONVERT(VARCHAR(19), GETDATE(), 120) + ' - 11_Carga_Partidos';

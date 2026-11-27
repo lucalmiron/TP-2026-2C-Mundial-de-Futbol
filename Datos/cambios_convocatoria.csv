@@ -1,17 +1,33 @@
 seleccion,egreso,ingreso,fecha,motivo
-Argentina,Lionel Messi,Gerónimo Rulli,2026-07-20,Lesión muscular
-Brazil,Neymar,Ederson Moraes,2026-07-20,Fractura de clavícula
-France,Kylian Mbappé,Brice Samba,2026-07-20,Esguince de tobillo
-Germany,Jamal Musiala,Alexander Nübel,2026-07-20,Apendicitis
-Spain,Pedri,David Raya,2026-07-20,Virus estomacal
-England,Harry Kane,James Trafford,2026-07-20,Decisión técnica
-Morocco,Achraf Hakimi,Munir,2026-07-20,Lesión de rodilla
-Portugal,Cristiano Ronaldo,José Sá,2026-07-20,Emergencia familiar
-Netherlands,Virgil van Dijk,Mark Flekken,2026-07-20,Molestia muscular
-Uruguay,Darwin Núñez,Santiago Mele,2026-07-20,Intervención quirúrgica
-Colombia,James Rodríguez,David Ospina,2026-07-20,Conmoción cerebral
-Japan,Takefusa Kubo,Keisuke Ōsako,2026-07-20,Acuerdo mutuo
-Korea Republic,Son Heung-min,Jo Hyeon-woo,2026-07-20,Tendinitis aquílea
-Mexico,Santiago Giménez,Carlos Acevedo,2026-07-20,Lumbalgia
-USA,Christian Pulisic,Chris Brady,2026-07-20,Fascitis plantar
-Belgium,Kevin De Bruyne,Mike Penders,2026-07-20,Desgarro muscular
+Argentina,Lionel Messi,Tomás Almeyda,2026-07-20,Lesión muscular
+Argentina,Nicolás Otamendi,Bruno Zuculini,2026-07-20,Decisión técnica
+Brazil,Neymar,Caio Bittencourt,2026-07-20,Fractura de clavícula
+Brazil,Casemiro,Renan Duarte,2026-07-20,Esguince de tobillo
+France,Kylian Mbappé,Hugo Lefèvre,2026-07-20,Apendicitis
+France,N'Golo Kanté,Enzo Marchand,2026-07-20,Virus estomacal
+Germany,Jamal Musiala,Leon Voss,2026-07-20,Lesión de rodilla
+Germany,Manuel Neuer,Timo Hartmann,2026-07-20,Molestia muscular
+Spain,Pedri,Álvaro Serrano,2026-07-20,Emergencia familiar
+Spain,Rodri,Iker Mendoza,2026-07-20,Conmoción cerebral
+England,Harry Kane,Oliver Hayes,2026-07-20,Tendinitis aquílea
+England,Jude Bellingham,Jack Whitmore,2026-07-20,Lumbalgia
+Morocco,Achraf Hakimi,Yassir Amrani,2026-07-20,Fascitis plantar
+Morocco,Yassine Bounou,Omar Bennani,2026-07-20,Desgarro muscular
+Portugal,Cristiano Ronaldo,Diogo Fonseca,2026-07-20,Lesión muscular
+Portugal,Bruno Fernandes,Tiago Barros,2026-07-20,Decisión técnica
+Netherlands,Virgil van Dijk,Sven de Vries,2026-07-20,Fractura de clavícula
+Netherlands,Frenkie de Jong,Jesse van Dam,2026-07-20,Esguince de tobillo
+Uruguay,Darwin Núñez,Diego Suárez,2026-07-20,Intervención quirúrgica
+Uruguay,Federico Valverde,Nicolás Fuentes,2026-07-20,Apendicitis
+Colombia,James Rodríguez,Andrés Palacio,2026-07-20,Virus estomacal
+Colombia,Luis Díaz,Juan David Moreno,2026-07-20,Lesión de rodilla
+Japan,Takefusa Kubo,Haruto Tanaka,2026-07-20,Molestia muscular
+Japan,Daichi Kamada,Sota Nakamura,2026-07-20,Emergencia familiar
+Korea Republic,Son Heung-min,Min-jun Park,2026-07-20,Tendinitis aquílea
+Korea Republic,Lee Kang-in,Seo-jun Lee,2026-07-20,Lumbalgia
+Mexico,Santiago Giménez,Diego Ramírez,2026-07-20,Fascitis plantar
+Mexico,Raúl Jiménez,Emiliano Torres,2026-07-20,Desgarro muscular
+USA,Christian Pulisic,Mason Caldwell,2026-07-20,Lesión muscular
+USA,Weston McKennie,Logan Pierce,2026-07-20,Decisión técnica
+Belgium,Kevin De Bruyne,Noah Peeters,2026-07-20,Fractura de clavícula
+Belgium,Romelu Lukaku,Liam Willems,2026-07-20,Esguince de tobillo

@@ -3,16 +3,14 @@
 -- Fecha: 25/11/2026.
 -- Objetivo: cargar los cambios de convocatoria (reemplazos en la lista de
 -- convocados entre partidos) desde un CSV. Se usa la metodologia de tres fases.
---   FASE 0 BASELINE    : los jugadores que ingresan (ingreso) son reservas que
---                        todavia estan Activos. Se los pasa a Inactivo con
---                        uspJugador_Bajar (baja logica) para que el SP de
---                        cambio de convocatoria los acepte como ingreso.
 --   FASE 1 STAGING     : las lineas del CSV, tal cual.
 --   FASE 2 DEPURACION  : reglas de conjunto sobre la staging.
 --   FASE 3 PERSISTENCIA : solo los cambios validos pasan por
 --                         SPTRANS.uspCambioConvocatoria_Registrar.
--- Requiere ejecutar antes las cargas 06 (paises), 06b (mundial), 07 (selecciones)
--- y 10 (jugadores).
+-- Los jugadores que ingresan (ingreso) son los RESERVAS cargados por 10b, que
+-- ya estan Inactivos; por eso no hace falta ningun paso previo de baja logica.
+-- Requiere ejecutar antes las cargas 06 (paises), 06b (mundial), 07 (selecciones),
+-- 10 (jugadores) y 10b (reservas).
 -- SSMS: Consulta -> Modo SQLCMD. TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 -- IMPORTANTE: no editar rutas aca; TP_BDDA se define en los archivos 00_Importar_Todo_Parte*.sql.
 
@@ -25,7 +23,6 @@ IF @@TRANCOUNT <> 0 OR (2 & @@OPTIONS) = 2
     THROW 51900, 'Ejecute sin transaccion externa y con IMPLICIT_TRANSACTIONS OFF.', 1;
 IF OBJECT_ID(N'equipos.CambioConvocatoria', N'U') IS NULL
    OR OBJECT_ID(N'SPTRANS.uspCambioConvocatoria_Registrar', N'P') IS NULL
-   OR OBJECT_ID(N'SPTRANS.uspJugador_Bajar', N'P') IS NULL
     THROW 51900, 'Faltan tablas o SP ABM. Ejecute primero el instalador.', 1;
 
 IF OBJECT_ID(N'tempdb..#CambiosCrudo') IS NOT NULL DROP TABLE #CambiosCrudo;
@@ -109,13 +106,9 @@ UPDATE #CambiosStaging SET
     MotivoTexto = LTRIM(RTRIM(MotivoTexto));
 
 ---------------------------------------------------------------------------------------
--- FASE 0 - BASELINE
--- Los jugadores que ingresan (ingreso) son reservas 0-juego que todavia estan
--- Activos. Se los pasa a Inactivo con uspJugador_Bajar (baja logica) para que
--- el SP de cambio de convocatoria los acepte como ingreso.
+-- Resolver el IdJugador del ingreso por nombre (los ingresos son los reservas
+-- cargados por 10b, ya Inactivos; no hace falta ninguna baja logica previa).
 ---------------------------------------------------------------------------------------
-
--- Resolver el IdJugador del ingreso por nombre.
 UPDATE s SET IdIngreso = (
     SELECT MIN(j.IdJugador)
     FROM equipos.Persona p
@@ -124,37 +117,6 @@ UPDATE s SET IdIngreso = (
 )
 FROM #CambiosStaging s
 WHERE s.Estado = 'Pendiente';
-
--- Baseline: dar de baja logica (Inactivo) a los ingresos que estan Activos
--- y no tienen registros relacionados (0-juego).
-DECLARE @fila INT, @idIngreso INT, @estado VARCHAR(20), @detalle NVARCHAR(2048);
-DECLARE crsBaseline CURSOR LOCAL FAST_FORWARD FOR
-    SELECT Fila, IdIngreso
-    FROM #CambiosStaging WHERE Estado = 'Pendiente' AND IdIngreso IS NOT NULL
-    ORDER BY Fila;
-OPEN crsBaseline;
-FETCH NEXT FROM crsBaseline INTO @fila, @idIngreso;
-WHILE @@FETCH_STATUS = 0
-BEGIN
-    BEGIN TRY
-        -- Solo dar de baja si el jugador esta Activo y no tiene registros relacionados.
-        IF EXISTS (SELECT 1 FROM equipos.Jugador WHERE IdJugador = @idIngreso AND Estado = 'Activo')
-           AND NOT EXISTS (SELECT 1 FROM partidos.Amonestacion WHERE Amonestado = @idIngreso)
-           AND NOT EXISTS (SELECT 1 FROM partidos.Gol WHERE Autor = @idIngreso OR Asistencia = @idIngreso)
-           AND NOT EXISTS (SELECT 1 FROM partidos.Sustitucion WHERE Ingreso = @idIngreso OR Egreso = @idIngreso)
-           AND NOT EXISTS (SELECT 1 FROM equipos.CambioConvocatoria WHERE Ingreso = @idIngreso OR Egreso = @idIngreso)
-        BEGIN
-            EXEC SPTRANS.uspJugador_Bajar @id = @idIngreso;
-        END
-    END TRY
-    BEGIN CATCH
-        -- Si falla la baja (cupo, etc.), se marca la fila para que el SP de cambio tambien falle.
-        UPDATE #CambiosStaging SET Estado = 'Error', Detalle = N'Baseline: ' + ERROR_MESSAGE() WHERE Fila = @fila;
-    END CATCH;
-    FETCH NEXT FROM crsBaseline INTO @fila, @idIngreso;
-END;
-CLOSE crsBaseline;
-DEALLOCATE crsBaseline;
 
 ---------------------------------------------------------------------------------------
 -- FASE 2 - DEPURACION
@@ -218,15 +180,15 @@ UPDATE #CambiosStaging SET Estado='Error',
     Detalle=N'Egreso e ingreso no pueden ser el mismo jugador.'
 WHERE Estado='Pendiente' AND IdEgreso = IdIngreso;
 
--- D8: el egreso no esta Activo.
+-- D8: el egreso no es convocado (Activo o Suspendido).
 UPDATE #CambiosStaging SET Estado='Error',
-    Detalle=N'El egreso no es un convocado activo de la seleccion.'
+    Detalle=N'El egreso no es un convocado activo o suspendido de la seleccion.'
 WHERE Estado='Pendiente' AND NOT EXISTS (
-    SELECT 1 FROM equipos.Jugador WHERE IdJugador = IdEgreso AND Estado = 'Activo');
+    SELECT 1 FROM equipos.Jugador WHERE IdJugador = IdEgreso AND Estado IN ('Activo','Suspendido'));
 
--- D9: el ingreso no esta Inactivo (el baseline deberia haberlo dejado inactivo).
+-- D9: el ingreso no esta Inactivo (debe ser un reserva cargado por 10b).
 UPDATE #CambiosStaging SET Estado='Error',
-    Detalle=N'El ingreso no esta inactivo (revise el baseline).'
+    Detalle=N'El ingreso no esta inactivo (debe ser un reserva cargado por 10b).'
 WHERE Estado='Pendiente' AND EXISTS (
     SELECT 1 FROM equipos.Jugador WHERE IdJugador = IdIngreso AND Estado <> 'Inactivo');
 
@@ -266,6 +228,7 @@ FROM #CambiosStaging WHERE Estado IN ('Error','Duplicada') ORDER BY Fila;
 -- FASE 3 - PERSISTENCIA
 ---------------------------------------------------------------------------------------
 
+DECLARE @fila INT, @estado VARCHAR(20);
 DECLARE @idSel INT, @idEgr INT, @idIng INT, @fecha DATE, @motivo VARCHAR(200);
 DECLARE crsCambios CURSOR LOCAL FAST_FORWARD FOR
     SELECT Fila, IdSeleccion, IdEgreso, IdIngreso, TRY_CONVERT(DATE, FechaTexto), CONVERT(VARCHAR(200), MotivoTexto)
