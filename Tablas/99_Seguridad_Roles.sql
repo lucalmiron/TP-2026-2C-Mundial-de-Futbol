@@ -45,55 +45,6 @@ END
 GO
 
 -- ============================================
--- SP.uspSeguridad_AsignarPermisos
--- Ejecuta GRANT/DENY sobre un objeto para un rol.
--- Usa SQL dinamico porque GRANT no puede ejecutarse
--- directamente dentro de un stored procedure.
---   @accion   : GRANT | DENY | REVOKE
---   @permiso  : SELECT, INSERT, UPDATE, DELETE, EXECUTE, CONTROL, etc.
---   @objeto   : SCHEMA::equipos, SP.uspReporte_Goleadores, etc.
--- ============================================
-IF OBJECT_ID('SP.uspSeguridad_AsignarPermisos', 'P') IS NOT NULL
-    DROP PROCEDURE SP.uspSeguridad_AsignarPermisos;
-GO
-CREATE PROCEDURE SP.uspSeguridad_AsignarPermisos
-    @rol     SYSNAME,
-    @permiso NVARCHAR(50),
-    @objeto  NVARCHAR(500),
-    @accion  NVARCHAR(10) = 'GRANT'
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DECLARE @sql NVARCHAR(MAX);
-
-    IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE name = @rol AND type = 'R')
-    BEGIN
-        RAISERROR('El rol %s no existe.', 16, 1, @rol);
-        RETURN;
-    END
-
-    IF UPPER(@accion) = 'REVOKE'
-        SET @sql = 'REVOKE ' + @permiso + ' ON ' + @objeto + ' FROM ' + QUOTENAME(@rol);
-    ELSE
-        SET @sql = @accion + ' ' + @permiso + ' ON ' + @objeto + ' TO ' + QUOTENAME(@rol);
-
-    BEGIN TRY
-        EXEC(@sql);
-        PRINT @sql;
-    END TRY
-    BEGIN CATCH
-        -- Si el objeto todavia no existe (ej. instalacion incompleta), no cortar
-        -- el lote: se avisa y se continua. Cualquier otro error se propaga.
-        IF ERROR_NUMBER() IN (15151, 15006)
-            PRINT 'AVISO (objeto inexistente, se omite): ' + @sql;
-        ELSE
-            THROW;
-    END CATCH;
-END
-GO
-
--- ============================================
 -- SP.uspSeguridad_ConfigurarRoles
 -- Aplica la matriz de permisos de la Entrega 8.
 -- ============================================
@@ -105,96 +56,89 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Limpiar permisos/DENYs de ejecuciones anteriores del instalador.
-    -- Versiones viejas de este SP bloqueaban todo el esquema SP al gestor de
-    -- publicidad; ese DENY quedaba en la base y anulaba los GRANT especificos.
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SCHEMA::SP', @accion = 'REVOKE';
-
     -- ---------- rol_Administrador: CONTROL sobre todos los esquemas ----------
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Administrador', @permiso = 'CONTROL', @objeto = 'SCHEMA::SP';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Administrador', @permiso = 'CONTROL', @objeto = 'SCHEMA::SPTRANS';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Administrador', @permiso = 'CONTROL', @objeto = 'SCHEMA::equipos';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Administrador', @permiso = 'CONTROL', @objeto = 'SCHEMA::sedes';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Administrador', @permiso = 'CONTROL', @objeto = 'SCHEMA::partidos';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Administrador', @permiso = 'CONTROL', @objeto = 'SCHEMA::arbitros';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Administrador', @permiso = 'CONTROL', @objeto = 'SCHEMA::publicidad';
+    GRANT CONTROL ON SCHEMA::SP TO [rol_Administrador];
+    GRANT CONTROL ON SCHEMA::SPTRANS TO [rol_Administrador];
+    GRANT CONTROL ON SCHEMA::equipos TO [rol_Administrador];
+    GRANT CONTROL ON SCHEMA::sedes TO [rol_Administrador];
+    GRANT CONTROL ON SCHEMA::partidos TO [rol_Administrador];
+    GRANT CONTROL ON SCHEMA::arbitros TO [rol_Administrador];
+    GRANT CONTROL ON SCHEMA::publicidad TO [rol_Administrador];
 
     -- ---------- rol_CargadorResultados ----------
     -- Puede ejecutar SP de ABM y transacciones
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'EXECUTE', @objeto = 'SCHEMA::SP';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'EXECUTE', @objeto = 'SCHEMA::SPTRANS';
+    GRANT EXECUTE ON SCHEMA::SP TO [rol_CargadorResultados];
+    GRANT EXECUTE ON SCHEMA::SPTRANS TO [rol_CargadorResultados];
     -- Puede leer catalogos
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'SELECT', @objeto = 'SCHEMA::equipos';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'SELECT', @objeto = 'SCHEMA::sedes';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'SELECT', @objeto = 'SCHEMA::partidos';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'SELECT', @objeto = 'SCHEMA::arbitros';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'SELECT', @objeto = 'SCHEMA::publicidad';
+    GRANT SELECT ON SCHEMA::equipos TO [rol_CargadorResultados];
+    GRANT SELECT ON SCHEMA::sedes TO [rol_CargadorResultados];
+    GRANT SELECT ON SCHEMA::partidos TO [rol_CargadorResultados];
+    GRANT SELECT ON SCHEMA::arbitros TO [rol_CargadorResultados];
+    GRANT SELECT ON SCHEMA::publicidad TO [rol_CargadorResultados];
     -- NO puede ejecutar reportes
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Goleadores', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Tarjetas', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Arbitraje', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Publicidad', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Convocados', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Partidos', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Primetime', @accion = 'DENY';
+    DENY EXECUTE ON SP.uspReporte_Goleadores TO [rol_CargadorResultados];
+    DENY EXECUTE ON SP.uspReporte_Tarjetas TO [rol_CargadorResultados];
+    DENY EXECUTE ON SP.uspReporte_Arbitraje TO [rol_CargadorResultados];
+    DENY EXECUTE ON SP.uspReporte_Publicidad TO [rol_CargadorResultados];
+    DENY EXECUTE ON SP.uspReporte_Convocados TO [rol_CargadorResultados];
+    DENY EXECUTE ON SP.uspReporte_Partidos TO [rol_CargadorResultados];
+    DENY EXECUTE ON SP.uspReporte_Primetime TO [rol_CargadorResultados];
     -- NO puede escribir directamente en tablas (solo via SP)
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::equipos', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::sedes', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::partidos', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::arbitros', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_CargadorResultados', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::publicidad', @accion = 'DENY';
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::equipos TO [rol_CargadorResultados];
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::sedes TO [rol_CargadorResultados];
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::partidos TO [rol_CargadorResultados];
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::arbitros TO [rol_CargadorResultados];
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::publicidad TO [rol_CargadorResultados];
 
     -- ---------- rol_GestorPublicidad ----------
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SCHEMA::publicidad';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'SELECT', @objeto = 'SCHEMA::publicidad';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'SELECT', @objeto = 'SCHEMA::equipos';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'SELECT', @objeto = 'SCHEMA::sedes';
+    GRANT EXECUTE ON SCHEMA::publicidad TO [rol_GestorPublicidad];
+    GRANT SELECT ON SCHEMA::publicidad TO [rol_GestorPublicidad];
+    GRANT SELECT ON SCHEMA::equipos TO [rol_GestorPublicidad];
+    GRANT SELECT ON SCHEMA::sedes TO [rol_GestorPublicidad];
     -- Unicamente los SP de ABM de publicidad (viven en el esquema SP).
-    -- No se da EXECUTE a todo el esquema SP para no habilitar otros dominios.
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspAnunciante_Registrar';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspAnunciante_Update';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspAnunciante_Bajar';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspPublicidad_Registrar';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspPublicidad_Update';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspPublicidad_Bajar';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspCampania_Registrar';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspCampania_Update';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspCampania_Bajar';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspAnuncianteCampania_Registrar';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspAnuncianteCampania_Bajar';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspPublicidadPais_Registrar';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspPublicidadPais_Bajar';
+    GRANT EXECUTE ON SP.uspAnunciante_Registrar TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspAnunciante_Update TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspAnunciante_Bajar TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspPublicidad_Registrar TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspPublicidad_Update TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspPublicidad_Bajar TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspCampania_Registrar TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspCampania_Update TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspCampania_Bajar TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspAnuncianteCampania_Registrar TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspAnuncianteCampania_Bajar TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspPublicidadPais_Registrar TO [rol_GestorPublicidad];
+    GRANT EXECUTE ON SP.uspPublicidadPais_Bajar TO [rol_GestorPublicidad];
     -- NO puede ejecutar SP de otros dominios
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SCHEMA::SPTRANS', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Goleadores', @accion = 'DENY';
+    DENY EXECUTE ON SCHEMA::SPTRANS TO [rol_GestorPublicidad];
+    DENY EXECUTE ON SP.uspReporte_Goleadores TO [rol_GestorPublicidad];
     -- NO escribe directamente en tablas
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_GestorPublicidad', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::publicidad', @accion = 'DENY';
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::publicidad TO [rol_GestorPublicidad];
 
     -- ---------- rol_Consulta ----------
     -- Solo ejecuta los SP de reporte
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Goleadores';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Tarjetas';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Arbitraje';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Publicidad';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Convocados';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Partidos';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'EXECUTE', @objeto = 'SP.uspReporte_Primetime';
+    GRANT EXECUTE ON SP.uspReporte_Goleadores TO [rol_Consulta];
+    GRANT EXECUTE ON SP.uspReporte_Tarjetas TO [rol_Consulta];
+    GRANT EXECUTE ON SP.uspReporte_Arbitraje TO [rol_Consulta];
+    GRANT EXECUTE ON SP.uspReporte_Publicidad TO [rol_Consulta];
+    GRANT EXECUTE ON SP.uspReporte_Convocados TO [rol_Consulta];
+    GRANT EXECUTE ON SP.uspReporte_Partidos TO [rol_Consulta];
+    GRANT EXECUTE ON SP.uspReporte_Primetime TO [rol_Consulta];
     -- Primetime llama internamente a este SP de conversion horaria
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'EXECUTE', @objeto = 'SP.uspAPIconversionHora';
+    GRANT EXECUTE ON SP.uspAPIconversionHora TO [rol_Consulta];
     -- Lectura de catalogos
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'SELECT', @objeto = 'SCHEMA::equipos';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'SELECT', @objeto = 'SCHEMA::sedes';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'SELECT', @objeto = 'SCHEMA::partidos';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'SELECT', @objeto = 'SCHEMA::arbitros';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'SELECT', @objeto = 'SCHEMA::publicidad';
-    -- NO ejecuta SP de ABM (no se le otorga EXECUTE en esos esquemas; no se usa DENY
-    -- a nivel esquema para no anular los GRANT especificos sobre los reportes)
+    GRANT SELECT ON SCHEMA::equipos TO [rol_Consulta];
+    GRANT SELECT ON SCHEMA::sedes TO [rol_Consulta];
+    GRANT SELECT ON SCHEMA::partidos TO [rol_Consulta];
+    GRANT SELECT ON SCHEMA::arbitros TO [rol_Consulta];
+    GRANT SELECT ON SCHEMA::publicidad TO [rol_Consulta];
+    -- NO ejecuta SP de ABM
     -- NO escribe en tablas
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::equipos', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::sedes', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::partidos', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::arbitros', @accion = 'DENY';
-    EXEC SP.uspSeguridad_AsignarPermisos @rol = 'rol_Consulta', @permiso = 'INSERT, UPDATE, DELETE', @objeto = 'SCHEMA::publicidad', @accion = 'DENY';
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::equipos TO [rol_Consulta];
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::sedes TO [rol_Consulta];
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::partidos TO [rol_Consulta];
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::arbitros TO [rol_Consulta];
+    DENY INSERT, UPDATE, DELETE ON SCHEMA::publicidad TO [rol_Consulta];
 
     PRINT 'Permisos de roles configurados.';
 END

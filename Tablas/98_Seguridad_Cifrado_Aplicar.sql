@@ -72,9 +72,25 @@ BEGIN
         WITH PASSWORD = 'ClaveMaestra_Mundial_2026!';
         SET @claveAbierta = 1;
 
-        SELECT @motivo = CONVERT(VARCHAR(200), DECRYPTBYKEY(Motivo))
+        DECLARE @motivoRecuperado VARCHAR(200);
+        DECLARE @motivoHashGuardado VARBINARY(32);
+        DECLARE @motivoHashCalculado VARBINARY(32);
+
+        SELECT @motivoRecuperado = CONVERT(VARCHAR(200), DECRYPTBYKEY(Motivo)),
+               @motivoHashGuardado = MotivoHash
         FROM equipos.CambioConvocatoria
         WHERE IdCambio = @idCambio;
+
+        IF @motivoRecuperado IS NOT NULL
+        BEGIN
+            SET @motivoHashCalculado = HASHBYTES('SHA2_256', @motivoRecuperado);
+            IF @motivoHashCalculado <> @motivoHashGuardado
+            BEGIN
+                THROW 50001, 'Integridad comprometida: el hash del motivo descifrado no coincide con el almacenado.', 1;
+            END
+        END
+
+        SET @motivo = @motivoRecuperado;
     END TRY
     BEGIN CATCH
         PRINT 'Error en uspSeguridad_DescifrarMotivoCambioConvocatoria: ' + ERROR_MESSAGE();
